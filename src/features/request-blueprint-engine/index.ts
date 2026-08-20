@@ -1,0 +1,381 @@
+/**
+ * Request Blueprint Engine
+ *
+ * The master configuration for the final structured output package that every
+ * NairaLeap onboarding process must produce. This is a pure data module — no
+ * UI, no business logic, no backend calls, no routes.
+ *
+ * Consumer layers (review screens, admin dashboards, notifications, PDF
+ * generators, CRM integrations) should import this catalog and adapt it to
+ * their own needs.
+ */
+
+import type {
+  RequestBlueprint,
+  RequestBlueprintCatalog,
+} from "./types";
+
+export type {
+  BlueprintField,
+  BlueprintFieldType,
+  BlueprintDocument,
+  AdminChecklistItem,
+  AdminChecklistCategory,
+  RequestPriority,
+  RequestBlueprint,
+  RequestBlueprintCatalog,
+} from "./types";
+
+/** Map of request blueprints by service id for O(1) lookup. */
+export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
+  agriculture: {
+    serviceId: "agriculture",
+    outputTitle: "Agriculture Service Request",
+    summaryTemplate:
+      "Your Agriculture request has been prepared. NairaLeap will review your farm profile, inputs or buyer needs and match you with verified agribusiness opportunities within 1–2 business days.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "farm-location", key: "farmLocation", label: "Farm location", type: "location", required: true },
+      { id: "farm-size", key: "farmSize", label: "Farm size (acres/hectares)", type: "short-text", required: true },
+      { id: "agri-service-type", key: "serviceType", label: "What do you need help with?", type: "single-choice", required: true },
+      { id: "crop-livestock", key: "cropOrLivestock", label: "Crop or livestock type", type: "short-text", required: true },
+      { id: "quantity", key: "quantity", label: "Estimated quantity or scale", type: "short-text", required: true },
+      { id: "timeline", key: "timeline", label: "Expected timeline", type: "short-text", required: true },
+    ],
+    optionalFields: [
+      { id: "budget-range", key: "budgetRange", label: "Budget range", type: "currency", required: false },
+      { id: "inputs-needed", key: "inputsNeeded", label: "Specific inputs needed", type: "long-text", required: false },
+      { id: "buyer-preferences", key: "buyerPreferences", label: "Buyer or market preferences", type: "long-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "farm-ownership", required: true },
+      { documentTypeId: "farm-plan", required: false },
+    ],
+    adminChecklist: [
+      { id: "verify-identity", label: "Verify government ID matches contact details", category: "verification" },
+      { id: "confirm-farm-location", label: "Confirm farm location and ownership documents", category: "verification" },
+      { id: "match-opportunities", label: "Match with verified agribusiness opportunities", category: "assignment" },
+      { id: "notify-customer", label: "Send follow-up with matched opportunities", category: "communication" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "normal",
+  },
+  "property-listings": {
+    serviceId: "property-listings",
+    outputTitle: "Property Listing Request",
+    summaryTemplate:
+      "Your Property Listing request has been captured. NairaLeap will verify the property details, prepare visibility options and connect you with interested buyers or renters.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "transaction-type", key: "transactionType", label: "Transaction type", type: "single-choice", required: true },
+      { id: "property-type", key: "propertyType", label: "Property type", type: "single-choice", required: true },
+      { id: "property-location", key: "propertyLocation", label: "Property location", type: "location", required: true },
+      { id: "property-size", key: "propertySize", label: "Land or building size", type: "short-text", required: true },
+      { id: "price-expectation", key: "priceExpectation", label: "Price or rental expectation", type: "currency", required: true },
+      { id: "title-available", key: "titleDocumentAvailable", label: "Title document available?", type: "yes-no", required: true },
+    ],
+    optionalFields: [
+      { id: "property-condition", key: "propertyCondition", label: "Property condition", type: "short-text", required: false },
+      { id: "agent-preference", key: "agentPreference", label: "Agent assistance preference", type: "single-choice", required: false },
+      { id: "photos-included", key: "photosIncluded", label: "Photos included?", type: "yes-no", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "property-title", required: true },
+      { documentTypeId: "survey-plan", required: false },
+      { documentTypeId: "asset-photos", required: false },
+    ],
+    adminChecklist: [
+      { id: "verify-title", label: "Verify property title or ownership document", category: "verification" },
+      { id: "inspect-survey", label: "Review survey plan and location details", category: "compliance" },
+      { id: "approve-listing", label: "Prepare listing visibility and pricing review", category: "review" },
+      { id: "match-enquiries", label: "Connect with interested buyers or renters", category: "assignment" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "normal",
+  },
+  "business-funding": {
+    serviceId: "business-funding",
+    outputTitle: "Business Funding Request",
+    summaryTemplate:
+      "Your Business Funding profile is ready for review. NairaLeap will match your requirements with suitable lenders, investors or grant programmes and respond within 2 business days.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "business-name", key: "businessName", label: "Business name", type: "short-text", required: true },
+      { id: "business-stage", key: "businessStage", label: "Business stage", type: "single-choice", required: true },
+      { id: "funding-purpose", key: "fundingPurpose", label: "Purpose of funding", type: "long-text", required: true },
+      { id: "funding-amount", key: "fundingAmount", label: "Funding amount requested", type: "currency", required: true },
+      { id: "sector", key: "sector", label: "Industry or sector", type: "short-text", required: true },
+      { id: "revenue-range", key: "revenueRange", label: "Annual revenue range", type: "currency", required: true },
+    ],
+    optionalFields: [
+      { id: "funding-type", key: "fundingType", label: "Preferred funding type", type: "single-choice", required: false },
+      { id: "repayment-tenor", key: "repaymentTenor", label: "Preferred repayment tenor", type: "short-text", required: false },
+      { id: "existing-debt", key: "existingDebt", label: "Existing debt obligations", type: "long-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "business-registration", required: true },
+      { documentTypeId: "tax-identification", required: true },
+      { documentTypeId: "financial-statements", required: false },
+      { documentTypeId: "bank-statement", required: true },
+    ],
+    adminChecklist: [
+      { id: "verify-business", label: "Verify business registration and tax ID", category: "verification" },
+      { id: "review-financials", label: "Review financial statements and bank statements", category: "compliance" },
+      { id: "assess-eligibility", label: "Assess eligibility against lender/investor criteria", category: "review" },
+      { id: "match-funding", label: "Match with suitable lenders, investors or grants", category: "assignment" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "high",
+  },
+  partnerships: {
+    serviceId: "partnerships",
+    outputTitle: "Partnership Request",
+    summaryTemplate:
+      "Your Partnership request has been structured. NairaLeap will review your proposal and introduce compatible, vetted partners where there is mutual fit.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "business-name", key: "businessName", label: "Business or organisation name", type: "short-text", required: true },
+      { id: "partnership-type", key: "partnershipType", label: "Partnership type", type: "single-choice", required: true },
+      { id: "partnership-goals", key: "partnershipGoals", label: "What are you looking for in a partner?", type: "long-text", required: true },
+      { id: "industry-sector", key: "industrySector", label: "Industry or sector", type: "short-text", required: true },
+      { id: "location-preference", key: "locationPreference", label: "Preferred partner location", type: "location", required: true },
+      { id: "investment-range", key: "investmentRange", label: "Investment or contribution range", type: "currency", required: false },
+    ],
+    optionalFields: [
+      { id: "partner-criteria", key: "partnerCriteria", label: "Ideal partner criteria", type: "long-text", required: false },
+      { id: "timeline", key: "timeline", label: "Expected partnership timeline", type: "short-text", required: false },
+      { id: "existing-agreement", key: "existingAgreement", label: "Existing partnership agreement in place?", type: "yes-no", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "business-registration", required: true },
+      { documentTypeId: "partnership-agreement", required: false },
+      { documentTypeId: "supporting-documents", required: false },
+    ],
+    adminChecklist: [
+      { id: "verify-business", label: "Verify business registration and identity", category: "verification" },
+      { id: "review-proposal", label: "Review partnership goals and criteria", category: "review" },
+      { id: "identify-partners", label: "Identify compatible, vetted partners", category: "assignment" },
+      { id: "introduce-parties", label: "Introduce both parties with mutual fit summary", category: "communication" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "normal",
+  },
+  "vendor-marketplace": {
+    serviceId: "vendor-marketplace",
+    outputTitle: "Vendor Marketplace Request",
+    summaryTemplate:
+      "Your Vendor Marketplace request has been recorded. NairaLeap will match you with verified vendors or evaluate your vendor registration and follow up within 1–2 business days.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "marketplace-role", key: "marketplaceRole", label: "I want to", type: "single-choice", required: true },
+      { id: "business-name", key: "businessName", label: "Business or vendor name", type: "short-text", required: true },
+      { id: "product-service", key: "productOrService", label: "Product or service category", type: "short-text", required: true },
+      { id: "location", key: "location", label: "Business location", type: "location", required: true },
+      { id: "experience-years", key: "experienceYears", label: "Years of experience", type: "number", required: true },
+    ],
+    optionalFields: [
+      { id: "delivery-coverage", key: "deliveryCoverage", label: "Delivery coverage areas", type: "long-text", required: false },
+      { id: "price-range", key: "priceRange", label: "Typical price range", type: "currency", required: false },
+      { id: "certifications", key: "certifications", label: "Relevant certifications", type: "long-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "vendor-license", required: true },
+      { documentTypeId: "product-catalog", required: false },
+      { documentTypeId: "business-registration", required: true },
+    ],
+    adminChecklist: [
+      { id: "verify-license", label: "Verify vendor license and business registration", category: "verification" },
+      { id: "review-catalog", label: "Review product catalog or service description", category: "review" },
+      { id: "vet-vendor", label: "Complete vendor vetting checks", category: "compliance" },
+      { id: "match-or-publish", label: "Match buyer request or publish vendor listing", category: "assignment" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "normal",
+  },
+  "distress-sales": {
+    serviceId: "distress-sales",
+    outputTitle: "Distress Sale Request",
+    summaryTemplate:
+      "Your Distress Sale request has been documented. NairaLeap will verify the urgency, pricing and ownership details, then publish the listing to matched buyers.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "asset-type", key: "assetType", label: "Asset type", type: "single-choice", required: true },
+      { id: "asset-description", key: "assetDescription", label: "Asset description", type: "long-text", required: true },
+      { id: "asset-location", key: "assetLocation", label: "Asset location", type: "location", required: true },
+      { id: "asking-price", key: "askingPrice", label: "Asking price", type: "currency", required: true },
+      { id: "urgency-reason", key: "urgencyReason", label: "Reason for urgency", type: "long-text", required: true },
+      { id: "timeline", key: "timeline", label: "Required closing timeline", type: "short-text", required: true },
+    ],
+    optionalFields: [
+      { id: "original-price", key: "originalPrice", label: "Original or market price", type: "currency", required: false },
+      { id: "negotiable", key: "negotiable", label: "Price negotiable?", type: "yes-no", required: false },
+      { id: "inspection-availability", key: "inspectionAvailability", label: "Inspection availability", type: "short-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "ownership-proof", required: true },
+      { documentTypeId: "asset-photos", required: true },
+      { documentTypeId: "valuation-report", required: false },
+    ],
+    adminChecklist: [
+      { id: "verify-ownership", label: "Verify ownership proof and identity", category: "verification" },
+      { id: "assess-urgency", label: "Assess urgency and pricing rationale", category: "review" },
+      { id: "review-valuation", label: "Review valuation report if provided", category: "compliance" },
+      { id: "publish-listing", label: "Publish to matched buyers with urgency flag", category: "assignment" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "urgent",
+  },
+  "recycling-scrap": {
+    serviceId: "recycling-scrap",
+    outputTitle: "Recycling & Scrap Request",
+    summaryTemplate:
+      "Your Recycling & Scrap request has been prepared. NairaLeap will connect you with verified recyclers or buyers and arrange pickup or inspection details.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "material-type", key: "materialType", label: "Material type", type: "single-choice", required: true },
+      { id: "material-description", key: "materialDescription", label: "Material description", type: "long-text", required: true },
+      { id: "quantity", key: "quantity", label: "Estimated quantity", type: "short-text", required: true },
+      { id: "material-location", key: "materialLocation", label: "Material location", type: "location", required: true },
+      { id: "transaction-role", key: "transactionRole", label: "I want to", type: "single-choice", required: true },
+    ],
+    optionalFields: [
+      { id: "price-expectation", key: "priceExpectation", label: "Price expectation", type: "currency", required: false },
+      { id: "pickup-timeline", key: "pickupTimeline", label: "Preferred pickup or inspection timeline", type: "short-text", required: false },
+      { id: "condition", key: "condition", label: "Material condition", type: "short-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "ownership-proof", required: false },
+      { documentTypeId: "asset-photos", required: false },
+    ],
+    adminChecklist: [
+      { id: "verify-identity", label: "Verify seller or buyer identity", category: "verification" },
+      { id: "assess-material", label: "Assess material type and quantity", category: "review" },
+      { id: "match-recycler", label: "Match with verified recycler or buyer", category: "assignment" },
+      { id: "arrange-logistics", label: "Arrange pickup or inspection logistics", category: "communication" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "normal",
+  },
+  "business-briefs": {
+    serviceId: "business-briefs",
+    outputTitle: "Business Briefs Preference",
+    summaryTemplate:
+      "Your Business Briefs preference has been saved. You will start receiving the selected briefs, and any custom sector report requests will be prepared by the research team.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "brief-type", key: "briefType", label: "Brief type", type: "single-choice", required: true },
+      { id: "sectors", key: "sectors", label: "Sectors of interest", type: "multiple-choice", required: true },
+      { id: "frequency", key: "frequency", label: "Preferred frequency", type: "single-choice", required: true },
+    ],
+    optionalFields: [
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: false },
+      { id: "custom-report", key: "customReport", label: "Request a custom sector report", type: "long-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [],
+    adminChecklist: [
+      { id: "confirm-subscription", label: "Confirm subscription preferences and email", category: "verification" },
+      { id: "prepare-briefs", label: "Schedule brief delivery based on frequency", category: "assignment" },
+      { id: "handle-custom-report", label: "Route custom report requests to research team", category: "assignment" },
+    ],
+    nextWorkflow: "auto-submit",
+    priority: "low",
+  },
+  "professional-services": {
+    serviceId: "professional-services",
+    outputTitle: "Professional Services Request",
+    summaryTemplate:
+      "Your Professional Services request has been prepared. NairaLeap will match you with a verified specialist and confirm availability within 1 business day.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "service-category", key: "serviceCategory", label: "Service category", type: "single-choice", required: true },
+      { id: "service-need", key: "serviceNeed", label: "Describe your need", type: "long-text", required: true },
+      { id: "urgency", key: "urgency", label: "How urgent is this?", type: "single-choice", required: true },
+      { id: "location", key: "location", label: "Your location", type: "location", required: true },
+      { id: "budget-range", key: "budgetRange", label: "Budget range", type: "currency", required: false },
+    ],
+    optionalFields: [
+      { id: "preferred-date", key: "preferredDate", label: "Preferred start date", type: "date", required: false },
+      { id: "professional-preferences", key: "professionalPreferences", label: "Professional preferences", type: "long-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [
+      { documentTypeId: "government-id", required: true },
+      { documentTypeId: "professional-license", required: false },
+      { documentTypeId: "certification", required: false },
+      { documentTypeId: "cv-resume", required: false },
+    ],
+    adminChecklist: [
+      { id: "verify-identity", label: "Verify requester identity", category: "verification" },
+      { id: "review-need", label: "Review service need and urgency", category: "review" },
+      { id: "match-specialist", label: "Match with verified specialist", category: "assignment" },
+      { id: "confirm-availability", label: "Confirm specialist availability and introduction", category: "communication" },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "high",
+  },
+  "customer-support": {
+    serviceId: "customer-support",
+    outputTitle: "Customer Support Request",
+    summaryTemplate:
+      "Your support request has been logged. A NairaLeap support agent will review it and reach out to you directly with the next steps.",
+    requiredFields: [
+      { id: "contact-name", key: "contactName", label: "Full name", type: "short-text", required: true },
+      { id: "contact-phone", key: "contactPhone", label: "Phone number", type: "phone", required: true },
+      { id: "contact-email", key: "contactEmail", label: "Email address", type: "email", required: true },
+      { id: "issue-type", key: "issueType", label: "Issue type", type: "single-choice", required: true },
+      { id: "issue-description", key: "issueDescription", label: "Describe your issue", type: "long-text", required: true },
+      { id: "related-request", key: "relatedRequest", label: "Related request reference", type: "short-text", required: false },
+    ],
+    optionalFields: [
+      { id: "preferred-contact", key: "preferredContact", label: "Preferred contact method", type: "single-choice", required: false },
+      { id: "best-time", key: "bestTime", label: "Best time to reach you", type: "short-text", required: false },
+      { id: "additional-notes", key: "additionalNotes", label: "Additional notes", type: "long-text", required: false },
+    ],
+    requiredDocuments: [],
+    adminChecklist: [
+      { id: "acknowledge", label: "Acknowledge receipt and set response expectation", category: "communication" },
+      { id: "categorise", label: "Categorise issue and assign to appropriate agent", category: "assignment" },
+      { id: "review-history", label: "Review related request history if provided", category: "review" },
+      { id: "resolve", label: "Resolve or escalate and follow up with customer", category: "communication" },
+    ],
+    nextWorkflow: "support-queue",
+    priority: "normal",
+  },
+};
+
+/** Ordered catalog of all request blueprints. */
+export const REQUEST_BLUEPRINT_CATALOG: RequestBlueprintCatalog = Object.values(
+  REQUEST_BLUEPRINT_MAP
+);
