@@ -1,8 +1,16 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, LockKeyhole, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  LockKeyhole,
+  Mail,
+  ShieldCheck,
+  Sparkles,
+  UserRound,
+} from "lucide-react";
 
-import { AppLayout, BrandButton, Container, GlassCard } from "@/components";
+import { AppLayout, BrandButton, Container } from "@/components";
 import { useAuth } from "@/features/auth";
 
 export const Route = createFileRoute("/auth")({
@@ -31,6 +39,12 @@ function AuthPage() {
   useEffect(() => {
     if (!loading && user) void navigate({ to: "/dashboard", replace: true });
   }, [loading, navigate, user]);
+
+  function switchMode(nextMode: "sign-in" | "sign-up") {
+    setMode(nextMode);
+    setError(null);
+    setConfirmationSent(false);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -68,141 +82,233 @@ function AuthPage() {
 
   return (
     <AppLayout>
-      <Container className="py-12 sm:py-20">
-        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
-          <div>
-            <span className="glass-panel inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
-              <Sparkles className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
-              Your NairaLeap workspace
-            </span>
-            <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">
-              Keep your service requests moving.
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Create an account to complete guided intake, save your request securely, and follow up
-              with the NairaLeap team.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-primary" aria-hidden="true" />
-                Your requests in one place
+      <section
+        className="relative isolate overflow-hidden pt-8 sm:pt-14"
+        aria-labelledby="auth-title"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[8%] top-8 -z-10 h-56 w-56 rounded-full bg-primary/25 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-8 right-[8%] -z-10 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl"
+        />
+        <Container className="pb-14 sm:pb-20">
+          <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:gap-16">
+            <div className="hidden lg:block">
+              <span className="glass-panel inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
+                <Sparkles className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
+                Your NairaLeap workspace
               </span>
-              <span className="inline-flex items-center gap-2">
-                <LockKeyhole className="h-4 w-4 text-primary" aria-hidden="true" />
-                Protected by your account
-              </span>
+              <h1 id="auth-title" className="mt-6 max-w-xl text-5xl font-semibold tracking-tight">
+                Keep your service requests moving.
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+                Sign in once to save your intake, review the final rundown, and follow every request
+                from discovery to resolution.
+              </p>
+              <div className="mt-8 grid gap-3 text-sm text-muted-foreground">
+                <TrustPoint icon={CheckCircle2} text="Your requests in one place" />
+                <TrustPoint icon={LockKeyhole} text="Protected by your account" />
+                <TrustPoint icon={ShieldCheck} text="Clear review before submission" />
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[32rem]">
+              <div
+                aria-hidden="true"
+                className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-fuchsia-500/20 blur-2xl"
+              />
+              <div className="glass-panel relative overflow-hidden border-white/15 bg-background/70 p-1 shadow-[var(--shadow-elevated)] backdrop-blur-3xl">
+                <div className="rounded-[calc(var(--radius-2xl)-0.25rem)] border border-white/5 bg-black/15 p-5 sm:p-7">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-glow">
+                        <span className="grid h-8 w-8 place-items-center rounded-xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]">
+                          <span className="text-sm font-semibold">N</span>
+                        </span>
+                        NairaLeap account
+                      </div>
+                      <h2 className="mt-5 text-2xl font-semibold tracking-tight sm:text-3xl">
+                        {mode === "sign-in" ? "Welcome back" : "Create your account"}
+                      </h2>
+                      <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                        {mode === "sign-in"
+                          ? "Continue your request without losing your place."
+                          : "Start with an email you can access for confirmation and follow-up."}
+                      </p>
+                    </div>
+                    <Link
+                      to="/"
+                      aria-label="Return to NairaLeap portal"
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-glass-border bg-glass text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <span aria-hidden="true" className="text-lg leading-none">
+                        ×
+                      </span>
+                    </Link>
+                  </div>
+
+                  <div className="mt-7 grid grid-cols-2 gap-1 rounded-2xl border border-glass-border bg-glass p-1.5">
+                    <AuthModeButton
+                      active={mode === "sign-in"}
+                      icon={LockKeyhole}
+                      onClick={() => switchMode("sign-in")}
+                    >
+                      Sign in
+                    </AuthModeButton>
+                    <AuthModeButton
+                      active={mode === "sign-up"}
+                      icon={UserRound}
+                      onClick={() => switchMode("sign-up")}
+                    >
+                      Create account
+                    </AuthModeButton>
+                  </div>
+
+                  {!configured ? (
+                    <div
+                      role="status"
+                      className="mt-5 rounded-2xl border border-amber-300/25 bg-amber-300/10 p-4 text-sm text-amber-100"
+                    >
+                      <p className="font-medium">Authentication is being connected</p>
+                      <p className="mt-1 text-amber-100/75">
+                        The portal is ready, but this deployment needs the Supabase URL and
+                        publishable key before the form can be used.
+                      </p>
+                    </div>
+                  ) : null}
+
+                  {confirmationSent ? (
+                    <div
+                      role="status"
+                      className="mt-5 rounded-2xl border border-primary/30 bg-primary/10 p-4 text-sm text-foreground"
+                    >
+                      <p className="font-medium">Check your inbox to confirm your account.</p>
+                      <p className="mt-1 text-muted-foreground">
+                        After confirming, return here and sign in to open your workspace.
+                      </p>
+                    </div>
+                  ) : null}
+
+                  {error ? (
+                    <div
+                      role="alert"
+                      className="mt-5 rounded-2xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground"
+                    >
+                      {error}
+                    </div>
+                  ) : null}
+
+                  <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+                    <label
+                      htmlFor="auth-email"
+                      className="block text-sm font-medium text-foreground"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-primary-glow" aria-hidden="true" />
+                        Email address
+                      </span>
+                      <input
+                        id="auth-email"
+                        type="email"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        autoComplete="email"
+                        className="mt-2 h-12 w-full rounded-2xl border border-glass-border bg-white/[0.06] px-4 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
+                        placeholder="you@example.com"
+                        required
+                      />
+                    </label>
+                    <label
+                      htmlFor="auth-password"
+                      className="block text-sm font-medium text-foreground"
+                    >
+                      <span className="flex items-center gap-2">
+                        <LockKeyhole className="h-4 w-4 text-primary-glow" aria-hidden="true" />
+                        Password
+                      </span>
+                      <input
+                        id="auth-password"
+                        type="password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
+                        className="mt-2 h-12 w-full rounded-2xl border border-glass-border bg-white/[0.06] px-4 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
+                        placeholder="At least 8 characters"
+                        minLength={8}
+                        required
+                      />
+                    </label>
+                    <BrandButton
+                      type="submit"
+                      className="min-h-12 w-full text-base"
+                      disabled={busy || !configured}
+                    >
+                      {busy
+                        ? "Working…"
+                        : mode === "sign-in"
+                          ? "Open my workspace"
+                          : "Create my account"}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </BrandButton>
+                  </form>
+
+                  <div className="mt-6 flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="h-px flex-1 bg-border/70" />
+                    <span>Secure customer access</span>
+                    <span className="h-px flex-1 bg-border/70" />
+                  </div>
+                  <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
+                    Your account is used to save requests and show your private request history. You
+                    can keep browsing as a guest at any time.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-
-          <GlassCard className="p-6 sm:p-8">
-            <div className="flex gap-2 rounded-xl border border-glass-border bg-glass p-1">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode("sign-in");
-                  setError(null);
-                  setConfirmationSent(false);
-                }}
-                className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  mode === "sign-in"
-                    ? "bg-surface-elevated text-foreground"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Sign in
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setMode("sign-up");
-                  setError(null);
-                  setConfirmationSent(false);
-                }}
-                className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  mode === "sign-up"
-                    ? "bg-surface-elevated text-foreground"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Create account
-              </button>
-            </div>
-
-            <div className="mt-6">
-              <h2 className="text-xl font-semibold tracking-tight">
-                {mode === "sign-in" ? "Welcome back" : "Start your NairaLeap account"}
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {mode === "sign-in"
-                  ? "Sign in to continue your request."
-                  : "Use an email you can access for confirmation and follow-up."}
-              </p>
-            </div>
-
-            {!configured ? (
-              <div className="mt-6 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100">
-                Authentication is not configured in this environment yet. Add the Supabase URL and
-                publishable key to the runtime environment before using this form.
-              </div>
-            ) : null}
-
-            {confirmationSent ? (
-              <div className="mt-6 rounded-xl border border-primary/30 bg-primary/10 p-4 text-sm text-foreground">
-                Check your email for a confirmation link. After confirming, return here to sign in.
-              </div>
-            ) : null}
-
-            {error ? (
-              <div
-                role="alert"
-                className="mt-6 rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground"
-              >
-                {error}
-              </div>
-            ) : null}
-
-            <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-              <label className="block text-sm font-medium text-foreground">
-                Email address
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  autoComplete="email"
-                  className="mt-2 h-11 w-full rounded-xl border border-glass-border bg-glass px-3 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
-                  placeholder="you@example.com"
-                  required
-                />
-              </label>
-              <label className="block text-sm font-medium text-foreground">
-                Password
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
-                  className="mt-2 h-11 w-full rounded-xl border border-glass-border bg-glass px-3 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
-                  placeholder="At least 8 characters"
-                  minLength={8}
-                  required
-                />
-              </label>
-              <BrandButton type="submit" className="min-h-11 w-full" disabled={busy || !configured}>
-                {busy ? "Working…" : mode === "sign-in" ? "Sign in" : "Create account"}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </BrandButton>
-            </form>
-
-            <p className="mt-5 text-center text-xs text-muted-foreground">
-              Prefer to keep exploring?{" "}
-              <Link to="/" className="text-primary hover:underline">
-                Return to the portal
-              </Link>
-              .
-            </p>
-          </GlassCard>
-        </div>
-      </Container>
+        </Container>
+      </section>
     </AppLayout>
+  );
+}
+
+function TrustPoint({ icon: Icon, text }: { icon: typeof CheckCircle2; text: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="grid h-9 w-9 place-items-center rounded-xl border border-glass-border bg-glass text-primary-glow">
+        <Icon className="h-4 w-4" aria-hidden="true" />
+      </span>
+      <span>{text}</span>
+    </div>
+  );
+}
+
+function AuthModeButton({
+  active,
+  children,
+  icon: Icon,
+  onClick,
+}: {
+  active: boolean;
+  children: string;
+  icon: typeof LockKeyhole;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={`flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+        active
+          ? "bg-surface-elevated text-foreground shadow-[0_8px_20px_-12px_oklch(0_0_0/80%)]"
+          : "text-muted-foreground hover:bg-surface-elevated/70 hover:text-foreground"
+      }`}
+    >
+      <Icon className="h-4 w-4" aria-hidden="true" />
+      {children}
+    </button>
   );
 }

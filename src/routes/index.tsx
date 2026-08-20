@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Compass, ClipboardList, FileCheck2, Send, Sparkles } from "lucide-react";
+import { ArrowRight, Compass, ClipboardList, FileCheck2, Send, Sparkles } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 import {
   AppLayout,
@@ -79,6 +79,13 @@ function LandingPage() {
               >
                 Browse Services
               </BrandButton>
+              <Link
+                to="/auth"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-glass hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Access my workspace
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
             </div>
           </div>
         </Container>
