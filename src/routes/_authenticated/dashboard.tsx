@@ -90,14 +90,27 @@ function DashboardPage() {
             </Link>
           </GlassCard>
 
-          <GlassCard className="p-6">
-            <p className="text-xs uppercase tracking-widest text-primary-glow">Signed in as</p>
-            <p className="mt-3 break-all text-sm font-medium text-foreground">{user?.email ?? "Account"}</p>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Your submitted requests will be linked to this account and protected by database
-              access policies.
-            </p>
-          </GlassCard>
+          <div className="space-y-5">
+            <GlassCard className="p-6">
+              <p className="text-xs uppercase tracking-widest text-primary-glow">Signed in as</p>
+              <p className="mt-3 break-all text-sm font-medium text-foreground">{user?.email ?? "Account"}</p>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Your submitted requests will be linked to this account and protected by database
+                access policies.
+              </p>
+            </GlassCard>
+            <GlassCard className="p-6">
+              <p className="text-xs uppercase tracking-widest text-primary-glow">Continuity</p>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight">Track submitted requests</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                See your request references and current operational status in one place.
+              </p>
+              <Link to="/requests" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+                Open My Requests
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </GlassCard>
+          </div>
         </section>
       </Container>
     </main>

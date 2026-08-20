@@ -38,9 +38,11 @@ export const submitAgricultureRequest = createServerFn({ method: "POST" })
       .insert({
         user_id: authData.user.id,
         service_id: "agriculture",
+        schema_version: "agriculture.v1",
         status: "submitted",
         submitted_payload: data.payload,
         idempotency_key: data.idempotencyKey,
+        source: "portal",
       })
       .select("id, status, created_at")
       .single();

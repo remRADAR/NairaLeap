@@ -6,12 +6,11 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type ServiceRequestStatus =
-  | "draft"
-  | "submitted"
-  | "in_review"
-  | "resolved"
-  | "rejected";
+import type {
+  ServiceRequestSource,
+  ServiceRequestStatus,
+} from "@/features/service-requests";
+
 
 export interface AgricultureRequestPayload {
   contactName: string;
@@ -37,9 +36,11 @@ export interface Database {
           id: string;
           user_id: string;
           service_id: string;
+          schema_version: string;
           status: ServiceRequestStatus;
           submitted_payload: Json;
           idempotency_key: string;
+          source: ServiceRequestSource;
           created_at: string;
           updated_at: string;
         };
@@ -47,9 +48,11 @@ export interface Database {
           id?: string;
           user_id: string;
           service_id: string;
+          schema_version: string;
           status?: ServiceRequestStatus;
           submitted_payload: Json;
           idempotency_key: string;
+          source?: ServiceRequestSource;
           created_at?: string;
           updated_at?: string;
         };

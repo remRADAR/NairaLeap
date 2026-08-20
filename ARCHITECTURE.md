@@ -1,406 +1,251 @@
-# NairaLeap Service Portal — Architecture Blueprint
+# NairaLeap Service Portal — Platform Architecture
 
-> **Stack note:** TanStack Start (React 19) + TypeScript + Tailwind v4 + Vite,
-> deployed on Cloudflare Workers. Backend capabilities (DB, auth, storage,
-> server functions) are provided by **Lovable Cloud** (Supabase under the hood).
-> The original Laravel-flavoured brief maps 1:1 onto this stack — the
-> architectural principles (feature-based, thin routes, modular views,
-> utility-first CSS, minimal JS) are preserved.
+**Status:** Architecture finalized for the first durable product path
+**Repository:** [remRADAR/NairaLeap](https://github.com/remRADAR/NairaLeap)
+**Current implementation checkpoint:** `ca96cf8` — authentication and Agriculture intake
+**Primary runtime:** TanStack Start + React + TypeScript + Vite + Tailwind CSS v4 on Cloudflare-compatible deployment
+**Backend boundary:** Supabase Auth, Postgres, Storage, and server functions through the project’s Lovable/Supabase environment
 
-This document is the **single source of truth** for how the platform is
-organised. Every future phase extends this blueprint; nothing here is
-implemented as a business feature yet.
+## 1. Product outcome
 
----
+NairaLeap is a customer-facing service portal that turns an uncertain visitor need into a qualified, routed, trackable request. The platform is not a directory of disconnected forms. Its core product promise is a guided path:
 
-## 1. Application Modules
+> **Discover the right service → understand what is needed → answer a focused intake → review the resulting blueprint → submit once → track progress until resolution.**
 
-The platform is organised into **feature modules** under `src/features/`.
-Each module is self-contained (`components/`, `hooks/`, `lib/`, `types.ts`,
-`schemas.ts`, `server/`) and depends only on shared primitives in
-`src/components/`, `src/lib/`, `src/hooks/`.
+The platform must work for customers who know exactly what they want and for visitors who only know the outcome they need. It must preserve trust at every boundary: clear explanations before data collection, explicit authentication before durable submission, visible review before commitment, least-privilege persistence, and a human-operable route after submission.
 
-| # | Module | Purpose | Responsibilities | Folder | Depends on | Public interface |
-|---|---|---|---|---|---|---|
-| 1 | **auth** | Identity & sessions | Sign-up, sign-in, password reset, session hydration, role loading | `src/features/auth/` | cloud, shared/ui | `useAuth()`, `<AuthGate />`, `requireAuth` server middleware |
-| 2 | **user-profiles** | Profile data separate from `auth.users` | Display name, phone, avatar, KYC pointers | `src/features/user-profiles/` | auth, cloud | `useProfile()`, `updateProfile()` server fn |
-| 3 | **rbac** | Roles & permissions | `user_roles` table, `has_role()` security-definer, permission helpers | `src/features/rbac/` | auth, cloud | `hasRole()`, `hasPermission()`, `<RoleGate />` |
-| 4 | **service-catalog** | Registry of NairaLeap services | Categories, services, eligibility rules, pricing metadata | `src/features/service-catalog/` | cloud | `listServices()`, `getService(slug)` |
-| 5 | **service-discovery** | Guide visitors to the right service | Search, filters, recommendation surface | `src/features/service-discovery/` | service-catalog | `<Discovery />`, `useDiscovery()` |
-| 6 | **onboarding** | Guided intake flow | Multi-step wizard, per-service schemas, draft persistence | `src/features/onboarding/` | service-catalog, auth | `<OnboardingFlow serviceId />`, `submitIntake()` |
-| 7 | **service-requests** | Structured request lifecycle | Create, track, message, status transitions, attachments | `src/features/service-requests/` | onboarding, auth, storage | `createRequest()`, `useRequest(id)`, `useMyRequests()` |
-| 8 | **admin-submissions** | Admin queue & triage | Assignment, status changes, internal notes, audit log | `src/features/admin-submissions/` | service-requests, rbac | `<AdminQueue />`, admin-only server fns |
-| 9 | **notifications** | In-app + email fan-out | Event bus, templates, delivery adapters | `src/features/notifications/` | auth | `notify(event, payload)`, `<NotificationBell />` |
-| 10 | **documents** | File uploads & signed URLs | Storage buckets, virus/type checks, retention | `src/features/documents/` | storage, auth | `uploadDocument()`, `getSignedUrl()` |
-| 11 | **payments** | Payment intents & receipts | Provider adapter, webhook handling, ledger entries | `src/features/payments/` | service-requests, auth | `createPaymentIntent()`, webhook route |
-| 12 | **ai-assist** | AI helpers (recommendations, summarisation) | Lovable AI Gateway calls, prompt templates, guardrails | `src/features/ai-assist/` | service-catalog, service-requests | `recommendService()`, `summarizeRequest()` |
-| 13 | **insurance** | Insurance vertical | Product schemas, quotes, policy records | `src/features/insurance/` | service-requests, documents | `quoteInsurance()`, `<InsuranceIntake />` |
-| 14 | **mortgage** | Mortgage vertical | Product schemas, eligibility, application tracking | `src/features/mortgage/` | service-requests, documents | `<MortgageIntake />`, `estimateMortgage()` |
-| 15 | **analytics** | Product & business metrics | Event capture, funnel tracking, dashboards data | `src/features/analytics/` | auth | `track(event)`, admin queries |
-| 16 | **audit-log** | Immutable action log | Actor, action, entity, diff, timestamp | `src/features/audit-log/` | rbac | `recordAudit()`, admin viewer |
-| 17 | **integrations** | Third-party connectors | Main NairaLeap site handshake, CRM, email provider | `src/features/integrations/` | notifications, payments | Adapter interfaces |
-| 18 | **admin-console** | Admin surface composition | Dashboards, user management, module settings | `src/features/admin-console/` | rbac, admin-submissions, analytics | Route composition |
+## 2. Evidence and certainty
 
-**Shared (not features):** `src/components/ui/*`, `src/components/layout/*`,
-`src/lib/*`, `src/hooks/*`, `src/styles.css`.
+| Classification | Current finding |
+| --- | --- |
+| **Known** | The repository contains a responsive branded portal, 10-service catalog data, a reusable service preview and guided-request shell, a configuration-driven question engine, Supabase client utilities, an auth route, a server-protected dashboard, an Agriculture intake route, a shared Agriculture schema, a submission server function, and an RLS migration. |
+| **Known** | TypeScript and production build checks passed at commit `ca96cf8`; unauthenticated navigation to `/dashboard` redirected to `/auth` in local runtime verification. |
+| **Known** | The public product still has placeholder Insurance and Mortgage routes, no customer request list/detail route, and no admin queue. |
+| **Inferred** | Agriculture is the correct pilot vertical because it is the first real persisted workflow and already has a defined blueprint, service intelligence metadata, and question contract. |
+| **Unverified** | Live Supabase sign-up, email confirmation, migration execution, RLS behavior against a real project, and request insertion remain unverified until runtime credentials and the migration are configured. |
+| **Unverified** | Cloudflare deployment, production domain, notification provider, payment provider, CRM integration, and admin operating procedures are not configured in this repository checkpoint. |
 
----
+Any new external capability must remain disabled or feature-flagged until its official support, account prerequisites, permissions, and actual integration response are verified.
 
-## 2. User Types
+## 3. Operating model
 
-Roles live in a dedicated `user_roles` table (never on `profiles`). Access
-checks use a `has_role()` SECURITY DEFINER function to avoid RLS recursion.
+### Customer lifecycle
 
-| Role | Responsibilities | Permissions | Accessible modules | Security notes |
-|---|---|---|---|---|
-| **guest** | Browse portal, discover services | Read public catalog only | service-catalog (public), service-discovery | No PII; anon RLS SELECT only on public tables |
-| **customer** | Submit and track own requests | CRUD own requests, own profile, own documents | onboarding, service-requests (own), documents (own), notifications, payments (own) | RLS scoped to `auth.uid()` |
-| **agent** | Handle assigned requests | Read/update assigned requests, message customers | admin-submissions (assigned), notifications, documents (scoped) | Cannot reassign or delete; audit-logged |
-| **reviewer** | QA / compliance review | Read all requests, add review notes, flag issues | admin-submissions (read), audit-log (read) | No writes to customer data |
-| **admin** | Operate the portal | Full CRUD on requests, assign agents, manage catalog | all admin modules except role management | Elevated actions audit-logged |
-| **super_admin** | Platform governance | Manage roles, integrations, secrets, feature flags | everything incl. rbac module | Role changes require re-auth + audit; small population |
-| **service_account** | Server-to-server (webhooks, cron) | Scoped by signed tokens/HMAC | integrations, payments (webhook), admin-submissions (system) | Never a human; keys in secret store |
+1. **Guest discovery.** A visitor sees the service catalog, can open a service preview, and may use NairaLeap Guide to clarify intent without creating an account.
+2. **Authentication.** The visitor signs in or creates an account before entering a durable customer workspace or submitting a request.
+3. **Guided intake.** The customer answers service-specific questions from a versioned contract. Drafts may be resumed once draft persistence is added.
+4. **Review.** The customer sees the normalized request blueprint, optional fields, required documents, expected handling, and consent language before submission.
+5. **Submission.** A server function validates the payload, confirms the authenticated user, enforces idempotency, and creates a `service_requests` record protected by RLS.
+6. **Tracking.** The customer sees request status, timeline events, messages, documents, and any required next action.
+7. **Resolution.** An authorized agent or admin advances the request, with customer-facing notifications and an immutable audit trail.
 
-Privilege escalation controls: role assignment goes through a
-super-admin-only server function; all role mutations write to `audit_log`;
-JWT never carries role — always re-checked server-side via `has_role()`.
+### Roles
 
----
+| Role | Default access | Control boundary |
+| --- | --- | --- |
+| Guest | Public discovery and service metadata | No customer PII or request records |
+| Customer | Own profile, own requests, own documents, own notifications | Every customer-owned row is scoped to `auth.uid()` |
+| Agent | Assigned requests and scoped communication | Cannot reassign or perform governance actions |
+| Reviewer | Read and review access | No mutation of customer-owned facts |
+| Admin | Operational request handling and catalog management | Elevated actions are logged and role-checked server-side |
+| Super admin | Governance, roles, integrations, feature flags | Role changes require explicit confirmation and audit |
+| Service account | Narrow server-to-server operations | Signed requests, secret storage, no human session |
 
-## 3. Navigation Architecture
+Roles must not be stored as editable profile attributes or trusted solely from client state. Any privileged action must be checked server-side against a dedicated role source.
 
-### Primary (public, top nav — glass header)
-`Home` · `Services` · `How it works` · `Insurance` · `Mortgage` · `Help` · `Sign in`
-
-### Secondary (contextual, per section)
-- Inside **Services**: category tabs (Banking, Insurance, Mortgage, Advisory…)
-- Inside a **Service detail**: Overview / Requirements / Start request
-- Inside **Request detail**: Timeline / Messages / Documents / Payments
-
-### Mobile navigation
-- Collapsed glass header with menu button → full-screen sheet
-- Bottom tab bar for authenticated users: `Home` · `Requests` · `Discover` · `Notifications` · `Profile`
-
-### Authenticated (customer) navigation
-Sidebar (desktop) / bottom tabs (mobile):
-`Dashboard` · `My requests` · `Discover services` · `Documents` · `Notifications` · `Profile & security`
-
-### Admin console navigation
-Left rail (desktop only):
-`Overview` · `Queue` · `Requests` · `Customers` · `Services catalog` · `Agents & roles` · `Integrations` · `Audit log` · `Settings`
-
-### User flow (high-level)
-```text
-Guest ──► Discover ──► Service detail ──► Sign in / sign up ──► Onboarding wizard
-                                                                     │
-                                                                     ▼
-                                                              Request created
-                                                                     │
-                       ┌─────────────────────────────────────────────┼──────────────┐
-                       ▼                                             ▼              ▼
-                Customer tracks                              Admin triage      Notifications
-                 request & docs                              & assignment       (email + in-app)
-                                                                     │
-                                                                     ▼
-                                                              Agent works it
-                                                                     │
-                                                                     ▼
-                                                              Resolution + audit
-```
-
----
-
-## 4. Route Architecture
-
-File-based routing under `src/routes/`. Pathless layouts (`_authenticated`,
-`_admin`) gate subtrees.
+## 4. Logical architecture
 
 ```text
-src/routes/
-  __root.tsx                          shell, providers, head metadata
-  index.tsx                           / (public landing)
-  services.tsx                        /services (layout, <Outlet />)
-  services.index.tsx                  /services (catalog list)
-  services.$slug.tsx                  /services/:slug
-  insurance.tsx                       /insurance
-  mortgage.tsx                        /mortgage
-  how-it-works.tsx                    /how-it-works
-  help.tsx                            /help
-  legal.terms.tsx                     /legal/terms
-  legal.privacy.tsx                   /legal/privacy
-
-  auth.tsx                            /auth (sign-in + sign-up tabs)
-  reset-password.tsx                  /reset-password (public, recovery)
-
-  _authenticated.tsx                  gate: redirect to /auth if signed out
-  _authenticated/dashboard.tsx        /dashboard
-  _authenticated/requests.tsx         /requests (layout)
-  _authenticated/requests.index.tsx   /requests
-  _authenticated/requests.$id.tsx     /requests/:id
-  _authenticated/onboarding.$service.tsx  /onboarding/:service
-  _authenticated/documents.tsx        /documents
-  _authenticated/notifications.tsx    /notifications
-  _authenticated/profile.tsx          /profile
-
-  _authenticated/_admin.tsx           gate: requires admin role
-  _authenticated/_admin/overview.tsx  /overview
-  _authenticated/_admin/queue.tsx     /queue
-  _authenticated/_admin/requests.tsx  /admin-requests (or nested)
-  _authenticated/_admin/catalog.tsx   /catalog
-  _authenticated/_admin/agents.tsx    /agents
-  _authenticated/_admin/audit.tsx     /audit
-  _authenticated/_admin/settings.tsx  /settings
-
-  api/public/webhooks.$provider.ts    external webhooks (HMAC verified)
-  api/public/health.ts                health check
+Public browser
+  ├── Landing page / service discovery / service preview
+  └── Auth route ───────────────┐
+                                ▼
+                     Supabase Auth session
+                                │ cookie-backed SSR session
+                                ▼
+Customer browser ──► TanStack route gate ──► Feature route
+                                │                  │
+                                │                  ▼
+                                │            Feature server function
+                                │                  │ Zod + auth + idempotency
+                                ▼                  ▼
+                         TanStack Query ◄── Supabase user-scoped client
+                                                   │
+                                                   ▼
+                         Postgres + RLS + Storage + durable request records
+                                                   │
+                                                   ▼
+                         Customer tracking ──► Admin queue ──► Notifications
+                                                   │                  │
+                                                   └──── Audit log ◄────┘
 ```
 
-**Rules:** each shareable public route sets its own `head()` (title,
-description, og:title, og:description). Only leaf routes may set `og:image`.
-`/api/public/*` bypasses auth — verify signatures inside the handler.
+### Layer responsibilities
 
----
+| Layer | Responsibility | Must not do |
+| --- | --- | --- |
+| Route | Compose feature UI, metadata, loader boundaries, and redirects | Hold business rules or call provider APIs directly |
+| Feature UI | Render domain-specific states and collect user input | Decide authorization or ownership |
+| Feature hook | Manage local workflow state and server-cache interaction | Bypass server functions for protected writes |
+| Server function | Validate, authenticate, authorize, enforce idempotency, and call Supabase | Trust a client-supplied user ID or secret |
+| Supabase user-scoped client | Execute Postgres operations under the authenticated session | Use service-role credentials in browser code |
+| Postgres/RLS | Enforce data ownership and role policies as the final line | Rely only on UI hiding or route conventions |
+| Adapter/integration | Translate provider-specific formats and receipts | Leak provider-specific payloads into the core domain model |
 
-## 5. Data Architecture
+## 5. Repository structure
 
-Core entities (design only — no migrations yet):
-
-```text
-auth.users (managed)
-   │
-   ├── profiles (1:1)          display_name, phone, avatar_url, locale
-   │
-   ├── user_roles (1:N)        role ∈ {customer, agent, reviewer, admin, super_admin}
-   │
-   ├── service_requests (1:N)  status, service_id, submitted_payload, assigned_to
-   │       │
-   │       ├── request_events (1:N)   status_changed, message_posted, doc_uploaded
-   │       ├── request_messages (1:N) author_id, body, visibility (internal/external)
-   │       ├── request_documents (1:N)→ documents
-   │       └── payments (1:N)         provider_ref, amount, status
-   │
-   ├── documents (1:N)         storage_path, mime, size, owner_id
-   │
-   ├── notifications (1:N)     channel, template, payload, read_at
-   │
-   └── audit_log (1:N)         actor_id, action, entity, entity_id, diff, at
-
-service_categories (1:N) ── services (1:N) ── service_versions
-services (1:N) ── service_schemas (per version, JSON Schema for onboarding)
-
-integrations                    provider, config, secrets_ref
-feature_flags                   key, value, scope
-```
-
-**Ownership rules**
-- Every customer-owned row carries `user_id` and is protected by RLS
-  (`user_id = auth.uid()`).
-- Admin-only tables (`audit_log`, `feature_flags`, `integrations`) grant
-  SELECT to `authenticated` only through `has_role('admin')` policies.
-- `user_roles` is auth-only — no `anon` grant.
-
-**Future DB organisation**
-- Schema `public` for app data.
-- Views (`v_admin_queue`, `v_customer_dashboard`) for read models.
-- SECURITY DEFINER functions for cross-table checks (`has_role`,
-  `can_view_request`).
-- All new tables ship with GRANT + RLS + policies in the same migration.
-
----
-
-## 6. State Management
-
-| Layer | Tool | What lives here |
-|---|---|---|
-| **Server cache** | TanStack Query (already wired) | All server data: requests, catalog, profile, notifications. Loaders `ensureQueryData`, components `useSuspenseQuery`. |
-| **Router state** | TanStack Router context + search params | Auth context, filters, pagination, tab selection — anything shareable via URL. |
-| **Global client** | Small React context providers per concern | Theme (dark default), toast/notification queue, feature flags, current-user helpers derived from Query. No Redux. |
-| **Feature state** | Colocated hooks inside `src/features/<mod>/hooks/` | Wizard progress, form drafts (persisted to Cloud), unsent messages. |
-| **Local UI state** | `useState` / `useReducer` in the component | Menu open/close, hover, transient form field state. |
-| **Persistent client** | `localStorage` behind `useHydrated()` | Theme preference, dismissed banners, last-visited service. Never auth tokens (Cloud SDK manages those). |
-
-Rule of thumb: **server data → Query. URL-worthy state → router. Everything
-else → local.** Global context is the last resort.
-
----
-
-## 7. API Architecture
-
-### Layers
-```text
-UI component
-   │  (event handler / suspense query)
-   ▼
-Feature hook (src/features/<mod>/hooks)
-   │  calls server fn via useServerFn / queryFn
-   ▼
-Server function (src/features/<mod>/*.functions.ts)
-   │  zod input validation → middleware (requireSupabaseAuth) → handler
-   ▼
-Server helper (src/features/<mod>/*.server.ts)
-   │  Supabase client (user-scoped) OR supabaseAdmin (verified privileged only)
-   ▼
-Postgres (RLS enforced)
-```
-
-### Boundaries
-- **`createServerFn`** — app-internal RPC (typed, called by loaders/components).
-- **Server routes under `src/routes/api/public/*`** — external HTTP:
-  webhooks, cron, integrations, health. Auth bypassed by prefix; handler
-  MUST verify signatures.
-- **Never** call server fns via manual `fetch()` to their `.url`.
-
-### Error handling
-- `zod.parse` at the boundary → structured 400.
-- Auth failure → 401 via `requireSupabaseAuth`.
-- Domain errors → typed return `{ ok: false, code, message }`; UI maps to
-  toasts / inline messages.
-- Unexpected → thrown Error → route `errorComponent`. `redirect()` only from
-  loaders or `useServerFn` call sites.
-- All server errors logged with correlation id; never leak provider details.
-
-### Request flow (customer submits a service request)
-```text
-<OnboardingFlow> ──► submitRequest server fn
-   ├─ zod validate payload
-   ├─ requireSupabaseAuth (user token)
-   ├─ insert into service_requests (RLS enforced)
-   ├─ enqueue notifications.notify('request.created')
-   ├─ audit_log.recordAudit()
-   └─ return { id }
-UI ──► navigate({ to: '/requests/$id' })
-```
-
-### Future integrations
-Adapter pattern in `src/features/integrations/`: each provider (email,
-CRM, main NairaLeap site, payment provider, SMS) implements a small
-interface and is swapped via config. Webhooks land at
-`/api/public/webhooks/$provider` with HMAC verification.
-
----
-
-## 8. Security Architecture
-
-### Authentication
-- Lovable Cloud (Supabase Auth). Email/password + Google (default when
-  enabled). Password HIBP check on.
-- Session hydrated once in the root route; `onAuthStateChange` invalidates
-  the router.
-- Password reset uses a dedicated `/reset-password` page (checks
-  `type=recovery`, calls `updateUser({ password })`).
-
-### Authorization
-- **RLS everywhere.** Every public-schema table has RLS enabled and
-  explicit policies.
-- **RBAC** via `user_roles` + `has_role(uid, role)` SECURITY DEFINER.
-- **Route gates**: `_authenticated` layout enforces sign-in;
-  `_authenticated/_admin` enforces admin. Component-level checks only for
-  hiding controls, never as the sole gate.
-- **Server-fn gates**: `requireSupabaseAuth` middleware + explicit
-  `has_role` check for privileged actions; `supabaseAdmin` used only after
-  the check passes.
-
-### Session management
-- Tokens managed by Supabase SDK (httpOnly cookie for SSR, localStorage
-  for CSR). Never hand-rolled.
-- Sign-out: cancel queries → clear query cache → `signOut()` → `navigate`
-  with `replace: true`.
-
-### API security
-- All state-changing server fns validate with Zod.
-- Public webhook routes verify HMAC with `timingSafeEqual`.
-- Rate limiting per IP + per user on sensitive endpoints (auth, uploads,
-  payments) via a shared middleware.
-- CSRF: SameSite cookies + non-GET server fns require the SDK's bearer
-  token (attached by client middleware in `src/start.ts`).
-- Secrets live in the Cloud secret store; never in code or `VITE_*`.
-
-### Validation strategy
-- **Client**: Zod schemas colocated per feature (`schemas.ts`) used by both
-  form (`react-hook-form` + `@hookform/resolvers/zod`) and server fn input.
-- **Server**: same schema re-validated in `inputValidator`.
-- **DB**: constraints + check constraints as the final line.
-
-### Threat considerations
-- Privilege escalation → roles table, not profile column; `has_role` is
-  SECURITY DEFINER.
-- IDOR → RLS on every table; server fns never trust client-provided user ids.
-- Data exfiltration via public routes → `/api/public/*` never returns PII.
-- Prompt injection (ai-assist) → user content is data, not instructions;
-  system prompt fixed, outputs schema-validated.
-
----
-
-## 9. Scalability Strategy
-
-| Concern | Approach |
-|---|---|
-| **Thousands of users** | Stateless Cloudflare Workers auto-scale; Postgres connection pooling via Supabase; read models as views; add indexes per query pattern. |
-| **Mobile apps (future)** | Server logic already lives in typed server fns + `/api/public/*` routes. A React Native / native client can call the same `/api/*` endpoints with the same auth. Keep DTOs stable and versioned. |
-| **Third-party integrations** | Adapter interfaces in `features/integrations/`; provider swap without touching feature code. Webhooks isolated under `/api/public/webhooks/$provider`. |
-| **AI services** | Lovable AI Gateway (chat, embeddings, image, TTS/STT). Prompts + guardrails in `features/ai-assist/`; heavy jobs run server-side, results cached in Postgres. |
-| **Analytics** | Event capture via `track()` → append-only `analytics_events` table + external sink (e.g. product analytics provider) through an adapter. Dashboards read from materialised views. |
-| **Notifications** | Event bus (`notify(event, payload)`) with pluggable channels (in-app, email, SMS, push). Fan-out is async; retries + dead-letter table. |
-| **Payments** | Provider-agnostic `payments` module with intent + webhook pattern. Ledger table is the source of truth; provider is replaceable. |
-| **Performance** | TanStack Router preloading (`intent`), Query cache with SWR, image optimisation, code-splitting per route, edge SSR. |
-| **Observability** | Structured server logs + correlation ids, client error reporting hook (`reportLovableError`), audit log for business events. |
-| **Feature rollout** | `feature_flags` table + `useFlag(key)` hook → gradual rollout, kill switches, per-role targeting. |
-
----
-
-## 10. Folder Blueprint (target end-state)
+The repository follows feature ownership with thin routes. The current code is the first increment of the target structure; future modules are added only when the next product slice has a real acceptance test.
 
 ```text
 src/
-  routes/                         thin — compose features
-  components/
-    layout/                       AppLayout, AdminLayout, AuthLayout
-    ui/                           Container, GlassCard, BrandButton, …
+  routes/                         thin composition and metadata
+    __root.tsx                    providers and document shell
+    index.tsx                     public landing page
+    auth.tsx                      sign-in / sign-up
+    _authenticated.tsx            server-side customer gate
+    _authenticated/
+      dashboard.tsx               customer workspace entry
+      onboarding.$service.tsx     service-specific intake entry
+      requests/                   future tracking surfaces
+      documents.tsx               future document center
+      notifications.tsx           future notification center
+      profile.tsx                 future profile/security
+    _admin.tsx                    future server-side admin gate
+    _admin/                       future admin operating surfaces
+
   features/
-    auth/
-    user-profiles/
-    rbac/
-    service-catalog/
-    service-discovery/
-    onboarding/
-    service-requests/
-    admin-submissions/
-    notifications/
-    documents/
-    payments/
-    ai-assist/
-    insurance/
-    mortgage/
-    analytics/
-    audit-log/
-    integrations/
-    admin-console/
-  lib/                            cross-cutting utilities
-  hooks/                          cross-cutting hooks
-  styles.css                      design tokens (do not fork)
+    auth/                         session, auth actions, protected user lookup
+    services/                     current public service catalog
+    intent-discovery/             current visitor intent mapping
+    question-engine/              reusable answer renderer/state engine
+    agriculture/                  first real service contract and submission
+    request-blueprint-engine/     normalized request output definitions
+    service-intelligence-catalog/ service metadata and workflow hints
+    workflow-orchestrator/        ordered stage definitions
+    onboarding/                   future shared draft/review orchestration
+    service-requests/             future request queries, timeline, messages
+    user-profiles/                future profile persistence
+    rbac/                         future roles and permission checks
+    admin-submissions/            future queue and triage
+    notifications/                future event fan-out and delivery adapters
+    documents/                    future storage and signed URLs
+    payments/                     future provider-agnostic payments ledger
+    audit-log/                    future immutable operational history
+    analytics/                    future funnel and operational metrics
+    integrations/                 future CRM, email, SMS, and main-site adapters
+    ai-assist/                    future bounded recommendation/drafting helpers
+
+  components/                    shared primitives and layout only
+  lib/supabase/                  browser/server clients and database types
+  hooks/                         cross-cutting hooks
+  styles.css                     frozen design tokens
+
+supabase/
+  migrations/                    reproducible database changes with grants + RLS
+  README.md                      environment and migration setup
 ```
 
-Each feature folder skeleton (created on demand, not now):
+The implementation currently places the Agriculture and auth server functions at feature root because the slice is intentionally small. As the request lifecycle grows, those modules should split into `server/`, `components/`, `hooks/`, and `schemas.ts` only when doing so creates a real boundary rather than empty ceremony.
+
+## 6. Canonical request contract
+
+The request is the central domain object. A service-specific form produces a versioned payload, but the platform stores one canonical envelope so customer tracking, admin triage, notifications, analytics, and future integrations can use the same record.
+
+```ts
+type ServiceRequest = {
+  id: string;
+  userId: string;
+  serviceId: string;
+  schemaVersion: string;
+  status: "draft" | "submitted" | "in_review" | "resolved" | "rejected";
+  submittedPayload: Record<string, unknown>;
+  idempotencyKey: string;
+  source: "portal" | "admin" | "integration";
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+The canonical envelope owns lifecycle metadata. The `submittedPayload` owns service-specific answers and is validated by the service schema. The UI must never infer a request’s authoritative status from local state after submission; it should query the server record.
+
+### Agriculture payload
+
+The first service schema includes contact name, phone, email, farm location, farm size, service type, crop or livestock, quantity or scale, timeline, budget range, inputs needed, buyer preferences, and additional notes. Required fields are validated in the client for immediate feedback and again in the server function before persistence.
+
+### Lifecycle states
+
 ```text
-features/<name>/
-  components/
-  hooks/
-  lib/
-  server/                *.functions.ts + *.server.ts
-  schemas.ts             zod schemas shared client+server
-  types.ts
-  index.ts               public barrel
-  README.md
+draft ──► submitted ──► in_review ──► resolved
+   │                         │
+   └── customer edit          └── rejected ──► customer clarification / resubmit
 ```
 
----
+State transitions must be explicit, role-aware, timestamped, and recorded as request events once the tracking layer is implemented.
 
-## Blueprint status
+## 7. Security and reliability posture
 
-- Foundation (Phase 1): **complete** — design system, layout, primitives.
-- Architecture blueprint (Phase 2): **complete** — this document.
-- Implementation of any module above: **not started, intentionally.**
+The default security posture is defense in depth:
 
-Future phases extend `src/features/*` and add routes under `src/routes/*`
-strictly following this blueprint. The design system and shared primitives
-are frozen surface area — extend, never fork.
+- Supabase Auth owns sessions; the app uses a browser client and request-scoped server client rather than hand-rolled tokens.
+- `getUser()` or an equivalent server-confirmed identity check protects customer actions; the server never trusts a client-provided `user_id`.
+- Every exposed table ships with RLS, explicit role grants, ownership checks, and an index for policy-filtered user columns.
+- State-changing server functions use shared Zod schemas and return safe domain errors without leaking provider details.
+- Secret or service-role keys never enter `VITE_*` variables or browser bundles.
+- Submission uses a UUID idempotency key plus a database uniqueness constraint to prevent duplicate customer requests.
+- Customer-facing actions are reversible where possible; destructive or reputation-bearing operations require explicit human authorization.
+- Inbound text, attachments, links, and future AI inputs are untrusted data. They must not modify system instructions, reveal secrets, bypass policy, or authorize tools.
+- Audit records should be append-only and should not retain unnecessary personal data or credentials.
+
+## 8. State and data-fetching rules
+
+The platform uses a simple ownership rule: **server data belongs in TanStack Query; URL-worthy state belongs in TanStack Router; feature workflow state belongs in colocated hooks; transient UI state belongs in local React state.** Global context is reserved for cross-cutting concerns such as the current auth session and feature flags.
+
+Draft persistence is a product requirement for the next onboarding increment, but it is not yet implemented. Until then, a browser refresh can discard in-progress Agriculture answers. This is an explicit known limitation, not a hidden promise.
+
+## 9. Integration and automation boundary
+
+Future CRM, email, SMS, payment, and main-site connectors must be adapters at the edge of the platform. The core should receive canonical domain events such as `request.created`, `request.status_changed`, `request.message_posted`, and `document.uploaded`.
+
+The controlled event lifecycle is:
+
+```text
+Domain event → durable event record → normalized payload → policy check
+→ notification/action outbox → adapter → provider response/receipt
+→ reconciliation → audit + metrics
+```
+
+No external action should occur merely because a draft was generated. First deployments default to approval-required for public messages, sensitive customer responses, payments, role changes, and any irreversible action. Provider support, permissions, rate limits, and receipt behavior must be verified from current official documentation before an adapter becomes active.
+
+AI, when added, is bounded to classification, recommendation, summarization, and drafting. It may not access secrets, choose privileged actions, bypass RLS, publish externally, or change approval state without deterministic policy enforcement.
+
+## 10. Product rollout
+
+| Stage | Product outcome | Exit evidence |
+| --- | --- | --- |
+| **1. Foundation** | Public discovery, auth, Agriculture intake, review, and protected submission | TypeScript/build pass, route-gate test, real Supabase auth and insert verified |
+| **2. Customer continuity** | Request list/detail, statuses, timeline, draft resume, and profile | Authenticated integration tests, RLS policy tests, refresh/resume test |
+| **3. Human operations** | Admin queue, assignment, review notes, status transitions, audit events | Role-separation tests, audit receipt, customer/admin end-to-end test |
+| **4. Trust infrastructure** | Documents, notifications, consent, deletion/retention, support messaging | Storage policy tests, notification receipts, recovery and escalation tests |
+| **5. Service expansion** | Property, funding, marketplace, professional services, support | Each vertical has a versioned schema, review, submit, owner, and operational path |
+| **6. Optimization** | Analytics, AI assistance, payments, integrations, mobile-ready contracts | Feature-flagged rollout, measured outcomes, rollback/kill-switch evidence |
+
+The next build checkpoint is **Stage 2: Customer continuity**, beginning with a request list/detail surface backed by the existing `service_requests` table. The platform should not expand to multiple verticals before one vertical can be submitted, retrieved, tracked, and operationally resolved.
+
+## 11. Open decisions
+
+| Decision | Recommended default | Current status |
+| --- | --- | --- |
+| Live Supabase project and environment ownership | Configure the connected Lovable/Supabase project and keep secrets outside Git | **UNVERIFIED** |
+| Email confirmation policy | Require confirmation before first durable submission unless business operations explicitly allow otherwise | Decision needed |
+| Request schema versioning | Store an explicit schema version in the request envelope before adding a second vertical | Recommended structural change |
+| Draft persistence | Server-backed draft rows with ownership RLS and expiration policy | Next implementation slice |
+| Admin role source | Dedicated `user_roles` table with server-side checks | Planned, not implemented |
+| Notifications | Start with in-app request events, then add email adapter with receipts | Planned, not implemented |
+| AI assistance | Draft/recommendation only, feature-flagged behind policy and audit | Planned, not implemented |
+
+## References
+
+[1]: https://github.com/remRADAR/NairaLeap "NairaLeap repository and implementation checkpoint"
+[2]: https://supabase.com/docs/guides/getting-started/quickstarts/tanstack "Supabase TanStack Start quickstart"
+[3]: https://supabase.com/docs/guides/auth/server-side/creating-a-client "Supabase SSR client guidance"
+[4]: https://supabase.com/docs/guides/database/postgres/row-level-security "Supabase Row Level Security guidance"

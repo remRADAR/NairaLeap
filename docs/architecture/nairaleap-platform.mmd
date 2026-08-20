@@ -1,0 +1,29 @@
+flowchart LR
+  G[Guest browser] --> D[Public discovery]
+  D --> P[Service preview + Guide]
+  P --> A[Supabase Auth]
+  A --> R[Authenticated route gate]
+  R --> I[Agriculture / service intake]
+  I --> V[Review + consent]
+  V --> F[Feature server function]
+  F --> Z[Zod validation]
+  Z --> U[Authenticated Supabase client]
+  U --> DB[(Postgres + RLS)]
+  DB --> T[Customer request tracking]
+  DB --> Q[Admin queue]
+  Q --> E[Status events + audit]
+  E --> N[Notification outbox]
+  N --> X[Email / SMS / CRM adapters]
+  X --> O[Provider receipt + reconciliation]
+  O --> E
+  AI[Bounded AI assistance] -. classify / recommend / draft .-> F
+  AI -. never owns secrets or approval .-> Q
+
+  classDef edge fill:#eef4ed,stroke:#1a2e1a,stroke-width:2px,color:#1a2e1a;
+  classDef core fill:#fff7f2,stroke:#d95d39,stroke-width:3px,color:#1a2e1a;
+  classDef store fill:#e7efe5,stroke:#1a2e1a,stroke-width:3px,color:#1a2e1a;
+  classDef future fill:#f2eee8,stroke:#7b6d5b,stroke-width:2px,color:#2c3f2c;
+  class G,D,P,A,R edge;
+  class I,V,F,Z,U core;
+  class DB,T,Q,E store;
+  class N,X,O,AI future;

@@ -10,9 +10,11 @@ create table public.service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   service_id text not null,
+  schema_version text not null,
   status public.service_request_status not null default 'submitted',
   submitted_payload jsonb not null,
   idempotency_key uuid not null,
+  source text not null default 'portal' check (source in ('portal', 'admin', 'integration')),
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now()),
   constraint service_requests_user_id_idempotency_key_key unique (user_id, idempotency_key)
