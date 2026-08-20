@@ -33,3 +33,7 @@ The Business Briefs flow rendered a real `Brief type` single-choice step with fo
 After completing the required Business Briefs frequency answer, the flow advanced to question 6 of 8, an optional phone field with the semantic `tel` input and the expected Nigerian placeholder. This confirms optional blueprint fields are included in the same question flow and do not prevent the user from continuing.
 
 The completed Business Briefs flow reached the final `Rundown` stage. The browser displayed the structured answers (name, email, brief type, sector, frequency), team response expectation (`1–2 minutes`), priority (`low`), workflow (`auto submit`), a documents section, and the pricing disclosure `Quote required after review`. The unauthenticated boundary correctly showed `Sign in to submit` instead of pretending that persistence occurred. This is the key proof that the former brain-box stop has been removed through the final review stage.
+
+## Production verification
+
+The Vercel production alias `https://nairaleap.vercel.app/` loaded successfully. Clicking the live hero CTA opened the new `NairaLeap Guide · brain box` dialog with the `Understand → Questions → Rundown → Submit` progress model and the first discovery question. This confirms the READY production deployment for commit `17b31b3` is publicly serving the new navigator.
