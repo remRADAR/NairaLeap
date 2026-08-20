@@ -1,6 +1,14 @@
 import { useRef, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CheckCircle2, FileCheck2, Send, ShieldCheck, Sprout } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  FileCheck2,
+  Send,
+  ShieldCheck,
+  Sprout,
+} from "lucide-react";
 
 import { BrandButton, Container, GlassCard } from "@/components";
 import { useAuth } from "@/features/auth";
@@ -76,7 +84,9 @@ function AgricultureOnboardingPage() {
     );
     const result = agriculturePayloadSchema.safeParse(candidate);
     if (!result.success) {
-      setError("Some required answers are incomplete. Go back and check the highlighted questions.");
+      setError(
+        "Some required answers are incomplete. Go back and check the highlighted questions.",
+      );
       return;
     }
     setPayload(result.data);
@@ -113,7 +123,10 @@ function AgricultureOnboardingPage() {
     <main className="min-h-dvh bg-background pb-20 text-foreground">
       <Container className="py-8 sm:py-12">
         <header className="mx-auto max-w-3xl">
-          <Link to="/dashboard" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Dashboard
           </Link>
@@ -122,13 +135,15 @@ function AgricultureOnboardingPage() {
               <Sprout className="h-5 w-5" aria-hidden="true" />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-widest text-primary-glow">Agriculture service</p>
+              <p className="text-xs uppercase tracking-widest text-primary-glow">
+                Agriculture service
+              </p>
               <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Prepare your Agriculture request
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Answer a few practical questions, review the structured summary, and submit it to the
-                NairaLeap team.
+                Answer a few practical questions, review the structured summary, and submit it to
+                the NairaLeap team.
               </p>
             </div>
           </div>
@@ -140,8 +155,12 @@ function AgricultureOnboardingPage() {
               ["Submitted", stage === "success"],
             ].map(([label, active], index) => (
               <li key={String(label)}>
-                <div className={`h-1.5 rounded-full ${active || (stage === "success" && index < 2) ? "gradient-brand" : "bg-glass-border"}`} />
-                <span className={`mt-2 block text-xs ${active ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
+                <div
+                  className={`h-1.5 rounded-full ${active || (stage === "success" && index < 2) ? "gradient-brand" : "bg-glass-border"}`}
+                />
+                <span
+                  className={`mt-2 block text-xs ${active ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                >
                   {label}
                 </span>
               </li>
@@ -150,7 +169,10 @@ function AgricultureOnboardingPage() {
         </header>
 
         {error ? (
-          <div role="alert" className="mx-auto mt-6 max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground">
+          <div
+            role="alert"
+            className="mx-auto mt-6 max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground"
+          >
             {error}
           </div>
         ) : null}
@@ -158,12 +180,20 @@ function AgricultureOnboardingPage() {
         <section className="mx-auto mt-8 max-w-3xl">
           {stage === "questions" ? (
             <GlassCard className="p-5 sm:p-8">
-              <QuestionEngine questions={AGRICULTURE_QUESTIONS} onComplete={handleQuestionsComplete} />
+              <QuestionEngine
+                questions={AGRICULTURE_QUESTIONS}
+                onComplete={handleQuestionsComplete}
+              />
             </GlassCard>
           ) : null}
 
           {stage === "review" && payload ? (
-            <ReviewCard payload={payload} submitting={submitting} onBack={() => setStage("questions")} onSubmit={handleSubmit} />
+            <ReviewCard
+              payload={payload}
+              submitting={submitting}
+              onBack={() => setStage("questions")}
+              onSubmit={handleSubmit}
+            />
           ) : null}
 
           {stage === "success" ? (
@@ -171,8 +201,12 @@ function AgricultureOnboardingPage() {
               <span className="mx-auto grid h-16 w-16 place-items-center rounded-3xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]">
                 <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
               </span>
-              <p className="mt-6 text-xs uppercase tracking-widest text-primary-glow">Request submitted</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight">We have your Agriculture request.</h2>
+              <p className="mt-6 text-xs uppercase tracking-widest text-primary-glow">
+                Request submitted
+              </p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight">
+                We have your Agriculture request.
+              </h2>
               <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
                 The NairaLeap team can now review your information and follow up with the next step.
                 Keep this request reference for your records.
@@ -181,11 +215,17 @@ function AgricultureOnboardingPage() {
                 {requestId}
               </code>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link to="/dashboard" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl gradient-brand px-5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)]">
+                <Link
+                  to="/dashboard"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl gradient-brand px-5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)]"
+                >
                   Go to dashboard
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
-                <Link to="/" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-glass-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-surface-elevated">
+                <Link
+                  to="/"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-glass-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-surface-elevated"
+                >
                   Return to portal
                 </Link>
               </div>
@@ -242,7 +282,9 @@ function ReviewCard({
       <dl className="mt-7 divide-y divide-border/60 rounded-2xl border border-glass-border bg-glass px-4">
         {rows.map(([label, value]) => (
           <div key={label} className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-            <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</dt>
+            <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {label}
+            </dt>
             <dd className="whitespace-pre-wrap text-sm text-foreground">{value}</dd>
           </div>
         ))}
@@ -250,7 +292,10 @@ function ReviewCard({
 
       <div className="mt-6 flex items-start gap-3 rounded-xl border border-primary/20 bg-primary/10 p-4 text-sm text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-        <p>Your request is submitted only after you press the button below. It will be linked to your signed-in account.</p>
+        <p>
+          Your request is submitted only after you press the button below. It will be linked to your
+          signed-in account.
+        </p>
       </div>
 
       <div className="mt-7 flex flex-wrap justify-between gap-3">

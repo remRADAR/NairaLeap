@@ -6,10 +6,7 @@
  * no backend, no API, no business logic, no onboarding questions, no routes.
  */
 
-import type {
-  WorkflowDefinition,
-  WorkflowOrchestratorCatalog,
-} from "./types";
+import type { WorkflowDefinition, WorkflowOrchestratorCatalog } from "./types";
 
 export type {
   WorkflowId,
@@ -142,7 +139,6 @@ export const WORKFLOW_ORCHESTRATOR: WorkflowOrchestratorCatalog = [
 ];
 
 /** Map of workflow definitions by id for O(1) lookup. */
-export const WORKFLOW_ORCHESTRATOR_MAP: Record<string, WorkflowDefinition> =
-  Object.fromEntries(
-    WORKFLOW_ORCHESTRATOR.map((workflow) => [workflow.workflowId, workflow])
-  );
+export const WORKFLOW_ORCHESTRATOR_MAP: Record<string, WorkflowDefinition> = Object.fromEntries(
+  WORKFLOW_ORCHESTRATOR.map((workflow) => [workflow.workflowId, workflow]),
+);

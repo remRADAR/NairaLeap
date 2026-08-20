@@ -49,9 +49,7 @@ function InsurancePage() {
       <section>
         <Container className="py-8 sm:py-12">
           <GlassCard>
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-              What to expect
-            </h2>
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">What to expect</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
               Guided intake, curated providers, and structured requests — built on the same
               NairaLeap Guide experience you already know.

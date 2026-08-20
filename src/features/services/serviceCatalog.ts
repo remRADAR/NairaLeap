@@ -132,12 +132,7 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     shortDescription: "Expert advisors, consultants and specialists.",
     longDescription:
       "Engage vetted professionals for legal, financial, tax, strategy and specialist advisory needs.",
-    examples: [
-      "Hire a Lawyer",
-      "Find an Accountant",
-      "Business Consulting",
-      "Tax & Compliance",
-    ],
+    examples: ["Hire a Lawyer", "Find an Accountant", "Business Consulting", "Tax & Compliance"],
   },
   {
     id: "customer-support",

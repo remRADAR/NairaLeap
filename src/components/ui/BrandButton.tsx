@@ -8,11 +8,7 @@ interface BrandButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /** BrandButton — portal-wide button primitive using design tokens only. */
-export function BrandButton({
-  variant = "primary",
-  className,
-  ...props
-}: BrandButtonProps) {
+export function BrandButton({ variant = "primary", className, ...props }: BrandButtonProps) {
   return (
     <button
       className={cn(

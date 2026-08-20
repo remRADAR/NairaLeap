@@ -17,9 +17,6 @@ export type {
   IntentDiscoveryCatalog,
 } from "./types";
 
-export {
-  INTENT_DISCOVERY_CATALOG,
-  INTENT_DISCOVERY_MAP,
-} from "./intentDiscoveryCatalog";
+export { INTENT_DISCOVERY_CATALOG, INTENT_DISCOVERY_MAP } from "./intentDiscoveryCatalog";
 
 export { DEMO_DISCOVERY_QUESTIONS } from "./demoDiscoveryQuestions";

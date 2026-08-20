@@ -76,9 +76,7 @@ export function ServicePreviewSheet({
 
           {service ? (
             <div className="mt-2">
-              <h3 className="text-sm font-semibold text-foreground">
-                What we can help you with
-              </h3>
+              <h3 className="text-sm font-semibold text-foreground">What we can help you with</h3>
               <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {service.examples.map((item) => (
                   <li

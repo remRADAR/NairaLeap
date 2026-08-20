@@ -40,7 +40,10 @@ function DashboardPage() {
       <Container className="py-8 sm:py-12">
         <header className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <Link to="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <Link
+              to="/"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
               ← Back to portal
             </Link>
             <div className="mt-5 flex items-center gap-3">
@@ -48,8 +51,12 @@ function DashboardPage() {
                 <UserRound className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <p className="text-xs uppercase tracking-widest text-primary-glow">Customer workspace</p>
-                <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">Your requests</h1>
+                <p className="text-xs uppercase tracking-widest text-primary-glow">
+                  Customer workspace
+                </p>
+                <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+                  Your requests
+                </h1>
               </div>
             </div>
           </div>
@@ -60,7 +67,10 @@ function DashboardPage() {
         </header>
 
         {error ? (
-          <div role="alert" className="mt-6 rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground">
+          <div
+            role="alert"
+            className="mt-6 rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground"
+          >
             {error}
           </div>
         ) : null}
@@ -73,7 +83,9 @@ function DashboardPage() {
                   <Sprout className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
                   Agriculture
                 </span>
-                <h2 className="mt-5 text-2xl font-semibold tracking-tight">Start an Agriculture request</h2>
+                <h2 className="mt-5 text-2xl font-semibold tracking-tight">
+                  Start an Agriculture request
+                </h2>
                 <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
                   Tell us about your farm, inputs, buyers, or agribusiness goals. We’ll turn your
                   answers into a structured request for the NairaLeap team.
@@ -93,7 +105,9 @@ function DashboardPage() {
           <div className="space-y-5">
             <GlassCard className="p-6">
               <p className="text-xs uppercase tracking-widest text-primary-glow">Signed in as</p>
-              <p className="mt-3 break-all text-sm font-medium text-foreground">{user?.email ?? "Account"}</p>
+              <p className="mt-3 break-all text-sm font-medium text-foreground">
+                {user?.email ?? "Account"}
+              </p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 Your submitted requests will be linked to this account and protected by database
                 access policies.
@@ -101,11 +115,16 @@ function DashboardPage() {
             </GlassCard>
             <GlassCard className="p-6">
               <p className="text-xs uppercase tracking-widest text-primary-glow">Continuity</p>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight">Track submitted requests</h2>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight">
+                Track submitted requests
+              </h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 See your request references and current operational status in one place.
               </p>
-              <Link to="/requests" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+              <Link
+                to="/requests"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+              >
                 Open My Requests
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>

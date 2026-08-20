@@ -1,7 +1,4 @@
-import type {
-  IntentDiscoveryCatalog,
-  IntentDiscoveryEntry,
-} from "./types";
+import type { IntentDiscoveryCatalog, IntentDiscoveryEntry } from "./types";
 
 /**
  * INTENT_DISCOVERY_CATALOG — master configuration for intent discovery.
@@ -30,8 +27,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
   {
     id: "selling",
     title: "Selling",
-    description:
-      "The visitor wants to list, sell, or dispose of an asset, product, or material.",
+    description: "The visitor wants to list, sell, or dispose of an asset, product, or material.",
     recommendedServiceIds: [
       "property-listings",
       "distress-sales",
@@ -56,8 +52,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
   {
     id: "funding",
     title: "Funding",
-    description:
-      "The visitor needs capital, financing, grants, or investment readiness support.",
+    description: "The visitor needs capital, financing, grants, or investment readiness support.",
     recommendedServiceIds: ["business-funding"],
     followUpCategory: "direct-to-service",
     priority: "high",
@@ -68,12 +63,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
     title: "Investment",
     description:
       "The visitor wants to invest in assets, businesses, agriculture, or other opportunities.",
-    recommendedServiceIds: [
-      "agriculture",
-      "business-funding",
-      "property-listings",
-      "partnerships",
-    ],
+    recommendedServiceIds: ["agriculture", "business-funding", "property-listings", "partnerships"],
     followUpCategory: "service-match",
     priority: "medium",
     nextWorkflow: "guided-question-engine",
@@ -91,8 +81,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
   {
     id: "professional-services",
     title: "Professional Services",
-    description:
-      "The visitor needs to engage a vetted specialist, consultant, or advisor.",
+    description: "The visitor needs to engage a vetted specialist, consultant, or advisor.",
     recommendedServiceIds: ["professional-services"],
     followUpCategory: "direct-to-service",
     priority: "medium",
@@ -111,8 +100,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
   {
     id: "support",
     title: "Support",
-    description:
-      "The visitor needs help, has a question, or wants to speak to a real person.",
+    description: "The visitor needs help, has a question, or wants to speak to a real person.",
     recommendedServiceIds: ["customer-support"],
     followUpCategory: "support-queue",
     priority: "critical",
@@ -131,7 +119,6 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
 ];
 
 /** Map of intent entries by id for O(1) lookup. */
-export const INTENT_DISCOVERY_MAP: Record<string, IntentDiscoveryEntry> =
-  Object.fromEntries(
-    INTENT_DISCOVERY_CATALOG.map((entry) => [entry.id, entry])
-  );
+export const INTENT_DISCOVERY_MAP: Record<string, IntentDiscoveryEntry> = Object.fromEntries(
+  INTENT_DISCOVERY_CATALOG.map((entry) => [entry.id, entry]),
+);

@@ -1,9 +1,4 @@
-export type ServiceRequestStatus =
-  | "draft"
-  | "submitted"
-  | "in_review"
-  | "resolved"
-  | "rejected";
+export type ServiceRequestStatus = "draft" | "submitted" | "in_review" | "resolved" | "rejected";
 
 export type ServiceRequestSource = "portal" | "admin" | "integration";
 

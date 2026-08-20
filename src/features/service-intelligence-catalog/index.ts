@@ -8,10 +8,7 @@
  * catalog and adapt it to their own needs.
  */
 
-import type {
-  ServiceIntelligenceCatalog,
-  ServiceIntelligenceEntry,
-} from "./types";
+import type { ServiceIntelligenceCatalog, ServiceIntelligenceEntry } from "./types";
 
 export type {
   ServiceId,
@@ -38,11 +35,7 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     requiresDocuments: true,
     requiresAdminReview: true,
     suggestedQuestionSet: "agriculture-intake",
-    requiredDocumentTypes: [
-      "government-id",
-      "farm-ownership",
-      "farm-plan",
-    ],
+    requiredDocumentTypes: ["government-id", "farm-ownership", "farm-plan"],
     outputSummaryTemplate:
       "Your Agriculture request has been prepared. NairaLeap will review your farm profile, inputs or buyer needs and match you with verified agribusiness opportunities within 1–2 business days.",
     nextWorkflow: "guided-question-engine",
@@ -60,12 +53,7 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     requiresDocuments: true,
     requiresAdminReview: true,
     suggestedQuestionSet: "property-intake",
-    requiredDocumentTypes: [
-      "government-id",
-      "property-title",
-      "survey-plan",
-      "asset-photos",
-    ],
+    requiredDocumentTypes: ["government-id", "property-title", "survey-plan", "asset-photos"],
     outputSummaryTemplate:
       "Your Property Listing request has been captured. NairaLeap will verify the property details, prepare visibility options and connect you with interested buyers or renters.",
     nextWorkflow: "guided-question-engine",
@@ -153,12 +141,7 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     requiresDocuments: true,
     requiresAdminReview: true,
     suggestedQuestionSet: "distress-sales-intake",
-    requiredDocumentTypes: [
-      "government-id",
-      "ownership-proof",
-      "asset-photos",
-      "valuation-report",
-    ],
+    requiredDocumentTypes: ["government-id", "ownership-proof", "asset-photos", "valuation-report"],
     outputSummaryTemplate:
       "Your Distress Sale request has been documented. NairaLeap will verify the urgency, pricing and ownership details, then publish the listing to matched buyers.",
     nextWorkflow: "guided-question-engine",
@@ -176,11 +159,7 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     requiresDocuments: true,
     requiresAdminReview: true,
     suggestedQuestionSet: "recycling-scrap-intake",
-    requiredDocumentTypes: [
-      "government-id",
-      "ownership-proof",
-      "asset-photos",
-    ],
+    requiredDocumentTypes: ["government-id", "ownership-proof", "asset-photos"],
     outputSummaryTemplate:
       "Your Recycling & Scrap request has been prepared. NairaLeap will connect you with verified recyclers or buyers and arrange pickup or inspection details.",
     nextWorkflow: "guided-question-engine",
@@ -216,12 +195,7 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     requiresDocuments: true,
     requiresAdminReview: true,
     suggestedQuestionSet: "professional-services-intake",
-    requiredDocumentTypes: [
-      "government-id",
-      "professional-license",
-      "certification",
-      "cv-resume",
-    ],
+    requiredDocumentTypes: ["government-id", "professional-license", "certification", "cv-resume"],
     outputSummaryTemplate:
       "Your Professional Services request has been prepared. NairaLeap will match you with a verified specialist and confirm availability within 1 business day.",
     nextWorkflow: "guided-question-engine",
@@ -248,6 +222,4 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
 
 /** Map of service entries by id for O(1) lookup. */
 export const SERVICE_INTELLIGENCE_MAP: Record<string, ServiceIntelligenceEntry> =
-  Object.fromEntries(
-    SERVICE_INTELLIGENCE_CATALOG.map((entry) => [entry.id, entry])
-  );
+  Object.fromEntries(SERVICE_INTELLIGENCE_CATALOG.map((entry) => [entry.id, entry]));

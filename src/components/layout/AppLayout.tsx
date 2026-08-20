@@ -36,10 +36,7 @@ function Header() {
   const { user } = useAuth();
 
   return (
-    <header
-      className="sticky top-0 z-40"
-      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
-    >
+    <header className="sticky top-0 z-40" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
         <div className="glass-panel flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link to="/" className="flex min-w-0 items-center gap-2.5">
@@ -91,10 +88,7 @@ function Header() {
             open ? "mt-2 max-h-64 opacity-100" : "max-h-0 opacity-0",
           )}
         >
-          <nav
-            aria-label="Mobile"
-            className="glass-panel flex flex-col p-2 text-sm"
-          >
+          <nav aria-label="Mobile" className="glass-panel flex flex-col p-2 text-sm">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.label}

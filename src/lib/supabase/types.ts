@@ -1,16 +1,6 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-import type {
-  ServiceRequestSource,
-  ServiceRequestStatus,
-} from "@/features/service-requests";
-
+import type { ServiceRequestSource, ServiceRequestStatus } from "@/features/service-requests";
 
 export interface AgricultureRequestPayload {
   contactName: string;

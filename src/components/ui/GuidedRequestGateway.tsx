@@ -82,10 +82,7 @@ export function GuidedRequestGateway({
 
           {/* Progress indicator */}
           <div className="px-5 sm:px-7">
-            <ol
-              aria-label="Guided request progress"
-              className="grid grid-cols-4 gap-2"
-            >
+            <ol aria-label="Guided request progress" className="grid grid-cols-4 gap-2">
               {STEPS.map((label, i) => {
                 const isCurrent = i === CURRENT_STEP_INDEX;
                 const isDone = i < CURRENT_STEP_INDEX;
@@ -103,9 +100,7 @@ export function GuidedRequestGateway({
                     />
                     <div
                       className={`mt-2 truncate text-[11px] sm:text-xs ${
-                        isCurrent
-                          ? "font-semibold text-foreground"
-                          : "text-muted-foreground"
+                        isCurrent ? "font-semibold text-foreground" : "text-muted-foreground"
                       }`}
                     >
                       {label}
@@ -119,8 +114,8 @@ export function GuidedRequestGateway({
           {/* Body */}
           <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-7">
             <p className="text-sm leading-relaxed text-foreground sm:text-base">
-              NairaLeap Guide will ask a few simple questions to understand your
-              needs and prepare the correct request.
+              NairaLeap Guide will ask a few simple questions to understand your needs and prepare
+              the correct request.
             </p>
 
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -135,9 +130,7 @@ export function GuidedRequestGateway({
                   <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Estimated time
                   </div>
-                  <div className="mt-0.5 text-sm font-semibold text-foreground">
-                    2–3 minutes
-                  </div>
+                  <div className="mt-0.5 text-sm font-semibold text-foreground">2–3 minutes</div>
                 </div>
               </div>
               <div className="glass-panel flex items-start gap-3 rounded-xl p-4">

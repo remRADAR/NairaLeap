@@ -1,9 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
-import {
-  getCookies,
-  setCookie,
-  setResponseHeader,
-} from "@tanstack/react-start/server";
+import { getCookies, setCookie, setResponseHeader } from "@tanstack/react-start/server";
 
 import type { Database } from "./types";
 

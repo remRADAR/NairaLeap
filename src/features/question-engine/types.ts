@@ -8,6 +8,10 @@
 export type QuestionType =
   | "short-text"
   | "long-text"
+  | "email"
+  | "phone"
+  | "location"
+  | "currency"
   | "single-choice"
   | "multiple-choice"
   | "yes-no"
@@ -36,6 +40,12 @@ export interface ShortTextQuestion extends BaseQuestion {
 
 export interface LongTextQuestion extends BaseQuestion {
   type: "long-text";
+  placeholder?: string;
+  maxLength?: number;
+}
+
+export interface SemanticTextQuestion extends BaseQuestion {
+  type: "email" | "phone" | "location" | "currency";
   placeholder?: string;
   maxLength?: number;
 }
@@ -74,6 +84,7 @@ export interface DateQuestion extends BaseQuestion {
 export type Question =
   | ShortTextQuestion
   | LongTextQuestion
+  | SemanticTextQuestion
   | SingleChoiceQuestion
   | MultipleChoiceQuestion
   | YesNoQuestion
@@ -81,11 +92,6 @@ export type Question =
   | DateQuestion;
 
 /** Runtime answer value shape, keyed by question id. */
-export type AnswerValue =
-  | string
-  | number
-  | string[]
-  | boolean
-  | null;
+export type AnswerValue = string | number | string[] | boolean | null;
 
 export type AnswersState = Record<string, AnswerValue>;

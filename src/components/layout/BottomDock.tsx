@@ -46,10 +46,7 @@ function DockLink({
       activeOptions={{ exact: true }}
       activeProps={{ "aria-current": "page" }}
     >
-      <Icon
-        className="h-4 w-4 text-primary-glow"
-        aria-hidden="true"
-      />
+      <Icon className="h-4 w-4 text-primary-glow" aria-hidden="true" />
       <span>{label}</span>
     </Link>
   );

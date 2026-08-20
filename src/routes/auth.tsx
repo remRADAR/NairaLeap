@@ -79,8 +79,8 @@ function AuthPage() {
               Keep your service requests moving.
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Create an account to complete guided intake, save your request securely, and follow
-              up with the NairaLeap team.
+              Create an account to complete guided intake, save your request securely, and follow up
+              with the NairaLeap team.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-2">
@@ -104,7 +104,9 @@ function AuthPage() {
                   setConfirmationSent(false);
                 }}
                 className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  mode === "sign-in" ? "bg-surface-elevated text-foreground" : "text-muted-foreground"
+                  mode === "sign-in"
+                    ? "bg-surface-elevated text-foreground"
+                    : "text-muted-foreground"
                 }`}
               >
                 Sign in
@@ -117,7 +119,9 @@ function AuthPage() {
                   setConfirmationSent(false);
                 }}
                 className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  mode === "sign-up" ? "bg-surface-elevated text-foreground" : "text-muted-foreground"
+                  mode === "sign-up"
+                    ? "bg-surface-elevated text-foreground"
+                    : "text-muted-foreground"
                 }`}
               >
                 Create account
@@ -149,7 +153,10 @@ function AuthPage() {
             ) : null}
 
             {error ? (
-              <div role="alert" className="mt-6 rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground">
+              <div
+                role="alert"
+                className="mt-6 rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive-foreground"
+              >
                 {error}
               </div>
             ) : null}
@@ -187,7 +194,11 @@ function AuthPage() {
             </form>
 
             <p className="mt-5 text-center text-xs text-muted-foreground">
-              Prefer to keep exploring? <Link to="/" className="text-primary hover:underline">Return to the portal</Link>.
+              Prefer to keep exploring?{" "}
+              <Link to="/" className="text-primary hover:underline">
+                Return to the portal
+              </Link>
+              .
             </p>
           </GlassCard>
         </div>

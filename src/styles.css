@@ -100,11 +100,8 @@
 
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, var(--brand-deep), var(--brand) 55%, var(--brand-glow));
-  --gradient-surface: radial-gradient(
-      ellipse at top left,
-      oklch(0.35 0.18 295 / 40%),
-      transparent 55%
-    ),
+  --gradient-surface:
+    radial-gradient(ellipse at top left, oklch(0.35 0.18 295 / 40%), transparent 55%),
     radial-gradient(ellipse at bottom right, oklch(0.4 0.2 320 / 30%), transparent 60%);
 
   /* Shadows */

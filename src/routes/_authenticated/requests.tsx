@@ -55,8 +55,12 @@ function RequestsPage() {
                 <ClipboardList className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <p className="text-xs uppercase tracking-widest text-primary-glow">Customer workspace</p>
-                <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">My requests</h1>
+                <p className="text-xs uppercase tracking-widest text-primary-glow">
+                  Customer workspace
+                </p>
+                <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+                  My requests
+                </h1>
               </div>
             </div>
           </div>
@@ -80,7 +84,11 @@ function RequestsPage() {
               Start with Agriculture and we’ll guide you through the information needed to prepare a
               request for the NairaLeap team.
             </p>
-            <Link to="/onboarding/$service" params={{ service: "agriculture" }} className="mt-6 inline-flex">
+            <Link
+              to="/onboarding/$service"
+              params={{ service: "agriculture" }}
+              className="mt-6 inline-flex"
+            >
               <BrandButton>Start Agriculture intake</BrandButton>
             </Link>
           </GlassCard>

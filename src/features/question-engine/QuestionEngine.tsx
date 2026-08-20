@@ -1,11 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type {
-  AnswerValue,
-  AnswersState,
-  Question,
-} from "./types";
+import type { AnswerValue, AnswersState, Question } from "./types";
 import { useQuestionEngine } from "./useQuestionEngine";
 
 export interface QuestionEngineProps {
@@ -206,7 +202,10 @@ function QuestionBody({ question, value, onChange, onEnter }: QuestionBodyProps)
   return (
     <div className="flex flex-col gap-4">
       <header className="flex flex-col gap-1.5">
-        <h3 id={titleId} className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+        <h3
+          id={titleId}
+          className="text-lg font-semibold tracking-tight text-foreground sm:text-xl"
+        >
           {question.title}
         </h3>
         {question.helper ? (
@@ -287,6 +286,38 @@ function AnswerField({
           className="w-full resize-y rounded-2xl border border-glass-border bg-glass px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
       );
+
+    case "email":
+    case "phone":
+    case "location":
+    case "currency": {
+      const inputType =
+        question.type === "email" ? "email" : question.type === "phone" ? "tel" : "text";
+      const inputMode =
+        question.type === "currency" ? "decimal" : question.type === "phone" ? "tel" : undefined;
+      return (
+        <input
+          ref={(el) => {
+            inputRef.current = el;
+          }}
+          type={inputType}
+          inputMode={inputMode}
+          value={typeof value === "string" ? value : ""}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              onEnter();
+            }
+          }}
+          placeholder={question.placeholder}
+          maxLength={question.maxLength}
+          aria-labelledby={labelledBy}
+          aria-describedby={describedBy}
+          className="min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        />
+      );
+    }
 
     case "number":
       return (

@@ -40,8 +40,8 @@ function MortgagePage() {
               Mortgage <span className="text-gradient-brand">coming soon</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              A dedicated space for exploring mortgage options and submitting structured requests
-              is on the way.
+              A dedicated space for exploring mortgage options and submitting structured requests is
+              on the way.
             </p>
           </div>
         </Container>
@@ -50,12 +50,10 @@ function MortgagePage() {
       <section>
         <Container className="py-8 sm:py-12">
           <GlassCard>
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-              What to expect
-            </h2>
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">What to expect</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Guided intake, curated lenders, and structured requests — built on the same
-              NairaLeap Guide experience you already know.
+              Guided intake, curated lenders, and structured requests — built on the same NairaLeap
+              Guide experience you already know.
             </p>
           </GlassCard>
         </Container>

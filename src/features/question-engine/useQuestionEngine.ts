@@ -42,6 +42,10 @@ export function useQuestionEngine({
     switch (current.type) {
       case "short-text":
       case "long-text":
+      case "email":
+      case "phone":
+      case "location":
+      case "currency":
         return typeof value === "string" && value.trim().length > 0;
       case "number":
         return typeof value === "number" && !Number.isNaN(value);

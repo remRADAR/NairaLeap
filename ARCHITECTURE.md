@@ -2,7 +2,7 @@
 
 **Status:** Architecture finalized for the first durable product path
 **Repository:** [remRADAR/NairaLeap](https://github.com/remRADAR/NairaLeap)
-**Current implementation checkpoint:** `ca96cf8` — authentication and Agriculture intake
+**Current implementation checkpoint:** brain-box navigator, blueprint-driven multi-service intake, and generalized authenticated request submission
 **Primary runtime:** TanStack Start + React + TypeScript + Vite + Tailwind CSS v4 on Cloudflare-compatible deployment
 **Backend boundary:** Supabase Auth, Postgres, Storage, and server functions through the project’s Lovable/Supabase environment
 
@@ -16,14 +16,14 @@ The platform must work for customers who know exactly what they want and for vis
 
 ## 2. Evidence and certainty
 
-| Classification | Current finding |
-| --- | --- |
-| **Known** | The repository contains a responsive branded portal, 10-service catalog data, a reusable service preview and guided-request shell, a configuration-driven question engine, Supabase client utilities, an auth route, a server-protected dashboard, an Agriculture intake route, a shared Agriculture schema, a submission server function, and an RLS migration. |
-| **Known** | TypeScript and production build checks passed at commit `ca96cf8`; unauthenticated navigation to `/dashboard` redirected to `/auth` in local runtime verification. |
-| **Known** | The public product still has placeholder Insurance and Mortgage routes, no customer request list/detail route, and no admin queue. |
-| **Inferred** | Agriculture is the correct pilot vertical because it is the first real persisted workflow and already has a defined blueprint, service intelligence metadata, and question contract. |
-| **Unverified** | Live Supabase sign-up, email confirmation, migration execution, RLS behavior against a real project, and request insertion remain unverified until runtime credentials and the migration are configured. |
-| **Unverified** | Cloudflare deployment, production domain, notification provider, payment provider, CRM integration, and admin operating procedures are not configured in this repository checkpoint. |
+| Classification | Current finding                                                                                                                                                                                                                                                                                                                                                  |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Known**      | The repository contains a responsive branded portal, 10-service catalog data, a working brain-box navigator, blueprint-driven service question generation, a final request rundown with pricing-state disclosure, Supabase client utilities, an auth route, a server-protected dashboard, generalized authenticated request submission, the Agriculture-specific submission path, and an RLS migration. |
+| **Known**      | TypeScript and production build checks passed at commit `ca96cf8`; unauthenticated navigation to `/dashboard` redirected to `/auth` in local runtime verification.                                                                                                                                                                                               |
+| **Known**      | Insurance and Mortgage remain placeholder routes, request list/detail continuity is still limited, and there is no admin queue, document upload, payment flow, or verified price book.                                                                                                                                                                                                                               |
+| **Inferred**   | Agriculture is the correct pilot vertical because it is the first real persisted workflow and already has a defined blueprint, service intelligence metadata, and question contract.                                                                                                                                                                             |
+| **Unverified** | Live Supabase sign-up, email confirmation, migration execution, RLS behavior against a real project, and request insertion remain unverified until runtime credentials and the migration are configured.                                                                                                                                                         |
+| **Unverified** | Cloudflare deployment, production domain, notification provider, payment provider, CRM integration, and admin operating procedures are not configured in this repository checkpoint.                                                                                                                                                                             |
 
 Any new external capability must remain disabled or feature-flagged until its official support, account prerequisites, permissions, and actual integration response are verified.
 
@@ -41,15 +41,15 @@ Any new external capability must remain disabled or feature-flagged until its of
 
 ### Roles
 
-| Role | Default access | Control boundary |
-| --- | --- | --- |
-| Guest | Public discovery and service metadata | No customer PII or request records |
-| Customer | Own profile, own requests, own documents, own notifications | Every customer-owned row is scoped to `auth.uid()` |
-| Agent | Assigned requests and scoped communication | Cannot reassign or perform governance actions |
-| Reviewer | Read and review access | No mutation of customer-owned facts |
-| Admin | Operational request handling and catalog management | Elevated actions are logged and role-checked server-side |
-| Super admin | Governance, roles, integrations, feature flags | Role changes require explicit confirmation and audit |
-| Service account | Narrow server-to-server operations | Signed requests, secret storage, no human session |
+| Role            | Default access                                              | Control boundary                                         |
+| --------------- | ----------------------------------------------------------- | -------------------------------------------------------- |
+| Guest           | Public discovery and service metadata                       | No customer PII or request records                       |
+| Customer        | Own profile, own requests, own documents, own notifications | Every customer-owned row is scoped to `auth.uid()`       |
+| Agent           | Assigned requests and scoped communication                  | Cannot reassign or perform governance actions            |
+| Reviewer        | Read and review access                                      | No mutation of customer-owned facts                      |
+| Admin           | Operational request handling and catalog management         | Elevated actions are logged and role-checked server-side |
+| Super admin     | Governance, roles, integrations, feature flags              | Role changes require explicit confirmation and audit     |
+| Service account | Narrow server-to-server operations                          | Signed requests, secret storage, no human session        |
 
 Roles must not be stored as editable profile attributes or trusted solely from client state. Any privileged action must be checked server-side against a dedicated role source.
 
@@ -82,15 +82,15 @@ Customer browser ──► TanStack route gate ──► Feature route
 
 ### Layer responsibilities
 
-| Layer | Responsibility | Must not do |
-| --- | --- | --- |
-| Route | Compose feature UI, metadata, loader boundaries, and redirects | Hold business rules or call provider APIs directly |
-| Feature UI | Render domain-specific states and collect user input | Decide authorization or ownership |
-| Feature hook | Manage local workflow state and server-cache interaction | Bypass server functions for protected writes |
-| Server function | Validate, authenticate, authorize, enforce idempotency, and call Supabase | Trust a client-supplied user ID or secret |
-| Supabase user-scoped client | Execute Postgres operations under the authenticated session | Use service-role credentials in browser code |
-| Postgres/RLS | Enforce data ownership and role policies as the final line | Rely only on UI hiding or route conventions |
-| Adapter/integration | Translate provider-specific formats and receipts | Leak provider-specific payloads into the core domain model |
+| Layer                       | Responsibility                                                            | Must not do                                                |
+| --------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Route                       | Compose feature UI, metadata, loader boundaries, and redirects            | Hold business rules or call provider APIs directly         |
+| Feature UI                  | Render domain-specific states and collect user input                      | Decide authorization or ownership                          |
+| Feature hook                | Manage local workflow state and server-cache interaction                  | Bypass server functions for protected writes               |
+| Server function             | Validate, authenticate, authorize, enforce idempotency, and call Supabase | Trust a client-supplied user ID or secret                  |
+| Supabase user-scoped client | Execute Postgres operations under the authenticated session               | Use service-role credentials in browser code               |
+| Postgres/RLS                | Enforce data ownership and role policies as the final line                | Rely only on UI hiding or route conventions                |
+| Adapter/integration         | Translate provider-specific formats and receipts                          | Leak provider-specific payloads into the core domain model |
 
 ## 5. Repository structure
 
@@ -220,28 +220,28 @@ AI, when added, is bounded to classification, recommendation, summarization, and
 
 ## 10. Product rollout
 
-| Stage | Product outcome | Exit evidence |
-| --- | --- | --- |
-| **1. Foundation** | Public discovery, auth, Agriculture intake, review, and protected submission | TypeScript/build pass, route-gate test, real Supabase auth and insert verified |
-| **2. Customer continuity** | Request list/detail, statuses, timeline, draft resume, and profile | Authenticated integration tests, RLS policy tests, refresh/resume test |
-| **3. Human operations** | Admin queue, assignment, review notes, status transitions, audit events | Role-separation tests, audit receipt, customer/admin end-to-end test |
-| **4. Trust infrastructure** | Documents, notifications, consent, deletion/retention, support messaging | Storage policy tests, notification receipts, recovery and escalation tests |
-| **5. Service expansion** | Property, funding, marketplace, professional services, support | Each vertical has a versioned schema, review, submit, owner, and operational path |
-| **6. Optimization** | Analytics, AI assistance, payments, integrations, mobile-ready contracts | Feature-flagged rollout, measured outcomes, rollback/kill-switch evidence |
+| Stage                       | Product outcome                                                              | Exit evidence                                                                     |
+| --------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **1. Foundation**           | Public discovery, auth, Agriculture intake, review, and protected submission | TypeScript/build pass, route-gate test, real Supabase auth and insert verified    |
+| **2. Customer continuity**  | Request list/detail, statuses, timeline, draft resume, and profile           | Authenticated integration tests, RLS policy tests, refresh/resume test            |
+| **3. Human operations**     | Admin queue, assignment, review notes, status transitions, audit events      | Role-separation tests, audit receipt, customer/admin end-to-end test              |
+| **4. Trust infrastructure** | Documents, notifications, consent, deletion/retention, support messaging     | Storage policy tests, notification receipts, recovery and escalation tests        |
+| **5. Service expansion**    | Property, funding, marketplace, professional services, support               | Each vertical has a versioned schema, review, submit, owner, and operational path |
+| **6. Optimization**         | Analytics, AI assistance, payments, integrations, mobile-ready contracts     | Feature-flagged rollout, measured outcomes, rollback/kill-switch evidence         |
 
 The next build checkpoint is **Stage 2: Customer continuity**, beginning with a request list/detail surface backed by the existing `service_requests` table. The platform should not expand to multiple verticals before one vertical can be submitted, retrieved, tracked, and operationally resolved.
 
 ## 11. Open decisions
 
-| Decision | Recommended default | Current status |
-| --- | --- | --- |
-| Live Supabase project and environment ownership | Configure the connected Lovable/Supabase project and keep secrets outside Git | **UNVERIFIED** |
-| Email confirmation policy | Require confirmation before first durable submission unless business operations explicitly allow otherwise | Decision needed |
-| Request schema versioning | Store an explicit schema version in the request envelope before adding a second vertical | Recommended structural change |
-| Draft persistence | Server-backed draft rows with ownership RLS and expiration policy | Next implementation slice |
-| Admin role source | Dedicated `user_roles` table with server-side checks | Planned, not implemented |
-| Notifications | Start with in-app request events, then add email adapter with receipts | Planned, not implemented |
-| AI assistance | Draft/recommendation only, feature-flagged behind policy and audit | Planned, not implemented |
+| Decision                                        | Recommended default                                                                                        | Current status                |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Live Supabase project and environment ownership | Configure the connected Lovable/Supabase project and keep secrets outside Git                              | **UNVERIFIED**                |
+| Email confirmation policy                       | Require confirmation before first durable submission unless business operations explicitly allow otherwise | Decision needed               |
+| Request schema versioning                       | Store an explicit schema version in the request envelope before adding a second vertical                   | Recommended structural change |
+| Draft persistence                               | Server-backed draft rows with ownership RLS and expiration policy                                          | Next implementation slice     |
+| Admin role source                               | Dedicated `user_roles` table with server-side checks                                                       | Planned, not implemented      |
+| Notifications                                   | Start with in-app request events, then add email adapter with receipts                                     | Planned, not implemented      |
+| AI assistance                                   | Draft/recommendation only, feature-flagged behind policy and audit                                         | Planned, not implemented      |
 
 ## References
 

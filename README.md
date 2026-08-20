@@ -14,15 +14,15 @@ The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanSta
 
 ## Routes
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Public landing page and service discovery |
-| `/auth` | Sign-in and account creation |
-| `/dashboard` | Authenticated customer workspace |
+| Route                     | Purpose                                             |
+| ------------------------- | --------------------------------------------------- |
+| `/`                       | Public landing page and service discovery           |
+| `/auth`                   | Sign-in and account creation                        |
+| `/dashboard`              | Authenticated customer workspace                    |
 | `/onboarding/agriculture` | Agriculture-specific intake, review, and submission |
-| `/requests` | Authenticated customer request tracking |
-| `/insurance` | Current placeholder vertical |
-| `/mortgage` | Current placeholder vertical |
+| `/requests`               | Authenticated customer request tracking             |
+| `/insurance`              | Current placeholder vertical                        |
+| `/mortgage`               | Current placeholder vertical                        |
 
 ## Development commands
 

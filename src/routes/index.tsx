@@ -1,12 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  Compass,
-  ClipboardList,
-  FileCheck2,
-  Send,
-  Sparkles,
-} from "lucide-react";
+import { Compass, ClipboardList, FileCheck2, Send, Sparkles } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 import {
   AppLayout,
@@ -18,10 +12,7 @@ import {
   GuidedRequestGateway,
   NairaLeapGuideContainer,
 } from "@/components";
-import {
-  SERVICE_CATALOG,
-  type ServiceDefinition,
-} from "@/features/services/serviceCatalog";
+import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -64,17 +55,28 @@ function LandingPage() {
               id="hero-title"
               className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl"
             >
-              What can we help you{" "}
-              <span className="text-gradient-brand">with today?</span>
+              What can we help you <span className="text-gradient-brand">with today?</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Browse our services or let NairaLeap Guide help you identify the right solution.
             </p>
             <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-              <BrandButton className="min-h-12 px-6 text-base">
+              <BrandButton
+                className="min-h-12 px-6 text-base"
+                onClick={() => {
+                  setActiveService(null);
+                  setGuideOpen(true);
+                }}
+              >
                 Let NairaLeap Guide You
               </BrandButton>
-              <BrandButton variant="ghost" className="min-h-12 px-6 text-base">
+              <BrandButton
+                variant="ghost"
+                className="min-h-12 px-6 text-base"
+                onClick={() =>
+                  document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })
+                }
+              >
                 Browse Services
               </BrandButton>
             </div>
@@ -90,9 +92,7 @@ function LandingPage() {
               <h2 id="services-title" className="text-2xl font-semibold tracking-tight sm:text-3xl">
                 Explore services
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Tap any service to learn more.
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">Tap any service to learn more.</p>
             </div>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
@@ -130,10 +130,17 @@ function LandingPage() {
                   Not sure where to begin?
                 </h2>
                 <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  NairaLeap Guide will help you identify the right service in just a few simple steps.
+                  NairaLeap Guide will help you identify the right service in just a few simple
+                  steps.
                 </p>
               </div>
-              <BrandButton className="min-h-12 shrink-0 px-6 text-base">
+              <BrandButton
+                className="min-h-12 shrink-0 px-6 text-base"
+                onClick={() => {
+                  setActiveService(null);
+                  setGuideOpen(true);
+                }}
+              >
                 Start with NairaLeap Guide
               </BrandButton>
             </div>
