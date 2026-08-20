@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BottomDock } from "./BottomDock";
+import { useAuth } from "@/features/auth";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -32,6 +33,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
 function Header() {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header
@@ -52,20 +54,25 @@ function Header() {
             </span>
           </Link>
 
-          <nav
-            aria-label="Primary"
-            className="hidden items-center gap-1 text-sm sm:flex"
-          >
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <div className="hidden items-center gap-1 text-sm sm:flex">
+            <nav aria-label="Primary" className="flex items-center gap-1">
+              {NAV_ITEMS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            <Link
+              to={user ? "/dashboard" : "/auth"}
+              className="rounded-lg px-3 py-2 text-foreground transition-colors hover:bg-surface-elevated"
+            >
+              {user ? "Dashboard" : "Sign in"}
+            </Link>
+          </div>
 
           <button
             type="button"
@@ -98,6 +105,13 @@ function Header() {
                 {item.label}
               </a>
             ))}
+            <Link
+              to={user ? "/dashboard" : "/auth"}
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-3 text-foreground transition-colors hover:bg-surface-elevated"
+            >
+              {user ? "Dashboard" : "Sign in"}
+            </Link>
           </nav>
         </div>
       </div>

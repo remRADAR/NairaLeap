@@ -11,7 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MortgageRouteImport } from './routes/mortgage'
 import { Route as InsuranceRouteImport } from './routes/insurance'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedOnboardingServiceRouteImport } from './routes/_authenticated/onboarding.$service'
 
 const MortgageRoute = MortgageRouteImport.update({
   id: '/mortgage',
@@ -23,38 +27,90 @@ const InsuranceRoute = InsuranceRouteImport.update({
   path: '/insurance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedOnboardingServiceRoute =
+  AuthenticatedOnboardingServiceRouteImport.update({
+    id: '/onboarding/$service',
+    path: '/onboarding/$service',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/insurance': typeof InsuranceRoute
   '/mortgage': typeof MortgageRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/onboarding/$service': typeof AuthenticatedOnboardingServiceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/insurance': typeof InsuranceRoute
   '/mortgage': typeof MortgageRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/onboarding/$service': typeof AuthenticatedOnboardingServiceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/auth': typeof AuthRoute
   '/insurance': typeof InsuranceRoute
   '/mortgage': typeof MortgageRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/onboarding/$service': typeof AuthenticatedOnboardingServiceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/insurance' | '/mortgage'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/insurance'
+    | '/mortgage'
+    | '/dashboard'
+    | '/onboarding/$service'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/insurance' | '/mortgage'
-  id: '__root__' | '/' | '/insurance' | '/mortgage'
+  to:
+    | '/'
+    | '/auth'
+    | '/insurance'
+    | '/mortgage'
+    | '/dashboard'
+    | '/onboarding/$service'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/insurance'
+    | '/mortgage'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/onboarding/$service'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AuthRoute: typeof AuthRoute
   InsuranceRoute: typeof InsuranceRoute
   MortgageRoute: typeof MortgageRoute
 }
@@ -75,6 +131,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsuranceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -82,11 +152,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/onboarding/$service': {
+      id: '/_authenticated/onboarding/$service'
+      path: '/onboarding/$service'
+      fullPath: '/onboarding/$service'
+      preLoaderRoute: typeof AuthenticatedOnboardingServiceRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedOnboardingServiceRoute: typeof AuthenticatedOnboardingServiceRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedOnboardingServiceRoute: AuthenticatedOnboardingServiceRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AuthRoute: AuthRoute,
   InsuranceRoute: InsuranceRoute,
   MortgageRoute: MortgageRoute,
 }
