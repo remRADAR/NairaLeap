@@ -36,6 +36,10 @@ bun run lint
 
 The existing lint command still reports repository-wide formatting debt. TypeScript and the production build pass at the current implementation checkpoint.
 
+## Production setup
+
+Follow [`docs/vercel-supabase-production-runbook.md`](./docs/vercel-supabase-production-runbook.md) for the exact Vercel environment-variable, redeployment, Supabase Auth URL, migration, and live verification sequence. The runbook never stores secrets and includes a troubleshooting matrix for the current production blocker.
+
 ## Architecture
 
 Read [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the product model, canonical request contract, security boundaries, rollout stages, and future module responsibilities. The rendered platform flow is available at [`docs/architecture/nairaleap-platform.png`](./docs/architecture/nairaleap-platform.png), with Mermaid source at [`docs/architecture/nairaleap-platform.mmd`](./docs/architecture/nairaleap-platform.mmd).
