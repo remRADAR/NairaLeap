@@ -16,7 +16,7 @@ import { useAuth } from "@/features/auth";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — NairaLeap" },
+      { title: "Nairaleap - Service Portal" },
       {
         name: "description",
         content: "Sign in or create a NairaLeap account to submit and track service requests.",
@@ -125,10 +125,12 @@ function AuthPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-glow">
-                        <span className="grid h-8 w-8 place-items-center rounded-xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]">
-                          <span className="text-sm font-semibold">N</span>
-                        </span>
-                        NairaLeap account
+                        <img
+                          src="/nairaleap-logo.png"
+                          alt="Nairaleap - Service Portal"
+                          className="block h-8 w-[11rem] object-cover object-center"
+                        />
+                        <span className="sr-only">Account</span>
                       </div>
                       <h2 className="mt-5 text-2xl font-semibold tracking-tight sm:text-3xl">
                         {mode === "sign-in" ? "Welcome back" : "Create your account"}

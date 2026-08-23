@@ -78,17 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "NairaLeap Service Portal" },
+      { title: "Nairaleap - Service Portal" },
       {
         name: "description",
         content:
           "Discover NairaLeap services, get guided onboarding, and submit structured service requests.",
       },
       { name: "theme-color", content: "#1a0b2e" },
-      { property: "og:title", content: "NairaLeap Service Portal" },
+      { property: "og:title", content: "Nairaleap - Service Portal" },
       {
         property: "og:description",
-        content: "The dedicated portal for discovering and requesting NairaLeap services.",
+        content:
+          "Nairaleap - Service Portal: discover services, complete guided onboarding, and track requests.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -39,16 +39,12 @@ function Header() {
     <header className="sticky top-0 z-40" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
         <div className="glass-panel flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Link to="/" className="flex min-w-0 items-center gap-2.5">
-            <span
-              aria-hidden="true"
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl gradient-brand text-primary-foreground font-semibold shadow-[var(--shadow-glow)]"
-            >
-              N
-            </span>
-            <span className="truncate text-sm font-semibold tracking-tight sm:text-base">
-              NairaLeap <span className="text-muted-foreground">Portal</span>
-            </span>
+          <Link to="/" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink">
+            <img
+              src="/nairaleap-logo.png"
+              alt="Nairaleap - Service Portal"
+              className="block h-10 w-[10rem] max-w-full object-cover object-center sm:h-11 sm:w-[13rem]"
+            />
           </Link>
 
           <div className="hidden items-center gap-1 text-sm sm:flex">
@@ -140,7 +136,7 @@ function Footer() {
         ))}
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-6">
-        <p>© {new Date().getFullYear()} NairaLeap Service Portal</p>
+        <p>© {new Date().getFullYear()} Nairaleap - Service Portal</p>
         <p>Connected to the main NairaLeap website</p>
       </div>
     </footer>
