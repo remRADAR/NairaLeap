@@ -1,8 +1,9 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, ClipboardList, Sprout } from "lucide-react";
+import { ArrowRight, ClipboardList } from "lucide-react";
 
 import { BrandButton, Container, GlassCard } from "@/components";
 import { listMyServiceRequests } from "@/features/service-requests/server";
+import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/_authenticated/requests")({
   head: () => ({
@@ -18,18 +19,9 @@ export const Route = createFileRoute("/_authenticated/requests")({
   component: RequestsPage,
 });
 
-const SERVICE_LABELS: Record<string, string> = {
-  agriculture: "Agriculture",
-  "property-listings": "Property Listings",
-  "business-funding": "Business Funding",
-  partnerships: "Partnerships",
-  "vendor-marketplace": "Vendor Marketplace",
-  "distress-sales": "Distress Sales",
-  recycling: "Recycling & Scrap",
-  "business-briefs": "Business Briefs",
-  "professional-services": "Professional Services",
-  support: "Customer Support",
-};
+const SERVICE_MAP = Object.fromEntries(
+  SERVICE_CATALOG.map((service) => [service.id, service]),
+) as Record<ServiceId, (typeof SERVICE_CATALOG)[number]>;
 
 const STATUS_LABELS: Record<string, string> = {
   submitted: "Submitted",
@@ -65,11 +57,10 @@ function RequestsPage() {
             </div>
           </div>
           <Link
-            to="/onboarding/$service"
-            params={{ service: "agriculture" }}
+            to="/dashboard"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl gradient-brand px-5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)]"
           >
-            New Agriculture request
+            Start a new request
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </header>
@@ -77,52 +68,53 @@ function RequestsPage() {
         {requests.length === 0 ? (
           <GlassCard className="mt-10 p-8 text-center sm:p-12">
             <span className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-primary/15 text-primary">
-              <Sprout className="h-7 w-7" aria-hidden="true" />
+              <ClipboardList className="h-7 w-7" aria-hidden="true" />
             </span>
             <h2 className="mt-5 text-2xl font-semibold tracking-tight">No requests yet</h2>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-              Start with Agriculture and we’ll guide you through the information needed to prepare a
-              request for the NairaLeap team.
+              Choose any service from your dashboard and the guided intake will capture the details
+              needed for the NairaLeap team.
             </p>
-            <Link
-              to="/onboarding/$service"
-              params={{ service: "agriculture" }}
-              className="mt-6 inline-flex"
-            >
-              <BrandButton>Start Agriculture intake</BrandButton>
+            <Link to="/dashboard" className="mt-6 inline-flex">
+              <BrandButton>Choose a service</BrandButton>
             </Link>
           </GlassCard>
         ) : (
           <section className="mt-10 space-y-4" aria-label="Submitted service requests">
-            {requests.map((request) => (
-              <GlassCard key={request.id} className="p-5 sm:p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-start gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-primary/15 text-primary">
-                      <Sprout className="h-5 w-5" aria-hidden="true" />
-                    </span>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-primary-glow">
-                        {SERVICE_LABELS[request.service_id] ?? request.service_id}
-                      </p>
-                      <h2 className="mt-1 text-lg font-semibold tracking-tight">
-                        Request {request.id.slice(0, 8)}
-                      </h2>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Submitted {new Date(request.created_at).toLocaleDateString()}
-                      </p>
+            {requests.map((request) => {
+              const service = SERVICE_MAP[request.service_id as ServiceId];
+              const RequestIcon = service?.icon ?? ClipboardList;
+
+              return (
+                <GlassCard key={request.id} className="p-5 sm:p-6">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-start gap-3">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-primary/15 text-primary">
+                        <RequestIcon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                      <div>
+                        <p className="text-xs uppercase tracking-widest text-primary-glow">
+                          {service?.title ?? request.service_id}
+                        </p>
+                        <h2 className="mt-1 text-lg font-semibold tracking-tight">
+                          Request {request.id.slice(0, 8)}
+                        </h2>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          Submitted {new Date(request.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
+                    <span className="inline-flex w-fit rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                      {STATUS_LABELS[request.status] ?? request.status}
+                    </span>
                   </div>
-                  <span className="inline-flex w-fit rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                    {STATUS_LABELS[request.status] ?? request.status}
-                  </span>
-                </div>
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4 text-xs text-muted-foreground">
-                  <span>Schema {request.schema_version}</span>
-                  <span>Reference: {request.id}</span>
-                </div>
-              </GlassCard>
-            ))}
+                  <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4 text-xs text-muted-foreground">
+                    <span>Schema {request.schema_version}</span>
+                    <span>Reference: {request.id}</span>
+                  </div>
+                </GlassCard>
+              );
+            })}
           </section>
         )}
       </Container>

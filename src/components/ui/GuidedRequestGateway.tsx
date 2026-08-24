@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { BrandButton } from "./BrandButton";
 import type { ServiceDefinition } from "@/features/services/serviceCatalog";
+import { SERVICE_INTELLIGENCE_MAP } from "@/features/service-intelligence-catalog";
 
 export interface GuidedRequestGatewayProps {
   service: ServiceDefinition | null;
@@ -34,6 +35,9 @@ export function GuidedRequestGateway({
   onBack,
 }: GuidedRequestGatewayProps) {
   const Icon = service?.icon;
+  const estimatedCompletionTime = service
+    ? SERVICE_INTELLIGENCE_MAP[service.id]?.estimatedCompletionTime
+    : undefined;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -130,7 +134,9 @@ export function GuidedRequestGateway({
                   <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Estimated time
                   </div>
-                  <div className="mt-0.5 text-sm font-semibold text-foreground">2–3 minutes</div>
+                  <div className="mt-0.5 text-sm font-semibold text-foreground">
+                    {estimatedCompletionTime ?? "A few minutes"}
+                  </div>
                 </div>
               </div>
               <div className="glass-panel flex items-start gap-3 rounded-xl p-4">
