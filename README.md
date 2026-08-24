@@ -10,7 +10,7 @@ Live Supabase authentication, migration execution, RLS behavior, and request ins
 
 ## Stack
 
-The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, TanStack Query, Supabase Auth/Postgres, Zod, and Radix/shadcn-style UI primitives. The runtime is designed for Cloudflare-compatible deployment through the existing Lovable/TanStack configuration.
+The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, TanStack Query, Supabase Auth/Postgres, Zod, and Radix/shadcn-style UI primitives. The runtime is configured for Cloudflare-compatible deployment through the project’s own TanStack Start and Nitro build configuration.
 
 ## Routes
 
