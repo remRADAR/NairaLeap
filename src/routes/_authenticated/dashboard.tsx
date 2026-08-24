@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, LogOut, Sprout, UserRound } from "lucide-react";
+import { ArrowRight, LogOut, UserRound } from "lucide-react";
 
-import { BrandButton, Container, GlassCard } from "@/components";
+import {
+  BrandButton,
+  Container,
+  GlassCard,
+  NairaLeapGuideContainer,
+  ServiceCard,
+} from "@/components";
 import { useAuth } from "@/features/auth";
+import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -23,6 +30,8 @@ function DashboardPage() {
   const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeService, setActiveService] = useState<ServiceDefinition | null>(null);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -77,29 +86,29 @@ function DashboardPage() {
 
         <section className="mt-10 grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
           <GlassCard className="p-6 sm:p-8">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-3 py-1 text-xs text-muted-foreground">
-                  <Sprout className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
-                  Agriculture
-                </span>
-                <h2 className="mt-5 text-2xl font-semibold tracking-tight">
-                  Start an Agriculture request
-                </h2>
-                <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  Tell us about your farm, inputs, buyers, or agribusiness goals. We’ll turn your
-                  answers into a structured request for the NairaLeap team.
-                </p>
-              </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-primary-glow">Service intake</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight">Choose a service</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Select any service below to open the guided questions, review your final rundown,
+                and submit a request directly from your workspace.
+              </p>
             </div>
-            <Link
-              to="/onboarding/$service"
-              params={{ service: "agriculture" }}
-              className="mt-7 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl gradient-brand px-5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition-transform hover:-translate-y-0.5"
-            >
-              Begin Agriculture intake
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {SERVICE_CATALOG.map((service) => (
+                <ServiceCard
+                  key={service.id}
+                  icon={service.icon}
+                  title={service.title}
+                  description={service.shortDescription}
+                  onClick={() => {
+                    setActiveService(service);
+                    setGuideOpen(true);
+                  }}
+                  className="min-h-[6.5rem] bg-white/[0.03] p-4"
+                />
+              ))}
+            </div>
           </GlassCard>
 
           <div className="space-y-5">
@@ -131,6 +140,12 @@ function DashboardPage() {
             </GlassCard>
           </div>
         </section>
+
+        <NairaLeapGuideContainer
+          service={activeService}
+          open={guideOpen}
+          onOpenChange={setGuideOpen}
+        />
       </Container>
     </main>
   );
