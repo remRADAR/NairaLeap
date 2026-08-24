@@ -74,6 +74,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "application-name", content: "Nairaleap - Service Portal" },
+      { name: "apple-mobile-web-app-title", content: "Nairaleap - Service Portal" },
       { title: "Nairaleap - Service Portal" },
       {
         name: "description",
