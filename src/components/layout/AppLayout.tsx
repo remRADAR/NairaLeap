@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BottomDock } from "./BottomDock";
 import { NairaLeapBot } from "../ui/NairaLeapBot";
 import { NairaLeapGuideContainer } from "../ui/NairaLeapGuideContainer";
 import { useAuth } from "@/features/auth";
+import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCatalog";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -24,9 +25,17 @@ const NAV_ITEMS = [
  */
 export function AppLayout({ children }: AppLayoutProps) {
   const [guideOpen, setGuideOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   return (
-    <div className="dark flex min-h-dvh flex-col text-foreground">
+    <div
+      className="dark flex min-h-dvh flex-col text-foreground"
+      data-app-hydrated={hydrated ? "true" : "false"}
+    >
       <Header />
       <main className="flex-1 pb-32 sm:pb-28">{children}</main>
       <Footer />
@@ -117,12 +126,37 @@ function Header() {
   );
 }
 
+type FooterItem = {
+  label: string;
+  href?: string;
+  serviceId?: ServiceId;
+};
+
 function Footer() {
-  const cols: { title: string; items: string[] }[] = [
-    { title: "Company", items: ["About", "Careers", "Press"] },
-    { title: "Services", items: ["Agriculture", "Property", "Funding", "Marketplace"] },
-    { title: "Legal", items: ["Privacy", "Terms", "Cookies"] },
-    { title: "Contact", items: ["Support", "Partners", "hello@nairaleap.com"] },
+  const cols: { title: string; items: FooterItem[] }[] = [
+    {
+      title: "Company",
+      items: [{ label: "About", href: "/#about" }, { label: "Careers" }, { label: "Press" }],
+    },
+    {
+      title: "Services",
+      items: SERVICE_CATALOG.slice(0, 4).map((service) => ({
+        label: service.title,
+        serviceId: service.id,
+      })),
+    },
+    {
+      title: "Legal",
+      items: [{ label: "Privacy" }, { label: "Terms" }, { label: "Cookies" }],
+    },
+    {
+      title: "Contact",
+      items: [
+        { label: "Support" },
+        { label: "Partners" },
+        { label: "hello@nairaleap.com", href: "mailto:hello@nairaleap.com" },
+      ],
+    },
   ];
 
   return (
@@ -133,10 +167,25 @@ function Footer() {
             <h4 className="text-sm font-semibold text-foreground">{col.title}</h4>
             <ul className="mt-3 space-y-2">
               {col.items.map((item) => (
-                <li key={item}>
-                  <span className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-                    {item}
-                  </span>
+                <li key={item.label}>
+                  {item.serviceId ? (
+                    <Link
+                      to="/services/$service"
+                      params={{ service: item.serviceId }}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : item.href ? (
+                    <a
+                      href={item.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">{item.label}</span>
+                  )}
                 </li>
               ))}
             </ul>

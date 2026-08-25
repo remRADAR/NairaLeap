@@ -26,6 +26,10 @@ import {
   type ServiceId,
 } from "@/features/services/serviceCatalog";
 import { cn } from "@/lib/utils";
+import {
+  savePendingGuideDraft,
+  consumePendingGuideDraft,
+} from "@/features/service-intake/pendingGuide";
 import { BrandButton, GlassCard } from "@/components";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
@@ -74,7 +78,8 @@ export function NairaLeapGuideContainer({
     setStage(service ? "questions" : "discovery");
     setSelectedService(service);
     setDiscoveryAnswers(null);
-    setAnswers({});
+    const pendingDraft = service ? consumePendingGuideDraft(service.id as ServiceId) : null;
+    setAnswers(pendingDraft?.answers ?? {});
     setRundown(null);
     setRequestId(null);
     setError(null);
@@ -170,7 +175,9 @@ export function NairaLeapGuideContainer({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="left-0 top-0 h-[100dvh] max-h-[100dvh] w-screen max-w-none translate-x-0 translate-y-0 gap-0 rounded-none border-0 bg-background p-0 sm:left-1/2 sm:top-1/2 sm:h-[92dvh] sm:max-h-[92dvh] sm:w-[min(100%,48rem)] sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-glass-border sm:bg-background/95 sm:backdrop-blur-xl"
+        id="nairaleap-guide-dialog"
         aria-describedby="naira-guide-desc"
+        data-testid="nairaleap-guide-dialog"
       >
         <div className="flex h-full min-h-0 flex-col">
           <header className="glass-panel rounded-none border-x-0 border-t-0 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:rounded-t-3xl sm:border-x sm:px-6">
@@ -328,7 +335,17 @@ export function NairaLeapGuideContainer({
                   submitting={submitting}
                   onEdit={() => setStage("questions")}
                   onSubmit={handleSubmit}
-                  onSignIn={() => void navigate({ to: "/auth" })}
+                  onSignIn={() => {
+                    if (!selectedService) return;
+                    const saved = savePendingGuideDraft(selectedService.id as ServiceId, answers);
+                    if (!saved) {
+                      setError(
+                        "Your browser blocked temporary draft storage. Keep this guide open while you sign in, then return to submit.",
+                      );
+                      return;
+                    }
+                    void navigate({ to: "/auth" });
+                  }}
                 />
               ) : null}
 

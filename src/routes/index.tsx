@@ -126,6 +126,7 @@ function LandingPage() {
                 </p>
               </div>
               <BrandButton
+                data-testid="homepage-guide-trigger"
                 className="min-h-12 shrink-0 px-6 text-base"
                 onClick={() => setGuideOpen(true)}
               >
@@ -147,36 +148,38 @@ function LandingPage() {
               Four simple steps from question to submitted request.
             </p>
           </div>
-          <ol className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent lg:block"
             />
-            {STEPS.map((step, i) => {
-              const Icon = step.icon;
-              return (
-                <li key={step.title} className="relative">
-                  <div className="glass-panel flex flex-col items-center gap-3 p-6 text-center">
-                    <div className="relative">
-                      <span
-                        aria-hidden="true"
-                        className="grid h-14 w-14 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
-                      >
-                        <Icon className="h-6 w-6" />
-                      </span>
-                      <span
-                        aria-hidden="true"
-                        className="absolute -right-1 -top-1 grid h-6 w-6 place-items-center rounded-full border border-glass-border bg-background text-[11px] font-semibold text-foreground"
-                      >
-                        {i + 1}
-                      </span>
+            <ol className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {STEPS.map((step, i) => {
+                const Icon = step.icon;
+                return (
+                  <li key={step.title} className="relative">
+                    <div className="glass-panel flex flex-col items-center gap-3 p-6 text-center">
+                      <div className="relative">
+                        <span
+                          aria-hidden="true"
+                          className="grid h-14 w-14 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
+                        >
+                          <Icon className="h-6 w-6" />
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="absolute -right-1 -top-1 grid h-6 w-6 place-items-center rounded-full border border-glass-border bg-background text-[11px] font-semibold text-foreground"
+                        >
+                          {i + 1}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
                     </div>
-                    <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
         </Container>
       </section>
 

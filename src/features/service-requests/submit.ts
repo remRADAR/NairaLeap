@@ -2,26 +2,49 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { REQUEST_BLUEPRINT_MAP } from "@/features/request-blueprint-engine";
-import type { ServiceId } from "@/features/service-intelligence-catalog";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { Json } from "@/lib/supabase/types";
 
-const submitServiceRequestSchema = z.object({
-  serviceId: z.string().min(1),
-  schemaVersion: z.string().min(1),
-  payload: z.record(z.string(), z.unknown()),
-  idempotencyKey: z.string().uuid(),
-});
+const submitServiceRequestSchema = z
+  .object({
+    serviceId: z.string().min(1),
+    schemaVersion: z.string().min(1),
+    payload: z.record(z.string(), z.unknown()).superRefine((payload, context) => {
+      if (JSON.stringify(payload).length > 50_000) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Request details are too large.",
+        });
+      }
+    }),
+    idempotencyKey: z.string().uuid(),
+  })
+  .superRefine((input, context) => {
+    if (!REQUEST_BLUEPRINT_MAP[input.serviceId]) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["serviceId"],
+        message: "This service is not available.",
+      });
+    }
+    if (input.schemaVersion !== `${input.serviceId}.v1`) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["schemaVersion"],
+        message: "This request schema is not supported.",
+      });
+    }
+  });
 
 function hasValue(value: unknown): boolean {
   if (Array.isArray(value)) return value.length > 0;
   if (typeof value === "boolean") return true;
-  if (typeof value === "number") return !Number.isNaN(value);
+  if (typeof value === "number") return Number.isFinite(value);
   return typeof value === "string" ? value.trim().length > 0 : false;
 }
 
 export const submitServiceRequest = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => submitServiceRequestSchema.parse(input))
+  .validator((input: unknown) => submitServiceRequestSchema.parse(input))
   .handler(async ({ data }) => {
     const blueprint = REQUEST_BLUEPRINT_MAP[data.serviceId];
     if (!blueprint) {

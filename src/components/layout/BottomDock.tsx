@@ -3,8 +3,7 @@ import { Shield, Home, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * BottomDock — always-visible floating glass dock with two portal entry points.
- * Insurance → /insurance · Mortgage → /mortgage
+ * BottomDock — always-visible floating glass dock with two canonical service entry points.
  */
 export function BottomDock() {
   return (
@@ -16,26 +15,27 @@ export function BottomDock() {
         aria-label="Portal quick access"
         className="glass-panel pointer-events-auto flex items-center gap-1.5 p-1.5 shadow-[var(--shadow-elevated)]"
       >
-        <DockLink to="/insurance" icon={Shield} label="Insurance" />
+        <DockLink serviceId="insurance" icon={Shield} label="Insurance" />
         <span aria-hidden="true" className="mx-0.5 h-6 w-px bg-glass-border" />
-        <DockLink to="/mortgage" icon={Home} label="Mortgage" />
+        <DockLink serviceId="mortgage" icon={Home} label="Mortgage" />
       </nav>
     </div>
   );
 }
 
 function DockLink({
-  to,
+  serviceId,
   icon: Icon,
   label,
 }: {
-  to: "/insurance" | "/mortgage";
+  serviceId: "insurance" | "mortgage";
   icon: LucideIcon;
   label: string;
 }) {
   return (
     <Link
-      to={to}
+      to="/services/$service"
+      params={{ service: serviceId }}
       aria-label={label}
       className={cn(
         "inline-flex min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",

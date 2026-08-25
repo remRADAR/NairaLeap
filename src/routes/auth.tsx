@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -12,6 +12,7 @@ import {
 
 import { AppLayout, BrandButton, Container } from "@/components";
 import { useAuth } from "@/features/auth";
+import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -36,9 +37,22 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [confirmationSent, setConfirmationSent] = useState(false);
 
+  const navigateAfterAuth = useCallback(async () => {
+    const pendingServiceId = getPendingGuideServiceId();
+    if (pendingServiceId) {
+      await navigate({
+        to: "/services/$service",
+        params: { service: pendingServiceId },
+        replace: true,
+      });
+      return;
+    }
+    await navigate({ to: "/dashboard", replace: true });
+  }, [navigate]);
+
   useEffect(() => {
-    if (!loading && user) void navigate({ to: "/dashboard", replace: true });
-  }, [loading, navigate, user]);
+    if (!loading && user) void navigateAfterAuth();
+  }, [loading, navigateAfterAuth, user]);
 
   function switchMode(nextMode: "sign-in" | "sign-up") {
     setMode(nextMode);
@@ -91,14 +105,14 @@ function AuthPage() {
 
     if (submittedMode === "sign-up") {
       if (result.sessionCreated) {
-        await navigate({ to: "/dashboard", replace: true });
+        await navigateAfterAuth();
         return;
       }
       setConfirmationSent(true);
       return;
     }
 
-    await navigate({ to: "/dashboard", replace: true });
+    await navigateAfterAuth();
   }
 
   return (
@@ -175,6 +189,7 @@ function AuthPage() {
 
                   <div className="mt-7 grid grid-cols-2 gap-1 rounded-2xl border border-glass-border bg-glass p-1.5">
                     <AuthModeButton
+                      testId="auth-mode-sign-in"
                       active={mode === "sign-in"}
                       icon={LockKeyhole}
                       onClick={() => switchMode("sign-in")}
@@ -182,6 +197,7 @@ function AuthPage() {
                       Sign in
                     </AuthModeButton>
                     <AuthModeButton
+                      testId="auth-mode-sign-up"
                       active={mode === "sign-up"}
                       icon={UserRound}
                       onClick={() => switchMode("sign-up")}
@@ -311,17 +327,20 @@ function TrustPoint({ icon: Icon, text }: { icon: typeof CheckCircle2; text: str
 function AuthModeButton({
   active,
   children,
+  testId,
   icon: Icon,
   onClick,
 }: {
   active: boolean;
   children: string;
+  testId: string;
   icon: typeof LockKeyhole;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
+      data-testid={testId}
       aria-pressed={active}
       onClick={onClick}
       className={`flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${

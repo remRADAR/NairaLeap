@@ -57,11 +57,14 @@ describe("authentication branding and entry states", () => {
   });
 
   it("switches to the new-account state without losing the auth surface", () => {
-    cy.contains("button", "Create account").click();
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('[data-testid="auth-mode-sign-up"]').should("be.visible").click({ force: true });
 
-    cy.contains("h2", "Create your account").should("be.visible");
+    cy.get("h2").contains("Create your account").should("be.visible");
     cy.get("#auth-password").should("have.attr", "autocomplete", "new-password");
-    cy.contains("button", "Create account").should("have.attr", "aria-pressed", "true");
+    cy.get('[data-testid="auth-mode-sign-up"]')
+      .should("have.attr", "aria-pressed", "true")
+      .and("be.visible");
     cy.get("#auth-email").should("be.visible");
     cy.get("#auth-password").should("be.visible");
 

@@ -2,15 +2,9 @@ import { useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, LogOut, UserRound } from "lucide-react";
 
-import {
-  BrandButton,
-  Container,
-  GlassCard,
-  NairaLeapGuideContainer,
-  ServiceCard,
-} from "@/components";
+import { BrandButton, Container, GlassCard, ServiceCard } from "@/components";
 import { useAuth } from "@/features/auth";
-import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
+import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -30,8 +24,6 @@ function DashboardPage() {
   const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeService, setActiveService] = useState<ServiceDefinition | null>(null);
-  const [guideOpen, setGuideOpen] = useState(false);
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -101,10 +93,7 @@ function DashboardPage() {
                   icon={service.icon}
                   title={service.title}
                   description={service.shortDescription}
-                  onClick={() => {
-                    setActiveService(service);
-                    setGuideOpen(true);
-                  }}
+                  href={`/services/${service.id}`}
                   className="min-h-[6.5rem] bg-white/[0.03] p-4"
                 />
               ))}
@@ -140,12 +129,6 @@ function DashboardPage() {
             </GlassCard>
           </div>
         </section>
-
-        <NairaLeapGuideContainer
-          service={activeService}
-          open={guideOpen}
-          onOpenChange={setGuideOpen}
-        />
       </Container>
     </main>
   );

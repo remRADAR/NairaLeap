@@ -30,7 +30,12 @@ function loadPosition(): BotPosition {
     const stored = window.localStorage.getItem(POSITION_KEY);
     if (!stored) return DEFAULT_POSITION;
     const parsed = JSON.parse(stored) as Partial<BotPosition>;
-    if (typeof parsed.right !== "number" || typeof parsed.bottom !== "number") {
+    if (
+      typeof parsed.right !== "number" ||
+      typeof parsed.bottom !== "number" ||
+      !Number.isFinite(parsed.right) ||
+      !Number.isFinite(parsed.bottom)
+    ) {
       return DEFAULT_POSITION;
     }
     return {
@@ -80,6 +85,8 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
     position: BotPosition;
   } | null>(null);
   const idleTimerRef = useRef<number | null>(null);
+  const speechTimerRef = useRef<number | null>(null);
+  const draggedRef = useRef(false);
 
   const persistPosition = useCallback((nextPosition: BotPosition) => {
     const safePosition = clampPosition(nextPosition);
@@ -101,7 +108,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   }, []);
 
   useEffect(() => {
-    setPosition(loadPosition());
+    setPosition(clampPosition(loadPosition()));
     setSpeechAvailable("speechSynthesis" in window && "SpeechSynthesisUtterance" in window);
     wakeBot();
     const handleResize = () => setPosition((current) => clampPosition(current));
@@ -109,6 +116,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
     return () => {
       window.removeEventListener("resize", handleResize);
       if (idleTimerRef.current) window.clearTimeout(idleTimerRef.current);
+      if (speechTimerRef.current) window.clearTimeout(speechTimerRef.current);
       window.speechSynthesis?.cancel();
     };
   }, [wakeBot]);
@@ -118,12 +126,28 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
     const handlePointerMove = (event: PointerEvent) => {
       const drag = dragRef.current;
       if (!drag || event.pointerId !== drag.pointerId) return;
+      if (Math.abs(event.clientX - drag.startX) > 4 || Math.abs(event.clientY - drag.startY) > 4) {
+        draggedRef.current = true;
+      }
+      setPosition(
+        clampPosition({
+          right: drag.position.right - (event.clientX - drag.startX),
+          bottom: drag.position.bottom - (event.clientY - drag.startY),
+        }),
+      );
+    };
+    const handlePointerUp = (event: PointerEvent) => {
+      const drag = dragRef.current;
+      if (!drag || drag.pointerId !== event.pointerId) return;
       persistPosition({
         right: drag.position.right - (event.clientX - drag.startX),
         bottom: drag.position.bottom - (event.clientY - drag.startY),
       });
+      dragRef.current = null;
+      setIsDragging(false);
+      wakeBot();
     };
-    const handlePointerUp = (event: PointerEvent) => {
+    const handlePointerCancel = (event: PointerEvent) => {
       if (dragRef.current?.pointerId !== event.pointerId) return;
       dragRef.current = null;
       setIsDragging(false);
@@ -131,15 +155,18 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
     };
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerCancel);
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerCancel);
     };
   }, [isDragging, persistPosition, wakeBot]);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0) return;
     wakeBot();
+    draggedRef.current = false;
     dragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -151,6 +178,10 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   };
 
   const handleBotClick = () => {
+    if (draggedRef.current) {
+      draggedRef.current = false;
+      return;
+    }
     wakeBot();
     setExpression("curious");
     setPanelOpen((open) => !open);
@@ -160,7 +191,8 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
     wakeBot();
     setExpression("talking");
     speak(BOT_MESSAGES.talking);
-    window.setTimeout(() => setExpression("idle"), 2200);
+    if (speechTimerRef.current) window.clearTimeout(speechTimerRef.current);
+    speechTimerRef.current = window.setTimeout(() => setExpression("idle"), 2200);
   };
 
   return (

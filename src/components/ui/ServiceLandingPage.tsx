@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, Check, ClipboardList, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SERVICE_INTELLIGENCE_MAP } from "@/features/service-intelligence-catalog";
 import {
@@ -8,6 +8,7 @@ import {
   getServiceBySlug,
 } from "@/features/services/serviceLandingContent";
 import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
+import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide";
 import { BrandButton, Container, GlassCard } from "@/components";
 import { NairaLeapGuideContainer } from "./NairaLeapGuideContainer";
 
@@ -20,6 +21,10 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
   const content = SERVICE_LANDING_CONTENT[service.id];
   const intelligence = SERVICE_INTELLIGENCE_MAP[service.id];
   const Icon = service.icon;
+
+  useEffect(() => {
+    if (getPendingGuideServiceId() === service.id) setGuideOpen(true);
+  }, [service.id]);
   const relatedServices = (content.relatedServiceIds ?? [])
     .map((id) => SERVICE_CATALOG.find((item) => item.id === id))
     .filter((item): item is ServiceDefinition => Boolean(item));
@@ -66,7 +71,13 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                 {service.longDescription}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <BrandButton className="min-h-12 px-6 text-base" onClick={() => setGuideOpen(true)}>
+                <BrandButton
+                  data-testid="service-start-onboarding"
+                  aria-expanded={guideOpen}
+                  aria-controls="nairaleap-guide-dialog"
+                  className="min-h-12 px-6 text-base"
+                  onClick={() => setGuideOpen(true)}
+                >
                   Start onboarding
                   <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                 </BrandButton>
@@ -198,7 +209,10 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                   </p>
                 </div>
                 <BrandButton
-                  className="min-h-12 shrink-0 px-6 text-base"
+                  data-testid="service-start-onboarding-secondary"
+                  aria-expanded={guideOpen}
+                  aria-controls="nairaleap-guide-dialog"
+                  className="min-h-11 shrink-0 px-6 text-base"
                   onClick={() => setGuideOpen(true)}
                 >
                   Start onboarding

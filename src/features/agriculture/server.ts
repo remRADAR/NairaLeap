@@ -10,7 +10,7 @@ const submitAgricultureRequestSchema = z.object({
 });
 
 export const submitAgricultureRequest = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => submitAgricultureRequestSchema.parse(input))
+  .validator((input: unknown) => submitAgricultureRequestSchema.parse(input))
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient();
     const { data: authData, error: authError } = await supabase.auth.getUser();

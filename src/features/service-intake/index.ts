@@ -288,7 +288,7 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "diaspora-income", label: "Income earned outside Nigeria" },
     { value: "not-sure", label: "I need help understanding the requirements" },
   ],
-  propertyType: [
+  mortgagePropertyType: [
     { value: "apartment", label: "Apartment or flat" },
     { value: "house", label: "House" },
     { value: "land", label: "Land or plot" },
@@ -350,11 +350,23 @@ function questionTypeForField(type: BlueprintFieldType): Question["type"] {
   return type;
 }
 
-function fallbackChoices(field: BlueprintField): QuestionChoice[] {
-  return CHOICES[field.key] ?? [{ value: "not-sure", label: "I’m not sure yet" }];
+const SERVICE_CHOICE_ALIASES: Partial<Record<ServiceId, Record<string, string>>> = {
+  mortgage: { propertyType: "mortgagePropertyType" },
+};
+
+function choiceKeyForField(field: BlueprintField, serviceId?: ServiceId): string {
+  return SERVICE_CHOICE_ALIASES[serviceId ?? "agriculture"]?.[field.key] ?? field.key;
 }
 
-function fieldToQuestion(field: BlueprintField): Question {
+function fallbackChoices(field: BlueprintField, serviceId?: ServiceId): QuestionChoice[] {
+  return (
+    CHOICES[choiceKeyForField(field, serviceId)] ?? [
+      { value: "not-sure", label: "I’m not sure yet" },
+    ]
+  );
+}
+
+function fieldToQuestion(field: BlueprintField, serviceId: ServiceId): Question {
   const base = {
     id: field.key,
     title: field.label,
@@ -364,12 +376,12 @@ function fieldToQuestion(field: BlueprintField): Question {
 
   switch (questionTypeForField(field.type)) {
     case "single-choice":
-      return { ...base, type: "single-choice", choices: fallbackChoices(field) };
+      return { ...base, type: "single-choice", choices: fallbackChoices(field, serviceId) };
     case "multiple-choice":
       return {
         ...base,
         type: "multiple-choice",
-        choices: fallbackChoices(field),
+        choices: fallbackChoices(field, serviceId),
         minSelections: field.required ? 1 : 0,
       };
     case "yes-no":
@@ -398,7 +410,9 @@ function fieldToQuestion(field: BlueprintField): Question {
 export const SERVICE_QUESTION_SETS: Record<ServiceId, Question[]> = Object.fromEntries(
   Object.entries(REQUEST_BLUEPRINT_MAP).map(([serviceId, blueprint]) => [
     serviceId,
-    [...blueprint.requiredFields, ...blueprint.optionalFields].map(fieldToQuestion),
+    [...blueprint.requiredFields, ...blueprint.optionalFields].map((field) =>
+      fieldToQuestion(field, serviceId as ServiceId),
+    ),
   ]),
 ) as Record<ServiceId, Question[]>;
 
@@ -409,21 +423,26 @@ export function getServiceQuestionSet(serviceId: ServiceId): Question[] {
 function hasAnswer(value: AnswersState[string] | undefined): boolean {
   if (Array.isArray(value)) return value.length > 0;
   if (typeof value === "boolean") return true;
-  if (typeof value === "number") return !Number.isNaN(value);
+  if (typeof value === "number") return Number.isFinite(value);
   return typeof value === "string" ? value.trim().length > 0 : false;
 }
 
-function formatAnswer(field: BlueprintField, value: AnswersState[string]): string {
+function formatAnswer(
+  field: BlueprintField,
+  value: AnswersState[string],
+  serviceId: ServiceId,
+): string {
   if (Array.isArray(value)) {
-    const choices = CHOICES[field.key] ?? [];
+    const choices = CHOICES[choiceKeyForField(field, serviceId)] ?? [];
     return value
       .map((item) => choices.find((choice) => choice.value === item)?.label ?? item)
       .join(", ");
   }
   if (typeof value === "boolean") return value ? "Yes" : "No";
-  if (typeof value === "number") return value.toLocaleString("en-NG");
+  if (typeof value === "number")
+    return Number.isFinite(value) ? value.toLocaleString("en-NG") : "—";
   if (typeof value !== "string") return "—";
-  const choice = CHOICES[field.key]?.find((item) => item.value === value);
+  const choice = CHOICES[choiceKeyForField(field, serviceId)]?.find((item) => item.value === value);
   return choice?.label ?? value;
 }
 
@@ -436,7 +455,7 @@ export function buildServiceRundown(serviceId: ServiceId, answers: AnswersState)
     .map((field) => ({
       key: field.key,
       label: field.label,
-      value: formatAnswer(field, answers[field.key]),
+      value: formatAnswer(field, answers[field.key], serviceId),
       required: field.required,
     }));
 
