@@ -165,6 +165,68 @@
   -webkit-text-fill-color: transparent;
 }
 
+.leapbot-float {
+  animation: leapbot-float 3.8s ease-in-out infinite;
+}
+
+.leapbot-sleep {
+  animation: leapbot-sleep 2.8s ease-in-out infinite;
+}
+
+.leapbot-talking {
+  animation: leapbot-talking 0.7s ease-in-out infinite;
+}
+
+.leapbot-speech-dot {
+  animation: leapbot-speech-dot 0.8s ease-in-out infinite;
+}
+
+.leapbot-speech-dot-delay {
+  animation-delay: 180ms;
+}
+
+@keyframes leapbot-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+}
+
+@keyframes leapbot-sleep {
+  0%,
+  100% {
+    transform: translateY(0) scale(0.96);
+  }
+  50% {
+    transform: translateY(2px) scale(0.93);
+  }
+}
+
+@keyframes leapbot-talking {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-1px) scale(1.015);
+  }
+}
+
+@keyframes leapbot-speech-dot {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
 @keyframes portal-reveal {
   from {
     opacity: 0;
