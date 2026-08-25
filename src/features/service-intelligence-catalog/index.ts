@@ -218,6 +218,24 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
       "Your support request has been logged. A NairaLeap support agent will review it and reach out to you directly with the next steps.",
     nextWorkflow: "support-queue",
   },
+  {
+    id: "insurance",
+    title: "Insurance",
+    icon: "ShieldCheck",
+    shortDescription: "Find cover for life, health, assets and business risks.",
+    detailedDescription:
+      "Describe a new cover, comparison, claim, renewal, policy-support or verification need. NairaLeap will structure the request for review and route it to suitable licensed insurance operators where available.",
+    onboardingCategory: "insurance",
+    estimatedCompletionTime: "4–6 minutes",
+    requiresGuidedQuestions: true,
+    requiresDocuments: false,
+    requiresAdminReview: true,
+    suggestedQuestionSet: "insurance-intake",
+    requiredDocumentTypes: ["government-id", "proof-of-address", "supporting-documents"],
+    outputSummaryTemplate:
+      "Your Insurance request has been prepared. NairaLeap will review your protection need and confirm suitable next steps, provider options, terms and any applicable premium directly with an authorized insurance operator.",
+    nextWorkflow: "guided-question-engine",
+  },
 ];
 
 /** Map of service entries by id for O(1) lookup. */

@@ -10,6 +10,7 @@ import {
   Newspaper,
   Briefcase,
   LifeBuoy,
+  ShieldCheck,
 } from "lucide-react";
 
 export type ServiceId =
@@ -22,7 +23,8 @@ export type ServiceId =
   | "recycling-scrap"
   | "business-briefs"
   | "professional-services"
-  | "customer-support";
+  | "customer-support"
+  | "insurance";
 
 export interface ServiceDefinition {
   id: ServiceId;
@@ -142,5 +144,14 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     longDescription:
       "Reach a human on our support team for questions, feedback or help with an existing request.",
     examples: ["Report an Issue", "Ask a Question", "Give Feedback", "Speak to an Agent"],
+  },
+  {
+    id: "insurance",
+    icon: ShieldCheck,
+    title: "Insurance",
+    shortDescription: "Find cover for life, health, assets and business risks.",
+    longDescription:
+      "Describe the protection you need and NairaLeap will help route you to suitable insurance options and licensed providers for review.",
+    examples: ["Get a Quote", "Compare Cover", "Make a Claim", "Renew or Verify a Policy"],
   },
 ];

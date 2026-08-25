@@ -18,7 +18,8 @@ export type ServiceId =
   | "recycling-scrap"
   | "business-briefs"
   | "professional-services"
-  | "customer-support";
+  | "customer-support"
+  | "insurance";
 
 /** Broad category used to group services in onboarding flows and analytics. */
 export type OnboardingCategory =
@@ -31,7 +32,8 @@ export type OnboardingCategory =
   | "recycling"
   | "information"
   | "professional-services"
-  | "support";
+  | "support"
+  | "insurance";
 
 /** Document type identifiers referenced by services. */
 export type DocumentTypeId =

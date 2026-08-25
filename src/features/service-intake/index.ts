@@ -102,6 +102,12 @@ export const SERVICE_PRICING_MAP = {
     label: "No portal fee configured",
     detail: "Support requests do not display a numeric fee in the current portal.",
   },
+  insurance: {
+    mode: "quote",
+    label: "Quote required after review",
+    detail:
+      "Insurance eligibility, terms, exclusions and premium are confirmed by an authorized insurance operator after reviewing the request.",
+  },
 } satisfies Record<ServiceId, ServicePriceRule>;
 
 const CHOICES: Record<string, QuestionChoice[]> = {
@@ -214,6 +220,31 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "technology", label: "Technology" },
     { value: "general-business", label: "General business" },
   ],
+  insuranceRequestType: [
+    { value: "new-cover", label: "Get new cover" },
+    { value: "compare-options", label: "Compare cover options" },
+    { value: "claim", label: "Make a claim" },
+    { value: "renew-or-change", label: "Renew or change a policy" },
+    { value: "verify-or-support", label: "Verify a policy or get policy support" },
+  ],
+  insuranceCategory: [
+    { value: "motor-auto", label: "Motor and auto" },
+    { value: "health-medical", label: "Health and medical" },
+    { value: "life-family", label: "Life and family" },
+    { value: "home-property", label: "Home and property" },
+    { value: "business-commercial", label: "Business and commercial" },
+    { value: "agriculture", label: "Agriculture" },
+    { value: "travel", label: "Travel" },
+    { value: "marine-cargo-aviation", label: "Marine, cargo and aviation" },
+    { value: "liability-compulsory", label: "Liability and compulsory cover" },
+    { value: "micro-takaful-inclusion", label: "Microinsurance, Takaful and inclusion" },
+  ],
+  providerPreference: [
+    { value: "no-preference", label: "No preference" },
+    { value: "conventional", label: "Conventional insurance" },
+    { value: "takaful", label: "Takaful / cooperative model" },
+    { value: "microinsurance", label: "Microinsurance / lower-cost cover" },
+  ],
 };
 
 const FIELD_HELPERS: Record<string, string> = {
@@ -224,6 +255,11 @@ const FIELD_HELPERS: Record<string, string> = {
   fundingAmount: "Enter the amount you want to raise or access.",
   askingPrice: "Enter the price you are asking for the asset.",
   additionalNotes: "Add anything important that the earlier questions did not cover.",
+  insuranceNeed:
+    "Describe what you want protected, the concern you are trying to address, and any deadline.",
+  coverageAmount: "Optional estimate of the value or protection amount you want to consider.",
+  existingPolicyNumber: "Add this only if you already have a policy with an insurer or broker.",
+  incidentDate: "Add this only if you are reporting a claim or incident.",
 };
 
 function questionTypeForField(type: BlueprintFieldType): Question["type"] {

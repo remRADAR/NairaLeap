@@ -1190,6 +1190,155 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     nextWorkflow: "support-queue",
     priority: "normal",
   },
+  insurance: {
+    serviceId: "insurance",
+    outputTitle: "Insurance Service Request",
+    summaryTemplate:
+      "Your Insurance request has been prepared. NairaLeap will review your protection need and confirm suitable next steps, provider options, terms and any applicable premium directly with an authorized insurance operator.",
+    requiredFields: [
+      {
+        id: "contact-name",
+        key: "contactName",
+        label: "Full name",
+        type: "short-text",
+        required: true,
+      },
+      {
+        id: "contact-phone",
+        key: "contactPhone",
+        label: "Phone number",
+        type: "phone",
+        required: true,
+      },
+      {
+        id: "contact-email",
+        key: "contactEmail",
+        label: "Email address",
+        type: "email",
+        required: true,
+      },
+      {
+        id: "insurance-request-type",
+        key: "insuranceRequestType",
+        label: "What do you need help with?",
+        type: "single-choice",
+        required: true,
+      },
+      {
+        id: "insurance-category",
+        key: "insuranceCategory",
+        label: "What would you like to protect?",
+        type: "single-choice",
+        required: true,
+      },
+      {
+        id: "insurance-location",
+        key: "insuranceLocation",
+        label: "Where is the person, asset or activity located?",
+        type: "location",
+        required: true,
+      },
+      {
+        id: "insurance-need",
+        key: "insuranceNeed",
+        label: "Tell us about the protection need",
+        type: "long-text",
+        required: true,
+      },
+    ],
+    optionalFields: [
+      {
+        id: "asset-or-person",
+        key: "assetOrPerson",
+        label: "Person, asset or business to be covered",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "coverage-amount",
+        key: "coverageAmount",
+        label: "Desired coverage amount, if known",
+        type: "currency",
+        required: false,
+      },
+      {
+        id: "cover-start-date",
+        key: "coverStartDate",
+        label: "Preferred cover start date",
+        type: "date",
+        required: false,
+      },
+      {
+        id: "existing-policy-number",
+        key: "existingPolicyNumber",
+        label: "Existing policy number, if applicable",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "incident-date",
+        key: "incidentDate",
+        label: "Incident date, if this is a claim",
+        type: "date",
+        required: false,
+      },
+      {
+        id: "provider-preference",
+        key: "providerPreference",
+        label: "Provider or cover preference",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "additional-notes",
+        key: "additionalNotes",
+        label: "Additional notes",
+        type: "long-text",
+        required: false,
+      },
+    ],
+    requiredDocuments: [
+      {
+        documentTypeId: "government-id",
+        required: false,
+        description: "May be requested during provider review or verification.",
+      },
+      {
+        documentTypeId: "proof-of-address",
+        required: false,
+        description: "Useful for location and policy verification where applicable.",
+      },
+      {
+        documentTypeId: "supporting-documents",
+        required: false,
+        description: "Existing policy, incident, asset or business documents where relevant.",
+      },
+    ],
+    adminChecklist: [
+      {
+        id: "classify-risk",
+        label: "Classify the protection need and relevant insurance category",
+        category: "review",
+      },
+      {
+        id: "verify-contact",
+        label: "Verify contact and location details before referral",
+        category: "verification",
+      },
+      {
+        id: "check-operator-fit",
+        label: "Check suitable licensed insurer, broker or authorized operator pathway",
+        category: "compliance",
+      },
+      {
+        id: "request-follow-up",
+        label: "Send next steps and any document or quote requirements",
+        category: "communication",
+      },
+    ],
+    nextWorkflow: "guided-question-engine",
+    priority: "normal",
+  },
 };
 
 /** Ordered catalog of all request blueprints. */
