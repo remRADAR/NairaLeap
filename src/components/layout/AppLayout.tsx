@@ -47,9 +47,9 @@ function Header() {
         <div className="glass-panel flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link to="/" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink">
             <img
-              src="/nairaleap-logo.png"
+              src="/nairaleap-wordmark.png"
               alt="Nairaleap - Service Portal"
-              className="block h-10 w-[10rem] max-w-full object-cover object-center sm:h-11 sm:w-[13rem]"
+              className="block h-10 w-[10rem] max-w-full object-contain object-left sm:h-11 sm:w-[13rem]"
             />
           </Link>
 

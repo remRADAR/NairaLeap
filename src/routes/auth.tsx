@@ -147,9 +147,9 @@ function AuthPage() {
                     <div>
                       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-glow">
                         <img
-                          src="/nairaleap-logo.png"
+                          src="/nairaleap-wordmark.png"
                           alt="Nairaleap - Service Portal"
-                          className="block h-8 w-[11rem] object-cover object-center"
+                          className="block h-8 w-[11rem] object-contain object-left"
                         />
                         <span className="sr-only">Account</span>
                       </div>

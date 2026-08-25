@@ -1,0 +1,23 @@
+{
+  "name": "Nairaleap - Service Portal",
+  "short_name": "Nairaleap",
+  "description": "Discover NairaLeap services, get guided onboarding, and submit structured service requests.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a0b2e",
+  "theme_color": "#1a0b2e",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
