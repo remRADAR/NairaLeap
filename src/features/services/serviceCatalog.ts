@@ -11,6 +11,7 @@ import {
   Briefcase,
   LifeBuoy,
   ShieldCheck,
+  House,
 } from "lucide-react";
 
 export type ServiceId =
@@ -24,7 +25,8 @@ export type ServiceId =
   | "business-briefs"
   | "professional-services"
   | "customer-support"
-  | "insurance";
+  | "insurance"
+  | "mortgage";
 
 export interface ServiceDefinition {
   id: ServiceId;
@@ -153,5 +155,19 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     longDescription:
       "Describe the protection you need and NairaLeap will help route you to suitable insurance options and licensed providers for review.",
     examples: ["Get a Quote", "Compare Cover", "Make a Claim", "Renew or Verify a Policy"],
+  },
+  {
+    id: "mortgage",
+    icon: House,
+    title: "Mortgage",
+    shortDescription: "Explore home finance and property funding pathways.",
+    longDescription:
+      "Describe your home purchase, construction, renovation, refinancing or housing-finance need and NairaLeap will prepare it for review by a suitable verified finance partner.",
+    examples: [
+      "Buy a Home",
+      "Build or Renovate",
+      "Explore NHF / FMBN Pathways",
+      "Refinance or Get Mortgage Support",
+    ],
   },
 ];

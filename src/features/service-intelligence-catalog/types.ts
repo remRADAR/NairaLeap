@@ -19,7 +19,8 @@ export type ServiceId =
   | "business-briefs"
   | "professional-services"
   | "customer-support"
-  | "insurance";
+  | "insurance"
+  | "mortgage";
 
 /** Broad category used to group services in onboarding flows and analytics. */
 export type OnboardingCategory =
@@ -33,7 +34,8 @@ export type OnboardingCategory =
   | "information"
   | "professional-services"
   | "support"
-  | "insurance";
+  | "insurance"
+  | "mortgage";
 
 /** Document type identifiers referenced by services. */
 export type DocumentTypeId =
@@ -42,6 +44,7 @@ export type DocumentTypeId =
   | "business-registration"
   | "tax-identification"
   | "financial-statements"
+  | "income-evidence"
   | "bank-statement"
   | "property-title"
   | "survey-plan"

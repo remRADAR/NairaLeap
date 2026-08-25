@@ -16,6 +16,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
       "The visitor wants to purchase an asset, product, or service through the NairaLeap network.",
     recommendedServiceIds: [
       "property-listings",
+      "mortgage",
       "distress-sales",
       "vendor-marketplace",
       "recycling-scrap",
@@ -53,7 +54,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
     id: "funding",
     title: "Funding",
     description: "The visitor needs capital, financing, grants, or investment readiness support.",
-    recommendedServiceIds: ["business-funding"],
+    recommendedServiceIds: ["business-funding", "mortgage"],
     followUpCategory: "direct-to-service",
     priority: "high",
     nextWorkflow: "guided-question-engine",

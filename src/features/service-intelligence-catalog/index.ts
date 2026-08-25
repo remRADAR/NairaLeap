@@ -219,6 +219,32 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     nextWorkflow: "support-queue",
   },
   {
+    id: "mortgage",
+    title: "Mortgage",
+    icon: "House",
+    shortDescription: "Explore home finance and property funding pathways.",
+    detailedDescription:
+      "Describe a home purchase, land-and-build, construction, renovation, rent-to-own, NHF/FMBN, diaspora, refinancing or mortgage-support need. NairaLeap will structure the request for review and route it to a suitable verified finance partner where available.",
+    onboardingCategory: "mortgage",
+    estimatedCompletionTime: "5–7 minutes",
+    requiresGuidedQuestions: true,
+    requiresDocuments: false,
+    requiresAdminReview: true,
+    suggestedQuestionSet: "mortgage-intake",
+    requiredDocumentTypes: [
+      "government-id",
+      "proof-of-address",
+      "income-evidence",
+      "bank-statement",
+      "property-title",
+      "valuation-report",
+      "supporting-documents",
+    ],
+    outputSummaryTemplate:
+      "Your Mortgage request has been prepared. NairaLeap will review your housing-finance need and confirm suitable next steps with a verified lender, PMB, FMBN/NHF pathway or other authorized partner where available. Eligibility, rates, terms, approval and disbursement remain subject to partner review.",
+    nextWorkflow: "guided-question-engine",
+  },
+  {
     id: "insurance",
     title: "Insurance",
     icon: "ShieldCheck",

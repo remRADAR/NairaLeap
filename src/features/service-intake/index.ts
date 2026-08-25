@@ -108,6 +108,12 @@ export const SERVICE_PRICING_MAP = {
     detail:
       "Insurance eligibility, terms, exclusions and premium are confirmed by an authorized insurance operator after reviewing the request.",
   },
+  mortgage: {
+    mode: "quote",
+    label: "Terms required after partner review",
+    detail:
+      "Mortgage eligibility, rates, tenure, repayment terms and approval are confirmed by a verified lender, PMB, FMBN/NHF pathway or other authorized partner after reviewing the request.",
+  },
 } satisfies Record<ServiceId, ServicePriceRule>;
 
 const CHOICES: Record<string, QuestionChoice[]> = {
@@ -245,6 +251,76 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "takaful", label: "Takaful / cooperative model" },
     { value: "microinsurance", label: "Microinsurance / lower-cost cover" },
   ],
+  mortgageRequestType: [
+    { value: "home-purchase", label: "Buy a completed home" },
+    { value: "land-and-build", label: "Buy land and build" },
+    { value: "construction", label: "Build on land I already have" },
+    { value: "renovation", label: "Renovate or improve a home" },
+    { value: "rent-to-own", label: "Explore rent-to-own or affordable housing" },
+    { value: "nhf-fmbn", label: "Explore NHF / FMBN housing finance" },
+    { value: "diaspora", label: "Diaspora mortgage enquiry" },
+    { value: "refinance", label: "Refinance or transfer an existing mortgage" },
+    { value: "restructure", label: "Discuss repayment support or restructuring" },
+    { value: "developer-finance", label: "Estate development or developer finance" },
+    { value: "mortgage-support", label: "Mortgage readiness, documents or support" },
+  ],
+  applicantProfile: [
+    { value: "individual", label: "Individual applicant" },
+    { value: "joint-applicant", label: "Joint or family applicants" },
+    { value: "self-employed", label: "Self-employed applicant" },
+    { value: "business", label: "Business or organisation" },
+    { value: "developer", label: "Property developer or cooperative" },
+    { value: "diaspora", label: "Nigerian living outside Nigeria" },
+  ],
+  propertyStage: [
+    { value: "searching", label: "Still searching for a property" },
+    { value: "identified", label: "Property identified, not yet purchased" },
+    { value: "owned-land", label: "I own land and want to build" },
+    { value: "under-construction", label: "Construction has started" },
+    { value: "existing-home", label: "Existing home needs renovation" },
+    { value: "existing-mortgage", label: "I already have a mortgage" },
+  ],
+  incomeSource: [
+    { value: "salary", label: "Salary or formal employment" },
+    { value: "self-employed", label: "Self-employed or professional income" },
+    { value: "business-income", label: "Business income" },
+    { value: "mixed-income", label: "Mixed income sources" },
+    { value: "diaspora-income", label: "Income earned outside Nigeria" },
+    { value: "not-sure", label: "I need help understanding the requirements" },
+  ],
+  propertyType: [
+    { value: "apartment", label: "Apartment or flat" },
+    { value: "house", label: "House" },
+    { value: "land", label: "Land or plot" },
+    { value: "commercial", label: "Commercial or mixed-use property" },
+    { value: "estate-unit", label: "Estate or developer unit" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  incomeRange: [
+    { value: "not-disclosed", label: "Prefer not to say yet" },
+    { value: "under-250k", label: "Under ₦250,000 monthly" },
+    { value: "250k-500k", label: "₦250,000–₦500,000 monthly" },
+    { value: "500k-1m", label: "₦500,000–₦1,000,000 monthly" },
+    { value: "over-1m", label: "Over ₦1,000,000 monthly" },
+  ],
+  timeline: [
+    { value: "immediate", label: "As soon as possible" },
+    { value: "three-months", label: "Within 3 months" },
+    { value: "six-months", label: "Within 6 months" },
+    { value: "planning", label: "Planning ahead" },
+  ],
+  mortgageStatus: [
+    { value: "none", label: "No existing mortgage" },
+    { value: "active", label: "Active mortgage" },
+    { value: "arrears", label: "Repayment difficulty or arrears" },
+    { value: "paid-off", label: "Mortgage paid off; need records or next steps" },
+    { value: "not-sure", label: "Not sure which support I need" },
+  ],
+  nhfPreference: [
+    { value: "yes", label: "Yes, please include NHF / FMBN where relevant" },
+    { value: "no", label: "No, explore other pathways" },
+    { value: "not-sure", label: "I need guidance" },
+  ],
 };
 
 const FIELD_HELPERS: Record<string, string> = {
@@ -260,6 +336,14 @@ const FIELD_HELPERS: Record<string, string> = {
   coverageAmount: "Optional estimate of the value or protection amount you want to consider.",
   existingPolicyNumber: "Add this only if you already have a policy with an insurer or broker.",
   incidentDate: "Add this only if you are reporting a claim or incident.",
+  mortgageNeed:
+    "Tell us what you want to finance, where the property or project is located, and what kind of help you want next.",
+  requestedAmount: "Optional amount you would like to explore; this is not an approval or offer.",
+  propertyValue: "Optional property or project value, if known; final valuation is partner-led.",
+  incomeRange:
+    "A broad range helps route your request; exact affordability is assessed by the selected partner.",
+  mortgageStatus: "Choose the option closest to your current mortgage position.",
+  nhfPreference: "This indicates a routing preference, not confirmation of NHF eligibility.",
 };
 
 function questionTypeForField(type: BlueprintFieldType): Question["type"] {
