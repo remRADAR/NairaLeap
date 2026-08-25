@@ -61,18 +61,39 @@ function AuthPage() {
     }
 
     setBusy(true);
+    const submittedMode = mode;
     const result =
-      mode === "sign-in"
+      submittedMode === "sign-in"
         ? await signIn(email.trim(), password)
         : await signUp(email.trim(), password);
     setBusy(false);
 
     if (result.error) {
+      if (submittedMode === "sign-in" && result.suggestSignUp) {
+        switchMode("sign-up");
+        setPassword("");
+        setError(
+          "We could not sign you in with those details. If this is a new email, create your account below. If you already have an account, switch back to Sign in.",
+        );
+        return;
+      }
+      if (submittedMode === "sign-up" && result.suggestSignIn) {
+        switchMode("sign-in");
+        setPassword("");
+        setError(
+          "An account already exists for this email. Switch to Sign in to open your workspace.",
+        );
+        return;
+      }
       setError(result.error);
       return;
     }
 
-    if (mode === "sign-up") {
+    if (submittedMode === "sign-up") {
+      if (result.sessionCreated) {
+        await navigate({ to: "/dashboard", replace: true });
+        return;
+      }
       setConfirmationSent(true);
       return;
     }
