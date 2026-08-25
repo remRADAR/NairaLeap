@@ -38,8 +38,8 @@ function DockLink({
       to={to}
       aria-label={label}
       className={cn(
-        "inline-flex min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-foreground transition-all",
-        "hover:bg-surface-elevated active:scale-[0.98]",
+        "inline-flex min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",
+        "hover:bg-surface-elevated",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "data-[status=active]:bg-surface-elevated data-[status=active]:text-foreground",
       )}

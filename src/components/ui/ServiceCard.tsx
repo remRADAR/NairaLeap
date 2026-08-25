@@ -28,7 +28,7 @@ export function ServiceCard({
       aria-label={`${title} — ${description}`}
       className={cn(
         "glass-panel group relative flex w-full items-start gap-4 p-5 text-left transition-all duration-300",
-        "hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]",
+        "hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[var(--shadow-glow)] active:translate-y-0 active:scale-[0.99]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "min-h-[7rem]",
         className,

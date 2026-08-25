@@ -269,7 +269,7 @@ export function NairaLeapGuideContainer({
             role="log"
             aria-live="polite"
             aria-label="NairaLeap Guide conversation"
-            className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6"
+            className="min-h-0 flex-1 scroll-smooth overflow-y-auto px-4 py-6 sm:px-6"
           >
             <DialogDescription id="naira-guide-desc" className="sr-only">
               A guided service navigator that turns your need into a reviewable NairaLeap request.
