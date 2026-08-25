@@ -37,4 +37,17 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  {
+    files: ["cypress/**/*.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.mocha,
+        Cypress: "readonly",
+        cy: "readonly",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-namespace": "off",
+    },
+  },
 );

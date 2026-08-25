@@ -8,6 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
+    "e2e": "cypress run",
+    "e2e:open": "cypress open",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -73,6 +75,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.2.0",
+    "cypress": "15.21.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
