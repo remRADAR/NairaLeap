@@ -10,9 +10,9 @@ interface AppLayoutProps {
 }
 
 const NAV_ITEMS = [
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", hash: "services" },
+  { label: "About", hash: "about" },
+  { label: "Contact", hash: "contact" },
 ] as const;
 
 /**
@@ -50,13 +50,14 @@ function Header() {
           <div className="hidden items-center gap-1 text-sm sm:flex">
             <nav aria-label="Primary" className="flex items-center gap-1">
               {NAV_ITEMS.map((item) => (
-                <a
+                <Link
                   key={item.label}
-                  href={item.href}
+                  to="/"
+                  hash={item.hash}
                   className="rounded-lg px-3 py-2 text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </nav>
             <Link
@@ -86,14 +87,15 @@ function Header() {
         >
           <nav aria-label="Mobile" className="glass-panel flex flex-col p-2 text-sm">
             {NAV_ITEMS.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to="/"
+                hash={item.hash}
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <Link
               to={user ? "/dashboard" : "/auth"}

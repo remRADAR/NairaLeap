@@ -8,11 +8,9 @@ import {
   GlassCard,
   BrandButton,
   ServiceCard,
-  ServicePreviewSheet,
-  GuidedRequestGateway,
   NairaLeapGuideContainer,
 } from "@/components";
-import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
+import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -31,15 +29,7 @@ const STEPS: Step[] = [
 ];
 
 function LandingPage() {
-  const [activeService, setActiveService] = useState<ServiceDefinition | null>(null);
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [gatewayOpen, setGatewayOpen] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
-
-  const openService = (service: ServiceDefinition) => {
-    setActiveService(service);
-    setSheetOpen(true);
-  };
 
   return (
     <AppLayout>
@@ -61,13 +51,7 @@ function LandingPage() {
               Browse our services or let NairaLeap Guide help you identify the right solution.
             </p>
             <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-              <BrandButton
-                className="min-h-12 px-6 text-base"
-                onClick={() => {
-                  setActiveService(null);
-                  setGuideOpen(true);
-                }}
-              >
+              <BrandButton className="min-h-12 px-6 text-base" onClick={() => setGuideOpen(true)}>
                 Let NairaLeap Guide You
               </BrandButton>
               <BrandButton
@@ -109,7 +93,7 @@ function LandingPage() {
                 icon={s.icon}
                 title={s.title}
                 description={s.shortDescription}
-                onClick={() => openService(s)}
+                href={`/services/${s.id}`}
               />
             ))}
           </div>
@@ -143,10 +127,7 @@ function LandingPage() {
               </div>
               <BrandButton
                 className="min-h-12 shrink-0 px-6 text-base"
-                onClick={() => {
-                  setActiveService(null);
-                  setGuideOpen(true);
-                }}
+                onClick={() => setGuideOpen(true)}
               >
                 Start with NairaLeap Guide
               </BrandButton>
@@ -199,36 +180,8 @@ function LandingPage() {
         </Container>
       </section>
 
-      {/* Reusable Service Preview Bottom Sheet — shared by every ServiceCard */}
-      <ServicePreviewSheet
-        service={activeService}
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        onContinue={(service) => {
-          setActiveService(service);
-          setGatewayOpen(true);
-        }}
-      />
-
-      {/* Reusable Guided Request Gateway — shared prep step for every service */}
-      <GuidedRequestGateway
-        service={activeService}
-        open={gatewayOpen}
-        onOpenChange={setGatewayOpen}
-        onBack={() => setSheetOpen(true)}
-        onStart={() => {
-          setGatewayOpen(false);
-          setGuideOpen(true);
-        }}
-      />
-
-      {/* Reusable NairaLeap Guide container — shell for future guided flows */}
-      <NairaLeapGuideContainer
-        service={activeService}
-        open={guideOpen}
-        onOpenChange={setGuideOpen}
-        onBack={() => setGatewayOpen(true)}
-      />
+      {/* Reusable NairaLeap Guide container — discovery remains available separately from service pages */}
+      <NairaLeapGuideContainer service={null} open={guideOpen} onOpenChange={setGuideOpen} />
     </AppLayout>
   );
 }
