@@ -1,0 +1,22 @@
+flowchart LR
+  A[Visitor] --> B[Portal shell]
+  B --> C[Service discovery]
+  C --> D[Service page template]
+  D --> E[Start onboarding]
+  E --> F[Existing question / review engine]
+  F --> G[Authenticated submission]
+
+  B --> H[Navigation Agent UI]
+  H --> I[Context adapter]
+  I --> J[Knowledge registry]
+  J --> K[Deterministic intent and action resolver]
+  K --> L[Safe navigation executor]
+  K --> F
+  K --> M[Session context store]
+
+  H -. optional later .-> N[Voice adapter]
+  N --> O[Server-side TTS provider]
+  O --> H
+
+  P[Admin-approved content] --> J
+  Q[Policy and approval rules] --> K
