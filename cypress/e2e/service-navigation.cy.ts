@@ -29,6 +29,25 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     });
   });
 
+  it("opens Agriculture onboarding directly from its dedicated landing page", () => {
+    cy.visit("/services/agriculture");
+    cy.get('[data-testid="nairaleap-guide-dialog"]').should("not.exist");
+    cy.assertServicePage("Agriculture");
+
+    activate('[data-testid="service-start-onboarding"]');
+
+    cy.location("pathname").should("eq", "/services/agriculture");
+    cy.get('[data-testid="service-start-onboarding"]').should("have.attr", "aria-expanded", "true");
+    cy.get('#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]')
+      .should("be.visible")
+      .and("contain.text", "Agriculture")
+      .and("contain.text", "Question 1 of")
+      .and("contain.text", "Full name");
+    cy.get(
+      '#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"] input[placeholder="Type your answer"]',
+    ).should("be.visible");
+  });
+
   it("opens onboarding only after the landing-page CTA is selected", () => {
     cy.visit("/services/mortgage");
     cy.get('[data-testid="nairaleap-guide-dialog"]').should("not.exist");
