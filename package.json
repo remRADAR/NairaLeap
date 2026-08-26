@@ -14,6 +14,7 @@
     "audit:intake": "bun run scripts/audit-service-intake.ts",
     "audit:insurance": "bun run scripts/audit-insurance.ts",
     "audit:leapbot-boundaries": "bun run scripts/audit-leapbot-boundaries.ts",
+    "audit:leapbot-workflow-boundaries": "bun run scripts/audit-leapbot-workflow-boundaries.ts",
     "format": "prettier --write ."
   },
   "dependencies": {

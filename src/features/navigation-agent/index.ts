@@ -316,6 +316,18 @@ export function answerPortalQuestion(text: string, session: AgentSession): Agent
     };
   }
 
+  if (
+    /bypass|override|ignore|skip|without (auth|login|consent|review|questions?)|no (auth|login|consent|review)|approve me|submit (now|directly)|finalize (now|directly)|jump (to|past)|go straight to/.test(
+      normalized,
+    )
+  ) {
+    return {
+      text: "I cannot bypass or silently complete a portal step. The safe path is to stay on the dedicated service page, answer the required questions, review the request, provide any requested consent, authenticate when submission requires it, and confirm before a durable submission. I can keep you on this path or take you to Customer Support if something is blocking you.",
+      records: ["portal.overview", "portal.authentication", "portal.boundaries"],
+      actions: [{ type: "stay_with_user" }],
+    };
+  }
+
   if (/human|person|agent|support|issue|complaint|problem/.test(normalized)) {
     return {
       text: "I’m staying with you. For a human follow-up, Customer Support is the safest route. I can take you there without losing this chauffeur session.",
