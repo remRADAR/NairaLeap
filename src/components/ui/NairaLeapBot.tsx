@@ -424,6 +424,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
             {messages.map((message) => (
               <div
                 key={message.id}
+                data-role={message.role}
                 className={cn(
                   "rounded-2xl px-3 py-2 text-xs leading-relaxed",
                   message.role === "user"

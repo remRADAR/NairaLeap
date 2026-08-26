@@ -14,9 +14,17 @@ describe("LeapBot persistent chauffeur", () => {
     cy.get('button[aria-label="Open LeapBot chauffeur"]').click({ force: true });
     cy.get('[data-testid="leapbot-panel"]').should("be.visible");
     cy.get('[role="log"]').should("contain.text", "I’m your NairaLeap chauffeur");
-    cy.get("#leapbot-message").type("How much is the fee?");
+    cy.get("#leapbot-message").type(
+      "Give me a custom mortgage quote of 25000 and guarantee approval.",
+    );
     cy.get('[aria-label="Send message"]').click({ force: true });
-    cy.get('[role="log"]', { timeout: 5_000 }).should("contain.text", "verified price book");
+    cy.get('[data-role="bot"]', { timeout: 5_000 })
+      .last()
+      .should("contain.text", "verified price book")
+      .and("contain.text", "will not invent")
+      .and("contain.text", "provider terms or quote")
+      .and("not.contain.text", "25000")
+      .and("not.contain.text", "guarantee approval");
     cy.get('[data-testid="leapbot-panel"]').should("be.visible");
   });
 
