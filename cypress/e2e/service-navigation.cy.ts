@@ -48,6 +48,36 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     ).should("be.visible");
   });
 
+  it("blocks Agriculture users from skipping required onboarding questions", () => {
+    cy.visit("/services/agriculture");
+    activate('[data-testid="service-start-onboarding"]');
+
+    const dialog = '#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]';
+    cy.get(dialog).within(() => {
+      cy.contains("Question 1 of").should("be.visible");
+      cy.get("h3").should("contain.text", "Full name");
+      cy.contains("button", "Next")
+        .should("be.disabled")
+        .and("have.attr", "aria-disabled", "true")
+        .click({ force: true });
+      cy.contains("Question 1 of").should("be.visible");
+      cy.contains("button", "Submit").should("not.exist");
+
+      cy.get('input[placeholder="Type your answer"]')
+        .should("be.visible")
+        .type("Agriculture Audit User");
+      cy.contains("button", "Next").should("not.be.disabled").click();
+      cy.contains("Question 2 of").should("be.visible");
+      cy.get("h3").should("contain.text", "Phone number");
+
+      cy.contains("button", "Previous").click();
+      cy.get('input[placeholder="Type your answer"]').clear().should("have.value", "");
+      cy.contains("button", "Next").should("be.disabled");
+    });
+
+    cy.location("pathname").should("eq", "/services/agriculture");
+  });
+
   it("opens onboarding only after the landing-page CTA is selected", () => {
     cy.visit("/services/mortgage");
     cy.get('[data-testid="nairaleap-guide-dialog"]').should("not.exist");
