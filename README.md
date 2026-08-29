@@ -4,7 +4,7 @@ NairaLeap is a customer-facing multi-service portal that turns visitor needs int
 
 ## Current product checkpoint
 
-The repository currently contains the public portal foundation, a Supabase-backed authentication boundary, the first authenticated Agriculture intake, review and submission, and the first customer request-tracking surface. Agriculture is the pilot vertical for proving the full request lifecycle before expanding the same contract-driven pattern to Property Listings, Business Funding, Partnerships, Vendor Marketplace, Distress Sales, Recycling & Scrap, Business Briefs, Professional Services, and Customer Support.
+The repository currently contains the public portal foundation, a Supabase-backed authentication boundary, canonical landing pages for all 12 services, blueprint-driven multi-service intake, the first authenticated Agriculture intake, review and submission, a customer request-tracking surface, and a persistent deterministic LeapBot chauffeur. Agriculture remains the pilot vertical for proving the full request lifecycle while the other services use the same contract-driven landing and intake pattern.
 
 Live Supabase authentication, migration execution, RLS behavior, and request insertion are **UNVERIFIED** until the project environment is configured. Copy `.env.example` to `.env.local`, fill in the Supabase URL and publishable key, and apply the migration under `supabase/migrations/` before testing a real account.
 
@@ -14,15 +14,15 @@ The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanSta
 
 ## Routes
 
-| Route                     | Purpose                                             |
-| ------------------------- | --------------------------------------------------- |
-| `/`                       | Public landing page and service discovery           |
-| `/auth`                   | Sign-in and account creation                        |
-| `/dashboard`              | Authenticated customer workspace                    |
-| `/onboarding/agriculture` | Agriculture-specific intake, review, and submission |
-| `/requests`               | Authenticated customer request tracking             |
-| `/insurance`              | Current placeholder vertical                        |
-| `/mortgage`               | Current placeholder vertical                        |
+| Route                        | Purpose                                                                               |
+| ---------------------------- | ------------------------------------------------------------------------------------- |
+| `/`                          | Public landing page and service discovery                                             |
+| `/auth`                      | Sign-in and account creation                                                          |
+| `/dashboard`                 | Authenticated customer workspace                                                      |
+| `/services/{service}`        | Canonical landing page for each of the 12 services before onboarding                  |
+| `/onboarding/{service}`      | Backward-compatible redirect into the canonical service landing flow                  |
+| `/requests`                  | Authenticated customer request tracking                                               |
+| `/insurance` and `/mortgage` | Backward-compatible redirects into the canonical Insurance and Mortgage landing pages |
 
 ## Development commands
 
@@ -34,7 +34,7 @@ bun run build
 bun run lint
 ```
 
-The existing lint command still reports repository-wide formatting debt. TypeScript and the production build pass at the current implementation checkpoint.
+The repository’s lint, TypeScript, production-build and Chromium end-to-end checks are run as part of each meaningful increment. The live Supabase integration and production deployment remain environment-dependent and must be verified separately.
 
 ## Production setup
 

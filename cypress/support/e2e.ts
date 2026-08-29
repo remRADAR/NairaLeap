@@ -18,6 +18,8 @@ Cypress.Commands.add("assertServicePage", (serviceTitle: string) => {
   cy.contains("Nairaleap service guide").should("be.visible");
   cy.contains("What this service is").should("be.visible");
   cy.contains("What you’ll provide").should("be.visible");
+  cy.contains("Common request types").should("be.visible");
+  cy.contains("After submission").should("be.visible");
   cy.contains("Start onboarding").should("be.visible");
 });
 

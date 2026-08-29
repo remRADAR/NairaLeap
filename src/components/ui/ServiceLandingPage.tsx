@@ -176,6 +176,43 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
             </GlassCard>
           </section>
 
+          <section
+            className="mt-6 grid gap-6 lg:grid-cols-2"
+            aria-label={`${service.title} request guidance`}
+          >
+            <GlassCard className="p-6 sm:p-8">
+              <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
+                Common request types
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                Start with the outcome you want
+              </h2>
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                {service.examples.map((example) => (
+                  <li
+                    key={example}
+                    className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground"
+                  >
+                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
+                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                    </span>
+                    <span>{example}</span>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+
+            <GlassCard className="p-6 sm:p-8">
+              <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
+                After submission
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight">What happens next</h2>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {content.afterSubmission}
+              </p>
+            </GlassCard>
+          </section>
+
           {content.boundary ? (
             <section className="mt-6" aria-labelledby="service-boundary-title">
               <div className="border-l-2 border-primary/50 bg-primary/5 px-5 py-4 sm:px-6">

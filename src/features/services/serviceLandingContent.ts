@@ -6,6 +6,7 @@ export interface ServiceLandingContent {
   informationIntro: string;
   information: string[];
   process: string[];
+  afterSubmission: string;
   boundary?: string;
   relatedServiceIds?: ServiceId[];
 }
@@ -29,6 +30,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the structured Agriculture rundown",
       "Submit for NairaLeap review and follow-up",
     ],
+    afterSubmission:
+      "NairaLeap reviews the request context and may follow up about missing information, suitable buyers, partners or next steps. Submission does not guarantee a transaction or outcome.",
     relatedServiceIds: ["vendor-marketplace", "business-funding", "insurance"],
   },
   "property-listings": {
@@ -48,6 +51,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the property request before submission",
       "Receive follow-up on the next review step",
     ],
+    afterSubmission:
+      "The property enquiry is reviewed with any relevant ownership, inspection or valuation context. NairaLeap may request clarification before follow-up.",
     boundary:
       "Property details, ownership documents, inspections and valuation remain subject to review where applicable.",
     relatedServiceIds: ["mortgage", "distress-sales", "professional-services"],
@@ -70,6 +75,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the funding profile and next-step summary",
       "Submit for review and possible partner routing",
     ],
+    afterSubmission:
+      "The funding request is reviewed for context and possible partner routing. Funding, eligibility, rates and approval remain subject to an authorised provider.",
     boundary:
       "NairaLeap does not promise funding, approval, rates or investment returns. Any offer is decided by the relevant authorised provider.",
     relatedServiceIds: ["agriculture", "partnerships", "professional-services"],
@@ -92,6 +99,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the structured partnership request",
       "Submit for NairaLeap review and possible introductions",
     ],
+    afterSubmission:
+      "NairaLeap reviews the collaboration context and may follow up for clarification or a suitable introduction. An introduction is not guaranteed.",
     relatedServiceIds: ["business-funding", "vendor-marketplace", "professional-services"],
   },
   "vendor-marketplace": {
@@ -112,6 +121,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the marketplace request",
       "Submit for verification, matching or follow-up",
     ],
+    afterSubmission:
+      "The marketplace request is reviewed for category, location and fit. Any vendor, product, quotation or match remains subject to the relevant review process.",
     relatedServiceIds: ["agriculture", "partnerships", "recycling-scrap"],
   },
   "distress-sales": {
@@ -132,6 +143,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the request before it is shared for review",
       "Submit for verification and possible buyer routing",
     ],
+    afterSubmission:
+      "NairaLeap reviews the asset and urgency context before any buyer routing or publication decision. Ownership, valuation and a sale are not guaranteed.",
     boundary:
       "Urgency, ownership, pricing and publication remain subject to NairaLeap review; a buyer or sale is not guaranteed.",
     relatedServiceIds: ["property-listings", "vendor-marketplace", "recycling-scrap"],
@@ -154,6 +167,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the recycling or scrap request",
       "Submit for buyer, recycler or pickup follow-up",
     ],
+    afterSubmission:
+      "The material request is reviewed for location, quantity and handling context. Any price, buyer, recycler or pickup arrangement must be confirmed through review.",
     relatedServiceIds: ["vendor-marketplace", "distress-sales", "customer-support"],
   },
   "business-briefs": {
@@ -173,6 +188,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the information request",
       "Submit or save your preference",
     ],
+    afterSubmission:
+      "NairaLeap reviews the information request and uses the selected contact and delivery context for the next supported follow-up. Delivery timing is not guaranteed.",
     relatedServiceIds: ["professional-services", "business-funding", "agriculture"],
   },
   "professional-services": {
@@ -193,6 +210,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the professional-services request",
       "Submit for review and possible specialist matching",
     ],
+    afterSubmission:
+      "The request is reviewed for scope and suitability before any specialist follow-up. The portal does not provide a professional opinion or guarantee a match.",
     boundary:
       "A request is not a legal, tax, financial or professional opinion. Any advice is provided by the engaged qualified professional.",
     relatedServiceIds: ["business-funding", "partnerships", "customer-support"],
@@ -215,6 +234,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the support request",
       "Submit for human follow-up",
     ],
+    afterSubmission:
+      "A support person reviews the context and may follow up using the contact information supplied. Response time depends on the request and available support capacity.",
     relatedServiceIds: ["agriculture", "insurance", "mortgage"],
   },
   insurance: {
@@ -235,6 +256,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the insurance request and next-step summary",
       "Submit for licensed-operator review where available",
     ],
+    afterSubmission:
+      "The protection request is prepared for review by a suitable licensed operator where available. The operator—not NairaLeap—determines terms, premiums, claims decisions and cover.",
     boundary:
       "NairaLeap does not underwrite risk, bind cover or issue a policy. Terms, premiums, claims decisions and cover are determined by the licensed operator.",
     relatedServiceIds: ["mortgage", "property-listings", "customer-support"],
@@ -257,6 +280,8 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "Review the mortgage request and recommended next documents",
       "Submit for partner review and next-step confirmation",
     ],
+    afterSubmission:
+      "The housing-finance request is reviewed for completeness and possible partner routing. The authorised partner determines eligibility, rates, terms, approval and disbursement.",
     boundary:
       "NairaLeap does not lend, underwrite, approve, price or guarantee a mortgage. Eligibility, rates, terms, approval and disbursement remain subject to the authorised partner.",
     relatedServiceIds: ["property-listings", "business-funding", "insurance"],
