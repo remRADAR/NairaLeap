@@ -9,6 +9,7 @@ import {
   BrandButton,
   ServiceCard,
   NairaLeapGuideContainer,
+  Reveal,
 } from "@/components";
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 
@@ -36,7 +37,7 @@ function LandingPage() {
       {/* Hero */}
       <section aria-labelledby="hero-title">
         <Container className="pt-10 pb-14 sm:pt-16 sm:pb-20">
-          <div className="mx-auto max-w-3xl text-center">
+          <Reveal className="mx-auto max-w-3xl text-center" animation="fadeInUp">
             <span className="glass-panel inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
               Welcome to NairaLeap
@@ -71,7 +72,7 @@ function LandingPage() {
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
@@ -87,14 +88,16 @@ function LandingPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-            {SERVICE_CATALOG.map((s) => (
-              <ServiceCard
-                key={s.id}
-                icon={s.icon}
-                title={s.title}
-                description={s.shortDescription}
-                href={`/services/${s.id}`}
-              />
+            {SERVICE_CATALOG.map((s, index) => (
+              <Reveal key={s.id} delay={index * 55} className="h-full">
+                <ServiceCard
+                  key={s.id}
+                  icon={s.icon}
+                  title={s.title}
+                  description={s.shortDescription}
+                  href={`/services/${s.id}`}
+                />
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -103,37 +106,39 @@ function LandingPage() {
       {/* Need Help */}
       <section aria-labelledby="need-help-title">
         <Container className="py-8 sm:py-12">
-          <GlassCard className="relative overflow-hidden">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/25 blur-3xl"
-            />
-            <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0">
-                <div className="inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-3 py-1 text-xs text-muted-foreground">
-                  <Sparkles className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
-                  NairaLeap Guide
+          <Reveal animation="fadeIn" className="w-full">
+            <GlassCard className="relative overflow-hidden">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/25 blur-3xl"
+              />
+              <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-3 py-1 text-xs text-muted-foreground">
+                    <Sparkles className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
+                    NairaLeap Guide
+                  </div>
+                  <h2
+                    id="need-help-title"
+                    className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl"
+                  >
+                    Not sure where to begin?
+                  </h2>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    NairaLeap Guide will help you identify the right service in just a few simple
+                    steps.
+                  </p>
                 </div>
-                <h2
-                  id="need-help-title"
-                  className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl"
+                <BrandButton
+                  data-testid="homepage-guide-trigger"
+                  className="min-h-12 shrink-0 px-6 text-base"
+                  onClick={() => setGuideOpen(true)}
                 >
-                  Not sure where to begin?
-                </h2>
-                <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  NairaLeap Guide will help you identify the right service in just a few simple
-                  steps.
-                </p>
+                  Start with NairaLeap Guide
+                </BrandButton>
               </div>
-              <BrandButton
-                data-testid="homepage-guide-trigger"
-                className="min-h-12 shrink-0 px-6 text-base"
-                onClick={() => setGuideOpen(true)}
-              >
-                Start with NairaLeap Guide
-              </BrandButton>
-            </div>
-          </GlassCard>
+            </GlassCard>
+          </Reveal>
         </Container>
       </section>
 
@@ -158,23 +163,25 @@ function LandingPage() {
                 const Icon = step.icon;
                 return (
                   <li key={step.title} className="relative">
-                    <div className="glass-panel flex flex-col items-center gap-3 p-6 text-center">
-                      <div className="relative">
-                        <span
-                          aria-hidden="true"
-                          className="grid h-14 w-14 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
-                        >
-                          <Icon className="h-6 w-6" />
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className="absolute -right-1 -top-1 grid h-6 w-6 place-items-center rounded-full border border-glass-border bg-background text-[11px] font-semibold text-foreground"
-                        >
-                          {i + 1}
-                        </span>
+                    <Reveal delay={i * 70} className="h-full">
+                      <div className="glass-panel flex h-full flex-col items-center gap-3 p-6 text-center">
+                        <div className="relative">
+                          <span
+                            aria-hidden="true"
+                            className="grid h-14 w-14 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
+                          >
+                            <Icon className="h-6 w-6" />
+                          </span>
+                          <span
+                            aria-hidden="true"
+                            className="absolute -right-1 -top-1 grid h-6 w-6 place-items-center rounded-full border border-glass-border bg-background text-[11px] font-semibold text-foreground"
+                          >
+                            {i + 1}
+                          </span>
+                        </div>
+                        <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
                       </div>
-                      <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
-                    </div>
+                    </Reveal>
                   </li>
                 );
               })}

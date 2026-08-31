@@ -9,7 +9,7 @@ import {
 } from "@/features/services/serviceLandingContent";
 import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
 import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide";
-import { BrandButton, Container, GlassCard } from "@/components";
+import { BrandButton, Container, GlassCard, Reveal } from "@/components";
 import { NairaLeapGuideContainer } from "./NairaLeapGuideContainer";
 
 interface ServiceLandingPageProps {
@@ -46,7 +46,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
             className="mt-8 grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16"
             aria-labelledby="service-page-title"
           >
-            <div>
+            <Reveal animation="fadeInUp">
               <div className="inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-3 py-1 text-xs font-medium text-muted-foreground">
                 <Sparkles className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
                 Nairaleap service guide
@@ -93,45 +93,47 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                 {content.audience}. You can review the service first and decide when you are ready
                 to continue.
               </p>
-            </div>
+            </Reveal>
 
-            <GlassCard className="relative overflow-hidden p-6 sm:p-8">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/20 blur-3xl"
-              />
-              <div className="relative">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
-                      Before you begin
-                    </p>
-                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                      A clear path, one step at a time
-                    </h2>
+            <Reveal animation="fadeIn" delay={100}>
+              <GlassCard className="relative overflow-hidden p-6 sm:p-8">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/20 blur-3xl"
+                />
+                <div className="relative">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
+                        Before you begin
+                      </p>
+                      <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                        A clear path, one step at a time
+                      </h2>
+                    </div>
+                    <ClipboardList className="h-7 w-7 shrink-0 text-primary" aria-hidden="true" />
                   </div>
-                  <ClipboardList className="h-7 w-7 shrink-0 text-primary" aria-hidden="true" />
+                  <ol className="mt-7 space-y-4">
+                    {content.process.map((step, index) => (
+                      <li key={step} className="flex items-start gap-3">
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs font-semibold text-primary">
+                          {index + 1}
+                        </span>
+                        <span className="pt-1 text-sm leading-relaxed text-muted-foreground">
+                          {step}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                  {intelligence?.estimatedCompletionTime ? (
+                    <p className="mt-7 border-t border-border/60 pt-4 text-xs text-muted-foreground">
+                      Typical guided completion: {intelligence.estimatedCompletionTime}. Your
+                      request may need additional review information.
+                    </p>
+                  ) : null}
                 </div>
-                <ol className="mt-7 space-y-4">
-                  {content.process.map((step, index) => (
-                    <li key={step} className="flex items-start gap-3">
-                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs font-semibold text-primary">
-                        {index + 1}
-                      </span>
-                      <span className="pt-1 text-sm leading-relaxed text-muted-foreground">
-                        {step}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-                {intelligence?.estimatedCompletionTime ? (
-                  <p className="mt-7 border-t border-border/60 pt-4 text-xs text-muted-foreground">
-                    Typical guided completion: {intelligence.estimatedCompletionTime}. Your request
-                    may need additional review information.
-                  </p>
-                ) : null}
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </Reveal>
           </section>
 
           <section
@@ -227,36 +229,41 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
           ) : null}
 
           <section className="mt-16" aria-labelledby="service-cta-title">
-            <GlassCard className="relative overflow-hidden p-6 sm:p-10">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-primary/15 blur-3xl"
-              />
-              <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-                <div className="max-w-2xl">
-                  <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
-                    Ready to continue?
-                  </p>
-                  <h2 id="service-cta-title" className="mt-2 text-3xl font-semibold tracking-tight">
-                    Start when you feel ready.
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                    The guided flow will take you through the questions relevant to {service.title}.
-                    You can review your answers before anything is submitted.
-                  </p>
+            <Reveal animation="fadeIn">
+              <GlassCard className="relative overflow-hidden p-6 sm:p-10">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-primary/15 blur-3xl"
+                />
+                <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                  <div className="max-w-2xl">
+                    <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
+                      Ready to continue?
+                    </p>
+                    <h2
+                      id="service-cta-title"
+                      className="mt-2 text-3xl font-semibold tracking-tight"
+                    >
+                      Start when you feel ready.
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                      The guided flow will take you through the questions relevant to{" "}
+                      {service.title}. You can review your answers before anything is submitted.
+                    </p>
+                  </div>
+                  <BrandButton
+                    data-testid="service-start-onboarding-secondary"
+                    aria-expanded={guideOpen}
+                    aria-controls="nairaleap-guide-dialog"
+                    className="min-h-11 shrink-0 px-6 text-base"
+                    onClick={() => setGuideOpen(true)}
+                  >
+                    Start onboarding
+                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                  </BrandButton>
                 </div>
-                <BrandButton
-                  data-testid="service-start-onboarding-secondary"
-                  aria-expanded={guideOpen}
-                  aria-controls="nairaleap-guide-dialog"
-                  className="min-h-11 shrink-0 px-6 text-base"
-                  onClick={() => setGuideOpen(true)}
-                >
-                  Start onboarding
-                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                </BrandButton>
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </Reveal>
           </section>
 
           {relatedServices.length > 0 ? (
@@ -289,7 +296,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                       key={related.id}
                       to="/services/$service"
                       params={{ service: related.id }}
-                      className="glass-panel group flex items-start gap-3 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="interactive-card glass-panel group flex items-start gap-3 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
                         <RelatedIcon className="h-4 w-4" aria-hidden="true" />

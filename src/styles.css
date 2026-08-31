@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "animate.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -159,6 +160,129 @@
   background-image: var(--gradient-brand);
 }
 
+.motion-reveal {
+  opacity: 0;
+}
+
+.interactive-button,
+.interactive-card {
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.interactive-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.interactive-button::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  background: linear-gradient(110deg, transparent 25%, oklch(1 0 0 / 18%) 50%, transparent 75%);
+  transform: translateX(-125%);
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.interactive-button > *,
+.interactive-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.interactive-button:hover::after,
+.interactive-button:focus-visible::after {
+  transform: translateX(125%);
+}
+
+.interactive-button:hover {
+  filter: saturate(1.08);
+}
+
+.interactive-button:active {
+  filter: brightness(0.96) saturate(1.02);
+}
+
+.interactive-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.interactive-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  content: "";
+  background: radial-gradient(circle at 0% 0%, oklch(0.75 0.2 305 / 18%), transparent 42%);
+  opacity: 0;
+  transition: opacity 350ms ease;
+  pointer-events: none;
+}
+
+.interactive-card:hover::before,
+.interactive-card:focus-visible::before {
+  opacity: 1;
+}
+
+.interactive-card:hover {
+  transform: translateY(-0.2rem) scale(1.006);
+  border-color: oklch(0.75 0.2 305 / 34%);
+  box-shadow: var(--shadow-glow);
+}
+
+.interactive-card:active {
+  transform: translateY(0) scale(0.995);
+}
+
+.page-transition {
+  animation: page-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.45rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: oklch(0.98 0.01 285 / 8%);
+}
+
+.skeleton-shimmer::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(100deg, transparent 20%, oklch(1 0 0 / 10%) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.motion-reveal.animate__animated {
+  --animate-duration: 620ms;
+  --animate-delay: 0ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @utility text-gradient-brand {
   background-image: var(--gradient-brand);
   background-clip: text;
@@ -242,7 +366,68 @@
   animation: portal-reveal 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@media (hover: none) {
+  .interactive-button {
+    min-height: 2.75rem;
+  }
+
+  .interactive-button:hover {
+    filter: none;
+    transform: none;
+  }
+
+  .interactive-button:hover::after {
+    transform: translateX(-125%);
+  }
+
+  .interactive-card:hover {
+    transform: none;
+    border-color: var(--glass-border);
+    box-shadow: none;
+  }
+
+  .interactive-card:hover::before {
+    opacity: 0;
+  }
+
+  .interactive-button:active {
+    transform: scale(0.97);
+  }
+
+  .interactive-card:active {
+    transform: scale(0.985);
+    border-color: oklch(0.75 0.2 305 / 34%);
+    box-shadow: var(--shadow-glow);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .page-transition,
+  .skeleton-shimmer::after {
+    animation: none !important;
+  }
+
+  .interactive-button,
+  .interactive-card {
+    will-change: auto;
+    transition: none !important;
+  }
+
+  .interactive-button::after,
+  .interactive-card::before {
+    display: none;
+  }
+
+  .interactive-card:hover,
+  .interactive-card:active {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .motion-reveal {
+    opacity: 1 !important;
+  }
+
   html {
     scroll-behavior: auto;
   }

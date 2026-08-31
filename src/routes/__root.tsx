@@ -11,6 +11,7 @@ import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { AuthProvider } from "@/features/auth";
+import { AppSkeleton, PageTransition } from "@/components";
 
 function NotFoundComponent() {
   return (
@@ -118,6 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
+  pendingComponent: AppSkeleton,
 });
 
 function RootShell({ children }: { children: ReactNode }) {
@@ -141,7 +143,9 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </AuthProvider>
     </QueryClientProvider>
   );
