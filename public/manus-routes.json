@@ -1,0 +1,12 @@
+{
+  "routes": [
+    { "path": "/", "title": "Nairaleap Service Portal" },
+    { "path": "/auth", "title": "Authentication" },
+    { "path": "/dashboard", "title": "Customer Dashboard" },
+    { "path": "/requests", "title": "My Requests" },
+    { "path": "/onboarding/:service", "title": "Service Onboarding" },
+    { "path": "/services/:service", "title": "Service Landing Page" },
+    { "path": "/insurance", "title": "Insurance" },
+    { "path": "/mortgage", "title": "Mortgage" }
+  ]
+}
