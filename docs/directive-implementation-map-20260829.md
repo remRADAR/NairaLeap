@@ -54,17 +54,16 @@ No second service catalog, request envelope, onboarding engine or chatbot archit
 5. **Marketplace primitives:** introduce shared listing/provider/capability records only for a tested first use case.
 6. **Agent and voice expansion:** keep deterministic knowledge/actions authoritative; add external AI or voice only behind verified server-side adapters.
 
-## Exact first build increment
+## Deferred landing-page segment
 
-Extend the existing service landing-page architecture with **common request types and after-submission expectations**, using the existing `ServiceLandingContent` configuration and `ServiceLandingPage` renderer. This directly satisfies the directive’s service-understanding requirements, improves user qualification before onboarding, and does not change routing, request persistence, authentication, or the canonical question engine.
+The common request-type, service-information, and after-submission cards remain modeled in `SERVICE_LANDING_CONTENT` for a later pass, but are currently **not rendered** on the first landing page for each service. The current landing page keeps the hero, guided process, onboarding actions, boundary note, and related-service navigation focused on the next user decision.
 
 ## Expected files for first increment
 
-- `src/features/services/serviceLandingContent.ts`
 - `src/components/ui/ServiceLandingPage.tsx`
 - `cypress/support/e2e.ts` or a focused service-navigation spec
 - Documentation for the verified scope
 
 ## Verification plan
 
-Run the existing TypeScript check, lint, production build, deterministic intake and LeapBot audits, then Chromium coverage for all service landing pages and the new request-type/after-submission rendering. Inspect the changed diff and preserve unrelated work. Live Supabase, external providers, admin operations and production deployment remain explicitly unverified unless separately exercised.
+Run the existing TypeScript check, lint, production build, deterministic intake and LeapBot audits, then Chromium coverage for all service landing pages and confirmation that the deferred cards are absent. Inspect the changed diff and preserve unrelated work. Live Supabase, external providers, admin operations and production deployment remain explicitly unverified unless separately exercised.

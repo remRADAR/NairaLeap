@@ -16,10 +16,10 @@ export const SERVICE_CASES = [
 Cypress.Commands.add("assertServicePage", (serviceTitle: string) => {
   cy.get("main").should("contain.text", serviceTitle);
   cy.contains("Nairaleap service guide").should("be.visible");
-  cy.contains("What this service is").should("be.visible");
-  cy.contains("What you’ll provide").should("be.visible");
-  cy.contains("Common request types").should("be.visible");
-  cy.contains("After submission").should("be.visible");
+  cy.contains("What this service is").should("not.exist");
+  cy.contains("What you’ll provide").should("not.exist");
+  cy.contains("Common request types").should("not.exist");
+  cy.contains("After submission").should("not.exist");
   cy.contains("Start onboarding").should("be.visible");
 });
 

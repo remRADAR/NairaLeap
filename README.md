@@ -8,6 +8,10 @@ The repository currently contains the public portal foundation, a Supabase-backe
 
 Live Supabase authentication, migration execution, RLS behavior, and request insertion are **UNVERIFIED** until the project environment is configured. Copy `.env.example` to `.env.local`, fill in the Supabase URL and publishable key, and apply the migration under `supabase/migrations/` before testing a real account.
 
+## Two-project layout
+
+This repository holds both the customer portal and the legacy CMS migration project. The portal remains at the repository root; the staging-safe WordPress/Blogsy WXR normalizer lives in [`wordpress/`](./wordpress/). See [`PROJECTS.md`](./PROJECTS.md) for the boundary and [`wordpress/README.md`](./wordpress/README.md) for the dry-run workflow. The migration project does not connect to production or change portal/Supabase settings.
+
 ## Stack
 
 The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, TanStack Query, Supabase Auth/Postgres, Zod, and Radix/shadcn-style UI primitives. The runtime is configured for Cloudflare-compatible deployment through the project’s own TanStack Start and Nitro build configuration.

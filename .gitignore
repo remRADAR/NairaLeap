@@ -16,6 +16,16 @@ dist-ssr
 .nitro
 *.local
 
+# WordPress migration outputs are generated locally from private WXR exports.
+wordpress/output/*
+!wordpress/output/.gitkeep
+__pycache__/
+*.py[cod]
+
+# Cypress verification artifacts
+cypress/screenshots/
+cypress/videos/
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

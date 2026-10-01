@@ -2,7 +2,7 @@ import { SERVICE_CASES } from "../support/e2e";
 
 function activate(selector: string) {
   cy.get('[data-app-hydrated="true"]').should("exist");
-  cy.get(selector).should("be.visible").click({ force: true });
+  cy.get(selector).scrollIntoView().should("be.visible").click({ force: true });
 }
 
 describe("Nairaleap service discovery and onboarding navigation", () => {
@@ -13,6 +13,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
   it("renders every current service card as a dedicated landing-page link", () => {
     SERVICE_CASES.forEach(({ id, title }) => {
       cy.get(`#services a[href="/services/${id}"]`)
+        .scrollIntoView()
         .should("be.visible")
         .and("contain.text", title)
         .and("contain.text", "Learn more");

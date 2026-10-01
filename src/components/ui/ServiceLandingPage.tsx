@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Check, ClipboardList, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ClipboardList, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -134,85 +134,6 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                 </div>
               </GlassCard>
             </Reveal>
-          </section>
-
-          <section
-            className="mt-16 grid gap-6 lg:grid-cols-2"
-            aria-label={`${service.title} information`}
-          >
-            <GlassCard className="p-6 sm:p-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
-                What this service is
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                Understand the purpose first
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {content.purpose}
-              </p>
-              <div className="mt-6 rounded-2xl border border-glass-border bg-glass p-4 text-sm leading-relaxed text-foreground">
-                {content.informationIntro}
-              </div>
-            </GlassCard>
-
-            <GlassCard className="p-6 sm:p-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
-                What you’ll provide
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                The information is grouped for clarity
-              </h2>
-              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                {content.information.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground"
-                  >
-                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                      <Check className="h-3 w-3" aria-hidden="true" />
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </GlassCard>
-          </section>
-
-          <section
-            className="mt-6 grid gap-6 lg:grid-cols-2"
-            aria-label={`${service.title} request guidance`}
-          >
-            <GlassCard className="p-6 sm:p-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
-                Common request types
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                Start with the outcome you want
-              </h2>
-              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                {service.examples.map((example) => (
-                  <li
-                    key={example}
-                    className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground"
-                  >
-                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
-                    </span>
-                    <span>{example}</span>
-                  </li>
-                ))}
-              </ul>
-            </GlassCard>
-
-            <GlassCard className="p-6 sm:p-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-primary-glow">
-                After submission
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">What happens next</h2>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {content.afterSubmission}
-              </p>
-            </GlassCard>
           </section>
 
           {content.boundary ? (

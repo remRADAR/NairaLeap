@@ -191,15 +191,15 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   }, []);
 
   const addMessage = useCallback((message: ChatMessage) => {
+    const next = [...readTranscript(), message].slice(-MAX_TRANSCRIPT);
     setMessages((current) => {
-      const next = [...current, message].slice(-MAX_TRANSCRIPT);
-      try {
-        window.sessionStorage.setItem(TRANSCRIPT_KEY, JSON.stringify(next));
-      } catch {
-        // Transcript persistence is best effort and never blocks the portal.
-      }
-      return next;
+      return [...current, message].slice(-MAX_TRANSCRIPT);
     });
+    try {
+      window.sessionStorage.setItem(TRANSCRIPT_KEY, JSON.stringify(next));
+    } catch {
+      // Transcript persistence is best effort and never blocks the portal.
+    }
   }, []);
 
   const executeAction = useCallback(
