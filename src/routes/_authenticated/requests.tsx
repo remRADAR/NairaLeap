@@ -31,8 +31,16 @@ const STATUS_LABELS: Record<string, string> = {
   draft: "Draft",
 };
 
+type RequestListRow = {
+  id: string;
+  service_id: string;
+  schema_version: string;
+  status: string;
+  created_at: string;
+};
+
 function RequestsPage() {
-  const { requests } = Route.useLoaderData();
+  const { requests } = Route.useLoaderData() as { requests: RequestListRow[] };
 
   return (
     <main className="min-h-dvh bg-background pb-20 text-foreground">
