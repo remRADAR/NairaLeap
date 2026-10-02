@@ -54,7 +54,7 @@ function ServiceLandingRoute() {
   }
 
   return (
-    <AppLayout>
+    <AppLayout serviceId={service.id}>
       <ServiceLandingPage service={service} />
     </AppLayout>
   );

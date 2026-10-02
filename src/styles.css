@@ -140,6 +140,49 @@
     background-attachment: fixed;
   }
 
+  .service-page-shell {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+  }
+
+  .service-page-shell::before,
+  .service-page-shell::after {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    content: "";
+  }
+
+  .service-page-shell::before {
+    z-index: -2;
+    background-color: var(--background);
+    background-image: var(--service-background, var(--gradient-surface));
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .service-page-shell::after {
+    z-index: -1;
+    background:
+      linear-gradient(180deg, oklch(0.08 0.02 285 / 42%), oklch(0.08 0.02 285 / 58%) 48%, oklch(0.08 0.02 285 / 72%)),
+      linear-gradient(90deg, oklch(0.08 0.02 285 / 38%), transparent 62%, oklch(0.08 0.02 285 / 28%));
+  }
+
+  .service-page-shell .service-page-content {
+    background: transparent;
+  }
+
+  .service-page-shell :where(h1, h2, h3, h4, p, a, span, li) {
+    text-shadow: 0 2px 3px oklch(0 0 0 / 72%), 0 5px 16px oklch(0 0 0 / 46%);
+  }
+
+  .service-page-shell .glass-panel {
+    background-color: oklch(0.08 0.02 285 / 48%);
+    box-shadow: 0 18px 56px oklch(0 0 0 / 22%);
+  }
+
   h1,
   h2,
   h3,
