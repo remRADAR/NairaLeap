@@ -332,8 +332,59 @@
   -webkit-text-fill-color: transparent;
 }
 
-.leapbot-float {
-  animation: leapbot-float 3.8s ease-in-out infinite;
+.leapbot-control {
+  isolation: isolate;
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 280ms ease,
+    border-color 280ms ease,
+    box-shadow 280ms ease;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.leapbot-control::before {
+  position: absolute;
+  inset: -0.45rem;
+  z-index: -1;
+  border-radius: 1.8rem;
+  content: "";
+  background: radial-gradient(ellipse, oklch(0.75 0.2 305 / 32%), transparent 70%);
+  opacity: 0.62;
+  transform: scale(0.88);
+  animation: leapbot-halo 3.6s ease-in-out infinite;
+  transition:
+    opacity 280ms ease,
+    transform 280ms ease;
+  pointer-events: none;
+}
+
+.leapbot-control:hover,
+.leapbot-control:focus-visible {
+  transform: translate3d(0, -3px, 0) scale(1.055);
+  filter: saturate(1.12) brightness(1.06);
+  box-shadow: 0 0 38px oklch(0.62 0.22 300 / 58%);
+}
+
+.leapbot-control:hover::before,
+.leapbot-control:focus-visible::before {
+  opacity: 0.95;
+  transform: scale(1.12);
+}
+
+.leapbot-control:active {
+  transform: translate3d(0, -1px, 0) scale(0.97);
+}
+
+.leapbot-avatar-motion {
+  animation: leapbot-float 4.2s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.leapbot-control:hover .leapbot-avatar-motion,
+.leapbot-control:focus-visible .leapbot-avatar-motion {
+  animation-duration: 2.8s;
 }
 
 .leapbot-sleep {
@@ -355,10 +406,22 @@
 @keyframes leapbot-float {
   0%,
   100% {
-    transform: translateY(0) rotate(-1deg);
+    transform: translate3d(0, 0, 0) rotate(-1deg) scale(1);
   }
   50% {
-    transform: translateY(-4px) rotate(1deg);
+    transform: translate3d(0, -7px, 0) rotate(1deg) scale(1.025);
+  }
+}
+
+@keyframes leapbot-halo {
+  0%,
+  100% {
+    opacity: 0.46;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.04);
   }
 }
 
@@ -442,6 +505,17 @@
     border-color: oklch(0.75 0.2 305 / 34%);
     box-shadow: var(--shadow-glow);
   }
+
+  .leapbot-control:hover {
+    transform: none;
+    filter: none;
+    box-shadow: none;
+  }
+
+  .leapbot-control:hover::before {
+    opacity: 0.62;
+    transform: scale(0.88);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -469,6 +543,25 @@
 
   .motion-reveal {
     opacity: 1 !important;
+  }
+
+  .leapbot-control,
+  .leapbot-control::before,
+  .leapbot-avatar-motion,
+  .leapbot-sleep,
+  .leapbot-talking,
+  .leapbot-speech-dot {
+    animation: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+
+  .leapbot-control:hover,
+  .leapbot-control:focus-visible,
+  .leapbot-control:active {
+    transform: none;
+    filter: none;
+    box-shadow: none;
   }
 
   html {

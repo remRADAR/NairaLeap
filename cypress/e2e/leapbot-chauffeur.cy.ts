@@ -37,6 +37,23 @@ describe("LeapBot persistent chauffeur", () => {
     assertLeapBotTrigger();
   });
 
+  it("uses a smooth floating avatar and interactive halo", () => {
+    cy.get(`${LEAPBOT_TRIGGER} .leapbot-avatar-motion`).should(($avatar) => {
+      const style = window.getComputedStyle($avatar[0]);
+
+      expect(style.animationName).to.eq("leapbot-float");
+      expect(style.animationDuration).to.eq("4.2s");
+      expect(style.willChange).to.contain("transform");
+    });
+
+    cy.get(LEAPBOT_TRIGGER).should(($button) => {
+      const style = window.getComputedStyle($button[0], "::before");
+
+      expect(style.animationName).to.eq("leapbot-halo");
+      expect(style.animationDuration).to.eq("3.6s");
+    });
+  });
+
   it("opens a persistent conversation and explains the portal boundaries", () => {
     cy.get(LEAPBOT_TRIGGER).click({ force: true });
     assertLeapBotPanel();

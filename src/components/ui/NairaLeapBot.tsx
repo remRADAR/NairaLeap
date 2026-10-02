@@ -519,18 +519,25 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
           onPointerDown={handlePointerDown}
           onClick={handleBotClick}
           className={cn(
-            "leapbot-float relative grid h-16 w-16 touch-none place-items-center rounded-[1.4rem] border border-primary/50 bg-[#150d2f]/90 p-1 shadow-[0_0_32px_rgba(168,85,247,0.42)] outline-none transition-all duration-300 hover:scale-105 hover:border-primary-glow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95",
-            expression === "talking" && "leapbot-talking",
+            "leapbot-control relative grid h-16 w-16 touch-none place-items-center rounded-[1.4rem] border border-primary/50 bg-[#150d2f]/90 p-1 shadow-[0_0_32px_rgba(168,85,247,0.42)] outline-none hover:border-primary-glow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             isDragging && "cursor-grabbing scale-105",
           )}
         >
           <span className="sr-only">LeapBot, persistent NairaLeap chauffeur</span>
-          <img
-            src="/leapbot.webp"
-            alt=""
-            className="h-full w-full object-contain"
-            draggable={false}
-          />
+          <span
+            aria-hidden="true"
+            className={cn(
+              "leapbot-avatar-motion pointer-events-none absolute inset-1",
+              expression === "talking" && "leapbot-talking",
+            )}
+          >
+            <img
+              src="/leapbot.webp"
+              alt=""
+              className="h-full w-full object-contain"
+              draggable={false}
+            />
+          </span>
           {expression === "talking" ? (
             <span className="absolute -right-1 -top-1 flex gap-0.5" aria-hidden="true">
               <span className="leapbot-speech-dot h-1.5 w-1.5 rounded-full bg-primary-glow" />
