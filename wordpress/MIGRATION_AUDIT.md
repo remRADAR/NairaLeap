@@ -1,0 +1,31 @@
+# WordPress migration audit
+
+**Audit date:** 2026-10-02
+**Source:** `https://nairaandkobo.ng`
+**Destination:** `https://nairaleap.ct.ws`
+**Branch:** `wordpress-migration`
+
+## Verified destination inventory
+
+- 3,688 published WordPress posts are present.
+- 515 WordPress media attachments are present.
+- Imported post GUIDs preserve `nairaandkobo.ng` source references.
+- Source categories and tags are present on the destination.
+- The Blogsy theme is installed and active.
+- WordPress REST API is available.
+- No WordPress Pages are currently present.
+
+## Import conclusion
+
+The article and media import phase is complete. Do not run the importer again without a deduplication plan; a second bulk import could create duplicate posts and media.
+
+The current post sample has `featured_media: 0`. This is an association/audit issue, not evidence that the media library is empty. Featured-image relationships should be reviewed separately before launch.
+
+## Remaining launch work
+
+1. Create/review the missing static pages: About Us, Connect with Us, Gallery, and Terms & Conditions.
+2. Treat “Our Services” as a portal CTA rather than copying the source services catalog; it should link to the NairaLeap portal.
+3. Add and verify the primary navigation and footer portal link.
+4. Review featured-image associations and homepage presentation.
+5. Keep WooCommerce Coming soon enabled until the owner approves public launch.
+6. Do not describe the traditional WordPress runtime as Vercel-hosted; use WordPress hosting for the CMS and Vercel only for a separate frontend if needed.
