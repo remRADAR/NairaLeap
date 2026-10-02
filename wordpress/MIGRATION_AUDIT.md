@@ -60,3 +60,8 @@ The reusable matcher in `wordpress/media_matcher.py` was run against the collect
 - Exact post-to-destination-media proposals: **0**.
 
 The embedded image URLs point to third-party publisher CDNs, not the destination media library. No fuzzy filename/title assignments were generated, because those could attach incorrect images to articles. A source media manifest or an authenticated source export is required to safely reconstruct featured-image relationships.
+
+
+## Complete source CMS media export
+
+See `wordpress/SOURCE_MEDIA_EXPORT_REPORT.md`. The custom source CMS was exported through `AjaxController/loadMorePosts`: **3,271/3,271** distinct source images downloaded successfully, **0** failures, **174.3 MB**, SHA-256 checksummed. The destination still has only **515** older WordPress media attachments and is not yet synchronized with this source asset set.
