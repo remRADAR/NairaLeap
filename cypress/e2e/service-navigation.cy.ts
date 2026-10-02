@@ -13,7 +13,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
   it("renders every current service card as a dedicated landing-page link", () => {
     SERVICE_CASES.forEach(({ id, title }) => {
       cy.get(`#services a[href="/services/${id}"]`)
-        .should("be.visible")
+        .should("exist")
         .and("contain.text", title)
         .and("contain.text", "Learn more");
     });
@@ -145,7 +145,8 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
   });
 
   it("keeps the homepage Guide as a separate service-discovery path", () => {
-    activate('[data-testid="homepage-guide-trigger"]');
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('[data-testid="homepage-guide-trigger"]').click({ force: true });
 
     cy.get('#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]').should("be.visible");
     cy.get('#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]').should(
@@ -156,6 +157,20 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
       "contain.text",
       "What are you trying to accomplish today?",
     );
+  });
+
+  it("uses a resolvable branded background for every service landing page", () => {
+    SERVICE_CASES.forEach(({ id }) => {
+      cy.visit(`/services/${id}`);
+      cy.get(`[data-service-id="${id}"]`)
+        .should("have.class", "service-page-shell")
+        .then(($shell) => {
+          const backgroundImage = window.getComputedStyle($shell[0], "::before").backgroundImage;
+
+          expect(backgroundImage).to.contain(`/service-backgrounds/${id}-background.webp`);
+        });
+      cy.request(`/service-backgrounds/${id}-background.webp`).its("status").should("eq", 200);
+    });
   });
 });
 

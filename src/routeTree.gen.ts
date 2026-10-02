@@ -9,24 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MortgageRouteImport } from './routes/mortgage'
-import { Route as InsuranceRouteImport } from './routes/insurance'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesServiceRouteImport } from './routes/services.$service'
-import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated/requests'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as InsuranceRouteImport } from './routes/insurance'
+import { Route as MortgageRouteImport } from './routes/mortgage'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated/requests'
+import { Route as ServicesServiceRouteImport } from './routes/services.$service'
 import { Route as AuthenticatedOnboardingServiceRouteImport } from './routes/_authenticated/onboarding.$service'
 
-const MortgageRoute = MortgageRouteImport.update({
-  id: '/mortgage',
-  path: '/mortgage',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InsuranceRoute = InsuranceRouteImport.update({
-  id: '/insurance',
-  path: '/insurance',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -34,29 +33,30 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const InsuranceRoute = InsuranceRouteImport.update({
+  id: '/insurance',
+  path: '/insurance',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const MortgageRoute = MortgageRouteImport.update({
+  id: '/mortgage',
+  path: '/mortgage',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesServiceRoute = ServicesServiceRouteImport.update({
-  id: '/services/$service',
-  path: '/services/$service',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedRequestsRoute = AuthenticatedRequestsRouteImport.update({
   id: '/requests',
   path: '/requests',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRoute,
+const ServicesServiceRoute = ServicesServiceRouteImport.update({
+  id: '/services/$service',
+  path: '/services/$service',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedOnboardingServiceRoute =
   AuthenticatedOnboardingServiceRouteImport.update({
@@ -142,25 +142,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/mortgage': {
-      id: '/mortgage'
-      path: '/mortgage'
-      fullPath: '/mortgage'
-      preLoaderRoute: typeof MortgageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insurance': {
-      id: '/insurance'
-      path: '/insurance'
-      fullPath: '/insurance'
-      preLoaderRoute: typeof InsuranceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -170,19 +156,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/$service': {
-      id: '/services/$service'
-      path: '/services/$service'
-      fullPath: '/services/$service'
-      preLoaderRoute: typeof ServicesServiceRouteImport
+    '/insurance': {
+      id: '/insurance'
+      path: '/insurance'
+      fullPath: '/insurance'
+      preLoaderRoute: typeof InsuranceRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/mortgage': {
+      id: '/mortgage'
+      path: '/mortgage'
+      fullPath: '/mortgage'
+      preLoaderRoute: typeof MortgageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/requests': {
       id: '/_authenticated/requests'
@@ -191,12 +191,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
+    '/services/$service': {
+      id: '/services/$service'
+      path: '/services/$service'
+      fullPath: '/services/$service'
+      preLoaderRoute: typeof ServicesServiceRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/onboarding/$service': {
       id: '/_authenticated/onboarding/$service'

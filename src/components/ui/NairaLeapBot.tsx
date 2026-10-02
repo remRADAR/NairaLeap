@@ -137,6 +137,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   const [speechAvailable, setSpeechAvailable] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(() => readTranscript());
+  const messagesRef = useRef<ChatMessage[]>(messages);
   const [session, setSession] = useState<AgentSession>(() => readSession(pathname));
   const [promptVisible, setPromptVisible] = useState(false);
   const dragRef = useRef<{
@@ -191,15 +192,14 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   }, []);
 
   const addMessage = useCallback((message: ChatMessage) => {
-    setMessages((current) => {
-      const next = [...current, message].slice(-MAX_TRANSCRIPT);
-      try {
-        window.sessionStorage.setItem(TRANSCRIPT_KEY, JSON.stringify(next));
-      } catch {
-        // Transcript persistence is best effort and never blocks the portal.
-      }
-      return next;
-    });
+    const next = [...messagesRef.current, message].slice(-MAX_TRANSCRIPT);
+    messagesRef.current = next;
+    try {
+      window.sessionStorage.setItem(TRANSCRIPT_KEY, JSON.stringify(next));
+    } catch {
+      // Transcript persistence is best effort and never blocks the portal.
+    }
+    setMessages(next);
   }, []);
 
   const executeAction = useCallback(
@@ -279,7 +279,9 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   useEffect(() => {
     setPosition(clampPosition(loadPosition()));
     setSpeechAvailable("speechSynthesis" in window && "SpeechSynthesisUtterance" in window);
-    if (messages.length === 0) addMessage({ id: "opening", role: "bot", text: OPENING_MESSAGE });
+    if (messagesRef.current.length === 0) {
+      addMessage({ id: "opening", role: "bot", text: OPENING_MESSAGE });
+    }
     const handleResize = () => setPosition((current) => clampPosition(current));
     window.addEventListener("resize", handleResize);
     return () => {
