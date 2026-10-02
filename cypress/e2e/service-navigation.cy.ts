@@ -153,6 +153,58 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     cy.assertServicePage("Property Listings");
   });
 
+  it("keeps the viewport background mounted while service images crossfade", () => {
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('[data-testid="portal-background"]').then(($background) => {
+      const persistentBackground = $background[0];
+
+      cy.get('#services a[href="/services/agriculture"]').click();
+      cy.location("pathname").should("eq", "/services/agriculture");
+      cy.get('[data-testid="portal-background"]').should(($current) => {
+        expect($current[0]).to.eq(persistentBackground);
+      });
+      cy.get(
+        '[data-testid="portal-background-layer"][data-service-id="agriculture"][data-active="true"]',
+      ).should("exist");
+
+      cy.intercept(
+        "GET",
+        "**/service-backgrounds/vendor-marketplace-background.webp",
+        (request) => {
+          request.on("response", (response) => response.setDelay(350));
+        },
+      ).as("vendorBackground");
+      cy.get('main a[href="/services/vendor-marketplace"]').click();
+      cy.location("pathname").should("eq", "/services/vendor-marketplace");
+      cy.get(
+        '[data-testid="portal-background-layer"][data-service-id="agriculture"][data-active="true"]',
+      ).should("exist");
+      cy.wait("@vendorBackground");
+      cy.get(
+        '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"][data-active="true"]',
+      ).should("exist");
+      cy.get('[data-testid="portal-background"]').should(($current) => {
+        expect($current[0]).to.eq(persistentBackground);
+      });
+      cy.get(".page-transition").should(($transition) => {
+        expect(window.getComputedStyle($transition[0]).transform).to.eq("none");
+      });
+
+      cy.contains("main a", "Back to services").click();
+      cy.location("pathname").should("eq", "/");
+      cy.get('[data-testid="portal-background"]').should(($current) => {
+        expect($current[0]).to.eq(persistentBackground);
+        expect($current).to.have.attr("data-target-service-id", "");
+      });
+      cy.get(
+        '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"]',
+      ).should("have.attr", "data-active", "false");
+      cy.get(
+        '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"]',
+      ).should("not.exist");
+    });
+  });
+
   it("returns to the homepage Services section from a dedicated page", () => {
     cy.get('#services a[href="/services/insurance"]').click();
     cy.contains("header a", "Services").click();
@@ -195,10 +247,14 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
       cy.visit(`/services/${id}`);
       cy.get(`[data-service-id="${id}"]`)
         .should("have.class", "service-page-shell")
-        .then(($shell) => {
-          const backgroundImage = window.getComputedStyle($shell[0], "::before").backgroundImage;
+        .then(() => {
+          cy.get(
+            `[data-testid="portal-background-layer"][data-service-id="${id}"][data-active="true"]`,
+          ).should(($layer) => {
+            const backgroundImage = window.getComputedStyle($layer[0]).backgroundImage;
 
-          expect(backgroundImage).to.contain(`/service-backgrounds/${id}-background.webp`);
+            expect(backgroundImage).to.contain(`/service-backgrounds/${id}-background.webp`);
+          });
         });
       cy.request(`/service-backgrounds/${id}-background.webp`).its("status").should("eq", 200);
     });
