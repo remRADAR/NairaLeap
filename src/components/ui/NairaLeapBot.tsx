@@ -467,7 +467,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               placeholder="Tell me what you want to do"
-              className="min-w-0 flex-1 rounded-xl border border-glass-border bg-background/70 px-3 py-2 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className="portal-field min-w-0 flex-1 rounded-xl border border-glass-border bg-background/70 px-3 py-2 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
             />
             <button
               type="submit"

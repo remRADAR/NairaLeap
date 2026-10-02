@@ -95,7 +95,7 @@ function Header() {
                   key={item.label}
                   to="/"
                   hash={item.hash}
-                  className="rounded-lg px-3 py-2 text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
+                  className="portal-nav-link rounded-lg px-3 py-2 text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
                 >
                   {item.label}
                 </Link>
@@ -103,7 +103,7 @@ function Header() {
             </nav>
             <Link
               to={user ? "/dashboard" : "/auth"}
-              className="rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+              className="portal-nav-link rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
@@ -114,7 +114,7 @@ function Header() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="interactive-button inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -133,7 +133,7 @@ function Header() {
                 to="/"
                 hash={item.hash}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
+                className="portal-nav-link rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
               >
                 {item.label}
               </Link>
@@ -141,7 +141,7 @@ function Header() {
             <Link
               to={user ? "/dashboard" : "/auth"}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
+              className="portal-nav-link rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>

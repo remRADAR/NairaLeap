@@ -255,7 +255,7 @@ function AuthPage() {
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
                         autoComplete="email"
-                        className="mt-2 h-12 w-full rounded-2xl border border-glass-border bg-white/[0.06] px-4 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
+                        className="portal-field mt-2 h-12 w-full rounded-2xl border border-glass-border bg-white/[0.06] px-4 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
                         placeholder="you@example.com"
                         required
                       />
@@ -274,7 +274,7 @@ function AuthPage() {
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
-                        className="mt-2 h-12 w-full rounded-2xl border border-glass-border bg-white/[0.06] px-4 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
+                        className="portal-field mt-2 h-12 w-full rounded-2xl border border-glass-border bg-white/[0.06] px-4 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
                         placeholder="At least 8 characters"
                         minLength={8}
                         required

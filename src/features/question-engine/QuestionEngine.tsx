@@ -266,7 +266,7 @@ function AnswerField({
           maxLength={question.maxLength}
           aria-labelledby={labelledBy}
           aria-describedby={describedBy}
-          className="min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="portal-field min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
       );
 
@@ -283,7 +283,7 @@ function AnswerField({
           aria-labelledby={labelledBy}
           aria-describedby={describedBy}
           rows={4}
-          className="w-full resize-y rounded-2xl border border-glass-border bg-glass px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="portal-field w-full resize-y rounded-2xl border border-glass-border bg-glass px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
       );
 
@@ -314,7 +314,7 @@ function AnswerField({
           maxLength={question.maxLength}
           aria-labelledby={labelledBy}
           aria-describedby={describedBy}
-          className="min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="portal-field min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
       );
     }
@@ -345,7 +345,7 @@ function AnswerField({
             step={question.step}
             aria-labelledby={labelledBy}
             aria-describedby={describedBy}
-            className="min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="portal-field min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
           {question.unit ? (
             <span className="text-sm text-muted-foreground">{question.unit}</span>
@@ -366,7 +366,7 @@ function AnswerField({
           max={question.max}
           aria-labelledby={labelledBy}
           aria-describedby={describedBy}
-          className="min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="portal-field min-h-12 w-full rounded-2xl border border-glass-border bg-glass px-4 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
       );
 

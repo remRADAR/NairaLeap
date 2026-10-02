@@ -246,6 +246,19 @@
   filter: saturate(1.08);
 }
 
+.interactive-button > svg {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.interactive-button:hover > svg,
+.interactive-button:focus-visible > svg {
+  transform: translate3d(0, -1px, 0) scale(1.08);
+}
+
+.interactive-button:active > svg {
+  transform: scale(0.94);
+}
+
 .interactive-button:active {
   filter: brightness(0.96) saturate(1.02);
 }
@@ -282,6 +295,67 @@
 
 .interactive-card:active {
   transform: translateY(0) scale(0.995);
+}
+
+.interactive-card-icon,
+.interactive-arrow {
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms ease;
+}
+
+.interactive-card:hover .interactive-card-icon,
+.interactive-card:focus-visible .interactive-card-icon {
+  transform: translate3d(0, -1px, 0) rotate(-3deg) scale(1.08);
+}
+
+.interactive-card:hover .interactive-arrow,
+.interactive-card:focus-visible .interactive-arrow {
+  transform: translate3d(3px, 0, 0);
+  color: var(--primary-glow);
+}
+
+.portal-nav-link {
+  position: relative;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.portal-nav-link::after {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.3rem;
+  left: 0.75rem;
+  height: 2px;
+  border-radius: 999px;
+  content: "";
+  background: linear-gradient(90deg, var(--brand), var(--brand-glow));
+  opacity: 0;
+  transform: scaleX(0.35);
+  transition:
+    opacity 180ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
+
+.portal-nav-link:hover::after,
+.portal-nav-link:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.portal-field {
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.portal-field:focus {
+  border-color: var(--primary-glow);
+  box-shadow: 0 0 0 3px oklch(0.75 0.2 305 / 22%);
 }
 
 .page-transition {
@@ -506,6 +580,15 @@
     box-shadow: var(--shadow-glow);
   }
 
+  .interactive-card:hover .interactive-card-icon,
+  .interactive-card:hover .interactive-arrow {
+    transform: none;
+  }
+
+  .portal-nav-link::after {
+    display: none;
+  }
+
   .leapbot-control:hover {
     transform: none;
     filter: none;
@@ -535,10 +618,39 @@
     display: none;
   }
 
+  .interactive-button > svg,
+  .interactive-card-icon,
+  .interactive-arrow,
+  .portal-nav-link,
+  .portal-nav-link::after,
+  .portal-field {
+    transition: none !important;
+  }
+
   .interactive-card:hover,
   .interactive-card:active {
     transform: none;
     box-shadow: none;
+  }
+
+  .interactive-button:hover,
+  .interactive-button:focus-visible,
+  .interactive-button:active,
+  .portal-nav-link:hover,
+  .portal-nav-link:active {
+    transform: none;
+    filter: none;
+  }
+
+  .interactive-button:hover > svg,
+  .interactive-button:active > svg,
+  .interactive-card:hover .interactive-card-icon,
+  .interactive-card:focus-visible .interactive-card-icon,
+  .interactive-card:hover .interactive-arrow,
+  .interactive-card:focus-visible .interactive-arrow,
+  .portal-nav-link:hover::after,
+  .portal-nav-link:focus-visible::after {
+    transform: none;
   }
 
   .motion-reveal {

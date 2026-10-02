@@ -19,6 +19,37 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     });
   });
 
+  it("adds interactive feedback to navigation, service cards, and intake fields", () => {
+    cy.get('header nav[aria-label="Primary"] a')
+      .first()
+      .should("have.class", "portal-nav-link")
+      .then(($link) => {
+        const underline = window.getComputedStyle($link[0], "::after");
+
+        expect(underline.transitionDuration).to.contain("0.24s");
+      });
+
+    cy.get('#services a[href="/services/agriculture"] .interactive-card-icon')
+      .should("exist")
+      .then(($icon) => {
+        expect(window.getComputedStyle($icon[0]).transitionDuration).to.contain("0.26s");
+      });
+
+    cy.visit("/services/agriculture");
+    activate('[data-testid="service-start-onboarding"]');
+    cy.get(
+      '#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"] input[placeholder="Type your answer"]',
+    )
+      .should("have.class", "portal-field")
+      .and("have.focus")
+      .then(($field) => {
+        const style = window.getComputedStyle($field[0]);
+
+        expect(style.transitionProperty).to.contain("border-color");
+        expect(style.boxShadow).not.to.eq("none");
+      });
+  });
+
   SERVICE_CASES.forEach(({ id, title }) => {
     it(`opens the ${title} landing page before onboarding`, () => {
       cy.get(`#services a[href="/services/${id}"]`).click();

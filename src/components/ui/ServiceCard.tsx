@@ -28,7 +28,7 @@ export function ServiceCard({
     <>
       <span
         aria-hidden="true"
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)] transition-transform duration-300 group-hover:scale-105"
+        className="interactive-card-icon grid h-11 w-11 shrink-0 place-items-center rounded-xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
       >
         <Icon className="h-5 w-5" />
       </span>
@@ -41,7 +41,7 @@ export function ServiceCard({
       </span>
       <ArrowRight
         aria-hidden="true"
-        className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-primary"
+        className="interactive-arrow mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-primary"
       />
     </>
   );
