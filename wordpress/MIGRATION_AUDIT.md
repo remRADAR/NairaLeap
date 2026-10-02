@@ -48,3 +48,15 @@ Using the destination WordPress REST API:
 The binary media import completed, but the importer did not preserve post-to-media relationships. The destination therefore has the article text and media files, but not the featured-image mapping required for complete visual parity.
 
 No media or posts were changed during this audit. The next implementation step is a source-to-destination media matching pass using stable source URLs/filenames, followed by a dry-run report of proposed post/attachment assignments before any bulk update.
+
+## Media relationship dry run
+
+The reusable matcher in `wordpress/media_matcher.py` was run against the collected authenticated REST exports.
+
+- Post records scanned in the collected export: **700**.
+- Media records scanned: **515**.
+- Posts containing embedded image tags: **17**.
+- Embedded image references: **19**.
+- Exact post-to-destination-media proposals: **0**.
+
+The embedded image URLs point to third-party publisher CDNs, not the destination media library. No fuzzy filename/title assignments were generated, because those could attach incorrect images to articles. A source media manifest or an authenticated source export is required to safely reconstruct featured-image relationships.
