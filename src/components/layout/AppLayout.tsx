@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BottomDock } from "./BottomDock";
@@ -10,6 +10,7 @@ import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCata
 
 interface AppLayoutProps {
   children: ReactNode;
+  serviceId?: ServiceId;
 }
 
 const NAV_ITEMS = [
@@ -23,9 +24,25 @@ const NAV_ITEMS = [
  * Sticky glass header · main outlet · footer · floating dock.
  * Adds bottom padding so the fixed dock never overlaps page content.
  */
-export function AppLayout({ children }: AppLayoutProps) {
+const SERVICE_BACKGROUND_IMAGES: Partial<Record<ServiceId, string>> = {
+  agriculture: "/service-backgrounds/agriculture-background.webp",
+  "property-listings": "/service-backgrounds/property-listings-background.webp",
+  "business-funding": "/service-backgrounds/business-funding-background.webp",
+  partnerships: "/service-backgrounds/partnerships-background.webp",
+  "vendor-marketplace": "/service-backgrounds/vendor-marketplace-background.webp",
+  "distress-sales": "/service-backgrounds/distress-sales-background.webp",
+  "recycling-scrap": "/service-backgrounds/recycling-scrap-background.webp",
+  "business-briefs": "/service-backgrounds/business-briefs-background.webp",
+  "professional-services": "/service-backgrounds/professional-services-background.webp",
+  "customer-support": "/service-backgrounds/customer-support-background.webp",
+  insurance: "/service-backgrounds/insurance-background.webp",
+  mortgage: "/service-backgrounds/mortgage-background.webp",
+};
+
+export function AppLayout({ children, serviceId }: AppLayoutProps) {
   const [guideOpen, setGuideOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const backgroundImage = serviceId ? SERVICE_BACKGROUND_IMAGES[serviceId] : undefined;
 
   useEffect(() => {
     setHydrated(true);
@@ -33,8 +50,17 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <div
-      className="dark flex min-h-dvh flex-col text-foreground"
+      className={cn(
+        "dark flex min-h-dvh flex-col text-foreground",
+        serviceId && "service-page-shell",
+      )}
+      style={
+        backgroundImage
+          ? ({ "--service-background": `url(${backgroundImage})` } as CSSProperties)
+          : undefined
+      }
       data-app-hydrated={hydrated ? "true" : "false"}
+      data-service-id={serviceId}
     >
       <Header />
       <main className="flex-1 pb-32 sm:pb-28">{children}</main>

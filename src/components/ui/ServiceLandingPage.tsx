@@ -31,7 +31,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
 
   return (
     <>
-      <div className="bg-background pb-20 text-foreground">
+      <div className="service-page-content pb-20 text-foreground">
         <Container className="py-8 sm:py-12">
           <Link
             to="/"
