@@ -585,7 +585,28 @@
     transform: none;
   }
 
-  .portal-nav-link::after {
+  .interactive-card:focus-visible::before {
+    opacity: 1;
+  }
+
+  .interactive-card:focus-visible {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .interactive-card:focus-visible .interactive-card-icon {
+    transform: translate3d(0, -1px, 0) rotate(-3deg) scale(1.08);
+  }
+
+  .interactive-card:focus-visible .interactive-arrow {
+    transform: translate3d(3px, 0, 0);
+    color: var(--primary-glow);
+  }
+
+  .interactive-button:focus-visible::after {
+    transform: translateX(125%);
+  }
+
+  .portal-nav-link:not(:focus-visible)::after {
     display: none;
   }
 

@@ -1,3 +1,5 @@
+import "cypress-real-events";
+
 export const SERVICE_CASES = [
   { id: "agriculture", title: "Agriculture" },
   { id: "property-listings", title: "Property Listings" },
