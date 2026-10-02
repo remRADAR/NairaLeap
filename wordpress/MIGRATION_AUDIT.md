@@ -29,3 +29,22 @@ The current post sample has `featured_media: 0`. This is an association/audit is
 4. Review featured-image associations and homepage presentation.
 5. Keep WooCommerce Coming soon enabled until the owner approves public launch.
 6. Do not describe the traditional WordPress runtime as Vercel-hosted; use WordPress hosting for the CMS and Vercel only for a separate frontend if needed.
+
+## Featured-image and attachment relationship audit
+
+**Audit date:** 2026-10-02
+
+Using the destination WordPress REST API:
+
+- Posts filtered by `featured_media=0`: **3,688**.
+- Total published posts: **3,688**.
+- Media filtered by `parent=0`: **515**.
+- Total media attachments: **515**.
+- Representative posts from the first and 100th API pages both have `featured_media: 0`.
+- The media library is populated, but the attachments are not assigned as post parents.
+
+### Conclusion
+
+The binary media import completed, but the importer did not preserve post-to-media relationships. The destination therefore has the article text and media files, but not the featured-image mapping required for complete visual parity.
+
+No media or posts were changed during this audit. The next implementation step is a source-to-destination media matching pass using stable source URLs/filenames, followed by a dry-run report of proposed post/attachment assignments before any bulk update.
