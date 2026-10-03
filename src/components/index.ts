@@ -1,6 +1,5 @@
 // Central re-exports for portal-wide reusable components.
 export { AppLayout } from "./layout/AppLayout";
-export { BottomDock } from "./layout/BottomDock";
 export { Container } from "./ui/Container";
 export { GlassCard } from "./ui/GlassCard";
 export { BrandButton } from "./ui/BrandButton";

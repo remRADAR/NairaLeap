@@ -214,17 +214,8 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     cy.get("#services").should("be.visible");
   });
 
-  it("keeps quick-access services on their canonical landing routes", () => {
-    cy.get('nav[aria-label="Portal quick access"] a[aria-label="Insurance"]').should(
-      "have.attr",
-      "href",
-      "/services/insurance",
-    );
-    cy.get('nav[aria-label="Portal quick access"] a[aria-label="Mortgage"]').should(
-      "have.attr",
-      "href",
-      "/services/mortgage",
-    );
+  it("does not render the removed lower quick-access dock", () => {
+    cy.get('nav[aria-label="Portal quick access"]').should("not.exist");
   });
 
   it("keeps the homepage Guide as a separate service-discovery path", () => {

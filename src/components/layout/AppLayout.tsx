@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BottomDock } from "./BottomDock";
 import { NairaLeapBot } from "../ui/NairaLeapBot";
 import { NairaLeapGuideContainer } from "../ui/NairaLeapGuideContainer";
 import { useAuth } from "@/features/auth";
@@ -21,8 +20,7 @@ const NAV_ITEMS = [
 
 /**
  * AppLayout — portal shell.
- * Sticky glass header · main outlet · footer · floating dock.
- * Adds bottom padding so the fixed dock never overlaps page content.
+ * Sticky glass header · main outlet · footer.
  */
 export function AppLayout({ children, serviceId }: AppLayoutProps) {
   const [guideOpen, setGuideOpen] = useState(false);
@@ -42,9 +40,8 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
       data-service-id={serviceId}
     >
       <Header />
-      <main className="flex-1 pb-32 sm:pb-28">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
-      <BottomDock />
       <NairaLeapBot onGuide={() => setGuideOpen(true)} />
       <NairaLeapGuideContainer service={null} open={guideOpen} onOpenChange={setGuideOpen} />
     </div>
