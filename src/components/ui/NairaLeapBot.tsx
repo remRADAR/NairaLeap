@@ -137,6 +137,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   const [speechAvailable, setSpeechAvailable] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(() => readTranscript());
+  const messagesRef = useRef<ChatMessage[]>(messages);
   const [session, setSession] = useState<AgentSession>(() => readSession(pathname));
   const [promptVisible, setPromptVisible] = useState(false);
   const dragRef = useRef<{
@@ -191,15 +192,14 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   }, []);
 
   const addMessage = useCallback((message: ChatMessage) => {
-    setMessages((current) => {
-      const next = [...current, message].slice(-MAX_TRANSCRIPT);
-      try {
-        window.sessionStorage.setItem(TRANSCRIPT_KEY, JSON.stringify(next));
-      } catch {
-        // Transcript persistence is best effort and never blocks the portal.
-      }
-      return next;
-    });
+    const next = [...messagesRef.current, message].slice(-MAX_TRANSCRIPT);
+    messagesRef.current = next;
+    try {
+      window.sessionStorage.setItem(TRANSCRIPT_KEY, JSON.stringify(next));
+    } catch {
+      // Transcript persistence is best effort and never blocks the portal.
+    }
+    setMessages(next);
   }, []);
 
   const executeAction = useCallback(
@@ -279,7 +279,9 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
   useEffect(() => {
     setPosition(clampPosition(loadPosition()));
     setSpeechAvailable("speechSynthesis" in window && "SpeechSynthesisUtterance" in window);
-    if (messages.length === 0) addMessage({ id: "opening", role: "bot", text: OPENING_MESSAGE });
+    if (messagesRef.current.length === 0) {
+      addMessage({ id: "opening", role: "bot", text: OPENING_MESSAGE });
+    }
     const handleResize = () => setPosition((current) => clampPosition(current));
     window.addEventListener("resize", handleResize);
     return () => {
@@ -465,7 +467,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               placeholder="Tell me what you want to do"
-              className="min-w-0 flex-1 rounded-xl border border-glass-border bg-background/70 px-3 py-2 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className="portal-field min-w-0 flex-1 rounded-xl border border-glass-border bg-background/70 px-3 py-2 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
             />
             <button
               type="submit"
@@ -517,18 +519,25 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
           onPointerDown={handlePointerDown}
           onClick={handleBotClick}
           className={cn(
-            "leapbot-float relative grid h-16 w-16 touch-none place-items-center rounded-[1.4rem] border border-primary/50 bg-[#150d2f]/90 p-1 shadow-[0_0_32px_rgba(168,85,247,0.42)] outline-none transition-all duration-300 hover:scale-105 hover:border-primary-glow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95",
-            expression === "talking" && "leapbot-talking",
+            "leapbot-control relative grid h-16 w-16 touch-none place-items-center rounded-[1.4rem] border border-primary/50 bg-[#150d2f]/90 p-1 shadow-[0_0_32px_rgba(168,85,247,0.42)] outline-none hover:border-primary-glow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             isDragging && "cursor-grabbing scale-105",
           )}
         >
           <span className="sr-only">LeapBot, persistent NairaLeap chauffeur</span>
-          <img
-            src="/leapbot.webp"
-            alt=""
-            className="h-full w-full object-contain"
-            draggable={false}
-          />
+          <span
+            aria-hidden="true"
+            className={cn(
+              "leapbot-avatar-motion pointer-events-none absolute inset-1",
+              expression === "talking" && "leapbot-talking",
+            )}
+          >
+            <img
+              src="/leapbot.webp"
+              alt=""
+              className="h-full w-full object-contain"
+              draggable={false}
+            />
+          </span>
           {expression === "talking" ? (
             <span className="absolute -right-1 -top-1 flex gap-0.5" aria-hidden="true">
               <span className="leapbot-speech-dot h-1.5 w-1.5 rounded-full bg-primary-glow" />

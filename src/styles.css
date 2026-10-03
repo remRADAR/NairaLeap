@@ -142,32 +142,51 @@
 
   .service-page-shell {
     position: relative;
-    isolation: isolate;
     background: transparent;
   }
 
-  .service-page-shell::before,
-  .service-page-shell::after {
+  .portal-background {
     position: fixed;
     inset: 0;
+    z-index: 0;
+    overflow: hidden;
     pointer-events: none;
-    content: "";
+    background-color: var(--background);
+    background-image: var(--gradient-surface);
   }
 
-  .service-page-shell::before {
-    z-index: -2;
+  .portal-background-layer {
+    position: absolute;
+    inset: 0;
     background-color: var(--background);
-    background-image: var(--service-background, var(--gradient-surface));
-    background-position: center center;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    opacity: 0;
+    transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .service-page-shell::after {
-    z-index: -1;
+  .portal-background-layer::after {
+    position: absolute;
+    inset: 0;
+    content: "";
     background:
-      linear-gradient(180deg, oklch(0.08 0.02 285 / 42%), oklch(0.08 0.02 285 / 58%) 48%, oklch(0.08 0.02 285 / 72%)),
-      linear-gradient(90deg, oklch(0.08 0.02 285 / 38%), transparent 62%, oklch(0.08 0.02 285 / 28%));
+      linear-gradient(
+        180deg,
+        oklch(0.08 0.02 285 / 42%),
+        oklch(0.08 0.02 285 / 58%) 48%,
+        oklch(0.08 0.02 285 / 72%)
+      ),
+      linear-gradient(
+        90deg,
+        oklch(0.08 0.02 285 / 38%),
+        transparent 62%,
+        oklch(0.08 0.02 285 / 28%)
+      );
+  }
+
+  .portal-background-layer[data-active="true"] {
+    opacity: 1;
   }
 
   .service-page-shell .service-page-content {
@@ -175,7 +194,9 @@
   }
 
   .service-page-shell :where(h1, h2, h3, h4, p, a, span, li) {
-    text-shadow: 0 2px 3px oklch(0 0 0 / 72%), 0 5px 16px oklch(0 0 0 / 46%);
+    text-shadow:
+      0 2px 3px oklch(0 0 0 / 72%),
+      0 5px 16px oklch(0 0 0 / 46%);
   }
 
   .service-page-shell .glass-panel {
@@ -246,6 +267,19 @@
   filter: saturate(1.08);
 }
 
+.interactive-button > svg {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.interactive-button:hover > svg,
+.interactive-button:focus-visible > svg {
+  transform: translate3d(0, -1px, 0) scale(1.08);
+}
+
+.interactive-button:active > svg {
+  transform: scale(0.94);
+}
+
 .interactive-button:active {
   filter: brightness(0.96) saturate(1.02);
 }
@@ -284,18 +318,79 @@
   transform: translateY(0) scale(0.995);
 }
 
+.interactive-card-icon,
+.interactive-arrow {
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms ease;
+}
+
+.interactive-card:hover .interactive-card-icon,
+.interactive-card:focus-visible .interactive-card-icon {
+  transform: translate3d(0, -1px, 0) rotate(-3deg) scale(1.08);
+}
+
+.interactive-card:hover .interactive-arrow,
+.interactive-card:focus-visible .interactive-arrow {
+  transform: translate3d(3px, 0, 0);
+  color: var(--primary-glow);
+}
+
+.portal-nav-link {
+  position: relative;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.portal-nav-link::after {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.3rem;
+  left: 0.75rem;
+  height: 2px;
+  border-radius: 999px;
+  content: "";
+  background: linear-gradient(90deg, var(--brand), var(--brand-glow));
+  opacity: 0;
+  transform: scaleX(0.35);
+  transition:
+    opacity 180ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
+
+.portal-nav-link:hover::after,
+.portal-nav-link:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.portal-field {
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.portal-field:focus {
+  border-color: var(--primary-glow);
+  box-shadow: 0 0 0 3px oklch(0.75 0.2 305 / 22%);
+}
+
 .page-transition {
-  animation: page-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  position: relative;
+  z-index: 1;
+  animation: page-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(0.45rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -332,8 +427,59 @@
   -webkit-text-fill-color: transparent;
 }
 
-.leapbot-float {
-  animation: leapbot-float 3.8s ease-in-out infinite;
+.leapbot-control {
+  isolation: isolate;
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 280ms ease,
+    border-color 280ms ease,
+    box-shadow 280ms ease;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.leapbot-control::before {
+  position: absolute;
+  inset: -0.45rem;
+  z-index: -1;
+  border-radius: 1.8rem;
+  content: "";
+  background: radial-gradient(ellipse, oklch(0.75 0.2 305 / 32%), transparent 70%);
+  opacity: 0.62;
+  transform: scale(0.88);
+  animation: leapbot-halo 3.6s ease-in-out infinite;
+  transition:
+    opacity 280ms ease,
+    transform 280ms ease;
+  pointer-events: none;
+}
+
+.leapbot-control:hover,
+.leapbot-control:focus-visible {
+  transform: translate3d(0, -3px, 0) scale(1.055);
+  filter: saturate(1.12) brightness(1.06);
+  box-shadow: 0 0 38px oklch(0.62 0.22 300 / 58%);
+}
+
+.leapbot-control:hover::before,
+.leapbot-control:focus-visible::before {
+  opacity: 0.95;
+  transform: scale(1.12);
+}
+
+.leapbot-control:active {
+  transform: translate3d(0, -1px, 0) scale(0.97);
+}
+
+.leapbot-avatar-motion {
+  animation: leapbot-float 4.2s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.leapbot-control:hover .leapbot-avatar-motion,
+.leapbot-control:focus-visible .leapbot-avatar-motion {
+  animation-duration: 2.8s;
 }
 
 .leapbot-sleep {
@@ -355,10 +501,22 @@
 @keyframes leapbot-float {
   0%,
   100% {
-    transform: translateY(0) rotate(-1deg);
+    transform: translate3d(0, 0, 0) rotate(-1deg) scale(1);
   }
   50% {
-    transform: translateY(-4px) rotate(1deg);
+    transform: translate3d(0, -7px, 0) rotate(1deg) scale(1.025);
+  }
+}
+
+@keyframes leapbot-halo {
+  0%,
+  100% {
+    opacity: 0.46;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.04);
   }
 }
 
@@ -442,6 +600,47 @@
     border-color: oklch(0.75 0.2 305 / 34%);
     box-shadow: var(--shadow-glow);
   }
+
+  .interactive-card:hover .interactive-card-icon,
+  .interactive-card:hover .interactive-arrow {
+    transform: none;
+  }
+
+  .interactive-card:focus-visible::before {
+    opacity: 1;
+  }
+
+  .interactive-card:focus-visible {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .interactive-card:focus-visible .interactive-card-icon {
+    transform: translate3d(0, -1px, 0) rotate(-3deg) scale(1.08);
+  }
+
+  .interactive-card:focus-visible .interactive-arrow {
+    transform: translate3d(3px, 0, 0);
+    color: var(--primary-glow);
+  }
+
+  .interactive-button:focus-visible::after {
+    transform: translateX(125%);
+  }
+
+  .portal-nav-link:not(:focus-visible)::after {
+    display: none;
+  }
+
+  .leapbot-control:hover {
+    transform: none;
+    filter: none;
+    box-shadow: none;
+  }
+
+  .leapbot-control:hover::before {
+    opacity: 0.62;
+    transform: scale(0.88);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -461,14 +660,62 @@
     display: none;
   }
 
+  .interactive-button > svg,
+  .interactive-card-icon,
+  .interactive-arrow,
+  .portal-nav-link,
+  .portal-nav-link::after,
+  .portal-field {
+    transition: none !important;
+  }
+
   .interactive-card:hover,
   .interactive-card:active {
     transform: none;
     box-shadow: none;
   }
 
+  .interactive-button:hover,
+  .interactive-button:focus-visible,
+  .interactive-button:active,
+  .portal-nav-link:hover,
+  .portal-nav-link:active {
+    transform: none;
+    filter: none;
+  }
+
+  .interactive-button:hover > svg,
+  .interactive-button:active > svg,
+  .interactive-card:hover .interactive-card-icon,
+  .interactive-card:focus-visible .interactive-card-icon,
+  .interactive-card:hover .interactive-arrow,
+  .interactive-card:focus-visible .interactive-arrow,
+  .portal-nav-link:hover::after,
+  .portal-nav-link:focus-visible::after {
+    transform: none;
+  }
+
   .motion-reveal {
     opacity: 1 !important;
+  }
+
+  .leapbot-control,
+  .leapbot-control::before,
+  .leapbot-avatar-motion,
+  .leapbot-sleep,
+  .leapbot-talking,
+  .leapbot-speech-dot {
+    animation: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+
+  .leapbot-control:hover,
+  .leapbot-control:focus-visible,
+  .leapbot-control:active {
+    transform: none;
+    filter: none;
+    box-shadow: none;
   }
 
   html {

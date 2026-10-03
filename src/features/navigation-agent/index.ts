@@ -312,7 +312,7 @@ export function answerPortalQuestion(text: string, session: AgentSession): Agent
     return {
       text: "I can explain the request and prepare the right review path, but the portal does not have a verified price book available to me. I will not invent a fee, premium, rate or approval. Any provider terms or quote must come through the relevant review process.",
       records: ["portal.pricing", "portal.boundaries"],
-      actions: serviceId ? [{ type: "show_service", serviceId }] : [{ type: "go_home" }],
+      actions: [{ type: "stay_with_user" }],
     };
   }
 

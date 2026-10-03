@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BottomDock } from "./BottomDock";
@@ -24,25 +24,9 @@ const NAV_ITEMS = [
  * Sticky glass header · main outlet · footer · floating dock.
  * Adds bottom padding so the fixed dock never overlaps page content.
  */
-const SERVICE_BACKGROUND_IMAGES: Partial<Record<ServiceId, string>> = {
-  agriculture: "/service-backgrounds/agriculture-background.webp",
-  "property-listings": "/service-backgrounds/property-listings-background.webp",
-  "business-funding": "/service-backgrounds/business-funding-background.webp",
-  partnerships: "/service-backgrounds/partnerships-background.webp",
-  "vendor-marketplace": "/service-backgrounds/vendor-marketplace-background.webp",
-  "distress-sales": "/service-backgrounds/distress-sales-background.webp",
-  "recycling-scrap": "/service-backgrounds/recycling-scrap-background.webp",
-  "business-briefs": "/service-backgrounds/business-briefs-background.webp",
-  "professional-services": "/service-backgrounds/professional-services-background.webp",
-  "customer-support": "/service-backgrounds/customer-support-background.webp",
-  insurance: "/service-backgrounds/insurance-background.webp",
-  mortgage: "/service-backgrounds/mortgage-background.webp",
-};
-
 export function AppLayout({ children, serviceId }: AppLayoutProps) {
   const [guideOpen, setGuideOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const backgroundImage = serviceId ? SERVICE_BACKGROUND_IMAGES[serviceId] : undefined;
 
   useEffect(() => {
     setHydrated(true);
@@ -54,11 +38,6 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
         "dark flex min-h-dvh flex-col text-foreground",
         serviceId && "service-page-shell",
       )}
-      style={
-        backgroundImage
-          ? ({ "--service-background": `url(${backgroundImage})` } as CSSProperties)
-          : undefined
-      }
       data-app-hydrated={hydrated ? "true" : "false"}
       data-service-id={serviceId}
     >
@@ -95,7 +74,7 @@ function Header() {
                   key={item.label}
                   to="/"
                   hash={item.hash}
-                  className="rounded-lg px-3 py-2 text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
+                  className="portal-nav-link rounded-lg px-3 py-2 text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
                 >
                   {item.label}
                 </Link>
@@ -103,7 +82,7 @@ function Header() {
             </nav>
             <Link
               to={user ? "/dashboard" : "/auth"}
-              className="rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+              className="portal-nav-link rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
@@ -114,7 +93,7 @@ function Header() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="interactive-button inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -133,7 +112,7 @@ function Header() {
                 to="/"
                 hash={item.hash}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
+                className="portal-nav-link rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
               >
                 {item.label}
               </Link>
@@ -141,7 +120,7 @@ function Header() {
             <Link
               to={user ? "/dashboard" : "/auth"}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
+              className="portal-nav-link rounded-lg px-3 py-3 text-foreground transition-all duration-200 ease-out hover:bg-surface-elevated active:scale-[0.98]"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>

@@ -1,6 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import type { Database } from "@/lib/supabase/types";
+
+type ServiceRequestListItem = Pick<
+  Database["public"]["Tables"]["service_requests"]["Row"],
+  "id" | "service_id" | "schema_version" | "status" | "source" | "created_at" | "updated_at"
+>;
 
 export const listMyServiceRequests = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getSupabaseServerClient();
@@ -21,5 +27,5 @@ export const listMyServiceRequests = createServerFn({ method: "GET" }).handler(a
     throw new Error("We could not load your service requests.");
   }
 
-  return { requests: data };
+  return { requests: (data ?? []) as ServiceRequestListItem[] };
 });
