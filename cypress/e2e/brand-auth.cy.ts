@@ -14,7 +14,11 @@ describe("canonical Nairaleap branding", () => {
   it("serves the favicon and manifest with the canonical icon family", () => {
     cy.request("/favicon.ico?v=20260825-wordmark")
       .its("headers.content-type")
-      .should("include", "image/x-icon");
+      .should((contentType) => {
+        const mediaType = contentType.split(";")[0].toLowerCase();
+
+        expect(["image/x-icon", "image/vnd.microsoft.icon"]).to.include(mediaType);
+      });
 
     cy.request("/manifest.webmanifest")
       .its("body")
