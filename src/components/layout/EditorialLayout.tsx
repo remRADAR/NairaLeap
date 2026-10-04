@@ -84,12 +84,16 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
             Indicators
           </span>
-          <div className="flex min-w-max gap-8 motion-safe:animate-[ticker_42s_linear_infinite]">
-            <span>Latest indicators and stories from across Nigeria</span>
-            <span aria-hidden="true">•</span>
-            <span>Explore the archive by category</span>
-            <span aria-hidden="true">•</span>
-            <span>Read the latest Nairaleap editorial briefings</span>
+          <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_42s_linear_infinite]">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
+                <span>Latest indicators and stories from across Nigeria</span>
+                <span aria-hidden="true">•</span>
+                <span>Explore the archive by category</span>
+                <span aria-hidden="true">•</span>
+                <span>Read the latest Nairaleap editorial briefings</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

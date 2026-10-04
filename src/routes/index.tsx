@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Clock3, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock3, Pause, Play, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
 
@@ -19,6 +20,9 @@ export const Route = createFileRoute("/")({
 });
 
 function EditorialHomePage() {
+  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const { topic } = Route.useSearch();
   const filteredPosts = topic
     ? EDITORIAL_POSTS.filter((post) =>
@@ -27,10 +31,40 @@ function EditorialHomePage() {
         ),
       )
     : EDITORIAL_POSTS;
-  const homepagePool = topic ? filteredPosts : EDITORIAL_POSTS.filter((post) => post.image);
+  const homepagePool = (topic ? filteredPosts : EDITORIAL_POSTS).filter((post) => post.image);
   const homepagePosts = homepagePool.slice(0, 10);
-  const [lead, ...supportingStories] = homepagePosts;
+  const heroSlides = homepagePosts.slice(0, 5);
+  const lead = heroSlides[activeHeroIndex] ?? heroSlides[0];
+  const supportingStories = homepagePosts.filter((post) => post.slug !== lead?.slug);
   const tickerPosts = EDITORIAL_POSTS.slice(0, 20);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener?.("change", updatePreference);
+    return () => mediaQuery.removeEventListener?.("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (heroSlides.length < 2 || heroPaused || prefersReducedMotion) return;
+    const timer = window.setInterval(() => {
+      setActiveHeroIndex((index) => (index + 1) % heroSlides.length);
+    }, 7000);
+    return () => window.clearInterval(timer);
+  }, [heroPaused, heroSlides.length, prefersReducedMotion]);
+
+  useEffect(() => {
+    setActiveHeroIndex((index) => Math.min(index, Math.max(heroSlides.length - 1, 0)));
+  }, [topic, heroSlides.length]);
+
+  const showPreviousHero = () => {
+    setActiveHeroIndex((index) => (index - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const showNextHero = () => {
+    setActiveHeroIndex((index) => (index + 1) % heroSlides.length);
+  };
 
   if (!lead) {
     return (
@@ -59,7 +93,7 @@ function EditorialHomePage() {
         {topic && (
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#e8e1f5] bg-[#fbfaff] px-4 py-3">
             <p className="text-xs font-semibold text-[#5d5d72]">
-              Showing 10 stories for{" "}
+              Showing {homepagePosts.length} stories for{" "}
               <span className="text-[#6f23dd]">{topic.replaceAll("-", " ")}</span>
             </p>
             <Link to="/" className="text-[11px] font-bold text-[#7a2ce2]">
@@ -84,19 +118,27 @@ function EditorialHomePage() {
           </Link>
         </div>
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.75fr)]">
-          <article className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[#272638] text-white shadow-[0_16px_40px_rgba(43,25,79,0.14)] sm:min-h-[400px]">
+          <section
+            aria-label="Featured stories"
+            aria-roledescription="carousel"
+            className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[#272638] text-white shadow-[0_16px_40px_rgba(43,25,79,0.14)] sm:min-h-[400px]"
+            onMouseEnter={() => setHeroPaused(true)}
+            onMouseLeave={() => setHeroPaused(false)}
+            onFocus={() => setHeroPaused(true)}
+            onBlur={() => setHeroPaused(false)}
+          >
             {lead.image && (
               <img
                 src={lead.image}
                 alt=""
-                className="absolute inset-0 h-full w-full object-cover opacity-65"
+                className="absolute inset-0 h-full w-full object-cover opacity-65 transition-opacity duration-500"
               />
             )}
             <div
               className="absolute inset-0 bg-[linear-gradient(90deg,rgba(18,17,31,0.94),rgba(18,17,31,0.3)),linear-gradient(0deg,rgba(18,17,31,0.92),transparent_65%)]"
               aria-hidden="true"
             />
-            <div className="relative flex min-h-[360px] max-w-2xl flex-col justify-end p-6 sm:min-h-[400px] sm:p-9">
+            <div className="relative flex min-h-[360px] max-w-2xl flex-col justify-end p-6 pb-20 sm:min-h-[400px] sm:p-9 sm:pb-24">
               <span className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
                 <Sparkles className="h-3.5 w-3.5" />
                 {lead.category}
@@ -109,12 +151,66 @@ function EditorialHomePage() {
               <Link
                 to="/articles/$slug"
                 params={{ slug: lead.slug }}
-                className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#5f20c9] transition hover:-translate-y-0.5"
+                className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#5f20c9] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#272638]"
               >
                 Read story <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-          </article>
+            {heroSlides.length > 1 && (
+              <div className="absolute bottom-5 left-6 right-6 flex items-center justify-between gap-3 sm:left-9 sm:right-9">
+                <div className="flex items-center gap-2" aria-label="Choose featured story">
+                  {heroSlides.map((post, index) => (
+                    <button
+                      key={post.slug}
+                      type="button"
+                      aria-label={`Show featured story ${index + 1}: ${post.title}`}
+                      aria-current={index === activeHeroIndex ? "true" : undefined}
+                      onClick={() => setActiveHeroIndex(index)}
+                      className={`h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                        index === activeHeroIndex
+                          ? "w-7 bg-white"
+                          : "w-2 bg-white/50 hover:bg-white/80"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    aria-label="Previous featured story"
+                    onClick={showPreviousHero}
+                    className="grid h-8 w-8 place-items-center rounded-full bg-black/25 text-white transition hover:bg-black/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={
+                      heroPaused
+                        ? "Resume featured story autoplay"
+                        : "Pause featured story autoplay"
+                    }
+                    onClick={() => setHeroPaused((paused) => !paused)}
+                    className="grid h-8 w-8 place-items-center rounded-full bg-black/25 text-white transition hover:bg-black/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    {heroPaused ? (
+                      <Play className="h-3.5 w-3.5" />
+                    ) : (
+                      <Pause className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next featured story"
+                    onClick={showNextHero}
+                    className="grid h-8 w-8 place-items-center rounded-full bg-black/25 text-white transition hover:bg-black/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
           <aside className="rounded-2xl border border-[#ebe8f2] bg-white p-5 shadow-[0_10px_26px_rgba(43,25,79,0.06)]">
             <div className="flex items-center justify-between border-b border-[#eeeaf6] pb-3">
               <h2 className="text-sm font-extrabold text-[#29293b]">Latest indicators</h2>
@@ -149,16 +245,21 @@ function EditorialHomePage() {
           <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
             20 on the desk
           </span>
-          <div className="flex min-w-max gap-8 motion-safe:animate-[ticker_70s_linear_infinite]">
-            {tickerPosts.map((post) => (
-              <Link
-                key={post.slug}
-                to="/articles/$slug"
-                params={{ slug: post.slug }}
-                className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
-              >
-                {post.title}
-              </Link>
+          <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_70s_linear_infinite]">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
+                {tickerPosts.map((post) => (
+                  <Link
+                    key={`${copy}-${post.slug}`}
+                    tabIndex={copy === 1 ? -1 : undefined}
+                    to="/articles/$slug"
+                    params={{ slug: post.slug }}
+                    className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
+                  >
+                    {post.title}
+                  </Link>
+                ))}
+              </div>
             ))}
           </div>
         </div>

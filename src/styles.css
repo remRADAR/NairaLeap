@@ -836,3 +836,8 @@
     transform: translateX(-50%);
   }
 }
+
+.ticker-track:hover,
+.ticker-track:focus-within {
+  animation-play-state: paused;
+}
