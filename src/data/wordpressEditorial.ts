@@ -8,6 +8,8 @@ export interface EditorialPost {
   title: string;
   date: string;
   category: string;
+  categoryId: number;
+  categoryPath: string[];
   tags: string[];
   excerpt: string;
   content: string;
@@ -21,7 +23,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "frsc-commends-dangote-cement-on-new-transport-safety-policy",
     title: "FRSC commends Dangote Cement on new transport safety policy",
     date: "June 4, 2026",
-    category: "Transportation Investigation And Safety Boards",
+    category: "Transportation Investigation and Safety Boards",
+    categoryId: 198,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Transportation Investigation and Safety Boards",
+    ],
     tags: [
       "Dangote Cement",
       "frsc",
@@ -41,6 +49,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "UAE envoy: First Abu Dhabi Bank, Etihad Airways will begin Nigeria operations soon",
     date: "June 4, 2026",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["Abu Dhabi Bank", "Etihad Airways operations", "uae"],
     excerpt:
       "Salem Saeed Al-Shamsi, the UAE envoy to Nigeria, says First Abu Dhabi Bank (FAB), the largest bank in the United Arab Emirates (UAE), plans to establish operations in Lagos. Al-Shamsi announced the development during a meeting with Bianca Odumegwu-Ojukwu, minister of foreign affairs, in Abuja. He also announced that Etihad Airways, the UAE’s national carrier, […]",
@@ -55,6 +65,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "US-Nigeria air strike kills ‘21 ISWAP fighters’ in Borno",
     date: "June 1, 2026",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["ISWAP fighters’ in Borno", "US-Nigeria air strike"],
     excerpt:
       "The Nigerian military in collaboration with the United States Africa Command (US-Africom) reportedly killed 21 Islamic State West Africa Province (ISWAP) fighters in an air strike in Arege, Kukawa LGA of Borno state. Sources told Zagazola Makama, a counter-insurgency publication, that the operation took place on Saturday after intelligence and surveillance confirmed the presence of ISWAP […]",
@@ -69,6 +81,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tinubu mourns beheaded Oyo teacher, pledges rescue of abducted students",
     date: "June 1, 2026",
     category: "Sustainable Development",
+    categoryId: 38,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development"],
     tags: [],
     excerpt:
       "President Bola Ahmed Tinubu has expressed condolences to families affected by the abduction of pupils and teachers in Oriire Local Government Area of Oyo State, saying no child should ever be taken from the safety of a classroom. In a statement released on Monday, the President said he shared in the pain and anxiety of […]",
@@ -83,6 +97,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "OPay hits 45 million users, expands merchant network to over 1 million nationwide",
     date: "June 1, 2026",
     category: "Digital Economy",
+    categoryId: 109,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Digital Economy"],
     tags: ["expands merchant network", "Opay"],
     excerpt:
       "OPay says it has surpassed 45 million users and now supports more than one million merchants and businesses across Nigeria, underscoring the rapid growth of digital payments and agency banking services in the country. The fintech company, which launched operations in Nigeria in 2018, has emerged as one of the major players driving financial inclusion […]",
@@ -97,6 +113,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian stocks flash classic cyclical peak signals, aggressive buyers beware",
     date: "June 1, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: [
       "aggrisive investors",
       "classic cyclical peak signals",
@@ -116,6 +138,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Cost of healthy diet rises to N1,541 daily in March 2026 — NBS",
     date: "June 1, 2026",
     category: "Nutritional Status",
+    categoryId: 215,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Nutritional Status"],
     tags: ["healthy diet", "nuritious status"],
     excerpt:
       "The cost of maintaining a healthy diet in Nigeria increased to N1,541 per adult per day in March 2026, highlighting the growing financial burden on households despite signs of moderating inflation. This was disclosed in the latest Cost of a Healthy Diet (CoHD) report released by the National Bureau of Statistics (NBS), which showed that […]",
@@ -130,6 +154,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "The Beginning: The Longest Running University-Industry Partnerships in Nigeria",
     date: "June 1, 2026",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["University-Industry resources"],
     excerpt:
       "The University of Lagos was established in 1962, the relationship between UNILAG and The United Bank For Africa traces back to 1965 with the first Branch on the University Campus. The relationship has evolved from campus banking into academic endowments, innovation, research, beautification of the environment and student development. One of the most defining moments […]",
@@ -144,6 +170,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "JAMB releases 279 UTME results withheld over malpractice concerns",
     date: "May 29, 2026",
     category: "Education Attainment",
+    categoryId: 243,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Education Attainment"],
     tags: ["education attainment", "jamb", "malpractice concerns"],
     excerpt:
       "Joint Admissions and Matriculation Board has released 279 results from the 2026 Unified Tertiary Matriculation Examination (UTME) that were previously withheld for investigation. The development was disclosed on Thursday, May 21, by JAMB’s spokesperson, Fabian Benjamin, through a statement shared on his X account. JAMB had begun releasing the results of the 2026 UTME on April 20 after conducting […]",
@@ -158,6 +186,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "APC unveils 25 gov candidates as Kwara, Bauchi suffer delay",
     date: "May 29, 2026",
     category: "Flag Bearer and Party Candidacy",
+    categoryId: 271,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Flag Bearer and Party Candidacy"],
     tags: ["apc governship candidates"],
     excerpt:
       "The inability of the All Progressives Congress leadership to secure a consensus arrangement forced the postponement of the party’s governorship primaries in Kwara, Bauchi and the state assembly primaries in two constituencies in Zamfara. Also in Nasarawa, late arrival of electoral materials forced voters back to their homes with the process expected to be completed […]",
@@ -172,6 +202,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Meet Segun Aina who started at JAMB as corps member, now registrar",
     date: "May 29, 2026",
     category: "Appointment",
+    categoryId: 132,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Appointment"],
     tags: ["appointment", "JAMB Registrar", "Segun Aina"],
     excerpt:
       "President Bola Tinubu on Thursday appointed Professor Segun Aina as the new Registrar of the Joint Admissions and Matriculation Board, succeeding Professor Is-haq Oloyede, whose two-term tenure expires on July 31, 2026. Aina’s appointment has drawn attention partly because of his age, he turns 40 in July, and his rise through Nigeria’s academic, technology, and […]",
@@ -186,6 +218,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Public Service Leaders Unite To Drive Reforms, Professionalism In Nigeria",
     date: "May 29, 2026",
     category: "Supportive Government Policies",
+    categoryId: 65,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Supportive Government Policies"],
     tags: [
       "Drive Reforms",
       "Professionalism In Nigeria",
@@ -205,6 +239,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Poor Plumbing Materials Threaten Building Safety, Longevity – Babayeju",
     date: "May 29, 2026",
     category: "Infrastructure Quality",
+    categoryId: 228,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Infrastructure Quality"],
     tags: ["Longevity", "Plumbing Materials", "weak Building Safety"],
     excerpt:
       "An expert in the construction sector, Ibraheem Babayeju, has emphasised that the quality of plumbing materials used in construction plays a major role in the safety and lifespan of buildings. Babayeju, who is also the chief operating officer of Kazeem Royal Properties and Constructions Ltd, disclosed this at a recent gathering of industry professionals. He […]",
@@ -219,6 +255,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Airlines Raise Fare Amidst Rising Fuel Price",
     date: "May 29, 2026",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["Airlines Raise Fare"],
     excerpt:
       "Domestic airlines in Nigeria have increased their minimum base fares to about N200,000 for one-way tickets following the continued rise in aviation fuel prices and mounting operational costs. Checks across the booking portals of several airlines showed that the fare increase affects most operators, although a few carriers are yet to adjust their ticket prices […]",
@@ -231,7 +269,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "mirth-farms-records-historic-nelore-calf-birth-through-embryo-transfer",
     title: "Mirth Farms Records Historic Nelore Calf Birth Through Embryo Transfer",
     date: "May 29, 2026",
-    category: "Life Stock And Aquaculture",
+    category: "Life Stock and Aquaculture",
+    categoryId: 126,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Life Stock and Aquaculture"],
     tags: ["Embryo Transfer", "mirth farms"],
     excerpt:
       "Nigeria’s livestock industry has recorded a major milestone as Mirth Farms successfully welcomed the first Nelore calf born in Nigeria through embryo transfer technology, a breakthrough expected to accelerate the modernization of commercial cattle breeding and livestock investment across the country. The achievement represents a significant advancement for the agricultural sector, demonstrating how biotechnology can ",
@@ -246,6 +286,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG, Meta launch AI chatbot for public services",
     date: "May 29, 2026",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["AI Chatbot", "fg", "meta", "public services"],
     excerpt:
       "The Federal Government has partnered with Meta to launch GovGuide Nigeria, an artificial intelligence-powered chatbot designed to provide Nigerians with easier access to information on government services in multiple local languages. The launch was announced in a statement issued on Thursday by the Federal Ministry of Communications, Innovation, and Digital Economy, following the unveiling of […]",
@@ -259,6 +301,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "DisCos install 241,590 meters amid billing complaints",
     date: "May 29, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "DisCos", "Electricity Meters"],
     excerpt:
       "Electricity distribution companies installed 241,590 meters across Nigeria in the first two months of 2026 amid ongoing efforts to reduce estimated billing and close the country’s metering gap. Data released by the Nigerian Electricity Regulatory Commission in its January and February 2026 metering fact sheet showed that 119,792 customers were metered in January, while another […]",
@@ -272,7 +316,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "senate-amends-electoral-act-to-grant-inec-timetable-flexibility-amid-ramadan-concerns",
     title: "Senate Amends Electoral Act to Grant INEC Timetable Flexibility Amid Ramadan Concerns",
     date: "May 23, 2026",
-    category: "Legislative Arm Of Government",
+    category: "Legislative Arm of Government",
+    categoryId: 263,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Legislative Arm of Government"],
     tags: ["Electoral Act", "inec", "senate"],
     excerpt:
       "The Senate has officially amended Clause 28 (1) of the Electoral Act 2022 (Repeal and Enactment) Bill 2026, providing the Independent National Electoral Commission (INEC) with the necessary legal flexibility to adjust the 2027 general election timetable. The legislative adjustment follows widespread concerns that the previously announced election dates would clash with the Ramadan fasting […]",
@@ -287,6 +333,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Agency Blames Owerri Flooding On Indiscriminate Refuse Disposal",
     date: "May 23, 2026",
     category: "Climate Change",
+    categoryId: 118,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Climate Change"],
     tags: ["Climate Change", "Indiscriminate Refuse Disposal", "Owerri Flooding"],
     excerpt:
       "The National Emergency Management Agency (NEMA) has attributed the flooding in Owerri metropolis, the Imo State capital to indiscriminate waste disposal. NEMA head of Operations for Imo and Abia States, Nnamdi Igwe, stated this at a sensitisation programme and downscaling of early warning messages on disaster preparedness and mitigation strategy in Owerri, yesterday. The meeting […]",
@@ -301,6 +349,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "70% Of Nigerians Consult Pharmacists Before Hospitals, ACPN Reveals",
     date: "May 23, 2026",
     category: "Access to Essential Medicine",
+    categoryId: 217,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Access to Essential Medicine"],
     tags: [
       "access to essealtioal health and medicines",
       "ACPN",
@@ -319,6 +369,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos registers 28,000 trucks under e-call-up system",
     date: "May 23, 2026",
     category: "Data Collection and Analysis",
+    categoryId: 236,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Data Collection and Analysis",
+    ],
     tags: [
       "000 Trucks",
       "data collection and analysis",
@@ -338,6 +394,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FAO seeks deforestation-free financing",
     date: "May 23, 2026",
     category: "Food and Agriculture Organization (FAO)",
+    categoryId: 185,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Food and Agriculture Organization (FAO)",
+    ],
     tags: ["Deforestation-Free Finance", "fao", "Nigeria Banks"],
     excerpt:
       "The Food and Agriculture Organisation has intensified efforts to promote deforestation-free finance in Nigeria, chiefly on cocoa and oil palm production in the Niger Delta region. The initiative formed the focus of a two-day workshop held in Lagos from Wednesday, with the theme, ‘Advancing Deforestation-Free Finance in Nigeria’s Banking Sector: From Roadmap to Implementation.’ The […]",
@@ -351,6 +413,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Obafemi Hamzat wins Lagos APC governorship primary, promises people-focused governance",
     date: "May 23, 2026",
     category: "Flag Bearer and Party Candidacy",
+    categoryId: 271,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Flag Bearer and Party Candidacy"],
     tags: ["flag bearer and party candidate", "Obafemi Hamzat wins Lagos APC governorship primary"],
     excerpt:
       "Obafemi Hamzat, deputy governor of Lagos, has won the governorship primary of the All Progressives Congress (APC), emerging as the party’s candidate for the 2027 elections. Announcing the results of the primary election at the party’s secretariat in Ogba, Ikeja, on Thursday, Jon Temlong, chairman of the APC national governorship primary election committee, described the […]",
@@ -366,6 +430,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "FG launches AI platform to improve access to government information, services on WhatsApp",
     date: "May 23, 2026",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["ai", "fg", "government information", "services"],
     excerpt:
       "The federal government has launched an artificial intelligence-powered platform to improve access to government information. Announcing this in a post on X on Thursday, Bosun Tijani, minister of communications, innovation, and digital economy, said the platform, GovGuideNigeria, is available via WhatsApp and the web in English, Hausa, Igbo, and Yoruba.“Today, we launched #GovGuideNigeria, an AI-powered platform desig",
@@ -379,7 +445,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ncc-begins-review-of-nigerias-26-year-old-telecoms-policy",
     title: "NCC begins review of Nigeria’s 26-year-old telecoms policy",
     date: "May 23, 2026",
-    category: "Investment In Sustainable Technologies",
+    category: "Investment in Sustainable Technologies",
+    categoryId: 208,
+    categoryPath: [
+      "TECHNOLOGY & INNOVATION",
+      "Technology",
+      "Investment in Sustainable Technologies",
+    ],
     tags: ["investment and sustainable policy", "NCC", "telecoms policy"],
     excerpt:
       "The Nigerian Communications Commission (NCC) has commenced a review of Nigeria’s 26-year-old telecommunications policy, saying the current framework no longer reflects the realities of the country’s fast-changing digital economy. Speaking on Wednesday at the national telecommunications policy review workshop in Lagos, Hadiza Usman, special adviser to the president on policy and coordination, said the review […]",
@@ -394,6 +466,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG Introduces Mandatory Tax ID For All taxpayers",
     date: "May 22, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["nrs", "Tax ID", "tax payers"],
     excerpt:
       "The Nigeria Revenue Service (NRS), in collaboration with the Joint Revenue Board (JRB), has announced the implementation of a unified Taxpayer Identification (Tax ID) system aimed at strengthening tax administration and improving service delivery across the country. In a public notice issued in Abuja on Monday, the agencies said the initiative was introduced in line […]",
@@ -408,6 +482,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian oil firms ramp up production expansion amid Middle East conflict",
     date: "May 22, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["nigeria crude oil", "oil firms ramp", "production expansion"],
     excerpt:
       "Nigerian indigenous oil producers are accelerating investment in near-term extraction projects as rising crude oil prices triggered by the Middle East conflict boost industry revenues and strengthen the country’s drive to increase oil production. According to a Bloomberg report, several local upstream companies are reinvesting windfall earnings from the ongoing Iran-related oil market disruption into […]",
@@ -421,7 +497,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "meta-begins-8000-global-job-cuts-in-ai-efficiency-drive",
     title: "Meta begins 8,000 global job cuts in AI efficiency drive",
     date: "May 22, 2026",
-    category: "Investment In Sustainable Technologies",
+    category: "Investment in Sustainable Technologies",
+    categoryId: 208,
+    categoryPath: [
+      "TECHNOLOGY & INNOVATION",
+      "Technology",
+      "Investment in Sustainable Technologies",
+    ],
     tags: [
       "000 global job cuts",
       "active AI efficiency drive",
@@ -440,6 +522,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Wizkid sets record as first African artiste to reach 11 billion Spotify streams",
     date: "May 22, 2026",
     category: "Music",
+    categoryId: 75,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Music"],
     tags: ["11 billion Spotify streams", "entertainment", "Wizkid"],
     excerpt:
       "Nigerian Afrobeats singer Ayodeji Balogun, popularly known as Wizkid, has set a new record as the first African artiste to hit 11 billion streams on Spotify, marking another milestone in his global music career. The News Agency of Nigeria (NAN) reports that the announcement was made on Tuesday by music data handle @ChaftsAfrica on X, […]",
@@ -454,6 +538,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lecturers at University of Cross River begin indefinite strike",
     date: "May 22, 2026",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["indifinate strike", "University of Cross River"],
     excerpt:
       "The Academy Staff Union of Universities (ASUU), University of Cross River (UniCross) chapter has commenced an indefinite strike over members’ welfare and non-implementation of agreements reached with the national body. In a statement by its chairman, Patrick Ushie, the union listed 11 items as the reason for the industrial action. According to the union, the “total and […]",
@@ -468,6 +554,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2026 World Cup: Why Nigeria’s absence could change African buzz",
     date: "May 20, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["2026 World Cup", "African buzz", "fifa", "team sports"],
     excerpt:
       "As African countries gear up for the 2026 FIFA World Cup in the United States, Canada and Mexico, one storyline is already dominating discussions: the shock absence of Nigeria from the continent’s list of representatives. The continent’s representatives include Ivory Coast, Egypt, Tunisia, Morocco, Senegal, DR Congo, Ghana, South Africa and Algeria.But amid this excitement, […]",
@@ -481,7 +569,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigerias-oil-exploration-declines-417-as-rig-count-falls-opec",
     title: "Nigeria’s oil exploration declines 41.7% as rig count falls — OPEC",
     date: "May 20, 2026",
-    category: "Organization Of The Petroleum Exporting Countries Opec",
+    category: "Organization of the Petroleum Exporting Countries (OPEC)",
+    categoryId: 167,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Organization of the Petroleum Exporting Countries (OPEC)",
+    ],
     tags: ["oil exploration decline", "OPEC"],
     excerpt:
       "Nigeria’s oil exploration and drilling activities declined by 41.7 per cent in April 2026, following reduced upstream operations and investment activities.According to the May 2026 Monthly Oil Market Report, MOMR, of the Organization of the Petroleum Exporting Countries, Nigeria’s rig count – a major indicator of upstream oil and gas activities – dropped to 12 in […]",
@@ -496,6 +590,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "N130trn credit gap choking 39m MSMEs, threatening growth –Oye",
     date: "May 20, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "credit gap c", "MSMEs", "threatening growth"],
     excerpt:
       "Chairman, Alliance for Economic Research and Ethics LTD/GTE, Dele Oye, has made a blistering submission that Nigeria’s N130 trillion credit deficit is severely constraining the expansion of about 39 million micro, small and medium enterprises (MSMEs). His remarks add to the growing warnings of experts who noted that the country’s financing structure is fundamentally misaligned […]",
@@ -510,6 +606,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos to enjoy 24/7 electricity supply soon –NDPHC boss",
     date: "May 20, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "electricity supply", "Jennifer Adighije", "NDPHC"],
     excerpt:
       "Lagos residents may soon begin to experience round-the-clock electricity supply as the Niger Delta Power Holding Company (NDPHC) signals readiness to play a central role in the state’s evolving electricity market and help bridge its massive supply shortfall. The Managing Director and Chief Executive Officer of NDPHC, Jennifer Adighije, said the company is positioned to […]",
@@ -524,6 +622,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG launches free tax dispute resolution platforms for Nigerians",
     date: "May 20, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["nrs", "tax dispute resolution platforms"],
     excerpt:
       "The Federal Government has launched new digital platforms that will allow Nigerians resolve tax-related disputes free of charge as part of efforts to improve fairness, transparency and accountability in tax administration. The platforms, unveiled on Monday in Abuja, include the Office of the Tax Ombud website, a toll-free call centre and a case management system designed […]",
@@ -537,7 +637,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigeria-oil-firms-surge-under-local-content-policy",
     title: "Nigeria oil firms surge under local content policy",
     date: "May 20, 2026",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["Nigeria Local Content Policy .oil firmsncdmb"],
     excerpt:
       "Oil operating firms in Nigeria have increased from fewer than 10 before the implementation of local content policies to about 117 currently, as local content performance rose from less than 5 per cent in 2010 to 61 per cent in 2025. The development was disclosed on Tuesday at the 2026 Nigerian Oil and Gas Midstream […]",
@@ -552,6 +658,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SEC fixes June 1 for T+1 settlement cycle transition",
     date: "May 20, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["finacial health performance", "sec", "T+1 Settlement Cycle"],
     excerpt:
       "The Securities and Exchange Commission has announced the transition to a T+1 settlement cycle for equities and commodities transactions in the Nigerian capital market, with effect from Monday, 1 June 2026. The apex regulatory body stated that the transition is in furtherance of its statutory mandate to promote an efficient, fair and transparent capital market […]",
@@ -566,6 +678,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote unveils plan for multi-billion-dollar Olokola seaport",
     date: "May 20, 2026",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["dangote", "economic performance", "Olokola seaport"],
     excerpt:
       "Dangote Industries Limited has commenced preliminary processes for the construction of a deep-sea port spanning over 10,000 hectares at the Olokola Free Trade Zone in Ogun State, as part of plans to expand into logistics, maritime infrastructure, and export-led industrialisation. In a statement, the company said the multi-billion-dollar project is aimed at transforming the group […]",
@@ -580,6 +694,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Enugu power crisis deepens as EERC downgrades 59 MainPower feeders",
     date: "May 18, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "EERC downgrades", "enugu power"],
     excerpt:
       "Enugu State’s electricity crisis has worsened with its Electricity Regulatory Commission, EERC announcing the downgrade of 59 feeders under the franchise of the MainPower Electricity Distribution Company Limited. MainPower is a subsidiary of the Enugu Electricity Distribution Company, EEDC, which services customers in Enugu State. EERC attributed the action to MainPower’s failure to meet the […]",
@@ -593,7 +709,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "weve-invested-n45bn-in-healthcare-msmes-olusi-boi-ceo",
     title: "We’ve invested N45bn in healthcare, MSMEs –Olusi, BOI CEO",
     date: "May 18, 2026",
-    category: "Small And Medium Enterprises Sme",
+    category: "Small and Medium Enterprises (SME)",
+    categoryId: 22,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Small and Medium Enterprises (SME)",
+    ],
     tags: ["BOI CEO", "MSMEs healthcare", "Olusi"],
     excerpt:
       "Since assuming leadership of the Bank of Industry less than two years ago, Olasupo Olusi has steered the institution away from conventional banking rhetoric toward measurable development impact. Speaking during an interactive session with Nigeria’s leading media executives, the Managing Director/Chief Executive Officer outlined an audacious reform agenda aimed at repositioning the bank beyond a […]",
@@ -607,7 +729,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigeria-hits-992-of-opec-quota-as-pinl-commends-host-communities",
     title: "Nigeria hits 99.2% of OPEC quota as PINL commends host communities",
     date: "May 18, 2026",
-    category: "Organization Of The Petroleum Exporting Countries Opec",
+    category: "Organization of the Petroleum Exporting Countries (OPEC)",
+    categoryId: 167,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Organization of the Petroleum Exporting Countries (OPEC)",
+    ],
     tags: ["host communities", "OPEC"],
     excerpt:
       "Nigeria recorded a major boost in crude oil production in April 2026, achieving 99.2 percent of its 1.5 million barrels per day production quota approved by the Organisation of the Petroleum Exporting Countries (OPEC). The latest production figures released by the Nigeria Upstream Petroleum Regulatory Commission showed that the country’s crude oil output rose by […]",
@@ -621,7 +749,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "2027-atiku-obi-amaechi-are-apcs-campaign-tools-for-2027-oshiomhole",
     title: "2027: Atiku, Obi, Amaechi are APC’s campaign tools for 2027 – Oshiomhole",
     date: "May 18, 2026",
-    category: "Political Parties And Ideologies",
+    category: "Political Parties and Ideologies",
+    categoryId: 268,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Political Arena",
+      "Political Parties and Ideologies",
+    ],
     tags: ["APC’s campaign tools.2027", "political parties and idologies"],
     excerpt:
       "Former Edo State governor Adams Oshiomhole has said the ongoing clashes among leading opposition politicians ahead of the 2027 presidential election are making the job easier for the ruling All Progressives Congress, insisting that figures like Atiku Abubakar, Peter Obi and Rotimi Amaechi are unknowingly helping the APC’s campaign. Speaking during an appearance on Channels […]",
@@ -636,6 +770,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Otedola increases stake in First HoldCo with N43bn shares acquisition",
     date: "May 14, 2026",
     category: "Entrepreneurship",
+    categoryId: 135,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Entrepreneurship"],
     tags: ["NGX", "Otedola increases stake", "shares acquisition"],
     excerpt:
       "Femi Otedola, the chairman of First HoldCo Plc, has increased his stake in the company with the acquisition of 549.5 million shares valued at N43.41 billion. The transaction, which further tightens the investor’s control in the financial institution, was disclosed in an insider dealing notice on the Nigerian Exchange (NGX) on Wednesday. According to the […]",
@@ -650,6 +786,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PenCom abolishes prior approval requirement for PFA advertisements",
     date: "May 14, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["PenCom", "PFA advertisements", "wealth redistribution"],
     excerpt:
       "The National Pension Commission (PenCom) has abolished the requirement for Pension Fund Administrators (PFAs) to obtain prior written approval before releasing advertisements and marketing campaign materials. The regulatory change was disclosed in a circular dated May 8, 2026, and signed by the Director of the Surveillance Department, A.M. Saleem. According to PenCom, the new policy takes immediate effect […]",
@@ -664,6 +802,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Telcos invested N2.5 trillion in networks amid rising service complaints — NCC",
     date: "May 14, 2026",
     category: "Mobile Phone Penetration",
+    categoryId: 210,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Mobile Phone Penetration"],
     tags: ["NCC", "phone penetration", "service complaints", "telcos investments"],
     excerpt:
       "The Nigerian Communications Commission (NCC) has disclosed that telecommunications operators invested more than N2.5 trillion in network infrastructure in 2025 as the regulator moved to tackle worsening service quality complaints across the country. The commission said Mobile Network Operators invested over N2.13 trillion in network infrastructure and upgrades last year, while Tower Companies committed an […]",
@@ -678,6 +818,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "‘Funding alone cannot ensure startup success’",
     date: "May 14, 2026",
     category: "Entrepreneurship",
+    categoryId: 135,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Entrepreneurship"],
     tags: ["enterprenuership", "startups succesess"],
     excerpt:
       "The Managing Director of Whitecrust Finance Limited, Kingsley Eremionkhale, has said access to funding alone is insufficient to guarantee startup success, arguing that resilience, discipline and operational structure are more decisive factors in determining whether early-stage businesses scale sustainably. Eremionkhale made the remarks while speaking at the TSF Innovation and Business Summit 2026 in Lagos, […]",
@@ -691,6 +833,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Panic as suspected gunmen invade Imo community",
     date: "May 14, 2026",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["imo community", "interconnectedness"],
     excerpt:
       "Panic gripped the host community of the Federal University of Technology Owerri on Wednesday night following an invasion by suspected gunmen in the Eziobodo area of Owerri West Local Government Area of Imo State. Viral videos circulating on social media since midnight showed students, traders and motorists fleeing the area in confusion as gunshots reportedly […]",
@@ -705,6 +849,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "NCAA introduces centralized digital platform for personnel licensing, medical certification",
     date: "May 13, 2026",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: ["medical certification", "NCAA", "social performance"],
     excerpt:
       "The Nigerian Civil Aviation Authority (NCAA) has launched a centralized digital platform for personnel licensing and medical certification to reduce delays and modernize aviation regulatory services across Nigeria. The rollout was announced by the Director General of Civil Aviation, Capt. Chris Najomo, during the PEL/MED Go-Live stakeholders engagement held at the NCAA Lagos Regional Office, […]",
@@ -719,6 +865,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "DMO announces N600 billion FGN bond auction for May 2026",
     date: "May 13, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgeting", "debt financing", "dmo", "FGN bond auction"],
     excerpt:
       "The Debt Management Office (DMO), on behalf of the Federal Government, has announced a fresh N600 billion Federal Government of Nigeria (FGN) bond auction for May 2026. The bond offer forms part of the government’s broader strategy to finance fiscal obligations, deepen the domestic capital market, and attract institutional investors amid sustained demand for fixed-income securities. According […]",
@@ -733,6 +881,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "GenCos demand blacklisting of firms stealing grid electricity",
     date: "May 13, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "gencos", "grid", "Grid Electricity"],
     excerpt:
       "Power generation companies have urged the Federal Government and the Nigerian Independent System Operator to name, arrest, and prosecute individuals and companies stealing electricity along the Ikorodu-Sagamu corridor. The Managing Director/Chief Executive Officer of the Association of Power Generation Companies, Joy Ogaji, stated this on Thursday while reacting to a report that some large customers […]",
@@ -747,6 +897,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote partners Niger on industrialisation, rice production",
     date: "May 13, 2026",
     category: "Grains and Cereals",
+    categoryId: 130,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Grains and Cereals"],
     tags: ["dangote", "industrialisation of rice"],
     excerpt:
       "Dangote Industries Limited is partnering with the Niger State Government to accelerate industrialisation, attract investment, and expand economic opportunities in the state. According to a statement by the Group Chief Branding and Communication Officer, Anthony Chiejina, the company is collaborating with the state government on several economic initiatives. The statement stated that apart from sponsoring […]",
@@ -760,7 +912,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-deploys-mining-marshals-for-intelligence-gathering-compliance-monitoring",
     title: "FG deploys mining marshals for intelligence gathering, compliance monitoring",
     date: "May 13, 2026",
-    category: "Raw Materials And Mapping",
+    category: "Raw Materials and Mapping",
+    categoryId: 23,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Raw Materials and Mapping",
+    ],
     tags: ["illegal mining", "Mining marshals"],
     excerpt:
       "The Federal Government has deployed Mining Marshals for intelligence gathering, compliance monitoring and operational oversight in the solid minerals sector. This was disclosed in a statement issued on Tuesday by the Commander of Mining Marshals Operations and Assistant Commandant of Corps, Attah Onoja. Onoja stated that the deployment is part of efforts to strengthen enforcement against […]",
@@ -775,6 +933,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "MTN, Airtel, Glo must fix network challenges or face sanctions – Bosun Tijani",
     date: "May 11, 2026",
     category: "Technology",
+    categoryId: 56,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology"],
     tags: ["airtel", "Glo", "internet service providers", "MTN"],
     excerpt:
       "The Minister of Communications, Innovation & Digital Economy, Dr. Bosun Tijani, has announced that “appropriate regulatory action” will be imposed on MTN Nigeria, Airtel Nigeria, Globacom, and T2 if they fail to resolve network challenges and deliver quality call and data services going forward. Tijani disclosed this in a statement shared with Nairametrics on Sunday. The development comes weeks […]",
@@ -790,6 +950,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Dr. Felicia Tamuno advocates non-interest banking, ethical finance to boost women-led businesses in Africa",
     date: "May 11, 2026",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["Dr. Felicia Tamuno", "ethical finance", "gender equality", "non-interest banking"],
     excerpt:
       "Dr. Felicia Tamuno, Institutional Banking Lead at The Alternative Bank, has called for stronger policy reforms, non-interest banking solutions, and ethical finance models to improve access to finance for women across Africa. She made the call while delivering a keynote address at the African Women in Banking and Finance Conference & Awards 2026. Speaking on […]",
@@ -804,6 +966,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG exempts education, agriculture non-engineering applicants from UTME",
     date: "May 11, 2026",
     category: "Education Attainment",
+    categoryId: 243,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Education Attainment"],
     tags: ["agriculture", "education", "non-engineering"],
     excerpt:
       "The Federal Government has exempted candidates seeking admission into education programmes and agriculture non-engineering courses from writing the Unified Tertiary Matriculation Examination (UTME). The development was disclosed by the Joint Admissions and Matriculation Board (JAMB) via its official X (formerly Twitter) handle on Monday. “Candidates seeking admission into education programmes and agriculture non-engi",
@@ -818,6 +982,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "External reserves shed $855 million in five weeks",
     date: "May 11, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["External reserves"],
     excerpt:
       "Nigeria’s external reserves declined by approximately $855 million within five weeks, falling from $49.18 billion on April 1, 2026, to $48.33 billion as of May 7, 2026. This is according to the latest figures released by the Central Bank of Nigeria (CBN). The development reflects renewed pressure on the country’s foreign exchange buffers, even as […]",
@@ -832,6 +998,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG retains 16 years minimum age for tertiary admission",
     date: "May 11, 2026",
     category: "Education Attainment",
+    categoryId: 243,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Education Attainment"],
     tags: ["tertiary admission", "Tunji Alausa"],
     excerpt:
       "The Minister of Education, Tunji Alausa, on Monday announced that the Federal Government has retained 16 years as the minimum age for admission into tertiary institutions across Nigeria. Alausa made the announcement during the 2026 Policy Meeting on Admissions to Tertiary Institutions held in Abuja, noting that the decision followed extensive consultations and policy reviews […]",
@@ -846,6 +1014,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Why pension system still excludes majority",
     date: "May 11, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: [],
     excerpt:
       "Despite reforms driven by the National Pension Commission (PenCom), coverage of Nigerians in the informal sector remains largely limited to formal sector workers, leaving the informal economy significantly underserved. Recent data highlight the scale of the imbalance. As of early 2026, total Retirement Savings Account (RSA) holders stand at about 11 million Nigerians, a modest […]",
@@ -859,6 +1029,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FIFA Ratifies Okonkwo’s Allegiance Switch To Nigeria",
     date: "May 11, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["fifa", "Okonkwo’s Allegiance Switch"],
     excerpt:
       "Wrexham goalkeeper Arthur Okonkwo has had his international allegiance switch from England to Nigeria accepted by FIFA, the world governing body of football. The 24-year-old was born in London to Nigerian parents. He represented England at every youth level from under-15 to under-18.After his international switch was confirmed on FIFA’s change of association platform, Okonkwo […]",
@@ -873,6 +1045,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "A’Ibom assembly passes mental health bill",
     date: "May 11, 2026",
     category: "Mental Health",
+    categoryId: 223,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Mental Health"],
     tags: ["Akwa Ibom Nigeria", "mental health bill"],
     excerpt:
       "The Akwa Ibom State House of Assembly has passed a bill establishing a Mental Health Services Department to regulate and improve mental healthcare delivery across the state, replacing a law that dates back over a century. The legislation sailed through third reading during plenary held at the Ministry of Local Government and Chieftaincy Affairs Chamber, […]",
@@ -886,6 +1060,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Scavengers earn N400,000 monthly as recycling business grows in Nigeria",
     date: "May 11, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["nigeria", "recycling business grows", "scavengers"],
     excerpt:
       "Scavenging activities, which have become ubiquitous in Nigeria, earn scavengers between N5,000 and N8,000 during weekdays, and as much as N11,000 during weekends. Depending on the location and dedication, some earn up to N400,000 monthly, Nairametrics investigations have shown. Most of the scavengers who spoke with this medium revealed that they sell between 20 and […]",
@@ -900,6 +1076,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NCC says subscriber compensation to start from April, lists eligibility criteria",
     date: "May 11, 2026",
     category: "Internet Service Providers",
+    categoryId: 105,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Internet Service Providers"],
     tags: ["eligibility criteria", "NCC", "service providers", "subscriber compensation ."],
     excerpt:
       "The Nigerian Communications Commission (NCC) has said that the directive it issued to telecom operators to compensate subscribers for poor service quality will take effect from this month. The Commission disclosed this in an FAQ released on Tuesday, providing more details on the directive and the category of subscribers that would get compensated. While emphasising that the directive only applies […]",
@@ -914,6 +1092,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NNPC begins Cawthorne crude exports with 950,000 barrels shipment",
     date: "May 11, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["crude barrels shipment", "NNPC"],
     excerpt:
       "The Nigerian National Petroleum Company Limited (NNPC Ltd) has commenced the export of its new crude grade, Cawthorne, with an initial shipment of 950,000 barrels. The development was disclosed in a statement by the company’s Chief Corporate Communications Officer, Andy Odeh. The milestone marks a significant step in NNPC’s strategy to boost Nigeria’s crude oil production and expand its portfolio of […]",
@@ -928,6 +1108,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN eyes DFI recapitalisation to close N130 trillion MSME funding gap",
     date: "May 11, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["CBN", "MSME funding gap"],
     excerpt:
       "The Central Bank of Nigeria has disclosed plans to recapitalise and restructure development finance institutions (DFIs) as part of efforts to address a widening financing gap facing micro, small and medium enterprises (MSMEs). This was revealed by the Deputy Governor for Economic Policy at the CBN, Muhammad Sani Abdullahi, during a panel session at the […]",
@@ -942,6 +1124,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "nairaandkobo.ng opens economic, social and political literacy and inclusion Hub",
     date: "May 11, 2026",
     category: "Wealth Creation",
+    categoryId: 62,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation"],
     tags: [],
     excerpt:
       "nairaleap.ct.ws/ is an economic, social, and political information dissemination hub focused on promoting financial inclusion through innovation, investment in human capital development, and the application of technology-driven solutions. The platform collaborates with stakeholders to improve financial literacy and create awareness of opportunities that enhance the quality of life through mortgages, insurance savings",
@@ -957,6 +1141,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN, EFInA push reforms to bridge gender financial gap",
     date: "April 8, 2026",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["CBN", "EFInA", "Gender Financial Gap"],
     excerpt:
       "The Central Bank of Nigeria and Enhancing Financial Inclusion and Advancement have issued a joint call for a radical shift in policy and product design to address the persistent barriers preventing women from accessing formal financial services. Speaking at the “Gather, Gain, Grow” convening held in Abuja to commemorate International Women’s Month 2026, leaders from […]",
@@ -971,6 +1157,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PTDF interviews 5,885 candidates for overseas scholarships",
     date: "April 8, 2026",
     category: "Scholarships",
+    categoryId: 35,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Scholarships"],
     tags: ["Overseas Scholarships", "ptdf"],
     excerpt:
       "The Petroleum Technology Development Fund has commenced nationwide interviews for 5,885 shortlisted Nigerians drawn from the 36 states and the Federal Capital Territory for its overseas postgraduate scholarship programme. The exercise reflects a highly competitive selection process and highlights the rising demand for specialised skills in Nigeria’s oil and gas sector, as more candidates seek […]",
@@ -985,6 +1173,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote refinery raises petrol to N1,275, diesel now N1,950",
     date: "April 8, 2026",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["Dangote Fuel Price", "petrol and deseal"],
     excerpt:
       "Amid rising geopolitical tensions in the Middle East and their ripple effects on global energy markets, the Dangote Petroleum Refinery has increased the gantry price of petrol and diesel, further tightening pressure on consumers and businesses across Nigeria. A top official at the refinery, who confirmed the development to our correspondent on Tuesday night, said […]",
@@ -999,6 +1189,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Herdsmen invasion sparks fear in C’River communities",
     date: "April 8, 2026",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["fear in C’River communities", "Herdsmen invasion", "interconntedness"],
     excerpt:
       "Tension is mounting in many communities within the Onim Ankiong Clan, Odukpani Local Government, Cross River State, over repeated invasion and destruction of crops by cattle belonging to Fulani herders. Residents of villages in the clan said the situation, which intensified in 2023 has over the years led to frequent disputes between farmers and herders, raising fears of […]",
@@ -1014,6 +1206,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "The boardroom blind spot: Why Nigerian organisations must govern AI before AI governs them",
     date: "April 8, 2026",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["blind spot", "boardroom"],
     excerpt:
       "In Nigerian corporate discourse, the word “transformation” has become an overused abstraction that has lost its urgency and precision. Boards deliberate digital transformation. Executives champion AI transformation. Annual reports propose technology-driven transformation. Yet, in most of these same organisations, the board has never once had a formal discussion regarding the actual impact of artificial intelligence o",
@@ -1028,6 +1222,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian oil crash under $95/barrel on US ceasefire with Iran",
     date: "April 8, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["Nigerian oil crash", "us iran ceasefire"],
     excerpt:
       "Nigerian crude oil and major oil contracts crashed below $95 a barrel on Wednesday after Iran agreed to reopen the Strait of Hormuz, a vital route for 20% of the world’s energy supply, for two weeks in exchange for a temporary ceasefire with the United States. Brent crude and WTI were also down by more […]",
@@ -1042,6 +1238,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Pension assets jump to N29.43 trillion in February 2026",
     date: "April 8, 2026",
     category: "Assets and Investments",
+    categoryId: 112,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Assets and Investments"],
     tags: ["Pension assets"],
     excerpt:
       "Nigeria’s pension assets rose to N29.43 trillion in February 2026, marking a month-on-month increase of N1.39 trillion. This is according to the latest data released by the National Pension Commission (PenCom). The increase represents the strongest monthly expansion since the introduction of the Contributory Pension Scheme over two decades ago, surpassing the previous record of N1.18 trillion recorded in […]",
@@ -1055,7 +1253,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nafdac-enforces-salt-limits-in-foods-to-combat-hypertension-crisis",
     title: "NAFDAC enforces salt limits in foods to combat hypertension crisis",
     date: "April 7, 2026",
-    category: "Incidence And Prevalence Of Disease",
+    category: "Incidence and Prevalence of Disease",
+    categoryId: 214,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Incidence and Prevalence of Disease"],
     tags: ["hypertension", "nafdac", "salt"],
     excerpt:
       "The Director-General of the National Agency for Food and Drug Administration and Control, Mojisola Adeyeye, on Tuesday warned Nigerians against excessive sodium consumption, linking it to the rising burden of non-communicable diseases such as hypertension, cardiovascular diseases and stroke. Adeyeye gave the warning during a stakeholders’ engagement on the draft Reduction of Sodium in Pre-Packaged […]",
@@ -1070,6 +1270,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "DMO offers two FGN savings bonds for subscription at N1,000 per unit",
     date: "April 7, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["bond subscription", "dmo"],
     excerpt:
       "The Debt Management Office (DMO) has opened two federal government savings bonds for subscription at N1,000 per unit. In a notice on Tuesday, the DMO said the subscription window opened on April 7 and will close on April 10, with settlement scheduled for April 15, 2026. According to the agency, the two-year savings bond due […]",
@@ -1084,6 +1286,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ethereum eyes $4,900 as ascending triangle takes shape",
     date: "April 7, 2026",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["bulk technology", "Ethereum"],
     excerpt:
       "Ethereum is moving through an ascending triangle structure, where the top part of the triangle indicates the $4,900 price target. Market expert Ali Charts believes that the formation is still being held up significantly by the $1,800 key support. Investors are still monitoring the progress of Ethereum ahead of its consolidation phase. What Ali is saying Ethereum […]",
@@ -1098,6 +1302,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "What the 2026 NiMET Weather Report Means to You &; Your Business",
     date: "April 7, 2026",
     category: "Climate Change",
+    categoryId: 118,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Climate Change"],
     tags: ["Climate Change", "nimet"],
     excerpt:
       "On February 10, 2026, the Nigerian Meteorological Agency (NiMet) unveiled its Seasonal Climate Prediction at the NAF Conference Centre in Abuja. The report provides science-backed climate and weather projections to help Nigerians manage daily life and business plans. The forecast clearly indicates that 2026 will not follow familiar patterns. Rainfall will be inconsistent in timing […]",
@@ -1111,7 +1317,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "only-105-of-nigerian-women-in-wage-jobs-wbank",
     title: "Only 10.5% of Nigerian women in wage jobs – W’Bank",
     date: "April 7, 2026",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["Nigerian women employmen", "wage gaps", "World Bank"],
     excerpt:
       "The World Bank has said that only 10.5 per cent of Nigerian women are engaged in wage and salaried employment, highlighting a sharp imbalance in access to formal, income-paying jobs in the country. This was contained in the Nigeria Gender Data Landscape 2026 edition obtained by The PUNCH from the World Bank website on Monday, which assessed […]",
@@ -1125,6 +1337,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote boosts fuel, fertiliser exports amid supply crisis",
     date: "April 7, 2026",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["Africa", "Dangote Refinery", "fertilizer exports", "trade volume"],
     excerpt:
       "Africa’s largest refinery, owned by billionaire industrialist Aliko Dangote, has ramped up exports of gasoline and urea to African markets grappling with supply shortages triggered by the ongoing Iran war. Dangote disclosed this on Monday during a facility tour of the Dangote Petroleum Refinery in Lagos, stating that the plant is currently operating at its […]",
@@ -1139,6 +1353,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "GenCos question fresh N3.3tn debt settlement approval",
     date: "April 7, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power sector", "gencos", "power debt settlement"],
     excerpt:
       "The Federal Government’s renewed approval of N3.3tn to settle longstanding debts in the power sector has sparked fresh controversy, as power generation companies say they have not received any payments despite similar assurances made nearly two years ago. Our correspondents report that the Federal Government has, on two different occasions, announced the approval of N3.3tn […]",
@@ -1153,6 +1369,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Energy cost spike drives cement to N12,000/bag",
     date: "April 7, 2026",
     category: "Capital Expenditure",
+    categoryId: 225,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Capital Expenditure"],
     tags: ["capital expenditure", "ement", "energy cost"],
     excerpt:
       "Energy costs have driven cement prices to about N12,000 per bag, according to private sector operators who are concerned that the trend is squeezing construction activities nationwide. These experts attributed the recent spike in cement prices in Nigeria from about N11,000 and N11,500, depending on the area of purchase, to around N12,200 per bag, blaming […]",
@@ -1166,6 +1384,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "JAMB urges parents, qualified candidates to protest admission bias",
     date: "April 7, 2026",
     category: "Education Attainment",
+    categoryId: 243,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Education Attainment"],
     tags: ["educational attainment", "jamb"],
     excerpt:
       "The Joint Admissions and Matriculation Board has urged parents and candidates to speak up if they are confident in their Unified Tertiary Matriculation Examination scores but are not admitted to their desired institutions. Registrar of JAMB, Prof. Ishaq Oloyede, said this during an interview on Good Morning Nigeria, a Nigerian Television Authority’s programme. In a […]",
@@ -1180,6 +1400,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian box office records highest Q1 admission rates in 6 years",
     date: "April 6, 2026",
     category: "Films and Theaters",
+    categoryId: 145,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Films and Theaters"],
     tags: ["films and theraters", "Nigerian box office"],
     excerpt:
       "Nigeria’s cinema industry recorded its strongest first-quarter admissions in six years, with total ticket sales rising to 752,136 in Q1 2026. This is signalling a sustained recovery in theatrical demand and a growing dominance of Nollywood productions at the local box office, according to data from the Nigerian box office on Sunday, April 5, 2026. […]",
@@ -1194,6 +1416,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NDPC probes Remita, Sterling Bank over alleged data breach",
     date: "April 6, 2026",
     category: "Digital Economy",
+    categoryId: 109,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Digital Economy"],
     tags: ["digital economy", "npdc", "Remita"],
     excerpt:
       "Nigeria’s data protection regulator has launched an investigation into Remita Payment Services Ltd. and Sterling Bank following reports of a potential large-scale data breach that may have exposed sensitive personal and financial information of Nigerians. The development was disclosed in a statement signed by Babatunde Bamigboye, Head of Legal, Enforcement and Regulations at the NDPC. […]",
@@ -1208,6 +1432,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2027 elections: Political storm brews over PVC revalidation",
     date: "April 6, 2026",
     category: "Electoral Commission",
+    categoryId: 256,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Electoral Commission"],
     tags: ["adc", "inec", "pvc"],
     excerpt:
       "The African Democratic Congress, the Peoples Democratic Party, the Obidient movement, and civil society groups on Sunday warned that the implementation of the voter revalidation exercise by the Independent National Electoral Commission could disenfranchise the electorate and damage public trust. The ADC spokesman, Bolaji Abdullahi, in an interview with The PUNCH, pointed out that rural […]",
@@ -1222,6 +1448,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Easter: 27 Killed In Kaduna, Benue, Katsina Attacks",
     date: "April 6, 2026",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["Benue", "interconnedteness", "Kaduna"],
     excerpt:
       "About 25 people were on Sunday killed in Benue and Kaduna communities following attacks by bandits. It was gathered that scores were kidnapped during the Kaduna attack, and that several houses were burnt in Benue. In the attack in Benue, no fewer than 17 persons were reportedly killed by suspected armed herdsmen following a fresh […]",
@@ -1236,6 +1464,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Banking Sector Lending Hits N111.4trn",
     date: "April 6, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["monetary policy", "nigerian banks"],
     excerpt:
       "With banks now adequately funded following the recapitalisation exercise that ended last month, lending to both the government and the private sector rose slightly in February, reaching the highest level since November 2024. According to the latest credit figures released by the Central Bank of Nigeria (CBN), the Nigerian banking industry’s lending to the domestic […]",
@@ -1249,6 +1479,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tinubu promises tariff relief for media companies",
     date: "March 17, 2026",
     category: "Mass Media",
+    categoryId: 151,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Mass Media"],
     tags: ["Media tariff releif"],
     excerpt:
       "President Bola Tinubu has promised to review tariffs imposed on newsprint, broadcast equipment, and other materials used by media organisations as part of efforts to ease the financial burden on the Nigerian media industry. The President also promised support for the Nigerian media to challenge what they described as big tech dominance and anti-competitive activities […]",
@@ -1263,6 +1495,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Petrol, diesel vessels arrive Nigeria amid price surge",
     date: "March 17, 2026",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["Diesel Vessels", "petrol", "price surge"],
     excerpt:
       "Why imported petrol still enters Nigeria — NMDPR As Nigerians contend with rising petrol prices, vessels carrying 129,000 metric tonnes of Premium Motor Spirit (petrol) and Automotive Gas Oil (diesel) are expected to dock at Lagos Ports between March 14 and 17, 2026, The PUNCH reports. This came as officials of the Nigerian Midstream and Downstream Petroleum […]",
@@ -1277,6 +1511,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Amupitan: Security key to credible elections, Nigeria’s progress",
     date: "March 17, 2026",
     category: "Electoral Commission",
+    categoryId: 256,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Electoral Commission"],
     tags: ["Amupitan", "electoral commision", "inec", "Security and credible elections"],
     excerpt:
       "Joash Amupitan, chairman of the Independent National Electoral Commission (INEC), says security is fundamental for Nigeria’s progress and the success of electoral processes. Amupitan spoke on Monday at the commission’s headquarters in Abuja while receiving a delegation of the Alumni Association of the National Institute for Security Studies (ANNISS), led by its president, Mike Ejiofor.The visit was […]",
@@ -1291,6 +1527,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Onyeali-Ikpe, Rewane urge Nigerians in diaspora to invest in local economy",
     date: "March 17, 2026",
     category: "Foreign Direct Investments (FDI)",
+    categoryId: 139,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Foreign Direct Investments (FDI)",
+    ],
     tags: ["diaspora investment", "local economy", "nigeria"],
     excerpt:
       "Financial and policy experts have called for stronger participation of Nigerians in the diaspora in the country’s economic development, highlighting opportunities in investment, taxation reforms and emerging sectors. The financial experts spoke at the Fidelity Diaspora Summit 2026, hosted virtually by Fidelity Bank Plc, according to a statement on Monday.The event brought together Nigerians living […]",
@@ -1305,6 +1547,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "23 killed, 108 injured in Maiduguri bomb blasts",
     date: "March 17, 2026",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["bomb blasts", "Maiduguri"],
     excerpt:
       "The Borno state police command says 23 persons have been confirmed dead, with 108 injured, following bomb blasts in three locations in Maiduguri. The bombs, which went off at about 7:24pm on Monday, hit a main market, the gate of the University of Maiduguri Teaching Hospital, and the Post Office flyover.In a statement signed by Nahum Daso, […]",
@@ -1318,6 +1562,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN Waives Affidavit Requirement For Dormant Account Reactivation",
     date: "March 17, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["Affidavit for reactivation", "Dormant Account"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has waived the affidavit requirement for reactivating dormant bank accounts, easing access to long-stagnant funds for millions of Nigerians. This move aims to unlock billions of naira trapped in inactive accounts, boost financial inclusion, and reduce compliance costs for customers amid ongoing economic reforms. In a circular issued to […]",
@@ -1331,7 +1577,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "passenger-narrates-how-abuja-kaduna-train-derailed",
     title: "Passenger Narrates How Abuja-Kaduna Train Derailed",
     date: "March 17, 2026",
-    category: "Transportation Investigation And Safety Boards",
+    category: "Transportation Investigation and Safety Boards",
+    categoryId: 198,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Transportation Investigation and Safety Boards",
+    ],
     tags: ["Abuja-Kaduna Train", "Derailed"],
     excerpt:
       "A passenger on the Kaduna-Abuja-bound train said the train jolted immediately after a loud bang. Sada Malumfashi took to social media to explain what happened Monday morning when he was on a train from Kaduna to Abuja. Malumfashi said he heard a loud bang before the train suddenly jolted to a stop. “We heard a […]",
@@ -1346,6 +1598,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian artistes earn over N60 billion from Spotify streaming in 2025",
     date: "March 17, 2026",
     category: "Music",
+    categoryId: 75,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Music"],
     tags: ["artistes in nigeria", "earnings", "Spotify streaming"],
     excerpt:
       "Nigerian artistes generated more than N60 billion in revenue from music streaming on Spotify in 2025. This is according to the platform’s latest “Loud & Clear” annual report released in Lagos. The streaming company noted that earnings from Spotify alone have grown significantly as Nigerian music continues to gain global traction. What they are saying Spotify […]",
@@ -1360,6 +1614,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "You’re Surrounded By Lions At Galatasaray, Drogba Tells Osimhen",
     date: "March 17, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Drogba", "Galatasaray", "Osimhen"],
     excerpt:
       "Former Chelsea striker Didier Drogba has sent his congratulations to Galatasaray star Victor Osimhen after the club’s fans unveiled a tifo featuring his mother. Ahead of Tuesday’s Champions League clash with Liverpool, the home supporters unfurled a huge banner featuring images of Osimhen, his daughter, and his late mum. Drogba himself featured for the Turkish […]",
@@ -1374,6 +1630,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Akwa Ibom Opts For Mechanised Agric To End Food Crisis",
     date: "March 17, 2026",
     category: "Mechanization Equipment",
+    categoryId: 205,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Mechanization Equipment"],
     tags: ["Akwa-Ibom", "Mechanised farming"],
     excerpt:
       "Akwa Ibom State Governor, Pastor Umo Eno, has said his administration is taking practical steps to address the challenges of hunger and starvation bedevilling the population. Towards this end, the administration has launched a full-scale mechanised farming programme to enhance agricultural production, with the establishment of Agric Equipment Leasing Company (AELC), which the Governor assured […]",
@@ -1388,6 +1646,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "World Cup Playoff: DR Congo Drop Players Named In Nigeria’s Eligibility Complaint",
     date: "March 17, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["DR Congo", "nigeria", "worldcup"],
     excerpt:
       "The DR Congo national football team have omitted two players mentioned in a complaint filed by the Nigeria Football Federation to FIFA as they unveiled a 26-man squad for the intercontinental play-offs of the 2026 FIFA World Cup. Head coach Sébastien Desabre announced the squad on Wednesday, keeping much of the group that helped the […]",
@@ -1401,7 +1661,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "hiv-prevention-lenacapavir-injection-arrives-nigeria-in-march",
     title: "HIV Prevention (Lenacapavir) Injection Arrives Nigeria In March",
     date: "March 17, 2026",
-    category: "Incidence And Prevalence Of Disease",
+    category: "Incidence and Prevalence of Disease",
+    categoryId: 214,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Incidence and Prevalence of Disease"],
     tags: ["hiv prevension", "Lenacapavir"],
     excerpt:
       "The Federal Government has announced that Nigeria will receive consignments of Lenacapavir, a groundbreaking drug for HIV prevention, in March 2026. According to the National Agency for the Control of AIDS (NACA), preparations are already in advanced stages for the introduction and nationwide rollout of the drug as part of Nigeria’s Pre Exposure Prophylaxis (PrEP) programme. […]",
@@ -1416,6 +1678,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Shipping company signs 45 year concession agreement with Nigerdock",
     date: "March 17, 2026",
     category: "Water",
+    categoryId: 28,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Water"],
     tags: ["concession agreement", "Shipping company"],
     excerpt:
       "World’s largest shipping line, Mediterranean Shipping Company (MSC), has signed a 45-year sub-concession agreement with Nigerdock to develop, operate, and maintain an exclusive container terminal spanning 30 hectares within Snake Island Port (SIP), Lagos, The Nation has learnt. The new container terminal, due for completion in 2028, is expected to usher in significant foreign direct investment into the country.. […]",
@@ -1429,7 +1693,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "20-insurers-set-for-naicomsrecapitalisation-verification",
     title: "20 insurers set for NAICOM’srecapitalisation verification",
     date: "March 17, 2026",
-    category: "National Planning 223",
+    category: "National Planning",
+    categoryId: 195,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "National Planning"],
     tags: ["insurance", "naicom", "recapitalisation verification"],
     excerpt:
       "Twenty insurance companies have stepped forward for capital verification as the industry enters a critical phase of the recapitalisation exercise mandated under the Nigerian Insurance Industry Reform Act (NIIRA) 2025. The Commissioner for Insurance, National Insurance Commission (NAICOM), Mr. Olusegun Omosehin, announced yesterday that the companies have formally notified the Commission of their readiness for verific",
@@ -1444,6 +1710,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Oil price sustains over $100 p/b price as market remain volatile",
     date: "March 17, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["market price", "Oil price"],
     excerpt:
       "Oil prices experienced extreme volatility this week, surging as high as $115 per barrel on Monday. However, after this sharp rise, Brent crude, the global oil benchmark, dripped to $89 by close of trading same day following assurances that the Iran, US , Israel face off would be done with in no time. But the attack […]",
@@ -1458,6 +1726,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "‘68% of power plants idle in Feb.’",
     date: "March 17, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["ecentralized power generation", "power plants"],
     excerpt:
       "Sixty-eight per cent of the installed capacity of the power plants connected to the national grid was available for dispatch in February 2026, according to the Nigerian Electricity Regulatory Commission (NERC). However, only 4,384MW, being 32 per cent of the 13,625MW installed capacity was available for production. This was made known in its February 2026 Operational Performance […]",
@@ -1470,7 +1740,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ondo-trains-over-1-000-livestock-farmers-in-modern-techniques",
     title: "Ondo trains over 1, 000 livestock farmers in modern techniques",
     date: "March 17, 2026",
-    category: "Life Stock And Aquaculture",
+    category: "Life Stock and Aquaculture",
+    categoryId: 126,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Life Stock and Aquaculture"],
     tags: ["livestock farmers", "morden techniques", "ondo"],
     excerpt:
       "No fewer than 1,000 livestock farmers in Ondo State have been trained on modern farming techniques and record keeping to enhance productivity and resilience in the sector. The Ondo State Livestock Productivity and Resilience Support (L-PRES) State Project Coordinator (SPC), Mr Olufemi Adeogun, disclosed this on Thursday at the maiden graduation ceremony of the L-PRES Farmers’ Field […]",
@@ -1486,6 +1758,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "NCDC: Antibiotic use outside hospitals creating gap in detecting misuse, false medicines",
     date: "March 17, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["false medicines", "misuse gap", "ncdc"],
     excerpt:
       "The Nigeria Centre for Disease Control and Prevention (NCDC) has warned that widespread antibiotic use outside hospitals is creating a major data gap in Nigeria’s fight against antimicrobial resistance (AMR). Speaking in Abuja on Thursday during the national inauguration of the community access to effective antibiotics initiative, known as Com-WATCH, Jide Idris, NCDC director general, […]",
@@ -1500,6 +1774,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN directs banks to block loan defaulters from accessing credit facilities",
     date: "March 17, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["CBN", "credit facilities access", "Loan Defaulters"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has asked commercial banks to restrict loan defaulters, specifically large-ticket obligors, from accessing credit facilities. A large ticket obligor is a borrower (an individual or company) that owes a very large amount of money to a bank. The CBN issued the directive in a circular to banks seen by […]",
@@ -1514,6 +1794,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG approves N4bn take-off grants for Tinubu poly, Epe varsity",
     date: "March 17, 2026",
     category: "Institutions",
+    categoryId: 71,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Institutions"],
     tags: ["fg", "ncce", "new polytechnic & varsity"],
     excerpt:
       "The Federal Government has approved N2bn each as take-off grants for the Bola Ahmed Tinubu Federal Polytechnic in Abuja and the Federal University of Science and Technology, Epe in Epe, Lagos State, as part of efforts to support their early operations. The Minister of Education, Dr Tunji Alausa, disclosed this on Thursday during the inauguration […]",
@@ -1528,6 +1810,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NRC rail lines earn N7.77 billion from 3.89 million passengers in 2025",
     date: "March 17, 2026",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["economic performance", "rail lines and passengers"],
     excerpt:
       "Rail systems under the management of the Nigerian Railway Corporation (NRC) transported a total of 3,888,661 passengers in 2025, generating N7.77 billion in passenger revenue. The figures were released by the National Bureau of Statistics (NBS) in its annual rail transportation report covering all NRC-managed lines. The data highlights the scale of Nigeria’s federally managed rail network […]",
@@ -1542,6 +1826,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tony Elumelu deploys $100 million seed capital to support African startups",
     date: "March 17, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to funds", "African startup", "Tony Elumelu"],
     excerpt:
       "African investor and philanthropist, Mr. Tony Elumelu, has deployed more than $100 million in seed capital to support African startups over the past 15 years through the Tony Elumelu Foundation (TEF). The disclosure was made by the Chairman of United Bank for Africa (UBA) Plc on his LinkedIn page on Thursday after meeting with French President Emmanuel Macron and members of […]",
@@ -1555,7 +1841,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "inside-plateaus-mining-sites-of-vicious-clashes-and-death",
     title: "Inside Plateau’s mining sites of vicious clashes and death",
     date: "March 13, 2026",
-    category: "Raw Materials And Mapping",
+    category: "Raw Materials and Mapping",
+    categoryId: 23,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Raw Materials and Mapping",
+    ],
     tags: ["mining sites", "plateau"],
     excerpt:
       "The extraction of minerals from the ground, which is supposed to be an economic activity to benefit the society has turned into sorrow and regret for some rural residents of Plateau State.Despite attempts by the state government to regulate mining through some rules and regulations, those illegally involved in it pay little or no attention, […]",
@@ -1570,6 +1862,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "JIM OVIA: A fitting tribute",
     date: "March 13, 2026",
     category: "Entrepreneurship",
+    categoryId: 135,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Entrepreneurship"],
     tags: ["enterprenours", "jim ovia", "Zenith bank"],
     excerpt:
       "Few figures in African finance have had the transformative impact of Jim Ovia, a man whose vision and leadership reshaped Nigeria’s banking landscape and inspired a generation of entrepreneurs and innovators. From humble beginnings in Agbor, Delta State, Ovia rose to become a pioneer in modern banking, demonstrating how technology, innovation, and strategic thinking could […]",
@@ -1583,6 +1877,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "30 banks meet recapitalisation threshold",
     date: "March 13, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["CBN", "nigerian banks", "Recapitalization Threshold"],
     excerpt:
       "The Central Bank of Nigeria has officially confirmed that 30 banks have successfully met the new minimum capital requirements under the ongoing banking sector recapitalisation programme. The announcement was made on Thursday by CBN Governor Olayemi Cardoso during a Distinguished Alumni Lecture at St Gregory’s College, Lagos. It marks a critical milestone as the 31 […]",
@@ -1595,7 +1891,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "external-reserves-hit-50bn-highest-in-13-years-cbn",
     title: "External reserves hit $50bn, highest in 13 years – CBN",
     date: "March 13, 2026",
-    category: "Savings And Investment",
+    category: "Savings and Investment",
+    categoryId: 113,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Savings and Investment"],
     tags: ["CBN", "External reserves"],
     excerpt:
       "The Central Bank of Nigeria has announced that the country’s gross external reserves have surpassed the $50bn mark, reaching their highest level in over 13 years. Governor Olayemi Cardoso disclosed this milestone on Thursday while delivering the Distinguished Alumni Lecture at St. Gregory’s College, Lagos, in commemoration of the institution’s Founders’ Day. Addressing a distinguished […]",
@@ -1610,6 +1908,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FCCPC says airlines may refund passengers ‘exploited’ during festive season",
     date: "March 13, 2026",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: ["CEMENT PRICES", "fccpc", "refund passengers"],
     excerpt:
       "The Federal Competition and Consumer Protection Commission (FCCPC) says it may ask airlines found to have fixed ticket prices during the Christmas period to refund passengers who paid excessive fares. The FCCPC had, in December 2025, announced an industry-wide probe following widespread complaints over sharp increases in airfares during the holiday period. In its preliminary report released on February […]",
@@ -1623,7 +1923,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "imf-begins-assessment-of-nigerias-economy-to-engage-senate-on-tinubus-reforms",
     title: "IMF begins assessment of Nigeria’s economy, to engage senate on Tinubu’s reforms",
     date: "March 13, 2026",
-    category: "Internatinal Monetary Fund Imf",
+    category: "Internatinal Monetary Fund (IMF)",
+    categoryId: 53,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Internatinal Monetary Fund (IMF)",
+    ],
     tags: ["imf", "Nigeria's economy"],
     excerpt:
       "The senate will hold a high-level meeting with officials of the International Monetary Fund (IMF) as part of consultations on Nigeria’s economic outlook and reform programmes introduced by the administration of President Bola Tinubu. The engagement forms part of the IMF’s ongoing Article IV consultation with Nigeria, according to a notice to senators.The meeting is […]",
@@ -1638,6 +1944,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Arsenal’s Eze Credits Spiritual Fervor For FA Cup Heroics",
     date: "March 13, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: [],
     excerpt:
       "Arsenal’s creative hub, Eberechi Eze, delivered a performance of almost ethereal quality on Saturday, leading the Gunners to a hard-fought victory against Mansfield Town in the FA Cup fifth round. After the match, the England international offered a deeply personal explanation for his man-of-the-match display, revealing a powerful spiritual motivation behind his goal-scoring prowess.Eze was […]",
@@ -1651,7 +1959,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "iran-war-fg-releases-emergency-contacts-for-nigerians-in-middle-east-full-list",
     title: "Iran War: FG Releases Emergency Contacts For Nigerians In Middle East (Full List)",
     date: "March 13, 2026",
-    category: "National Planning 223",
+    category: "National Planning",
+    categoryId: 195,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "National Planning"],
     tags: ["Emergency Contacts", "Iran War", "Middle East"],
     excerpt:
       "The advisory was issued in Abuja by the Federal Ministry of Foreign Affairs Nigeria and signed by its spokesperson, Kimiebi Imomotimi Ebienfa. The Federal Government has issued emergency contact details for Nigerian diplomatic missions across the Middle East to support citizens impacted by the escalating conflict in the region. The advisory was issued in Abuja […]",
@@ -1666,6 +1976,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote refinery to get more crude from NNPCL as petrol crosses N1,000",
     date: "March 13, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["(NNPCL)", "Dangote Refinery"],
     excerpt:
       "Petrol prices are becoming increasingly burdensome for the average Nigerian consumer, fueled by the recent conflict in the Middle East. The psychological barrier of N1,000 per litre has been breached in most parts of the country. Dangote refinery suspended PMS loading over the weekend of March 7-8, reflecting logistical challenges in maintaining domestic supply amid volatile global crude […]",
@@ -1679,7 +1991,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "kebbi-zamfara-kaduna-record-highest-teenage-pregnancy-rates-in-nigeria-report",
     title: "Kebbi, Zamfara, Kaduna record highest teenage pregnancy rates in Nigeria – Report",
     date: "March 13, 2026",
-    category: "Reproductive And Sexual Health",
+    category: "Reproductive and Sexual Health",
+    categoryId: 224,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Reproductive and Sexual Health"],
     tags: ["pregnancy rates", "teenage pregnancy"],
     excerpt:
       "Teenage pregnancy remains a significant public health challenge in Nigeria, with northern states including Kebbi State, Zamfara State, and Kaduna State recording the highest prevalence rates. This is according to the 2025 State of Health of the Nation Report released on Sunday in Abuja and produced under the National Health Act. The report assessed adolescent reproductive health […]",
@@ -1694,6 +2008,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Starlink to deliver 5G connectivity directly to smartphones with new satellites",
     date: "March 13, 2026",
     category: "Internet Penetration",
+    categoryId: 209,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Internet Penetration"],
     tags: ["new satellites", "smartphones", "starlink"],
     excerpt:
       "Elon Musk’s Starlink has unveiled plans for its next generation of mobile connectivity satellites, designed to deliver full cellular coverage, including 5G capability, directly to smartphones. The company, in a statement on its website, said its upcoming Starlink Mobile V2 satellites will power what it describes as the highest-performing satellite-to-mobile network built so far, enabling users to […]",
@@ -1708,6 +2024,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Jos DisCo introduces flexible electricity debt repayment plan for customers",
     date: "March 13, 2026",
     category: "Energy Consumption",
+    categoryId: 61,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Energy Consumption"],
     tags: ["debt repayment plan", "flexible electricity", "Jos DisCo"],
     excerpt:
       "The Jos Electricity Distribution Company (JEDC) Plc has introduced a flexible debt repayment plan aimed at helping customers settle outstanding electricity bills in a more convenient and structured manner. The initiative was disclosed in a statement issued on Monday in Jos by the company’s Head of Corporate Communications, Mrs. Saratu Dauda-Aliyu. According to the company, the structured […]",
@@ -1722,6 +2040,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "United Nigeria Airlines enters IATA clearing house",
     date: "March 9, 2026",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["IATA clearing house", "United Nigeria Airlines"],
     excerpt:
       "United Nigeria Airlines has secured admission into the International Air Transport Association (IATA) Clearing House (ICH), marking a definitive step in its integration into the global aviation financial ecosystem. With the admission, transactions originating from United Nigeria Airlines will now be processed by the global network of carriers utilising the ICH for secure and efficient financial […]",
@@ -1736,6 +2056,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FAO, UM6P deepen climate-smart agriculture",
     date: "March 9, 2026",
     category: "Food and Agriculture Organization (FAO)",
+    categoryId: 185,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Food and Agriculture Organization (FAO)",
+    ],
     tags: ["climate", "fao", "smart agriculture"],
     excerpt:
       "The Food and Agriculture Organisation of the United Nations and Mohammed VI Polytechnic University (UM6P) are advancing new initiatives aimed at strengthening climate resilience, food security and agricultural innovation in Africa, with major interventions unfolding in Nigeria and Morocco. In Nigeria, the FAO has launched an ambitious Emergency and Resilience Plan (ERP) for 2026–2028 designed to support […]",
@@ -1748,7 +2074,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "smartphone-shipments-to-nigeria-others-rise-5",
     title: "Smartphone shipments to Nigeria, others rise 5%",
     date: "March 9, 2026",
-    category: "Phones And Gadgets",
+    category: "Phones and Gadgets",
+    categoryId: 104,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Phones and Gadgets"],
     tags: ["nigeria", "Smartphone"],
     excerpt:
       "Smartphone shipments in the Nigeria, Middle East and Africa (MEA) region rose five per cent in fourth quarter 2025 compared to the corresponding period of 2024. Data by Counterpoint Research’s Market Monitor showed that the modest expansion was the region’s third consecutive quarter of expansion. The upward trajectory was underpinned by technological evolution, premiumization and intelligence. […]",
@@ -1762,6 +2090,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "AfDB targets Africa’s $25tr air travel opportunity",
     date: "March 9, 2026",
     category: "African Development Bank Group (AfDB)",
+    categoryId: 168,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "African Development Bank Group (AfDB)",
+    ],
     tags: ["AfDB", "air travel"],
     excerpt:
       "African Development Bank Group (AfDB) has unveiled a continent-wide aviation financing platform aimed at unlocking large-scale investment in Africa’s fast-growing air transport market and turning rising passenger demand into sustainable airline profits. The initiative, known as the Integrated Aviation Transformation Programme, was presented at the Airlines, Capital and Connectivity Forum held in Nairobi, Kenya, where",
@@ -1775,7 +2109,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fuel-price-changes-driven-by-market-forces-nmdpra",
     title: "Fuel price changes driven by market forces — NMDPRA",
     date: "March 9, 2026",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["fuel price", "market forces"],
     excerpt:
       "The Nigerian Midstream and Downstream Petroleum Regulatory Authority says fluctuations in fuel pump prices are a direct result of market dynamics under Nigeria’s deregulated downstream petroleum sector. The authority’s spokesperson, George Ene-Ita, said this in an interview with the News Agency of Nigeria in Abuja on Sunday while reacting to the recent increase in fuel […]",
@@ -1790,6 +2130,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FAAC sub-committees get N11.5bn for 2026 budget planning",
     date: "March 9, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Budget Planning", "budget servcing", "faac"],
     excerpt:
       "The Federation Account Allocation Committee has approved the transfer of N11.5bn from the 0.5 per cent Stabilisation Fund to finance the operations of its sub-committees working on preparations for the 2026 national budget framework, according to official documents obtained by The PUNCH. According to a document on the 0.5 per cent Stabilisation Fund Account as of […]",
@@ -1804,6 +2146,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria LNG cargo diverted to Asia amid price surge",
     date: "March 9, 2026",
     category: "Gas and Infrastructure",
+    categoryId: 97,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Gas and Infrastructure"],
     tags: ["lpg cargo", "price surge"],
     excerpt:
       "A cargo of liquefied natural gas from Nigeria has been diverted to Asia after a surge in regional prices created an arbitrage opportunity for traders, according to a report by Reuters. Data from analytics firm Kpler showed that the LNG tanker BW Brussels, which loaded a shipment at the Nigeria LNG Bonny Island Terminal on […]",
@@ -1818,6 +2162,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Debt servicing surpasses capital spending by N3.9tn in two years",
     date: "March 9, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgeting", "Capital Spending", "debt servicing"],
     excerpt:
       "Debt servicing in Nigeria outpaced capital expenditure by N3.9tn over the past two years, highlighting growing fiscal pressures on the federal budget, according to a media brief obtained by The PUNCH on Sunday from the Federal Ministry of Finance. The brief also showed that the Federal Government spent N27.2tn servicing public debt between 2024 and […]",
@@ -1832,6 +2178,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FGN securities lead pension investments with 2.2% growth",
     date: "March 9, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["Pension fund investment", "securities"],
     excerpt:
       "The Nigerian pension industry kicked off 2026 with a powerful surge, as total pension fund assets climbed by N580 bn in January alone. This 2.2 per cent growth trajectory pushed the nation’s total pension valuation from N27.45 tn in December 2025 to a staggering N28.03 tn. According to the latest monthly report released by the […]",
@@ -1845,7 +2193,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "wike-to-indigenous-fct-communities-youll-get-c-of-o-for-ancestral-lands",
     title: "Wike to indigenous FCT communities: You’ll get C-of-O for ancestral lands",
     date: "March 9, 2026",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["ancestral lands", "FCT communities", "wike"],
     excerpt:
       "Nyesom Wike, minister of the Federal Capital Territory (FCT), has promised to end decades of uncertainty over land ownership in the nation’s capital. Wike said his administration would grant certificates of occupancy (C-of-O) to indigenous communities in the FCT for their ancestral lands.The minister spoke on Wednesday during a “thank you” visit to the Abuja […]",
@@ -1860,6 +2214,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Chevening alumni in Nigeria trains 691 women entrepreneurs on public procurement",
     date: "March 9, 2026",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["Chevening alumni", "public procurement", "women entrepreneurs"],
     excerpt:
       "The Chevening Alumni Association of Nigeria (CAAN) says it has trained 691 women entrepreneurs on public procurement processes, compliance requirements and competitive bidding strategies. The training was conducted under the Scaling Women’s Economic Empowerment through Affirmative Procurement (SWEEAP) project.SWEEAP is an initiative of CAAN implemented by DO Take Action. It seeks to equip women entrepreneurs with the",
@@ -1874,6 +2230,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Credit to private sector declines to N75.24trn in January 2026",
     date: "March 5, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "private sector credit"],
     excerpt:
       "Nigerian banks’ credit to the private sector declined to N75.24 trillion in January 2026, down from N75.83 trillion recorded in December 2025. This is according to the latest monetary and credit statistics released by the Central Bank of Nigeria (CBN). Credit to the private sector comprises loans, non-equity securities, trade credits, and accounts receivable extended by […]",
@@ -1888,6 +2246,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lekki Deep Sea Port records highest cargo throughput in Nigeria for 2025",
     date: "March 5, 2026",
     category: "Water",
+    categoryId: 28,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Water"],
     tags: ["cargo", "Lekki Deep Sea Port"],
     excerpt:
       "Lekki Deep Sea Port has emerged as Nigeria’s top port in terms of cargo handled in 2025. The disclosure was made by the Managing Director of the Nigerian Ports Authority (NPA), Abubakar Dantsoho, on Wednesday while presenting highlights of the NPA’s 2025 Operational Performance Report, as reported by the News Agency of Nigeria (NAN). The […]",
@@ -1901,7 +2261,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "vivo-launches-new-smartphone-in-nigeria",
     title: "vivo launches new smartphone in Nigeria",
     date: "March 5, 2026",
-    category: "Phones And Gadgets",
+    category: "Phones and Gadgets",
+    categoryId: 104,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Phones and Gadgets"],
     tags: ["massive battery", "phones and gatgets", "vivo Y31d"],
     excerpt:
       "vivo has introduced the vivo Y31d, a well-rounded smartphone designed for users who value long-lasting battery performance, durability, and everyday usability. The event, which was held in Lagos, showcased the best of endurance, supporting high productivity, entertainment with confidence, and consistency. Speaking during the launch, Chief Executive Officer, vivo Nigeria, Toni Liu, stated: “The Y31d […]",
@@ -1914,7 +2276,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "wbank-backs-lagos-efforts-to-tackle-flooding",
     title: "W’Bank backs Lagos efforts to tackle flooding",
     date: "March 5, 2026",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["chronic flooding", "World Bank"],
     excerpt:
       "Lagos State has secured support from the World Bank to strengthen its disaster risk management and emergency response ahead of the rainy season, as the city contends with chronic flooding that disrupts lives and infrastructure. The collaboration, discussed in a meeting on Wednesday in Lagos, aims to improve early warning systems, emergency preparedness, and public […]",
@@ -1928,6 +2296,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NIPCO to deploy 20 new CNG stations nationwide",
     date: "March 5, 2026",
     category: "Gas and Infrastructure",
+    categoryId: 97,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Gas and Infrastructure"],
     tags: ["CNG stations", "gas and infrastructure", "nipco", "NNPC Gas Marketing Limited"],
     excerpt:
       "NIPCO Gas Limited has announced that it is constructing 20 additional compressed natural gas stations across Nigeria as part of efforts to deepen gas utilisation and support the Federal Government’s clean energy and post-subsidy reform agenda. The Managing Director of NIPCO Gas Limited, Nagendra Verma, disclosed this during a media engagement held recently at his […]",
@@ -1941,6 +2311,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria’s gold reserves now $3.5bn, says CBN",
     date: "March 5, 2026",
     category: "Assets and Investments",
+    categoryId: 112,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Assets and Investments"],
     tags: ["Africa Finance Corporation", "CBN", "gold reserves"],
     excerpt:
       "The Central Bank of Nigeria (CBN) says its gold reserves have increased to $3.5 billion, following the delivery of “responsibly sourced” gold refined to London Bullion Market Association (LBMA) Good Delivery standards. In a statement on Wednesday, the apex bank said the gold was sourced locally and acquired under the national gold purchase programme (NGPP) as part […]",
@@ -1954,6 +2326,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG approves digital postcode system to boost mail processing",
     date: "March 5, 2026",
     category: "Digital Economy",
+    categoryId: 109,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Digital Economy"],
     tags: ["digital economy", "digital mail processing", "NIPOST"],
     excerpt:
       "The federal executive council (FEC) has approved the implementation of a GIS-enabled alphanumeric digital postcode system for Nigeria. The approval was announced by Bosun Tijani, minister of communications, innovation and digital economy, following the council meeting presided over by President Bola Tinubu.The approval is the latest development on the initiative and comes four years after the project […]",
@@ -1968,6 +2342,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NAFDAC partners with NOA, FCCPC to enforce ban on sachet alcohol",
     date: "March 4, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["fccpc", "nafdac", "Sachet Alcohol ban"],
     excerpt:
       "The National Agency for Food and Drug Administration and Control (NAFDAC) has partnered with the National Orientation Agency (NOA) and the Federal Competition and Consumer Protection Commission (FCCPC) to launch a nationwide enforcement campaign against the sale and distribution of sachet alcohol and alcoholic beverages in bottles below 200 millilitres. The development was disclosed in […]",
@@ -1981,7 +2357,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "jigawa-govt-approves-n853m-purchase-of-86-housing-units-for-public-servants",
     title: "Jigawa Govt approves N853m purchase of 86 housing units for public servants",
     date: "March 4, 2026",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["housing units", "Jigawa Govt", "public servants"],
     excerpt:
       "The Jigawa State Executive Council has approved N853 million for the purchase of 86 housing units to support public servants and other beneficiaries in the state. The approval was disclosed by the State Commissioner for Information, Youth, Sport and Culture, Mr. Sagir Musa, while briefing journalists after the council meeting in Dutse, according to the News Agency of […]",
@@ -1996,6 +2378,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Alliance, NIWA move to push Nigeria’s marine tourism economy",
     date: "March 4, 2026",
     category: "Water",
+    categoryId: 28,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Water"],
     tags: ["marine tourism economy", "NIWA"],
     excerpt:
       "The Allied Concessionaries and Blue Economy Alliance has announced plans to partner with the National Inland Waterways Authority (NIWA) to develop Nigeria’s largely untapped marine tourism and waterfront economy, signalling renewed private sector interest in the country’s inland waterways. The proposed collaboration was disclosed during a courtesy visit by the alliance to the Lagos Area Manager of […]",
@@ -2010,6 +2394,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "U.S. warns Americans in Abuja to remain indoors over possible protests",
     date: "March 4, 2026",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["america", "poorest", "remain indoors"],
     excerpt:
       "The U.S. government has warned Americans in Abuja to stay indoors on Wednesday, March 4, amid fears of possible protests. The advisory was issued via the official X account of the U.S. Mission in Nigeria on Wednesday, March 4. The embassy cited concerns that demonstrations linked to the ongoing Middle East conflict could escalate, as […]",
@@ -2024,6 +2414,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "U.S. Embassy in Abuja suspends visa appointments amid protest fears",
     date: "March 4, 2026",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["embassy", "visa appointments"],
     excerpt:
       "The U.S. Embassy in Abuja has cancelled all visa appointments scheduled for Wednesday, March 4, citing security concerns over possible protests in the city. The announcement was made in a statement posted on the Embassy’s official X account on Wednesday. Applicants affected by the cancellations are expected to receive instructions on how to reschedule, while the embassy urged […]",
@@ -2038,6 +2434,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "MTN, Airtel rake in N3.6trn from data consumption boom in 2025",
     date: "March 4, 2026",
     category: "Internet Service Providers",
+    categoryId: 105,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Internet Service Providers"],
     tags: ["airtel", "MTN"],
     excerpt:
       "Two leading telecommunications operators in Nigeria, MTN and Airtel, made over N3.6 trillion from data alone as Nigerians’ appetite for internet usage continues to grow. While data has overtaken voice as the main source of revenue for the mobile network operators a few years ago, the rate of data revenue growth has dwarfed that of […]",
@@ -2052,6 +2450,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Beyond monthly stipends: Spotlight on welfare gaps in old pension scheme",
     date: "March 4, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["old pension", "welfare gaps"],
     excerpt:
       "As attention continues to focus on timely pension payments under the Defined Benefit Scheme (DBS), concerns are growing over welfare issues that extend beyond monthly stipends for thousands of retirees under the management of the Pension Transitional Arrangement Directorate (PTAD). While the Federal Government has repeatedly assured pensioners of regular payment, stakeholders say access to healthcare, structured […]",
@@ -2065,7 +2465,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "43-per-cent-of-homes-not-metered",
     title: "‘43 per cent of homes not metered’",
     date: "March 4, 2026",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["homes not metered’"],
     excerpt:
       "The November & December 2025 Metering Status of Distribution Companies (DisCos) factsheet released by the Nigerian Electricity Regulatory Commission (NERC) yesterday, showed that about 43 per cent homes in Nigeria are not metered. According to the data unveiled yesterday, metering rate in the Nigerian Electricity Supply Industry (NESI) increased from 56.54 per cent in November to 57.27 […]",
@@ -2079,6 +2485,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NRC to operate additional trips on Abuja-Kaduna corridor from March 6",
     date: "March 4, 2026",
     category: "Rail",
+    categoryId: 27,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Rail"],
     tags: ["Abuja-Kaduna corridor", "nrc", "TRAIN"],
     excerpt:
       "The Nigerian Railway Corporation (NRC) has increased the number of trips on the Abuja-Kaduna train service (AKTS) in response to rising passenger demand along the corridor. The NRC, in a statement on Tuesday by Callistus Unyimadu, its chief public relations officer, said the new timetable will take effect from March 6.According to the corporation, the adjustment will […]",
@@ -2093,6 +2501,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Kaduna Golf Club Gears Up For Enhanced First Bank Tourney",
     date: "March 4, 2026",
     category: "Individual Sport",
+    categoryId: 247,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Individual Sport"],
     tags: ["Golf Club", "golf Tourney"],
     excerpt:
       "Kaduna Golf Club is set to host the prestigious annual First Bank Kaduna Golf Tournament on Saturday, 28th March 2026. The historic club, established in 1921, anticipates over 200 amateur and professional golfers vying for honours across various categories in what promises to be a significantly upgraded event. Organisers have indicated that this year’s edition […]",
@@ -2107,6 +2517,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Solar mini-grids transform electricity access in Niger",
     date: "March 4, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized", "electricity access", "power generation", "Solar mini-grids"],
     excerpt:
       "No fewer than 180 communities that have endured over a decade without a meaningful electricity supply are now enjoying 24-hour solar power in Niger State. The initiative, described as a major breakthrough in ending years of prolonged blackout across parts of the state, followed the deployment of solar mini-grids and other renewable energy solutions by […]",
@@ -2120,7 +2532,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigeria-earns-less-than-200000-from-cattle",
     title: "‘Nigeria earns less than $200,000 from cattle’",
     date: "March 4, 2026",
-    category: "Life Stock And Aquaculture",
+    category: "Life Stock and Aquaculture",
+    categoryId: 126,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Life Stock and Aquaculture"],
     tags: ["cattle", "Livestock Sector"],
     excerpt:
       "Nigeria generated less than $200,000 from meat and edible offal exports despite having about 20 million cattle, the Youths Against Disaster Initiative has said. Speaking at a press briefing in Abuja on Tuesday, the Programme Officer of YADI, Farouk Bala, said the country’s livestock export earnings were disproportionately low compared to its herd size and […]",
@@ -2134,6 +2548,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN auctions N1.05 trillion in Treasury Bills on Thursday",
     date: "March 3, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["autions", "CBN", "Treasury Bills"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has announced plans to auction N1.05 trillion in Treasury Bills on March 5, 2026, offering 91-, 182- and 364-day instruments amid tight liquidity conditions. The details were contained in an official tender notice issued by the apex bank on behalf of the Debt Management Office (DMO) and obtained by […]",
@@ -2147,7 +2563,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-plans-reforms-in-32bn-livestock-export-market-amid-us-ban-threats",
     title: "FG plans reforms in $3.2bn livestock export market amid US ban threats",
     date: "March 3, 2026",
-    category: "Life Stock And Aquaculture",
+    category: "Life Stock and Aquaculture",
+    categoryId: 126,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Life Stock and Aquaculture"],
     tags: ["amid ban threats", "livestock export market"],
     excerpt:
       "The Federal Government has announced plans to reform its livestock export framework, a market estimated at $3.2 billion. The Head, Press and Public Relations of the Ministry of Livestock Development, Oghenekevwe Uchechukwu, said this in a chat while responding to inquiries from Nairametrics. The response followed recent recommendation by the United States Congress to block Nigeria’s beef and cattle exports to Ivory C",
@@ -2162,6 +2580,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "‘Horticulture clusters can unlock sector’s potential’",
     date: "March 3, 2026",
     category: "Commercial, Organic and Intensive Agriculture",
+    categoryId: 131,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Agriculture",
+      "Commercial, Organic and Intensive Agriculture",
+    ],
     tags: ["‘Horticulture clusters", "intensive agriculture", "sector potential"],
     excerpt:
       "The adoption of a regional horticulture cluster model could help the nation unlock the full commercial value of its fruit and vegetable production. Executive Director and Chief Executive Officer, National Horticultural Research Institute (NIHORT), Prof. Mohammed Lawal Atanda, said that the economy was losing a lot of revenue from horticulture with fragmented, smallholder-led production systems that […]",
@@ -2176,6 +2600,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG begins implementation of executive order on direct oil revenues remittance to FAAC",
     date: "March 3, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["faac", "oil revenues", "remittance"],
     excerpt:
       "The federal government says it has commenced the implementation of Executive Order 9 of 2026, which mandates the direct remittance of oil revenues to the federation account allocation committee (FAAC). The move follows the inaugural meeting of the implementation committee for the executive order, held on February 26, 2026.Wale Edun, the minister of finance and […]",
@@ -2190,6 +2616,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2027 polls won’t be 100% perfect, INEC chair warns",
     date: "March 3, 2026",
     category: "Electoral Commission",
+    categoryId: 256,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Electoral Commission"],
     tags: ["inec assurance", "inec capacity", "inec polls"],
     excerpt:
       "The Chairman of the Independent National Electoral Commission, Prof. Joash Amupitan, has assured Nigerians that the commission has the capacity to electronically transmit election results in 2027, but cautioned that it may not be able to guarantee a “100 per cent perfect election.” Amupitan spoke on Sunday at the Citizens’ Town Hall programme aired live […]",
@@ -2204,6 +2632,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "AFC, FG seal $1.3 billion alumina refinery pact",
     date: "March 3, 2026",
     category: "Assets and Investments",
+    categoryId: 112,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Assets and Investments"],
     tags: ["afc", "alumina refinery", "fg"],
     excerpt:
       "The Federal Government has signed a $1.3 billion investment partnership with the Africa Finance Corporation (AFC) to develop an alumina refinery and two other strategic mining projects aimed at boosting Nigeria’s solid minerals sector. The agreement was disclosed in a statement issued by the Minister of Solid Minerals Development, Dele Alake, through his Special Assistant […]",
@@ -2217,6 +2647,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Insurers withdraw war risk cover for vessels across Iranian, Gulf waters",
     date: "March 2, 2026",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["Gulf waters", "insurance war risk", "Iranian", "vessels"],
     excerpt:
       "Marine insurers have withdrawn war risk coverage for vessels operating in Iranian waters, the Gulf, and surrounding waterways amid rising regional tensions. The development was reported by Reuters on Monday, citing official notices from leading insurance providers. The move comes as recent attacks on vessels and regional strikes have escalated security risks along one of […]",
@@ -2231,6 +2663,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2026 UTME: JAMB registers over 2.24 million candidates, see top 10 states",
     date: "March 2, 2026",
     category: "Education Attainment",
+    categoryId: 243,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Education Attainment"],
     tags: ["jamb", "registration", "utme"],
     excerpt:
       "The Joint Admissions and Matriculation Board has announced that a total of 2,243,816 candidates have registered for the 2026 Unified Tertiary Matriculation Examination. The figures were disclosed in the latest bulletin released by the Board and signed by its Public Communication Advisor, Fabian Benjamin. This comes as registration for the 2026 UTME approaches its final […]",
@@ -2245,6 +2679,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG gives N4 bn each to 12 varsities for engineering upgrades ",
     date: "March 2, 2026",
     category: "Institutions",
+    categoryId: 71,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Institutions"],
     tags: ["Engineering Upgrades", "institutions", "universities"],
     excerpt:
       "The Federal Government has approved N4 billion each for 12 selected universities of engineering and technology to rehabilitate workshops and procure modern equipment. The Minister of Education, Dr. Tunji Alausa, disclosed this on Monday at the inauguration of the Implementation Committee on Tertiary Education Trust Fund Special High-Impact Intervention Projects in Abuja. The News Agency […]",
@@ -2259,6 +2695,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos extends bursary, scholarship registration deadline to Friday",
     date: "March 2, 2026",
     category: "Scholarships",
+    categoryId: 35,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Scholarships"],
     tags: ["lagos bursary extension", "registration", "scholarship"],
     excerpt:
       "The Lagos State Scholarship Board has extended the registration deadline for its 2025/2026 Bursary and Scholarship Awards to March 6, 2026. In a public service announcement issued by its Public Affairs Unit on Sunday on its Facebook handle, the board said the extension provides an additional opportunity for eligible indigenous students of Lagos State in […]",
@@ -2273,6 +2711,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "INSIGHT: The ecological, economic toll of Nigeria’s rosewood trade",
     date: "March 2, 2026",
     category: "Deforestation Rates",
+    categoryId: 121,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Deforestation Rates",
+    ],
     tags: ["deforestation rate", "ecological", "economic toll", "toll", "wood trade"],
     excerpt:
       "Between 2014 and 2018, Nigeria underwent a seismic shift in its forestry sector, transforming from a minor timber participant into the world’s largest exporter of African rosewood, known locally as Kosso. This surge was fueled by an insatiable demand in China for “Hongmu”, a high-end, Ming-style furniture with decorative finishes that symbolises status. At the […]",
@@ -2287,6 +2731,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Pension funds edge back to stocks as asset base hits N27.45 trillion",
     date: "March 2, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["assets base", "Pension funds"],
     excerpt:
       "For years, Nigeria’s pension funds managers and the regulator have invested cautiously in government securities and avoiding the drama of the stock market, yielding minimal return to Retirement Savings Account (RSAs) holders under the Contributory Scheme (CPS). Now, they appear to be stepping out again carefully as new portfolio data for the period ended December […]",
@@ -2301,6 +2747,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Stakeholders push for increased ginger output",
     date: "March 2, 2026",
     category: "Value Addition",
+    categoryId: 32,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Value Addition"],
     tags: ["ginger output", "Nigeria’s ginger industry"],
     excerpt:
       "Nigeria’s ginger industry is stirring back to life after years of production setbacks, with stakeholders insisting that the country’s 768,305-ton output can be increased and translated into higher export earnings, stronger quality standards and deeper value addition. Ranked as the world’s second-largest producer after India and ahead of China, Nigeria accounts for the bulk of Africa’s […]",
@@ -2314,6 +2762,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Adelabu orders IBEDC to fast-track rollout of 59,000 free prepaid meters",
     date: "March 2, 2026",
     category: "Energy Consumption",
+    categoryId: 61,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Energy Consumption"],
     tags: ["Adelabu", "energy consumption", "free prepaid meters", "IBEDC"],
     excerpt:
       "The Minister of Power, Chief Adebayo Adelabu, has directed the Ibadan Electricity Distribution Company (IBEDC) to expedite the rollout of 59,000 free prepaid meters allocated to customers within its franchise area. Adelabu issued the directive during a working visit to the company’s headquarters in Ibadan on Saturday, according to the News Agency of Nigeria (NAN). […]",
@@ -2328,6 +2778,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Gulf tensions: ECOWAS warns of global fallout, urges restraint",
     date: "March 2, 2026",
     category: "Economic Countries of West African States (ECOWAS)",
+    categoryId: 55,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Economic Countries of West African States (ECOWAS)",
+    ],
     tags: ["ecowas", "Gulf tensions"],
     excerpt:
       "The Economic Community of West African States(ECOWAS) has expressed concern over escalating hostilities in the Gulf region, warning that the crisis could trigger far-reaching consequences for global peace, trade, and food security. This was disclosed in a statement issued by Julius Maada Bio, Chairman of the ECOWAS Authority of Heads of State and Government and President of Sierra Leone. This comes amid […]",
@@ -2343,6 +2799,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Nigerians lament gridlock at airport gates as FAAN rolls out new cashless payment system",
     date: "March 2, 2026",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["airport gate gridlock", "faan", "new cashless payment system"],
     excerpt:
       "Nigerians have reported experiencing a gridlock at the access gates of the Murtala Muhammed International Airport (MMIA) in Lagos and the Nnamdi Azikiwe International Airport (NAIA) in Abuja. The traffic congestion comes as the Federal Airports Authority of Nigeria (FAAN) officially begins its go-cashless programme at the access gates of airports.On September 26, 2025, the […]",
@@ -2357,6 +2815,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Internet providers weigh mergers amid market pressure",
     date: "March 2, 2026",
     category: "Internet Service Providers",
+    categoryId: 105,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Internet Service Providers"],
     tags: ["internent subscribtions", "internet service providers", "ISPs Weigh Mergers"],
     excerpt:
       "Nigeria’s internet service provider sector is showing early signs of consolidation as operators face rising right-of-way costs, regulatory hurdles, and stiff competition from mobile carriers offering retail data, including fibre-to-home broadband. Operators say larger, combined resources from consolidated ISPs can enable greater investment in network maintenance, redundancy, and coverage expansion. This could mean fe",
@@ -2371,6 +2831,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PenCom launches new digital portal for federal retirees",
     date: "March 2, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["Federal Retirees", "pencon"],
     excerpt:
       "The National Pension Commission has officially launched a comprehensive digital overhaul of the retirement process for federal employees in a major move to modernise Nigeria’s pension landscape. This was disclosed in the Guidelines for Verification and Enrolment of Prospective Retirees of Federal Government Treasury-funded Ministries, Departments and Agencies issued by the regulator. Also, PenCom has […]",
@@ -2385,6 +2847,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Insurance sector tops banking with 21.4% growth",
     date: "March 2, 2026",
     category: "Assets and Investments",
+    categoryId: 112,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Assets and Investments"],
     tags: ["banking sector", "insurance sector"],
     excerpt:
       "Nigeria’s insurance sub-sector emerged as the primary growth engine of the financial services sector in the final quarter of 2025, recording a massive surge to 21.37 per cent. According to the latest report from the National Bureau of Statistics, the insurance sub-sector recorded a real growth rate of 21.37 per cent in Q4 2025. This […]",
@@ -2398,6 +2862,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Agric turnover hits N101.46tn on investment boost",
     date: "March 2, 2026",
     category: "Sustainable Agriculture",
+    categoryId: 245,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Sustainable Agriculture"],
     tags: ["Investment Boost", "nigeria agric turnover"],
     excerpt:
       "Nigeria’s agriculture sector recorded a turnover of N101.46tn in 2025, up from N96.46tn in 2024, as annual real growth rose to 2.92 per cent from 1.69 per cent, based on an improved investment drive, The PUNCH reports. The National Bureau of Statistics’ Gross Domestic Product figures for the full year 2025 showed a 5.18 per cent increase […]",
@@ -2412,6 +2878,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tinubu Announces That Naira Cards Are Now Accepted For Transactions Worldwide",
     date: "March 1, 2026",
     category: "Supportive Government Policies",
+    categoryId: 65,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Supportive Government Policies"],
     tags: ["naira cards", "Worldwide transactions"],
     excerpt:
       "President Bola Ahmed Tinubu has declared that Nigerians can now use the Naira Card for payments and transactions across the world, saying the achievement reflects growing confidence in the nation’s currency. The announcement was made on Saturday in Abuja during the 9th Annual Ramadan Lecture and Prayer for the Nation organised by the Ashraaf Islamic […]",
@@ -2425,7 +2893,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nnpc-pushes-cng-investments-as-akk-nears-completion",
     title: "NNPC pushes CNG investments as AKK nears completion",
     date: "March 1, 2026",
-    category: "Renewable And Non Renewable Energy",
+    category: "Renewable and Non-Renewable Energy",
+    categoryId: 98,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Renewable and Non-Renewable Energy"],
     tags: ["(NNPCL)", "AKK pipeline", "cng"],
     excerpt:
       "The Nigerian National Petroleum Company Limited and other industry stakeholders have intensified efforts to attract investors ahead of the expected first gas delivery from the Ajaokuta–Gwagwalada segment of the AKK Gas Pipeline by July 2026. The project, a critical component of the Ajaokuta–Kaduna–Kano pipeline network, is designed to boost domestic gas supply, support power generation, and […]",
@@ -2440,6 +2910,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria eyes $2.5b carbon credit",
     date: "March 1, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "carbon credit"],
     excerpt:
       "Vice Chancellor, University of Nigeria, Nsukka (UNN) Prof. Simon Ortuanya has disclosed that Nigeria is positioning itself for a sizable share of the $2.5 billion in carbon-credit investment by 2030, as researchers all over Africa explore the potentials and challenges of the voluntary carbon market in Nigeria and other African countries. The VC disclosed this at the […]",
@@ -2453,6 +2925,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SunTrust Bank surpasses N50bn recapitalisation target",
     date: "March 1, 2026",
     category: "Supportive Government Policies",
+    categoryId: 65,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Supportive Government Policies"],
     tags: ["recapitalisation target", "suntrust bank"],
     excerpt:
       "SunTrust Bank Nigeria Limited has exceeded the N50 billion minimum capital requirement, following the completion of its private placement exercise, TheCable understands. Sources familiar with the development said the bank’s total paid-up capital now stands at about N51.1 billion, surpassing the regulatory benchmark.This places the regional financial institution among banks that have met their regulatory […]",
@@ -2467,6 +2941,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Overland Airways to refund passengers charged VAT on 2025 tickets",
     date: "March 1, 2026",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["overland", "refund passengers", "tickets"],
     excerpt:
       "Michael Achimugu, director of public affairs and consumer protection at the Nigerian Civil Aviation Authority (NCAA), says Overland Airways will refund passengers who were wrongly charged value-added tax (VAT) on tickets purchased in 2025. On January 28, the NCAA summoned the airline following a dispute over the payment of VAT on tickets purchased before 2026.The invitation followed an X […]",
@@ -2481,6 +2957,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NAFDAC directs withdrawal of multi-dose malaria oral suspension still in circulation",
     date: "March 1, 2026",
     category: "Health",
+    categoryId: 50,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health"],
     tags: ["multi-dose malaria", "nafdac"],
     excerpt:
       "The National Agency for Food and Drug Administration and Control (NAFDAC) has directed the immediate withdrawal of multi-dose Artemether/Lumefantrine dry powder for oral suspension still in circulation across the country. The agency reiterated that the multi-dose malaria oral suspension is no longer approved for registration, importation, or use in Nigeria. The alert was issued in […]",
@@ -2495,6 +2973,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "REA to spend N100bn on hybrid mini-grids for govt agencies in 2026",
     date: "March 1, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["hybrid mini-grids", "REA"],
     excerpt:
       "The Rural Electrification Agency (REA) will spend N100 billion in 2026 to deploy hybrid mini-grids for government agencies within and outside Abuja. The Managing Director of the agency, Abba Aliyu, disclosed this while addressing newsmen on the sidelines of the 2026 budget defence session organised by the House Committee on Rural Electrification in Abuja on Friday, according to the News […]",
@@ -2509,6 +2989,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Abia Govt completes acquisition of Afro Beverages from AMCON",
     date: "March 1, 2026",
     category: "Acquisitions, Collaborations and Partnerships",
+    categoryId: 197,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Acquisitions, Collaborations and Partnerships",
+    ],
     tags: ["abia state", "Afro Beverages", "aquisition"],
     excerpt:
       "The Abia State Government has finalised the acquisition of Afro Beverages from the Asset Management Corporation of Nigeria (AMCON), marking another step in its industrial revival agenda. Governor Alex Otti disclosed the development on Friday during the February edition of his monthly media parley at the Government House in Umuahia. Afro Beverages is among five moribund industries identified […]",
@@ -2523,6 +3009,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "US-Iran conflict: What it means for Nigeria’s economy, exchange rate",
     date: "March 1, 2026",
     category: "Other Affiliate Associations",
+    categoryId: 177,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Other Affiliate Associations",
+    ],
     tags: ["nigeria exchange rate", "US-Iran", "war"],
     excerpt:
       "The United States President, Donald Trump, approved the attack on Iran in the early hours of February 28, 2028, after accusing the Middle Eastern country of posing a threat to U.S. interests. The U.S. President cited Iran’s record of bloody repression, its support for regional proxies, and allegations that it is secretly seeking to build […]",
@@ -2537,6 +3029,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Filmmakers Called To Submit Entries For 9th Edition Of KADIFF",
     date: "March 1, 2026",
     category: "Films and Theaters",
+    categoryId: 145,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Films and Theaters"],
     tags: ["film making", "KADIFF"],
     excerpt:
       "Filmmakers across Nigeria and Africa have been called submit their works for the 9th edition of the Kaduna International Film Festival (KADIFF). The festival is scheduled for August 25 to 29, 2026. The call for submission of film entries opened simultaneously with the festival’s release of a list of its 2026 zonal and international coordinators. […]",
@@ -2551,6 +3045,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BOI donates 30-room hostel block to Unizik",
     date: "March 1, 2026",
     category: "Coporate Social Responsibility",
+    categoryId: 45,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Coporate Social Responsibility"],
     tags: ["boi", "Medical Students", "unizik"],
     excerpt:
       "The Bank of Industry has formally handed over a newly built 30-room medical students’ hostel block at the Nnamdi Azikiwe University Teaching Hospital College of Health Sciences, Nnewi Campus. According to a statement released on Friday, the health facility was handed over to the Vice Chancellor of Nnamdi Azikiwe University, Awka, Anambra State, Professor Stanley […]",
@@ -2564,6 +3060,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Sell 51% stake in NNPCL refineries, PENGASSAN urges FG",
     date: "March 1, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["NNPC", "PENGASSAN"],
     excerpt:
       "The Petroleum and Natural Gas Senior Staff Association of Nigeria on Sunday renewed its call for the Federal Government to divest majority shares in the nation’s state-owned refineries, urging authorities to adopt the Nigeria LNG model by selling at least 51 per cent equity to core investors. Under this arrangement, the government would retain a […]",
@@ -2577,7 +3075,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "transport-costs-data-gaps-hindering-lassa-fever-response-ncdc",
     title: "Transport costs, data gaps hindering Lassa fever response – NCDC",
     date: "March 1, 2026",
-    category: "Incidence And Prevalence Of Disease",
+    category: "Incidence and Prevalence of Disease",
+    categoryId: 214,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Incidence and Prevalence of Disease"],
     tags: ["incedence and prevalance of diseases", "Lassa Fever", "ncdc"],
     excerpt:
       "The Nigeria Centre for Disease Control and Prevention says high specimen transportation costs, reporting inconsistencies and weak data validation systems are affecting timely detection and response to Lassa fever cases in some states. The Director-General of the NCDC, Dr Jide Idris, said this in an interview with the News Agency of Nigeria on Monday in […]",
@@ -2592,6 +3092,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ogun tests 500 residents for lead poisoning in major health audit",
     date: "March 1, 2026",
     category: "Environmental and Social Standards",
+    categoryId: 222,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Environmental and Social Standards"],
     tags: ["environment and social standards", "Health Audit", "Lead Poisoning", "ogun"],
     excerpt:
       "The Ogun State Government has commenced an independent and comprehensive health audit of residents of Ogijo in Sagamu Local Government Area, following concerns over possible lead exposure in the community. Recall that last November, the state government said that seven factories involved in lead-acid battery recycling on the Ogijo axis of the state had been […]",
@@ -2605,7 +3107,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-in-talks-with-chinese-firm-over-57bn-power-mining-investment",
     title: "FG in talks with Chinese firm over $5.7bn power, mining investment",
     date: "February 24, 2026",
-    category: "Raw Materials And Mapping",
+    category: "Raw Materials and Mapping",
+    categoryId: 23,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Raw Materials and Mapping",
+    ],
     tags: ["chinese firm", "mining investment"],
     excerpt:
       "The federal government is in talks with GCL Group, a Chinese green and low-carbon technology company, over a proposed $5.7 billion investment spanning power, mining, and industrial manufacturing. Wale Edun, minister of finance and coordinating minister of the economy, received a high-level delegation from the firm in Abuja on Monday.According to a social media post […]",
@@ -2620,6 +3128,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Turkish Reports Claim Galatasaray Owe Osimhen, Others Salaries",
     date: "February 24, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Galatasaray", "salaries"],
     excerpt:
       "Fresh reports in the Turkish media have raised questions about Galatasaray’s financial stability, with allegations surfacing that the club has fallen behind on salary payments for several key players, including Nigerian superstar Victor Osimhen. According to a report from the daily newspaper Hürriyet, some members of the squad have not received their wages for the […]",
@@ -2634,6 +3144,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria Targets $13.97bn EV Charging Station Market By 2035",
     date: "February 24, 2026",
     category: "Technical Performance",
+    categoryId: 231,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Technical Performance"],
     tags: ["EV Charging Station"],
     excerpt:
       "The Nigeria electric vehicle (EV) charging station market has been predicted to grow at a Compound Annual Growth Rate (CAGR) of 27.40 per cent during the forecast period of 2026-2035 to reach a value of USD 13.97 billion by 2035. The market was valued at USD 1.24 billion in 2025, a report shows. The gradual […]",
@@ -2648,6 +3160,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NCDMB, HAAC Energy Launch Data Analytics, Business Intelligence Training In Lagos",
     date: "February 24, 2026",
     category: "Gas and Infrastructure",
+    categoryId: 97,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Gas and Infrastructure"],
     tags: [],
     excerpt:
       "The Nigerian Content Development and Monitoring Board (NCDMB), in collaboration with HAAC Energy Ltd, has launched a five-day training on Data Analytics and Business Intelligence in Lagos State. The program, scheduled to hold from February 23 to February 27, 2026, will host 50 participants. The training aimed to equip participants with practical skills in data […]",
@@ -2662,6 +3176,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Spotify: Nigerians streamed 1.4 million music hours in 2025, podcast hits 59 billion",
     date: "February 24, 2026",
     category: "Music",
+    categoryId: 75,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Music"],
     tags: ["Spotify", "streamed music hours"],
     excerpt:
       "Spotify reports that Nigerian users streamed over 1.4 million hours of music in 2025, while total podcast consumption on the platform since launch has exceeded 59 billion hours. This is according to a statement released by Spotify to the News Agency of Nigeria on Monday in Lagos. The figures reflect the rapid growth of streaming […]",
@@ -2676,6 +3192,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos raises BRT and BRI bus fares by 13% starting March 2",
     date: "February 24, 2026",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: ["BRT and BRI", "lagos fares"],
     excerpt:
       "The Lagos State Government has approved a 13% increase in fares for Bus Rapid Transit (BRT) and standard Bus Reform Initiative (BRI) services, effective Monday, March 2, 2026. The announcement was made in a statement by the Lagos Metropolitan Area Transport Authority (LAMATA) via its official X account. LAMATA stated that the fare adjustment is […]",
@@ -2690,6 +3208,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "GenCos dispute N2.8trn debt settlement approved by presidency",
     date: "February 24, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["debt", "decentralized power generation", "gencos"],
     excerpt:
       "The Association of Power Generation Companies (APGC) has dismissed reports claiming that N2.8 trillion represents a newly verified and final settlement of legacy debts owed to electricity generation companies, describing the assertion as inaccurate and misleading. In a statement titled “APGC Position on Misleading Reports Regarding GenCos’ Debt Reconciliation,” issued Monday in Abuja, the association’s Chief Executiv",
@@ -2704,6 +3224,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "New PenCom regulation could unlock N1.6 trillion for Nigerian Equities",
     date: "February 24, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["Nigerian Equities", "PenCom regulation", "relative strenght index"],
     excerpt:
       "Earlier in the month, the National Pension Commission (PenCom) released a revised regulation on the investment of pension assets, allowing Pension Fund Administrators (PFAs) to increase their allocation to equities across four RSA fund categories. While the adjustment may appear technical at first glance, its implications for the Nigerian capital market are significant. At its core, […]",
@@ -2718,6 +3244,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "LOTUS Bank, REA collaborate on N100bn renewable energy financing",
     date: "February 24, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "lotus bank", "renewable energy financing"],
     excerpt:
       "One of Nigeria’s non-interest banking service providers, LOTUS Bank Limited, has entered into a strategic partnership with the Rural Electrification Agency, aimed at expanding access to renewable energy solutions across underserved communities. According to a statement on Monday, LOTUS Bank signed a Memorandum of Understanding with REA in Abuja, under which it will provide accessible […]",
@@ -2731,7 +3259,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "cbn-pushes-cross-border-payment-reforms-for-msmes-growth",
     title: "CBN pushes cross-border payment reforms for MSMEs growth",
     date: "February 24, 2026",
-    category: "Small And Medium Enterprises Sme",
+    category: "Small and Medium Enterprises (SME)",
+    categoryId: 22,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Small and Medium Enterprises (SME)",
+    ],
     tags: ["CBN", "Cross-Border Payment", "MSMEs Growth"],
     excerpt:
       "As the country deepens financial reforms, the Central Bank of Nigeria is championing cross-border payment modernisation to unlock growth, competitiveness, and inclusion for Micro, Small, and Medium Enterprises nationwide, ARINZE NWAFOR writes The Governor of the Central Bank of Nigeria, Olayemi Cardoso, has advocated coordinated reforms in cross-border digital payments as a catalyst for inclusive growth, stronger […]",
@@ -2746,6 +3280,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Exploring investment opportunities in aviation industry",
     date: "February 24, 2026",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["aviation", "Investment Opportunities"],
     excerpt:
       "The aviation sector is widely regarded as a capital-intensive industry, often deterring financially capable business owners from exploring opportunities due to its high costs and the specialised expertise it seems to demand. Yet, beneath the perception that aviation is reserved solely for pilots, engineers, and technical professionals lies a vast ecosystem of business opportunities where […]",
@@ -2760,6 +3296,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Govt secures $700,000 grant to electrify schools, hospitals",
     date: "February 24, 2026",
     category: "Grants",
+    categoryId: 36,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Grants"],
     tags: ["grant", "hospitals", "Nigerian schools"],
     excerpt:
       "The Rural Electrification Agency has secured a $700,000 grant from the ECOWAS Commission to electrify 15 public health and education institutions across the country using solar photovoltaic systems. The funding support followed the signing of a Memorandum of Understanding between the agency and the ECOWAS Commission on Monday, under the Regional Off-Grid Electricity Access Project. […]",
@@ -2774,6 +3312,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NAFDAC raids Trade Fair Complex in Lagos, uncovers N3bn fake cosmetics",
     date: "February 24, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["nafdac"],
     excerpt:
       "The National Agency for Food and Drug Administration and Control (NAFDAC) has uncovered counterfeit and unregistered cosmetic products valued at more than N3 billion at APT Trade Fair Complex in Lagos State. This is according to an enforcement update from the agency following a raid. The discovery highlights ongoing regulatory efforts to curb the circulation of unsafe […]",
@@ -2788,6 +3328,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SEC says market capitalisation rose by 125% to N123trn in two years",
     date: "February 24, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["financial health performance", "market capitalisation", "sec"],
     excerpt:
       "The Securities and Exchange Commission (SEC) says Nigeria’s capital market has recorded a 125 percent growth in market capitalisation since April 2024, rising from about N55 trillion to over N123.93 trillion. Emomotimi Agama, the director-general of the SEC, announced the development while addressing members of the capital market working group on market liquidity in Lagos. […]",
@@ -2802,6 +3348,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria wins $6.2m arbitration against UK tech firm in e-procurement contract dispute",
     date: "February 24, 2026",
     category: "Procurement",
+    categoryId: 120,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Procurement"],
     tags: ["abitration", "e-procurement contract"],
     excerpt:
       "Nigeria has secured a $6.2 million arbitration victory against a United Kingdom-based technology company over a disputed national e-procurement contract. The dispute involved European Dynamics UK Ltd, which had filed claims against the Bureau of Public Procurement (BPP) over an electronic government procurement (e-GP) system project.In a statement issued on Sunday, Kamarudeen Ogundele, special adviser […]",
@@ -2815,7 +3363,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "federal-mortgage-bank-targets-n750bn-recapitalisation-to-boost-housing-finance",
     title: "Federal Mortgage Bank targets N750bn recapitalisation to boost housing finance",
     date: "February 19, 2026",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["Federal Mortgage Bank", "housikng finance"],
     excerpt:
       "The Federal Mortgage Bank of Nigeria (FMBN) is aiming to strengthen its capital base to N750 billion as part of efforts to expand housing finance in the country. Managing Director and Chief Executive Officer of FMBN, Shehu Osidi, disclosed this while addressing journalists on Wednesday during an event marking his two years in office. Osidi […]",
@@ -2830,6 +3384,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "AI Ventures Accelerator offers $10,000 for women-led African startups",
     date: "February 19, 2026",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["AI Ventures Accelerator", "women-led African startups"],
     excerpt:
       "African startups led by young women have been invited to apply for the AI Ventures Accelerator, a programme where selected teams would receive $10,000 in equity-free seed funding. The initiative is run by Technovation and Generation Unlimited and also offers mentorship support. The accelerator aims to support young female innovators with technology-driven solutions while strengthening entrepreneurship and AI skills i",
@@ -2844,6 +3400,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG to allocate N800bn credit to agro-processing, renewable energy sectors",
     date: "February 19, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["AfCFTA", "credit to agro-processing", "renewable energy sectors"],
     excerpt:
       "The federal government says it plans to allocate N800 billion to the agro-processing and renewable energy sectors under the national industrial policy 2025. The government announced the plan in the ‘national industrial policy’ document, launched by the ministry of trade, industry, and investment, on Tuesday. According to the report, the government intends to set aside 3 […]",
@@ -2858,6 +3416,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Gunmen invade palace, kill monarch in Ondo",
     date: "February 19, 2026",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["interconntedness", "monarch in Ondo"],
     excerpt:
       "Gunmen have killed Kehinde Jacob Faledon, the traditional ruler of Agamo community, in Akure north LGA of Ondo state. The assailants invaded the monarch’s palace on Wednesday night and forcibly took him away. Minutes later, Faledon was found with gunshot injuries at a location very close to his residence. Jimoh Abayomi, the Ondo police spokesperson, […]",
@@ -2870,7 +3430,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-seals-plateau-mining-site-after-death-of-37-from-toxic-gas-exposure",
     title: "FG seals Plateau mining site after death of 37 from toxic gas exposure",
     date: "February 19, 2026",
-    category: "Raw Materials And Mapping",
+    category: "Raw Materials and Mapping",
+    categoryId: 23,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Raw Materials and Mapping",
+    ],
     tags: ["eod", "Plateau mining site", "toxic gas exposure"],
     excerpt:
       "The federal government has sealed a mining site in Zurak, Wase LGA of Plateau after a tragic gas poisoning incident that claimed at least 37 lives and hospitalised 26 on Wednesday. Dele Alake, minister of solid minerals development, ordered the immediate closure of areas under Mining Licence 11810, operated by Solid Unit Nigeria Limited and owned by […]",
@@ -2885,6 +3451,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria Cricket Federation Unveils Plans For 7th National U-17 Championship",
     date: "February 19, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["7th National U-17 Championship", "Nigeria Cricket Federation"],
     excerpt:
       "The Nigeria Cricket Federation (NCF) is buzzing with anticipation as it announces the imminent seventh edition of its highly successful National Under-17 Cricket Championship. This flagship tournament, a cornerstone of youth development within Nigerian cricket, is set to kick off with intense zonal qualification rounds across the nation, promising to unearth the next generation of […]",
@@ -2899,6 +3467,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NARTO, PiCNG partner to cut transportation costs",
     date: "February 19, 2026",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["cng", "narto", "PiCNG", "transport costs"],
     excerpt:
       "The Nigerian Association of Road Transport Owners has said its partnership with the Presidential Initiative on Compressed Natural Gas has helped reduce transportation costs by over 30 per cent while expanding its fleet and strengthening mass transit operations across the country. Speaking at the association’s 2026 Annual General Meeting in Abuja, the National President, Yusuf […]",
@@ -2913,6 +3483,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Unity–Providus merger crosses N200bn recapitalisation benchmark",
     date: "February 19, 2026",
     category: "Acquisitions, Collaborations and Partnerships",
+    categoryId: 197,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Acquisitions, Collaborations and Partnerships",
+    ],
     tags: ["capital benchmrk", "Unity–Providus"],
     excerpt:
       "The proposed merger and business combination between Unity Bank Plc and Providus Bank Limited has surpassed the N200bn capital threshold required under the Central Bank of Nigeria’s recapitalisation framework for a national banking licence. This was disclosed in a statement on Wednesday from Unity Bank, which also dismissed claims that the merger had stalled. The […]",
@@ -2926,7 +3502,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigerias-wbank-ida-debt-hits-187bn",
     title: "Nigeria’s W’Bank IDA debt hits $18.7bn",
     date: "February 19, 2026",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["IDA Debt", "nigeria", "World Bank"],
     excerpt:
       "Nigeria’s debt to the World Bank’s concessional lending arm, the International Development Association, surged by $1.9bn in just one year to reach $18.7bn as of December 31, 2025, new financial data released by the institution show. According to the IDA Management’s Discussion and Analysis for the period ended December 31, 2025, Nigeria’s exposure to the […]",
@@ -2941,6 +3523,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Only high court Letters of Administration are valid for accessing pension benefits, says PTAD",
     date: "February 19, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["Notary Public", "pension benefits", "ptad"],
     excerpt:
       "The Pension Transitional Arrangement Directorate (PTAD) has clarified that only valid Letters of Administration issued by a State High Court or the FCT High Court will be accepted for processing and accessing a deceased pensioner’s benefits. The agency said Letters of Administration granted by Magistrate or Customary Courts are not admissible, stressing that the issuance […]",
@@ -2955,6 +3539,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Rivers United Ranked 22nd, Enyimba 42nd In African Club Standings",
     date: "February 19, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["African Club", "Enyimba", "rivers united"],
     excerpt:
       "Nigerian clubs Rivers United and Enyimba FC have been ranked 22nd and 42nd respectively in the latest Confederation of African Football (CAF) club standings. These rankings highlight their status not only as African powerhouses but also their crucial role in maintaining Nigeria’s continental relevance. Looking ahead, the pressure intensifies. Should Rivers United qualify for continental […]",
@@ -2969,6 +3555,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Eagles Coach Quits Over Unpaid Wages",
     date: "February 19, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["super eagles coach", "Unpaid Wages"],
     excerpt:
       "Tom Saintfiet has resigned as head coach of the Mali national football team, the Eagles, following a dispute over delayed salary payments. The Belgian tactician reportedly ended his tenure with the Malian side after concerns regarding outstanding remuneration could not be resolved. Saintfiet had led Mali to the quarter-finals of the 2025 Africa Cup of Nations in […]",
@@ -2982,6 +3570,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "12,860 candidates register for UTME in Jigawa",
     date: "February 19, 2026",
     category: "Gross and Net Enrolment Rates",
+    categoryId: 238,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Gross and Net Enrolment Rates"],
     tags: ["jigawa", "utme reg"],
     excerpt:
       "The Joint Admissions and Matriculation Board has announced that 12,860 candidates have registered for the Unified Tertiary Matriculation Examination in Jigawa state. This was contained in a statement made available to journalists on Wednesday in Dutse, the Jigawa state capital, by JAMB Public Relations Officer in the state, Mukarram Bello Adamu. “The candidates registered in […]",
@@ -2994,7 +3584,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ncdmb-insists-on-1-ncdf-remittance-enforces-compliance-certificate",
     title: "NCDMB insists on 1% NCDF remittance, enforces compliance certificate",
     date: "February 19, 2026",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["NCDMB"],
     excerpt:
       "The Nigerian Content Development and Monitoring Board (NCDMB) has renewed its directive to operators, contractors, and service providers in Nigeria’s upstream oil and gas sector to strictly comply with the mandatory one per cent deduction for the Nigerian Content Development Fund (NCDF) on all qualifying contracts. The reminder was contained in a statement issued on […]",
@@ -3009,6 +3605,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Water sustainability, debt concessions… five takeaways from the 39th AU summit",
     date: "February 18, 2026",
     category: "African Union (AU)",
+    categoryId: 152,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "African Union (AU)",
+    ],
     tags: ["au submit", "debt concessions", "Water sustainability"],
     excerpt:
       "The 39th African Union (AU) summit of heads of state concluded in Addis Ababa, Ethiopia, on Sunday. Global leaders, including Antonio Guterres, United Nations (UN) secretary general, and Italian Prime Minister Giorgio Meloni, were in attendance, with topics of debt cancellation and financial justice for African countries echoing in their speeches. African leaders also united […]",
@@ -3022,7 +3624,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "data-privacy-issues-threaten-nigerias-financial-inclusion",
     title: "Data privacy issues threaten Nigeria’s financial inclusion",
     date: "February 18, 2026",
-    category: "Investment In Sustainable Technologies",
+    category: "Investment in Sustainable Technologies",
+    categoryId: 208,
+    categoryPath: [
+      "TECHNOLOGY & INNOVATION",
+      "Technology",
+      "Investment in Sustainable Technologies",
+    ],
     tags: ["data privacy", "financial inclusion", "sustainable technologies"],
     excerpt:
       "Growing concerns over data privacy and security are emerging as a significant barrier to Nigeria’s financial inclusion drive, despite years of investment in connectivity and digital infrastructure. While policymakers and industry stakeholders have long focused on expanding broadband access, mobile penetration, and fintech innovation, experts now argue that trust — particularly around how personal data […]",
@@ -3037,6 +3645,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FAAN bans cash transactions from February 29",
     date: "February 18, 2026",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["aviation", "Cash Transactions", "faan"],
     excerpt:
       "The Federal Airports Authority of Nigeria has announced the cessation of all cash transactions across its operations nationwide, in compliance with the Federal Government’s cashless policy. In an internal memo signed by the Managing Director and Chief Executive, Mrs Olubunmi Kuku, and obtained by our correspondent on Tuesday, the agency directed that all cash collections […]",
@@ -3049,7 +3659,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "wbank-links-job-creation-to-poverty-reduction",
     title: "W’Bank links job creation to poverty reduction",
     date: "February 18, 2026",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["job creation", "Poverty Reduction", "World Bank"],
     excerpt:
       "The World Bank has emphasised that creating jobs is central to reducing poverty, fostering stability, and generating local economic opportunities, even as countries navigate global economic turbulence. In a recent blog, the Bank highlighted that 2025 posed multiple challenges, from ongoing conflicts and economic uncertainty to extreme weather events, but developing economies demonstrated resilience beyond […]",
@@ -3062,7 +3678,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigeria-loses-n176tn-after-missing-opec-quota",
     title: "Nigeria loses N1.76tn after missing OPEC quota",
     date: "February 18, 2026",
-    category: "Organization Of The Petroleum Exporting Countries Opec",
+    category: "Organization of the Petroleum Exporting Countries (OPEC)",
+    categoryId: 167,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Organization of the Petroleum Exporting Countries (OPEC)",
+    ],
     tags: ["nigeria OPEC Oil Quota"],
     excerpt:
       "Nigeria’s oil sector lost an estimated N1.76tn in potential crude oil revenue due to its failure to meet the production quota set by the Organisation of the Petroleum Exporting Countries from January 2025 to January 2026. Data from the Nigerian Upstream Petroleum Regulatory Commission revealed that the country’s crude oil production fell below the OPEC-set […]",
@@ -3076,6 +3698,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Bank recapitalisation key to closing $120bn trade finance gap – Kale",
     date: "February 18, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["Africa's Trade Finance Gap", "Bank Recapitalisation"],
     excerpt:
       "The Group Chief Economist and Managing Director of Research and Trade Intelligence at Afreximbank, Dr Yemi Kale, has said that the ongoing bank recapitalisation exercise is a critical engine required to bridge Africa’s staggering $80 to $120bn annual trade finance gap. Kale made this observation on Tuesday at the Ecobank Customer Forum. Kale, who was […]",
@@ -3090,6 +3714,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG, Bank of Agriculture distribute 2,000 tractors to mechanised farmers",
     date: "February 18, 2026",
     category: "Mechanization Equipment",
+    categoryId: 205,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Mechanization Equipment"],
     tags: ["bank of agriculture", "fg", "mechanised farmering"],
     excerpt:
       "The Federal Government (FG) and the Bank of Agriculture have distributed over 2,000 tractors and heavy-duty equipment to mechanised farmers to boost production and strengthen national food security. The development was confirmed by the Minister of Agriculture and Food Security, Sen. Abubakar Kyari, and the Managing Director of the Bank of Agriculture, Mr Ayodeji Sontinrin, […]",
@@ -3104,6 +3730,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG operationalises Medipool as National GPO, to reduce cost of medicines",
     date: "February 18, 2026",
     category: "Access to Essential Medicine",
+    categoryId: 217,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Access to Essential Medicine"],
     tags: ["cost of medication", "Medipool"],
     excerpt:
       "The Federal Government of Nigeria has signed a Memorandum of Understanding to operationalise Medipool as the country’s National Group Purchasing Organisation (GPO), which will coordinate bulk purchases of medicines to lower costs. This is according to a media brief issued by the Federal Ministry of Health and Social Welfare on 16 February 2026. This is […]",
@@ -3117,7 +3745,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "pension-funds-at-n20trn-could-transform-nigerias-housing-market-experts",
     title: "Pension funds at N20trn could transform Nigeria’s housing market – Experts",
     date: "February 18, 2026",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["housing market", "Pension funds"],
     excerpt:
       "Nigeria’s pension assets, now exceeding N20 trillion, could play a transformative role in addressing the country’s estimated 20 to 28 million housing deficit, according to industry experts. Data from the National Pension Commission (PenCom) show that total net pension assets crossed the N20 trillion mark as of late 2025. Analysts argue that a carefully structured […]",
@@ -3132,6 +3766,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Abia launches learner ID, EMIS to track students and improve education data",
     date: "February 18, 2026",
     category: "Gross and Net Enrolment Rates",
+    categoryId: 238,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Gross and Net Enrolment Rates"],
     tags: [
       "data bank",
       "gross and net enrolment rates",
@@ -3152,6 +3788,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG prioritises revenue over efficiency in asset sales – Analysts",
     date: "February 18, 2026",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["economic volatilities", "revenue eficiency", "sset sales"],
     excerpt:
       "Analysts have expressed concern over the Federal Government’s plan to sell selected state-owned assets and enterprises to private investors in 2026, warning that the initiative appears to prioritise revenue generation over structural reform. The concerns follow the government’s recent announcement that it would begin divesting from certain public assets next year as part of efforts to deepen […]",
@@ -3166,6 +3804,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "MTN reaches agreement to acquire IHS Towers in $6.2 billion deal",
     date: "February 18, 2026",
     category: "Acquisitions, Collaborations and Partnerships",
+    categoryId: 197,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Acquisitions, Collaborations and Partnerships",
+    ],
     tags: ["aqusisation", "collaborations and partnerships", "IHS Towers", "MTN"],
     excerpt:
       "MTN Group has reached an agreement to acquire IHS Towers, one of the world’s largest independent owners and operators of shared telecom infrastructure, in an all-cash transaction that values the company at an enterprise value of approximately $6.2 billion. The deal follows weeks of negotiations between both parties, which had been publicly reported earlier this month. […]",
@@ -3180,6 +3824,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Why is DMO hoarding Public Debt data?",
     date: "February 18, 2026",
     category: "Wealth Creation",
+    categoryId: 62,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation"],
     tags: ["Debt data", "debt financing", "dmo"],
     excerpt:
       "“Why are they hoarding data?” is not a question any debt management office should invite, yet that is precisely where we are as Nigeria waits for public debt figures that should already be in circulation. The Debt Management Office has not released Nigeria’s public debt data as of September 2025, even though, by its established publication […]",
@@ -3193,6 +3839,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "World Cup Eligibility Saga: No Update From FIFA, Says NFF",
     date: "February 18, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["NFF", "World Cup Eligibility"],
     excerpt:
       "The eagerly anticipated decision in the eligibility dispute between the Nigeria Football Federation (NFF) and the Congolese Football Association may not be imminent, as the NFF has stated it has received no update on the matter from FIFA, world football’s governing body, to date. Speculation was rife on social media on Monday night and into […]",
@@ -3207,6 +3855,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Health ministry orders immediate retirement of longstanding directors",
     date: "February 18, 2026",
     category: "Health and Education Indicators",
+    categoryId: 123,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Health and Education Indicators",
+    ],
     tags: ["Directors in health ministry", "health and education indicators"],
     excerpt:
       "The Federal Ministry of Health has ordered an immediate disengagement of Directors who have spent at least eight years in the directorate cadre with immediate effect. The directors affected include those in the ministry, federal hospitals, agencies, among others, according to a memo sighted by our correspondent in Abuja on Tuesday morning. On Monday, The […]",
@@ -3220,7 +3874,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "stanbic-ibtc-backs-inclusive-housing-through-policy-alignment",
     title: "Stanbic IBTC backs inclusive housing through policy alignment",
     date: "February 17, 2026",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["housing and developmwnt", "Inclusive Housing", "stanbic ibtc"],
     excerpt:
       "Stanbic IBTC Bank has reinforced its commitment to advancing inclusive housing by advocating stronger alignment between policy formulation, capital mobilisation, and on-ground execution. This call was made at the 2026 Wemabod Real Estate Outlook Conference, themed ‘Unlocking Land and Infrastructure for Inclusive Housing’. The lender emphasised that delivering dignified and sustainable housing requires more than […]",
@@ -3235,6 +3895,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos lists N244.8bn dual bonds on NGX",
     date: "February 17, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["dual bonds", "financial health performance", "LAGOS", "NGX", "relative stength index"],
     excerpt:
       "The Lagos State Government has formally listed two massive bonds totalling N244.815 bn on the Nigerian Exchange Limited. This was disclosed in the weekly market report of the NGX on Friday. The listings fall under the state’s ambitious N1tn Debt and Hybrid Instruments Issuance Programme. Leading the charge in sustainable finance, the Lagos State Government […]",
@@ -3248,6 +3914,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FULL LIST: FA Cup winners since 2015",
     date: "February 17, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["2015 til date", "FA Cup Winners"],
     excerpt:
       "The 2025‑26 Emirates FA Cup is building momentum as clubs across English football battle for a place in the later rounds of the world’s oldest domestic cup competition. This season marks the 145th edition of the FA Cup, with the final provisionally scheduled for 16 May 2026 at Wembley Stadium in London. The winners will […]",
@@ -3262,6 +3930,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "ARCON condemns Ondo, Enugu directives requiring review of political, gaming ads before exposure",
     date: "February 17, 2026",
     category: "Mass Media",
+    categoryId: 151,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Mass Media"],
     tags: ["arcon", "gaming ads", "review of political"],
     excerpt:
       "The Advertising Regulatory Council of Nigeria (ARCON) has condemned the directives issued by the Ondo and Enugu signage and advertising agencies requiring review of certain categories of advertisements. In a statement dated February 13, Olalekan Fadolapo, director-general of ARCON, said the council’s attention was drawn to the directives mandating practitioners, advertisers, and agencies involved in out-of-home […]",
@@ -3277,6 +3947,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "United Nigeria withdraws two aircraft over bird strikes, says flights will be disrupted",
     date: "February 17, 2026",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["aircraft", "bird strikes", "flights", "united nigeria"],
     excerpt:
       "United Nigeria Airlines says flights across its network will be disrupted after two of its aircraft were withdrawn from service following bird strikes. In a statement on Sunday, the airline said it recorded its second bird strike in less than 24 hours, marking the fourth incident since January 2026.According to the statement, the latest strike […]",
@@ -3291,6 +3963,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "No Regrets Over Nwaneri Loan To Marseille – Arteta",
     date: "February 17, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Arteta", "Nwaneri Loan"],
     excerpt:
       "Arsenal manager Mikel Arteta has stated he has no regrets about sending Ethan Nwaneri on loan to Marseille during the January transfer window. Nwaneri, 18, joined Marseille on loan until the end of the season last month, having struggled for regular playing time with Arteta’s title challengers. With injuries to Mikel Merino and Kai Havertz, […]",
@@ -3305,6 +3979,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos Marathon: Medal Handout Halted Amid Safety Fears After Crowd Surge – Organisers",
     date: "February 17, 2026",
     category: "Amateur Sports",
+    categoryId: 248,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Amateur Sports"],
     tags: ["Lagos Marathon", "Safety Fears"],
     excerpt:
       "Organisers of the Access Bank Lagos City Marathon, Nilayo Sports Management Limited, have expressed regret and outlined plans for the re-distribution of medals following a “dangerous crowd surge” at the 10KM medal collection point on Saturday, February 14th. The incident led to the temporary suspension of medal issuance due to significant safety concerns. In a […]",
@@ -3319,6 +3995,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NLNG Crowned Champions At Milestone 20th Nigeria Oil and Gas Industry Games",
     date: "February 17, 2026",
     category: "Amateur Sports",
+    categoryId: 248,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Amateur Sports"],
     tags: ["amature sports", "ExxonMobil", "nlng", "NMDPRA", "Shell"],
     excerpt:
       "The 20th biennial Nigeria Oil and Gas Industry Games (NOGIG) ended in spectacular fashion, with Nigeria Liquefied Natural Gas (NLNG) emerging as overall champions. NLNG dominated the medal table, securing an impressive haul of 52 medals, comprising 20 gold, 16 silver, and 16 bronze. Nigerian National Petroleum Company (NNPC) claimed a commendable second place with […]",
@@ -3333,6 +4011,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Katsina Board Boss Disburses N18m To 727 Beneficiaries In Kaita",
     date: "February 16, 2026",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["Kaita", "kastina education board", "nut"],
     excerpt:
       "The executive chairman of the Katsina State Universal Basic Education Board (SUBEB), Dr Kabir Gafia, has disbursed N18 million to 727 beneficiaries in Kaita local government area. The event, sponsored by the Kabir Gafia Foundation, was held at the Kaita Local Government Secretariat and drew community leaders, party stakeholders, women and youth groups and beneficiaries […]",
@@ -3347,6 +4027,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "COAS Reaffirms Resolve To End Contemporary Security Challenges",
     date: "February 16, 2026",
     category: "Security Agencies",
+    categoryId: 48,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Security Agencies"],
     tags: ["COAS", "security alerts", "Security Challenges"],
     excerpt:
       "The Chief of Army Staff (COAS), Lieutenant General Waidi Shaibu, has reaffirmed Nigerian Army’s resolve to collaboratively work with sister agencies to address contemporary security agencies across the country and restore lasting peace. He stated this at the Army Headquarters Departments and Commands West African Social Activities (WASA) 2025, held at the Army Headquarters Garrison […]",
@@ -3361,6 +4043,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote Salt rewards 50 outstanding customers with trucks, cash gifts",
     date: "February 16, 2026",
     category: "Philanthropy",
+    categoryId: 44,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Philanthropy"],
     tags: ["cash gifts", "customers with trucks", "Dangote Salt"],
     excerpt:
       "NASCON Allied Industries Plc (DangoteSalt)honoured 50 top customers with trucks and cash gifts worth billions of naira at its 2025 Customer Awards Night in Abuja, celebrating loyalty and longstanding commitment to the Dangote Seasoning and Refined Salt brands. Speaking at the event, Aliko Dangote and Board Chairman Olakunle Alake emphasised that customer service is a core strategic asset, highlighting the vital […]",
@@ -3375,6 +4059,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Presidential Committee denies 25% building materials tax under Nigeria Tax Act",
     date: "February 16, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["building materials tax", "Nigeria Tax Act"],
     excerpt:
       "The Presidential Fiscal Policy and Tax Reforms Committee has dismissed claims that the Nigeria Tax Act 2025 introduces a 25 per cent tax on building materials, construction funds, and related bank transactions. The clarification was issued in a statement released Sunday and shared by the committee’s chairman, Taiwo Oyedele, in response to a viral video […]",
@@ -3390,6 +4076,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "NSIA’s healthcare journey from vision to measurable impact – Transforming healthcare in Nigeria",
     date: "February 16, 2026",
     category: "Health Care Financing Mechanism",
+    categoryId: 221,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Health Care Financing Mechanism"],
     tags: ["health care financing mechnism", "measurable impact", "NSIA’s healthcare"],
     excerpt:
       "NSIA, through its healthcare subsidiary MedServe, has built and operationalised world-class oncology and diagnostic infrastructure — including the MLCC in Lagos and diagnostic centres in Kano and Umuahia — delivering over 25,000 radiotherapy sessions, 10,000 chemotherapy treatments, and 410,000+ diagnostic services, while saving Nigeria an estimated US$200 million in prevented medical tourism. To build a sustainable ",
@@ -3404,6 +4092,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Survey: 65% of Nigerians want lower rates as MPC convenes next week",
     date: "February 16, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["lower rates", "mpc"],
     excerpt:
       "As the Monetary Policy Committee (MPC) of the Central Bank of Nigeria (CBN) prepares to meet next week, new survey data show that a majority of Nigerians favour lower lending rates, even as concerns about inflation remain widespread. This was according to the latest CBN’s January 2026 Household Expectations Survey. The findings come ahead of […]",
@@ -3419,6 +4109,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "ECOWAS-based investors contribute only 0.01% to Nigeria’s $16.78 billion foreign capital",
     date: "February 16, 2026",
     category: "Economic Countries of West African States (ECOWAS)",
+    categoryId: 55,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Economic Countries of West African States (ECOWAS)",
+    ],
     tags: ["ecowas", "foreign capital", "investment"],
     excerpt:
       "Nigeria attracted a total of $16.78 billion in capital importation in the first nine months of 2025, but investors from other ECOWAS countries accounted for only $2.16 million, representing a negligible 0.01% of total inflows, according to the latest capital importation data released by the National Bureau of Statistics (NBS). A breakdown of the NBS […]",
@@ -3433,6 +4129,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Telecom FDI inflows rebound to $208.51 million in Q3 2025",
     date: "February 16, 2026",
     category: "Foreign Direct Investments (FDI)",
+    categoryId: 139,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Foreign Direct Investments (FDI)",
+    ],
     tags: ["FDI", "telecom inflows"],
     excerpt:
       "Foreign direct investment (FDI) into Nigeria’s telecommunications sector rebounded sharply in the third quarter of 2025, according to the latest capital importation data released by the National Bureau of Statistics (NBS). The data shows that capital importation into telecoms rose to $208.51 million in Q3 2025, a dramatic increase from $14.74 million recorded in Q3 […]",
@@ -3447,6 +4149,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Oil wells: No propaganda can overturn A’Ibom’s ownership rights — Eno",
     date: "February 16, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["Oil Wells", "upstream sector"],
     excerpt:
       "Akwa Ibom State Governor, Umo Eno, has reassured citizens that no amount of propaganda or sentiment can overturn the state’s rights to the oil wells as established by two valid Supreme Court judgments. Cross River State is contesting the ownership of the oil wells with Akwa Ibom State due to a long-standing revenue dispute stemming […]",
@@ -3461,6 +4165,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "‘Ikosi-Ketu market generates 30 tonnes of waste daily’",
     date: "February 16, 2026",
     category: "Environmental and Social Standards",
+    categoryId: 222,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Environmental and Social Standards"],
     tags: ["Biodigester Model", "Waste Management"],
     excerpt:
       "The Managing Director and Chief Executive Officer of the Lagos Waste Management Authority, Dr Muyiwa Gbadegesin, has stated that the Ikosi-Ketu market generates an average of 30 tonnes of waste daily, approximately 90 per cent of which is organic, making it suitable for biodigestion. This follows his announcement that the Lagos State Government intends to […]",
@@ -3475,6 +4181,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Capital importation jumps by 380% to $6bn in Q3 2025 – NBS",
     date: "February 16, 2026",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["capital imports", "trade volumes"],
     excerpt:
       "Nigeria’s capital importation surged to $6.01bn in the third quarter of 2025, representing a 380.16 per cent increase compared to $1.25bn recorded in the corresponding period of 2024, the National Bureau of Statistics has said. The NBS disclosed this in its latest Nigeria Capital Importation (Q3 2025) report published on its website on Saturday. The […]",
@@ -3489,6 +4197,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote overtakes importers, captures 62% domestic petrol market",
     date: "February 16, 2026",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["Dangote Refinery", "downstream sector", "petrol pricing"],
     excerpt:
       "In a major shift for Nigeria’s downstream petroleum sector, the Dangote Petroleum Refinery has outpaced importers to supply approximately 62 per cent of the nation’s Premium Motor Spirit (petrol) in January 2026. This development, revealed in the latest fact sheet from the Nigerian Midstream and Downstream Petroleum Regulatory Authority, signals a growing reliance on domestic […]",
@@ -3502,7 +4212,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-deploys-n117bn-to-power-msme-growth",
     title: "FG deploys N11.7bn to power MSME growth",
     date: "February 16, 2026",
-    category: "Small And Medium Enterprises Sme",
+    category: "Small and Medium Enterprises (SME)",
+    categoryId: 22,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Small and Medium Enterprises (SME)",
+    ],
     tags: ["investment", "MSME growth"],
     excerpt:
       "The Federal Government will invest up to N11.76bn to drive the growth of Micro, Small, and Medium Enterprises and industrial revitalisation in 2026, as part of the capital projects budgeted for the Small and Medium Enterprises Development Agency of Nigeria in the 2026 Appropriations Bill. An analysis of the capital allocation showed that projects directly […]",
@@ -3516,6 +4232,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BOI, MTN Foundation unveil N1bn fund for women entrepreneurs",
     date: "February 16, 2026",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["boi", "gender equality", "MTN", "women entrepreneurs fund"],
     excerpt:
       "The Bank of Industry and the MTN Foundation have signed a memorandum of understanding to establish a N1bn Matching Fund to expand access to finance and capacity building for women-led micro enterprises across the country. The institutions said the fund, under the Y’ellopreneur 3.0 programme, would operate as a pilot to reach women running viable […]",
@@ -3530,6 +4248,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PenCom equity cap revision to unlock nearly N1tn",
     date: "February 16, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["EQUITIES", "Equities cap", "PenCom"],
     excerpt:
       "The National Pension Commission has revised the investment limits upward for ordinary shares across RSA Funds I, II, III and VI-Active, a move that could unlock nearly N1tn in potential flows into Nigeria’s equities market, according to a new thematic report by CardinalStone Research. According to the report, the regulator stated that the decision reflects […]",
@@ -3543,7 +4263,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ilo-waemu-deepen-ties-to-tackle-youth-unemployment",
     title: "ILO, WAEMU deepen ties to tackle youth unemployment",
     date: "February 11, 2026",
-    category: "International Labour Organization Ilo",
+    category: "International Labour Organization (ILO)",
+    categoryId: 173,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "International Labour Organization (ILO)",
+    ],
     tags: [".ILO & WAEMU"],
     excerpt:
       "The International Labour Organisation and the West African Economic and Monetary Union reaffirmed plans to deepen cooperation aimed at expanding decent and productive employment for young people across the WAEMU region, where rapid population growth continues to outpace job creation. According to a blog post on its website, the commitment followed a recent high-level meeting […]",
@@ -3558,6 +4284,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Panama opens permanent residence pathway for long-term international students",
     date: "February 11, 2026",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["international students", "panama"],
     excerpt:
       "Panama has introduced a landmark immigration reform that, for the first time, creates a permanent residence pathway for international students who have spent an extended period studying in the country. The policy shift marks a significant departure from Panama’s long-standing approach to student migration, which previously offered no transition from temporary study permits to permanent […]",
@@ -3572,6 +4304,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote Refinery cuts petrol price to N774 per litre",
     date: "February 11, 2026",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["Dangote Refinery", "down stream sector", "petrol price"],
     excerpt:
       "Dangote Petroleum Refinery has reduced the ex-gantry price of its premium motor spirit (PMS), popularly known as petrol, to N774 per litre. This represents a N25 per litre drop from the previous rate of N799 and takes effect nationwide immediately, the company confirmed. The announcement was made in a statement released on Tuesday, noting that […]",
@@ -3585,7 +4319,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-ericsson-set-to-launch-connect-nextgen-innovation-hackathon-for-nigerian-youths",
     title: "FG, Ericsson set to launch Connect NextGen innovation hackathon for Nigerian youths",
     date: "February 11, 2026",
-    category: "Innovation And Technology",
+    category: "Innovation and Technology",
+    categoryId: 207,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Innovation and Technology"],
     tags: ["hackathon for Nigerian youths", "NextGen innovation"],
     excerpt:
       "The Federal Government of Nigeria, in partnership with Ericsson, is set to launch the Connect NextGen Innovation Hackathon aimed at equipping Nigerian youths with modern technology skills. This is according to a statement issued by the State House Press Release and signed by Stanley Nkwocha, Senior Special Assistant to the President on Media and Communications. […]",
@@ -3600,6 +4336,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG orders NAFDAC to suspend sachet alcohol ban",
     date: "February 11, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["nafdac", "Sachet Alcohol ban"],
     excerpt:
       "The Federal Government has directed the National Agency for Food and Drug Administration and Control to suspend all enforcement actions relating to the proposed ban on sachet alcohol and 200ml PET bottle alcoholic products. The government also warned the agency to immediately stop sealing factories and warehouses over the issue. The directive was contained in […]",
@@ -3613,6 +4351,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "AstraZeneca profit jumps as cancer drug sales grow",
     date: "February 11, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["AstraZeneca", "cancer drug sales growth"],
     excerpt:
       "British pharmaceutical giant AstraZeneca said Tuesday that its net profit jumped 45 percent last year on strong sales of cancer drugs, as it expands its reach in the United States and China. Profit after tax rose to $10.2 billion in 2025 from $7.0 billion a year earlier, AstraZeneca said in a statement.Revenue increased nine percent […]",
@@ -3627,6 +4367,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Pension funds in infrastructure grows by 48.1% to N262.6bn",
     date: "February 11, 2026",
     category: "Wealth Creation",
+    categoryId: 62,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation"],
     tags: ["infrastructure growth", "Pension funds"],
     excerpt:
       "Nigerian pension funds investments in infrastructure funds grew by 48.1% year-on-year, YoY to N262.567 billion in 10 months ended October 2025, 10M’25, driven by diversification strategy and efforts to bridge the nation’s massive infrastructure gap.Vanguard’s findings from the latest data released by the Pension Commission of Nigeria, PenCom, showed that PFAs committed N262.567 billion in 10M’25 to […]",
@@ -3641,6 +4383,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tax revenue jumps 30% to N28.3trn in 2025",
     date: "February 11, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["debt financing", "Tax revenue"],
     excerpt:
       "The Nigerian Revenue Service (NRS) generated N28.3 trillion in tax revenue in 2025, representing a 30 per cent increase over the N21.7 trillion recorded in 2024. Executive Director, Government and Large Tax, NRS, Hajiya Amina Kurawa, disclosed this in Abuja while presenting the agency’s 2025 performance at the NRS Leadership Retreat for top management staff. She […]",
@@ -3654,6 +4398,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Stronger Africa collaboration key to local content, energy financing — NCDMB",
     date: "February 11, 2026",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["Africa collaboration", "local content energy financing", "NCDMB"],
     excerpt:
       "….As PETAN pushes Africa-led energy transition strategy The Executive Secretary of the Nigerian Content Development and Monitoring Board (NCDMB), Engr. Felix Omatsola Ogbe, has called for deeper collaboration among African nations to strengthen local content and unlock sustainable growth in the continent’s energy sector. Ogbe made the call at the 10th edition of the Sub-Saharan African […]",
@@ -3667,7 +4413,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "coren-advances-reforms-to-boost-professionalism-public-safety",
     title: "COREN advances reforms to boost professionalism, public safety",
     date: "February 11, 2026",
-    category: "Professional Institutes And Associations",
+    category: "Professional Institutes and Associations",
+    categoryId: 136,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Leadership",
+      "Professional Institutes and Associations",
+    ],
     tags: ["coren reforms", "professionalism & public safety"],
     excerpt:
       "Nigerian engineering qualifications for global recognition, approving applications to international accreditation frameworks and implementing regulatory reforms to strengthen professionalism, public safety, and accountability in the sector. The resolutions were taken at COREN’s 188th Ordinary Council Meeting in the first quarter of 2026, and the outcomes were disclosed in a statement signed by the Registrar and […]",
@@ -3682,6 +4434,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN drives Nigeria’s fintech rise through inclusion, integrity",
     date: "February 11, 2026",
     category: "Fintech and Banking",
+    categoryId: 106,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Fintech and Banking"],
     tags: ["CBN", "fintech", "Inclusion & Integrity"],
     excerpt:
       "Behind Nigeria’s fast-growing fintech ecosystem, the Central Bank of Nigeria is pushing innovation, widening access to finance, and reinforcing trust, OLUWAKEMI ABIMBOLA writes Nigeria has firmly established itself as one of Africa’s most dynamic fintech ecosystems, buoyed by regulatory reforms, expanding digital payments infrastructure, and a fast-growing innovation community. Building on these strengths, the Centra",
@@ -3696,6 +4450,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Enugu Air acquires new aircraft",
     date: "February 11, 2026",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["aircraft expansion", "avaition", "Enugu Air"],
     excerpt:
       "Enugu Air, operated by XEJET, has announced the arrival of its newest aircraft, the Embraer 195, marking another step in its commitment to providing safe, reliable and efficient air travel services. In a statement signed by the Chief Executive Officer of XEJET, Mr Emmanuel Iza, the airline acknowledged the support and vision of the Governor […]",
@@ -3710,6 +4466,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Electoral Act Amendment: Opposition protests as senators back manual results transmission",
     date: "February 11, 2026",
     category: "Governance",
+    categoryId: 273,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Governance"],
     tags: ["Electoral Act", "electronic Transmission"],
     excerpt:
       "The Senate on Tuesday bowed to intense public pressure and approved the electronic transmission of election results to the Independent National Electoral Commission’s Result Viewing Portal, IReV, while permitting manual collation to serve as a backup where technology fails. The decision followed an emergency reconsideration of a disputed clause in the Electoral Act (Repeal and […]",
@@ -3723,7 +4481,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "sokoto-sets-2026-deadline-to-end-polio",
     title: "Sokoto sets 2026 deadline to end polio",
     date: "February 11, 2026",
-    category: "Incidence And Prevalence Of Disease",
+    category: "Incidence and Prevalence of Disease",
+    categoryId: 214,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Incidence and Prevalence of Disease"],
     tags: ["National Polio Emergency Action Plan", "Polio Eradication"],
     excerpt:
       "The Sokoto State Government has renewed its commitment to eliminating the circulation of Vaccine-Derived Poliovirus Type 2, a lingering public health challenge in parts of northern Nigeria. It stepped up vaccination, surveillance and community mobilisation efforts aimed at interrupting transmission by 2026. The state governor, Ahmed Aliyu, stated this on Tuesday during a high-level meeting […]",
@@ -3737,6 +4497,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BoI secures CBN approval to operate non-interest banking",
     date: "February 9, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["boi", "CBN", "non-interest banking"],
     excerpt:
       "The Bank of Industry (BoI) said it has received regulatory approval from the Central Bank of Nigeria (CBN) to operate a Non-Interest Banking (NIB) Window, marking a significant milestone in the bank’s growth and long-term development agenda. A statement from the bank said the approval authorises BoI to commence Non-Interest Banking operations, positioning the bank to […]",
@@ -3751,6 +4513,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Arsenal Star Declares Nigerian Roots, Super Eagles Swoop Looms",
     date: "February 9, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Arsenal Star", "super eagles"],
     excerpt:
       "Arsenal’s promising young midfielder, Ethan Nwaneri, has ignited a flurry of excitement within Nigerian football circles by publicly embracing his Nigerian heritage. This revelation has inevitably led to widespread speculation regarding his potential future commitment to the Super Eagles, Nigeria’s senior national team. Nwaneri, currently on a season-long loan with French giants Olympique Marseille from […]",
@@ -3764,7 +4528,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "csos-demand-mandatory-e-transmission-poll-results-downloadable-pvcs",
     title: "CSOs Demand Mandatory e-Transmission Poll Results, Downloadable PVCs",
     date: "February 9, 2026",
-    category: "Political Awareness And Voting Rights",
+    category: "Political Awareness and Voting Rights",
+    categoryId: 259,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Political Arena",
+      "Political Awareness and Voting Rights",
+    ],
     tags: ["csos", "Downloadable PVCs", "E-Transmission", "voting rights"],
     excerpt:
       "Civil society organisations (CSOs) have called on the National Assembly’s harmonisation committee to adopt the House of Representatives’ position on key electoral reforms, including mandatory electronic transmission of results, downloadable voter cards and the retention of existing electoral timelines. The organisations made the demands in Abuja on Monday while addressing a joint press conference on […]",
@@ -3779,6 +4549,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2,000 Educators Attend Free EDUFORGE Training In Kano",
     date: "February 9, 2026",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["Educators", "Training In Kano"],
     excerpt:
       "Kano State witnessed a landmark moment in teacher professional development on Saturday as over 2,000 educators converged for a large-scale training organised by EDUFORGE, Africa’s leading teacher capacity-building organisation. The training—the second in the EDUFORGE series, following its inaugural edition in Abuja on January 10, 2026—brought together teachers, school principals, proprietors, and education leaders fr",
@@ -3793,6 +4565,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "JAMB Rules Out Extension As 2026 UTME Registration Ends In 17 Days",
     date: "February 9, 2026",
     category: "Education Attainment",
+    categoryId: 243,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Education Attainment"],
     tags: ["jamb", "UTME Registration Ends"],
     excerpt:
       "The Joint Admissions and Matriculation Board (JAMB) has said the ongoing registration for the 2026 Unified Tertiary Matriculation Examination (UTME) will close in exactly 17 days, on Thursday, February 26, 2026. The Board urged all candidates wishing to sit for the placement examination to register immediately, stressing that it will not extend the registration deadline […]",
@@ -3807,6 +4581,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PenCom empowers PFAs to appoint external auditors, actuaries",
     date: "February 9, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["appoint external pension scheme auditors", "pencon"],
     excerpt:
       "The National Pension Commission has empowered Pension Fund Administrators to appoint external auditors and actuaries for Approved Existing Schemes and Additional Benefits Schemes. This was indicated in the latest circular from the pension industry regulator directed at all licensed PFAs, signed by the Director of the Surveillance Department, A. M. Saleem. PenCom revealed that the […]",
@@ -3821,6 +4597,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "INEC faces legal heat over ‘missing’ N55.9bn 2019 election funds",
     date: "February 9, 2026",
     category: "Electoral Commission",
+    categoryId: 256,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Electoral Commission"],
     tags: ["election funds", "inec"],
     excerpt:
       "The Socio-Economic Rights and Accountability Project has filed a lawsuit against the Independent National Electoral Commission over the alleged mismanagement of N55.9bn intended for the purchase of smart card readers, ballot papers, result sheets, and other election materials for the 2019 general elections. The allegations, highlighted in the Auditor-General’s latest annual report published on 9 […]",
@@ -3835,6 +4613,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2026 budget twist: MDAs inject N3.5tn new projects despite FG freeze",
     date: "February 9, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["debt financing", "New Projects"],
     excerpt:
       "There are at least N3.50tn new projects in the proposed 2026 budget, according to an analysis by The PUNCH. This is despite earlier budget preparation guidelines that directed Ministries, Departments, and Agencies to carry over 70 per cent of their 2025 capital allocation into 2026 and avoid introducing new capital projects. Figures collated from the […]",
@@ -3849,6 +4629,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Iwobi Equals Mikel, Okocha’s Records At AFCON 2025",
     date: "February 9, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON", "Iwobi Equals Mikel", "team sports"],
     excerpt:
       "Super Eagles midfielder Alex Iwobi has made headlines by surpassing all other players at the ongoing 2025 Africa Cup of Nations with the most line-breaking passes. According to Opta’s statistics, Iwobi has completed 36 such passes during the knockout stages, including an impressive 22 in Nigeria’s Round of 16 match against Mozambique and 14 in […]",
@@ -3863,6 +4645,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG allocates N1.764 billion for fresh BEA scholarships in 2026 budget",
     date: "January 12, 2026",
     category: "Scholarships",
+    categoryId: 35,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Scholarships"],
     tags: ["BEA scholarships"],
     excerpt:
       "The Federal Government has set aside N1.764 billion in the 2026 Appropriation Bill to fund 300 fresh scholarships for Nigerians under the Bilateral Education Agreement (BEA) programme. The allocation, listed under the Federal Ministry of Education, will cover allowances, health insurance, travel, and other essential needs for these scholars. It forms part of the ministry’s […]",
@@ -3877,6 +4661,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "National payment stack, e-visas… reforms shaping Nigeria’s DPI push",
     date: "January 12, 2026",
     category: "Digital Economy",
+    categoryId: 109,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Digital Economy"],
     tags: ["digital economy", "e-visas", "National payment stack"],
     excerpt:
       "Around the world, governments are paying renewed attention to digital public infrastructure (DPI), which is the foundational digital systems that enable societies to function, from identity and payments to data exchange and public service delivery. DPI has become central to how people access financial services, healthcare, education, social protection, justice, and even democratic participation. It […]",
@@ -3891,6 +4677,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FRSC Confirms 10 Dead, 4 Injured In Kaduna Road Crash",
     date: "January 12, 2026",
     category: "Road",
+    categoryId: 26,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Road"],
     tags: ["frsc", "Kaduna Road Crash"],
     excerpt:
       "The Federal Road Safety Corps (FRSC), Kaduna State Sector Command, has confirmed that 10 persons died, while four others sustained injuries in a fatal road crash along Kachia-Jaba Road in the State. Speaking with LEADERSHIP on telephone on Sunday, the Command’s Assistant Public Relations Officer, Route Commander Usman Garba, identified tyre burst as the cause […]",
@@ -3905,6 +4693,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2026 outlook: key sectors to drive economy by ex-NBS boss",
     date: "January 12, 2026",
     category: "Supportive Government Policies",
+    categoryId: 65,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Supportive Government Policies"],
     tags: ["2026 outlook", "drive economy", "key sectors"],
     excerpt:
       "ERSTWHILE Statistician-General of the Federation, Yemi Kale, has listed the five sectors that would drive Nigeria’s economic growth in 2026. The list includes Information and Communication Technology ICT and digital services, construction and infrastructure, energy and refining, particularly downstream activities; agro-processing, and services. The former Director-General of the National Bureau of Statistics (NBS) ma",
@@ -3919,6 +4709,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Raising financial services standards with consumer awareness, protection",
     date: "January 12, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: [
       "consumer awareness",
       "consumer awareness and protection",
@@ -3938,6 +4730,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Is acquisition the new shape of power sector?",
     date: "January 12, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["power sector acquisition", "power sector new shape"],
     excerpt:
       "There is a universal consensus on the importance of private capital inflows in the resolution of the Nigerian power problem. Finance, public and private, stakeholders agreed, is the linchpin to uncoil the long wire to power every house and business. A recent United Nation Development Programme (UNDP) report on the Nigerian power sector identified finance as the […]",
@@ -3951,6 +4745,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian Tax Acts 2025: Pros and cons",
     date: "January 12, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Nigerian Tax Acts 2025", "Pros and cons"],
     excerpt:
       "Joseph Tegbe, Chairman of the National Tax Policy Implementation Committee (NTPIC), enumerates the benefits of the Nigerian Tax Reform Acts 2025, stating that it marks a significant turning point in the country’s pursuit of a robust and sustainable economy, writes Jill Okeke. Explaining what the Tax Acts 2025 means, Tegbe described it as a comprehensive overhaul […]",
@@ -3964,6 +4760,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "IN DETAIL: N94bn shares traded on Nigerian bourse in five days — down by 30%",
     date: "January 12, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["financial health performance", "Nigerian bourse", "traded shares"],
     excerpt:
       "The Nigerian Exchange (NGX) recorded a turnover of 4.16 billion shares valued at N94.02 billion in 248,254 deals between January 5 and January 10. According to the NGX stock market weekly report, the figures represent a decline compared with the previous week, when investors traded 7.82 billion shares worth N134.47 billion in 150,799 deals. This […]",
@@ -3978,6 +4780,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN forecasts petrol price at N950 per litre in 2026",
     date: "January 12, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["CBN forecasts", "petrol price"],
     excerpt:
       "The Central Bank of Nigeria, CBN, said the price of Premium Motor Spirit, PMS, also known as petrol could rise to about N950 per litre in 2026. The Dangote Petroleum Refinery currently puts its gantry price at N699 per litre while the retail price at MRS Oil, authorized distributor stood at N739 per litre. But in the […]",
@@ -3992,6 +4796,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Heritage Bank liquidation: NDIC recovers additional N24.3bn for depositors",
     date: "January 12, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["Heritage Bank", "liquidarion", "ndic"],
     excerpt:
       "The Nigeria Deposit Insurance Corporation has recovered an additional N24.3bn from the assets of the defunct Heritage Bank Limited to facilitate the repayment of depositors with balances exceeding N5m at the time the bank’s licence was revoked. This was disclosed in a statement signed by the Head, Communication and Public Affairs Department of the NDIC, […]",
@@ -4006,6 +4812,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Iddo Bridge: FG to pull down damaged sections next week — Umahi",
     date: "January 12, 2026",
     category: "Infrastructure Quality",
+    categoryId: 228,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Infrastructure Quality"],
     tags: ["fg", "Iddo Bridge Reconstruction"],
     excerpt:
       "The Federal Government will next week demolish the damaged portions of the Iddo Bridge in Lagos to pave the way for reconstruction works. The Minister of Works, David Umahi, disclosed this on Sunday during an inspection tour of the bridge alongside officials of Julius Berger Nigeria Plc. Umahi said three spans on each carriageway of […]",
@@ -4020,6 +4828,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "12 die in multiple-vehicle crash on Abuja road",
     date: "January 12, 2026",
     category: "Road",
+    categoryId: 26,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Road"],
     tags: ["abuja road", "frcs", "multiple-vehicle crash"],
     excerpt:
       "Twelve people were killed and three others injured in a multiple-vehicle crash along the Yangoji–Abaji corridor in the Federal Capital Territory on Sunday, the Federal Road Safety Corps has confirmed. According to a statement signed by the FRSC FCT Command’s Public Education Officer, Helen Ntaji, the incident occurred at approximately 11:45 a.m. at Gada Biyu, […]",
@@ -4033,6 +4843,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BUA boss pledges $500k, other bonuses to Eagles",
     date: "January 11, 2026",
     category: "Philanthropy",
+    categoryId: 44,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Philanthropy"],
     tags: ["AFCON", "BUA Boss", "Super Eagles Bonus"],
     excerpt:
       "The chairman and founder of BUA Group, Abdul Samad Rabiu, has pledged substantial financial rewards to Nigeria’s Super Eagles following their 2-0 victory over Algeria in the 2025 Africa Cup of Nations quarter-final. In a statement posted on Saturday via his personal X handle, Rabiu congratulated the team and outlined a series of performance-based incentives […]",
@@ -4046,6 +4858,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "IPMAN rejects fuel imports as Dangote Refinery denies supply disruption claims",
     date: "January 11, 2026",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["dangote", "IPMAN", "supply disruption"],
     excerpt:
       "The Independent Petroleum Marketers Association of Nigeria (IPMAN) has voiced strong opposition to the continued importation of Premium Motor Spirit (PMS) into the country. The association also distanced itself from reports suggesting that the surge in petrol imports in November 2025 was linked to a breakdown in supply arrangements between Dangote Refinery and petroleum marketers, […]",
@@ -4060,6 +4874,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "19 Nigerian Banks Meet CBN Recapitalization Requirement Ahead Of March Deadline",
     date: "January 11, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["CBN Recapitalization", "maech deadline", "monetary policy"],
     excerpt:
       "As of January 6, 2026, nineteen Nigerian banks have met the Central Bank of Nigeria, CBN’s recapitalization requirements, ahead of the March 31 deadline. This was disclosed in data released by The Cable Index on Tuesday. The banks with international licenses that have complied include Access Bank, Fidelity Bank, First Bank, GTBank (GTCO), UBA, and […]",
@@ -4074,6 +4890,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG budgets N33.9bn for airports upgrade",
     date: "January 11, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Airports Upgrade", "aviation", "nigeria airports"],
     excerpt:
       "The Federal Government has proposed spending a total of N33,906,953,400 on the rehabilitation and upgrade of airports, runways, aprons, terminals, perimeter fencing, and safety-critical systems across the country in the 2026 fiscal year. The budget document shows that the funds will be deployed to repair cracked runways, expand aprons, fence airports, upgrade instrument landing systems, improve […]",
@@ -4087,6 +4905,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria to invest $460m W’Bank loan in fibre infrastructure",
     date: "January 11, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["fibre infrastructure", "world bank loan"],
     excerpt:
       "Nigeria plans to channel $460m, representing about 92 per cent of a $500m World Bank loan, into the capitalisation of a proposed fibre infrastructure company set up to deploy 90,000 kilometres of climate-resilient broadband fibre across the country. This is contained in the Financing Agreement for the Building Resilient Digital Infrastructure for Growth project between the […]",
@@ -4101,6 +4921,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "DisCos abandon metering duty, NERC report reveals",
     date: "January 11, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized generation company", "DisCos", "Metering Duty"],
     excerpt:
       "Electricity distribution companies funded only 90,172 meters nationwide between 2019 and the third quarter of 2025, according to the Nigerian Electricity Regulatory Commission’s Third Quarter 2025 report, underscoring their limited contribution to closing Nigeria’s widening metering gap. This indicates that the DisCos appear to have abandoned one of their duties, which is metering all eligible customers. […]",
@@ -4115,6 +4937,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tax committee to KPMG: Your tax law review misunderstood policy intent",
     date: "January 11, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["kpmg", "tax policy"],
     excerpt:
       "The presidential fiscal policy and tax reforms committee has pushed back against KPMG’s critique of the new tax laws. In a statement on Saturday, the committee said the majority of KPMG’s review reflects “a misunderstanding of the policy intent” and a “mischaracterisation of deliberate policy choices”.KPMG had said in its newsletter that there are “errors, inconsistencies, gaps, omissions, and lacunae” […]",
@@ -4128,7 +4952,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "johesu-strike-fg-orders-no-work-no-pay-in-federal-hospitals",
     title: "JOHESU strike: FG orders ‘No Work, No Pay’ in federal hospitals",
     date: "January 11, 2026",
-    category: "Trade Unions And Congresses",
+    category: "Trade Unions and Congresses",
+    categoryId: 254,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Trade Unions and Congresses",
+    ],
     tags: ["federal hospitals", "fg", "JOHESU strike", "No Pay’", "No Work"],
     excerpt:
       "The Federal Government has ordered federal hospitals to immediately enforce a “No Work, No Pay” policy on members of the Joint Health Sector Unions and Assembly of Health Care Professionals (JOHESU) participating in the ongoing strike, while mandating hospitals to sustain emergency services nationwide. This is according to a circular issued by the Federal Ministry of Health and Social Welfare (FMoHSW) […]",
@@ -4143,6 +4973,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian Tax Act 2025 exempts gaming stakes from VAT",
     date: "January 11, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["exempts gaming stakes from VAT", "Tax Act"],
     excerpt:
       "The Nigerian Tax Act 2025 has officially exempted “stakes” from Value Added Tax (VAT), removing a key provision that previously impacted the operations of gaming and lottery operators. This is according to Section 185, Subsection M of the Act, which includes “money, stakes or securities including interest in money or securities” in its list of […]",
@@ -4157,6 +4989,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Osimhen Hails Fans, Eyes AFCON Final After Algeria Victory",
     date: "January 11, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON", "fans", "nigeria", "Osimhen", "super eagles"],
     excerpt:
       "Super Eagles striker, Victor Osimhen, has expressed gratitude to Nigerian fans worldwide following the Nigerian national soccer team’s impressive 2–0 victory over Algeria in the quarter-finals of the 2025 Africa Cup of Nations (AFCON) on Saturday. In a video message shared on social media on Saturday, the Galatasaray forward appreciated supporters for their unwavering encouragement […]",
@@ -4171,6 +5005,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG unveils policy to reduce education costs with reusable textbooks, uniform calendar",
     date: "January 10, 2026",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["education costs", "resource allocation"],
     excerpt:
       "The Federal Government has unveiled a new policy framework aimed at reducing education costs for parents while improving learning outcomes and sustainability in schools nationwide. The policy was jointly issued by the Minister of Education, Dr. Tunji Alausa, and the Minister of State for Education, Prof. Suwaiba Ahmed, and made available to journalists in Abuja […]",
@@ -4185,6 +5021,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Drug Abuse Control Bill Scales Second Reading At Yobe Assembly",
     date: "January 10, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Drug Abuse Control Bill", "Yobe Assembly"],
     excerpt:
       "The Yobe State House of Assembly has advanced efforts to curb drug abuse with the passage of the Yobe State Agency for Drug Abuse Control and Rehabilitation (YOSADAC) Bill, 2025 through its second reading. A statement issued by the Information Officer, Yobe State House of Assembly, Mustapha Modu Goniri said the bill, listed as YBHA […]",
@@ -4199,6 +5037,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "3 Feared Dead As Trailer Crashes On Bayelsa Bridge",
     date: "January 10, 2026",
     category: "Emergencies and Paramedics",
+    categoryId: 142,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Emergencies and Paramedics"],
     tags: ["road accident", "Trailer Crashe"],
     excerpt:
       "A road accident has claimed three persons at the Ikoli Bridge in the Swali area of Yenagoa, Bayelsa State, throwing the busy route into confusion and mourning. The accident, which occurred on Saturday involved an articulated truck (Trailer) which reportedly developed brake failure while ascending the bridge. The loss of control caused the truck to […]",
@@ -4213,6 +5053,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Kaduna State shuts down 20 Illegal health colleges and private hospitals",
     date: "January 10, 2026",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Illegal health colleges and private hospitals", "kaduna state"],
     excerpt:
       "Kaduna State authorities on Friday sealed 20 unlicensed health colleges and private hospitals across the state in a sweeping enforcement action aimed at curbing illegal medical training and protecting public health. The State Commissioner for Health, Umma Kaltum-Ahmed, said the closures were part of ongoing efforts to ensure private health institutions comply with established rules […]",
@@ -4227,6 +5069,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "KPMG flags multiple errors, gaps in new tax laws, seeks ‘urgent’ review",
     date: "January 10, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["kpmg", "tax law gaps"],
     excerpt:
       "KPMG, a global network of professional services firms, says there are “errors, inconsistencies, gaps, omissions, and lacunae” in the new tax laws that require urgent reconsideration to ensure the achievement of their stated objectives. In its newsletter, the professional services firm outlined several areas where revisions are required following a review of the New Tax Act (NTA), […]",
@@ -4241,6 +5085,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos assembly passes N4.44trn 2026 budget into law",
     date: "January 10, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budget into law", "Lagos assembly"],
     excerpt:
       "The Lagos house of assembly has passed a total of N4.44 trillion as the state’s budget for 2026. Chaired by Mudashiru Obasa, speaker of the house of assembly, the legislative chamber authorised the issuance and appropriation of the bill during plenary on Thursday. Babajide Sanwo-Olu, governor of Lagos, had presented the 2026 appropriation bill to […]",
@@ -4255,6 +5101,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Segun Odegbami Urges Super Eagles To Play AFCON Quarter-Final With Confidence",
     date: "January 10, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON Quarter-Final", "Segun Odegbami", "super eagles"],
     excerpt:
       "Former Super Eagles captain and 1980 Africa Cup of Nations (AFCON) winner, Segun Odegbami, has called on the Nigerian senior soccer team to turn their individual talent into collective dominance by embracing confidence and self-belief. In a video message posted on the Super Eagles’ official X handle on Friday, Odegbami stressed that self-belief is the […]",
@@ -4269,6 +5117,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "AFCON Q/Final: Super Eagles Not Seeking Revenge Against Algeria — Moses Simon",
     date: "January 10, 2026",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON", "Moses Simon", "Revenge Against Algeria"],
     excerpt:
       "Super Eagles winger Moses Simon has said that Nigeria was not driven by revenge ahead of their quarterfinal clash against Algeria at the ongoing 2025 Africa Cup of Nations (AFCON) tournament in Morocco. Nigeria suffered a 2–1 defeat to the Desert Foxes in the semifinals of the 2019 AFCON in Egypt, before going on to […]",
@@ -4283,6 +5133,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Details Emerge As Jersey Agrees To Return $9.5Million Abacha Loot To Nigeria",
     date: "January 10, 2026",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["tainted property", "The Channel Island of Jersey"],
     excerpt:
       "The Channel Island of Jersey is a self-governing dependency of the British Crown located in the English Channel, near France. Authorities in Jersey have agreed to return over $9.5 million (£7 million) in so-called “tainted property” to the Nigerian government, the BBC reports. The Channel Island of Jersey is a self-governing dependency of the British […]",
@@ -4297,6 +5149,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "How policies, prices, floods shaped agriculture in 2025",
     date: "January 10, 2026",
     category: "Value Addition",
+    categoryId: 32,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Value Addition"],
     tags: ["2025 agriculture trends", "policies", "prices", "value addition"],
     excerpt:
       "The agricultural sector in 2025 stood at the intersection of policy ambition, economic pressure and climate shocks, have combined to produce a year of mixed outcomes in the agriculture sector of Nigeria’s economy, leaving the stakeholders cautiously hopeful but deeply concerned about impact of the execution gaps. From government interventions and private-sector engagement to food inflation, insecurity […]",
@@ -4311,6 +5165,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "5.36m electricity customers remain without meters — NERC",
     date: "January 10, 2026",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["distribution companies", "electricity customers", "meters", "NERC"],
     excerpt:
       "The Nigerian Electricity Regulatory Commission (NERC) has disclosed that 5.36 million electricity customers nationwide remain without meters, leaving them exposed to the unpredictable estimated billing methods by distribution companies (DisCos).According to the Commission’s third-quarter 2025 industry report published on its website, as of 30 September 2025, only 6.662 million of the 12.030 million active registered ",
@@ -4325,6 +5181,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG, IFAD to empower 14,800 Ondo youths in agriculture",
     date: "January 10, 2026",
     category: "Food Security",
+    categoryId: 30,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Food Security"],
     tags: ["empowerment", "food security", "ondo", "youths in agriculture"],
     excerpt:
       "The Federal Government, in partnership with the International Fund for Agricultural Development and the Ondo State Government, is set to empower a total of 14,800 youths in agricultural production. The programme, tagged IFAD/FG/Livelihood Improvement Family Enterprise-Niger Delta Project, will take place in 100 communities in the 10 local government areas of the state, while the […]",
@@ -4339,6 +5197,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Free zones drive $500m exports, 20,000 jobs – FG",
     date: "January 10, 2026",
     category: "Economic Zones",
+    categoryId: 253,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Economic Zones"],
     tags: ["Exports", "jobs", "Nigeria Economic Zones"],
     excerpt:
       "The Federal Government has stated that Nigeria’s Special Economic Zones generated over $500m in export revenues and created more than 20,000 direct jobs in 2025. The SEZs contributed to the country’s efforts to drive export-led growth, industrialise and provide employment. An official document reviewing the activities and accomplishments of the Federal Ministry of Industry, Trade […]",
@@ -4351,7 +5211,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "stanbic-insurance-gets-a-a1-ratings-from-agusto",
     title: "Stanbic Insurance gets A, A1 ratings from Agusto",
     date: "January 10, 2026",
-    category: "Savings Investment Credit And Other Ratings",
+    category: "Savings, Investment, Credit and other Ratings",
+    categoryId: 138,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Savings, Investment, Credit and other Ratings",
+    ],
     tags: ["Agusto", "Credit Rating", "Stanbic IBTC Insurance"],
     excerpt:
       "The credit rating company, Agusto & Co., has assigned a Long-Term Rating of ‘A’ and a Short-Term Rating of ‘A1’, both with a stable outlook, to Stanbic IBTC Insurance, a subsidiary of Stanbic IBTC Holdings. This new rating was announced in the credit ratings for the 2025–2026 financial year. The credit rating upgrade reflected stronger […]",
@@ -4366,6 +5232,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Scepticism trails N10bn airtime, data refund claims",
     date: "January 10, 2026",
     category: "Fintech and Banking",
+    categoryId: 106,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Fintech and Banking"],
     tags: ["Airtime Refund Claims", "Customer Scepticism"],
     excerpt:
       "Nigerian banks and telecoms say they have returned more than N10bn to customers for failed airtime and data purchases, according to the Nigerian Communications Commission. However, bank customers are sceptical, questioning both the proof of the refunds and the methodology behind the calculation. The disclosure comes as the NCC and the Central Bank of Nigeria […]",
@@ -4380,6 +5248,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SBI Media drives CSR projects",
     date: "January 10, 2026",
     category: "Coporate Social Responsibility",
+    categoryId: 45,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Coporate Social Responsibility"],
     tags: ["csr", "SBI Media", "TECNO"],
     excerpt:
       "SBI Media, a top advertising and marketing communications agency, has reaffirmed its ability to create meaningful impact by successfully executing TECNO’s youth and community-focused CSR project, which involved building and unveiling two state-of-the-art football pitches in Lagos State. In a statement, the ambitious CSR project, which ran into hundreds of millions of naira, culminated in […]",
@@ -4393,6 +5263,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG budgets N6.04bn payroll for idle Ajaokuta steel",
     date: "January 10, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Ajaokuta Steel Company", "payroll"],
     excerpt:
       "The Federal Government has proposed to spend N6.04bn on personnel costs for workers of the Ajaokuta Steel Company Limited in the 2026 budget, even though the steel plant has not produced a single sheet of steel for more than four decades after it was conceived. Details from the 2026 Appropriation Bill show that Ajaokuta was […]",
@@ -4407,6 +5279,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Again, Tinubu wades into Wike-Fubara feud",
     date: "January 10, 2026",
     category: "Governance",
+    categoryId: 273,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Governance"],
     tags: ["governance", "Impeachment Plot", "Wike-Fubara Feud"],
     excerpt:
       "There are indications that President Bola Tinubu has intervened in the ongoing feud between Rivers State Governor, Siminalayi Fubara, and the Minister of the Federal Capital Territory, Nyesom Wike. Tinubu, according to a highly credible source, summoned Wike for a meeting over the Rivers crisis. The source, who is close to the President, told Saturday […]",
@@ -4420,6 +5294,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NIA to set up recapitalisation help desk",
     date: "January 10, 2026",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["insurance recapitalisation", "nia"],
     excerpt:
       "The Nigerian Insurers Association has said that it would be setting up a recapitalisation help desk for its members as the deadline for the process enters the last seven-month stretch. This was disclosed in the New Year message from the chairman of the NIA, Kunle Ahmed, addressed to chief executive officers of member companies of […]",
@@ -4432,7 +5308,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "itel-pantone-collaborate-to-unveil-tech-gadgets",
     title: "itel, Pantone collaborate to unveil tech gadgets",
     date: "January 10, 2026",
-    category: "Phones And Gadgets",
+    category: "Phones and Gadgets",
+    categoryId: 104,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Phones and Gadgets"],
     tags: ["itel", "Tech Gadgets"],
     excerpt:
       "Itel, the global tech empowerment brand, has partnered with Pantone—an authority on colour standards—to launch a limited-edition collection inspired by PANTONE 11-4201 Cloud Dancer, the newly announced Colour of the Year for 2026. In a statement signed by the PR Supervisor at itel Nigeria, Simeon Shagba, the collaboration introduces this airy, bright white shade—evoking fresh […]",
@@ -4447,6 +5325,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Naira opens 2026 stronger at 1,430.84/$",
     date: "January 10, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["exchange rate", "relative strenght index"],
     excerpt:
       "The naira started the first trading day of the New Year on a stronger note, riding on gains from relative stability in 2025 to appreciate to N1,430.84/$ at the official window, data from the Central Bank of Nigeria indicated. In the past week, the naira hovered around the N1,440/$ level at the official window, with […]",
@@ -4460,6 +5344,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote pumps 43 million litres, denies petrol shutdown",
     date: "January 10, 2026",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["Dangote Refinery", "Pumps 43M Litres of Petrol"],
     excerpt:
       "Officials of the the Dangote Petroleum Refinery have said that the plant pumped 43.3 million litres of Premium Motor Spirit (petrol) into the Nigerian market on Saturday. They exclusively disclosed this to our correspondent, debunking claims that the refinery had shut down its petrol processing unit for maintenance. The officials, who preferred not to be […]",
@@ -4474,6 +5360,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "WealthBridge Initiative unveils N700m university scholarship",
     date: "January 10, 2026",
     category: "Scholarships",
+    categoryId: 35,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Scholarships"],
     tags: ["university scholarship", "WealthBridge"],
     excerpt:
       "Bridge Charity Foundation, an initiative of WealthBridge Financial Services Holdings Limited, has announced the launch of the Bridge Foundation University Scholarship Programme, a N700m education support initiative aimed at empowering Nigerian university students and expanding access to quality tertiary education nationwide. The scholarship programme targets academically outstanding students who demonstrate leadershi",
@@ -4488,6 +5376,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Firm unveils Nigeria’s first embryo transfer-born calf",
     date: "January 10, 2026",
     category: "Food Security",
+    categoryId: 30,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Food Security"],
     tags: ["Boost Dairy Industry", "calves", "Nigeria's First Embryo"],
     excerpt:
       "Silagreen International Agro Development Limited, a Nigerian agri-biotech firm, has unveiled the country’s first Embryo Transfer-born Girolando calf at the Harmony Farms centre in Odogbolu, Ogun State. In a statement, the Chief Executive Officer of Silagreen International Agro Development Limited, Michael Akinruli, noted that the arrival of the calf signalled a boost to the Federal […]",
@@ -4501,7 +5391,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "average-ikoyi-three-bedroom-rent-hits-n25m",
     title: "Average Ikoyi three-bedroom rent hits N25m",
     date: "January 10, 2026",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["lagos estate", "Three-Bedroom Rent"],
     excerpt:
       "The average rent for a three‑bedroom apartment in Ikoyi, Lagos, has surged to about N25m annually, underscoring the mounting cost pressures in Lagos’ prime residential market, according to Volume 3 of the State of Lagos Housing Market report. The report disclosed that the past decade has marked a period of profound transformation for the Lagos […]",
@@ -4514,7 +5410,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nnpc-subsidiaries-debt-balloons-70-to-n30tn",
     title: "NNPC subsidiaries’ debt balloons 70% to N30tn",
     date: "January 10, 2026",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["debt soars", "NNPC subsidiaries"],
     excerpt:
       "Despite its transition into a commercial entity, the Nigerian National Petroleum Company Limited is grappling with mounting financial pressure as unviable and underperforming subsidiaries deepen inter-company indebtedness, pushing outstanding obligations owed to the company to N30.30tn. Latest findings from NNPC’s 2024 audited financial statements showed that debts owed by subsidiaries, joint ventures, and other rela",
@@ -4529,6 +5431,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "CBN prioritises banking stability, fintech regulation, inflation control in 2026 agenda",
     date: "January 10, 2026",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["banking stability", "fintech regulation", "inflation control"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has prioritised banking system stability, tighter fintech regulation, inflation control, and payments infrastructure modernisation as key pillars of its 2026 reform agenda. This is according to a statement issued by the CBN Governor, Mr. Olayemi Cardoso on X (formerly Twitter), outlining the apex bank’s focus areas for the year […]",
@@ -4543,6 +5447,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Rivers State okays N1.85 trillion budget proposal for 2026",
     date: "January 10, 2026",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budget proposal for 2026", "debt financing", "Rivers State"],
     excerpt:
       "The Rivers State Executive Council has approved a N1.85 trillion budget proposal for the 2026 fiscal year, setting the tone for the state’s spending priorities amid prevailing economic challenges. This is according to disclosures made by state officials following the council meeting presided over by Governor Siminalayi Fubara, News Agency of Nigeria (NAN) reports. The […]",
@@ -4557,6 +5463,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG plans exportable product for each of Nigeria’s 774 LGAs in 2026",
     date: "January 10, 2026",
     category: "Local Government Council",
+    categoryId: 272,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Local Government Council"],
     tags: ["2026", "774 LGAs", "export products"],
     excerpt:
       "The Federal Government is considering a bold nationwide scheme to identify at least one exportable product in each of Nigeria’s 774 local government areas this year. This is part of efforts to deepen non-oil exports and strengthen the country’s competitiveness under the African Continental Free Trade Area (AfCFTA). The initiative was disclosed by the Special Assistant to President Bola […]",
@@ -4571,6 +5479,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NGX reshuffles major indices, drops United Capital, Access, Stanbic IBTC",
     date: "January 10, 2026",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["financial health performance", "ibtc", "indices", "NGX"],
     excerpt:
       "The Nigerian Exchange Limited (NGX) has announced the outcome of its full-year 2025 market index review. This is according to information published by the Exchange, which confirmed that the reviewed indices took effect at the start of trading on Friday, January 2, 2025. Notably, Guinness Nigeria Plc, Presco Plc, and Wema Bank gained inclusion in […]",
@@ -4584,7 +5498,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "house-releases-certified-copies-of-four-tax-reform-acts-amid-controversy",
     title: "House releases certified copies of four tax reform Acts amid controversy",
     date: "January 10, 2026",
-    category: "Legislative Arm Of Government",
+    category: "Legislative Arm of Government",
+    categoryId: 263,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Legislative Arm of Government"],
     tags: ["house of representatives", "tax reform Acts"],
     excerpt:
       "The House of Representatives has released the certified true copies of four landmark tax reform Acts recently signed into law by President Bola Ahmed Tinubu. This follows public concerns over alleged alterations and the circulation of unauthorised versions of the laws. The House announced the release in a statement issued on Saturday by its spokesman, Akintunde Rotimi. According to […]",
@@ -4598,7 +5514,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "boat-capsizes-in-yobe-25-people-confirmed-dead-14-missing",
     title: "Boat capsizes in Yobe, 25 people confirmed dead, 14 missing",
     date: "January 10, 2026",
-    category: "Transportation Investigation And Safety Boards",
+    category: "Transportation Investigation and Safety Boards",
+    categoryId: 198,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Transportation Investigation and Safety Boards",
+    ],
     tags: ["Boat capsizes", "safty boards"],
     excerpt:
       "At least 25 people have been confirmed dead, while 14 others are still missing after a boat capsized on the Yobe River in Garbi town, Nguru Local Government Area of Yobe State. This is according to a statement issued by the Executive Secretary of the Yobe State Emergency Management Agency (YOSEMA), Dr. Mohammad Goje, on Sunday in […]",
@@ -4612,7 +5534,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "opec-to-pause-oil-supply-increases-through-q1-2026-amid-surplus",
     title: "OPEC+ to pause oil supply increases through Q1 2026 amid surplus",
     date: "January 10, 2026",
-    category: "Organization Of The Petroleum Exporting Countries Opec",
+    category: "Organization of the Petroleum Exporting Countries (OPEC)",
+    categoryId: 167,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Organization of the Petroleum Exporting Countries (OPEC)",
+    ],
     tags: ["oil supply increases", "OPEC", "q1 2026"],
     excerpt:
       "OPEC+ has decided to pause its planned oil supply increases through the first quarter of 2026, maintaining current production levels amid a global market surplus and uncertainty surrounding Venezuelan oil supplies. This decision was made, according to Bloomberg, at a brief meeting on Sunday, led by key members, Saudi Arabia and Russia. Bloomberg says the […]",
@@ -4627,6 +5555,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NewsAEDC blames technical fault as Abuja residents experience blackout",
     date: "December 23, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["aedc", "decentralized power generatiion"],
     excerpt:
       "Residents of Utako and parts of Wuye in Abuja were on Monday thrown into darkness following a technical fault on a power feeder supplying the areas, according to the Abuja Electricity Distribution Company, AEDC. In a public notice dated December 22, 2025, AEDC said the blackout was caused by a fault on the feeder responsible […]",
@@ -4641,6 +5571,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Canada halts Start-Up Visa program, plans new entrepreneur pathways in 2026",
     date: "December 23, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["Canada", "new entrepreneur pathways", "Start-Up Visa program"],
     excerpt:
       "Canada has announced a major overhaul of its business immigration framework, pausing key elements of its Start-Up Visa (SUV) program as it prepares to roll out a new, more targeted entrepreneur pilot in 2026. Immigration, Refugees and Citizenship Canada (IRCC) confirmed that it will stop accepting new Start-Up Visa commitment certificates after December 31, 2025. […]",
@@ -4655,6 +5591,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "ICPC invites Dangote over petition against former NMDPRA boss Ahmed Farouk",
     date: "December 23, 2025",
     category: "Crime Alerts",
+    categoryId: 230,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Crime Alerts"],
     tags: ["Ahmed Farouk", "dangote", "icpc", "NMDPRA"],
     excerpt:
       "The Independent Corrupt Practices and Other Related Offences Commission (ICPC) has invited Africa’s richest man, Aliko Dangote, to appear before a special panel of investigators on Monday in Abuja. Dangote is being invited over a petition he submitted against the former Managing Director of the Nigerian Midstream and Downstream Petroleum Regulatory Authority (NMDPRA), Ahmed Farouk. This is according […]",
@@ -4669,6 +5607,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "No bank will shut down over CBN recapitalisation – Group",
     date: "December 23, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["CBN recapitalisation", "nigerian banks"],
     excerpt:
       "The Association of Corporate Communication and Marketing Professionals in Banks (ACAMB) has assured Nigerians that no bank in the country faces closure due to recapitalisation requirements, contrary to claims circulating on social media. The assurance was contained in a joint statement issued on Sunday by ACAMB President, Mr. Rasheed Bolarinwa, and General Secretary, Mr. Jide Sipe. The […]",
@@ -4683,6 +5623,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "U.S. ambassador says visa restrictions not targeted at Nigerians",
     date: "December 23, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["nigeria", "U.S. ambassador", "visa restrictions"],
     excerpt:
       "The United States Ambassador to Nigeria, Richard Mills, has clarified that the recent visa restrictions announced by the U.S. government are aimed at strengthening security procedures and are not targeted at Nigerians. Mills made the clarification on Sunday in Abuja during a news conference held as part of the visit of a United States Congressional […]",
@@ -4697,6 +5643,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "2026 World Cup: ‘We’re Sorry For Not Qualifying’ – Osimhen Apologizes To Nigerians",
     date: "December 23, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["2026 World Cup", "AFCON", "Osimhen"],
     excerpt:
       "The Galatasaray star spoke ahead of Nigeria’s 2025 Africa Cup of Nations, AFCON, clash against Tanzania in Fès on Tuesday. Super Eagles striker Victor Osimhen has apologized to Nigerians following the team’s failure to qualify for the 2026 FIFA World Cup. Osimhen said the Super Eagles were sorry for not qualifying for the world’s biggest […]",
@@ -4711,6 +5659,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Why FG Should Not Sell 100% Stake In Refineries – PENGASSAN",
     date: "December 23, 2025",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["fg", "PENGASSAN", "Refineries"],
     excerpt:
       "The Petroleum and Natural Gas Senior Staff Association of Nigeria (PENGASSAN) has explained why it opposes the Federal Government’s plan to sell its entire stake in the country’s government-owned refineries. Speaking on Sunday Politics, President of PENGASSAN, Festus Osifo, said selling a 100 per cent stake would mean the government losing total control of the […]",
@@ -4725,6 +5675,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Oil earnings fall short by N16.2tn",
     date: "December 23, 2025",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["Oil Revenue", "short fall target"],
     excerpt:
       "Despite an improvement in crude oil production, the Federal Government earned 63.49 per cent less than its projected oil revenue target in the first half of 2025, according to the second quarter Budget Performance Report released by the Budget Office on Monday. The report showed that gross oil revenue of N9.32tn was recorded between January […]",
@@ -4738,6 +5690,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NGX rallies as investors gain N257bn",
     date: "December 23, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["investors gain", "NGX", "relative strength index"],
     excerpt:
       "The Nigerian Exchange closed the first trading session of the week on a positive note, with investors gaining N257bn as buying interest in select stocks lifted key market indices. At the close of trading, total market capitalisation rose to N97.2tn, reflecting renewed optimism despite a slowdown in trading activities. The benchmark NGX All-Share Index advanced […]",
@@ -4751,6 +5709,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Autonomy battle: LGs demand direct funds as states receive N7.43tn",
     date: "December 23, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["council funds", "LG Financial Autonomy"],
     excerpt:
       "The Association of Local Governments of Nigeria and the National Union of Local Government Employees have thrown their weight behind President Bola Tinubu’s plan to enforce direct deductions of council funds from the Federation Account Allocation Committee, even as state governments continue to retain control over allocations to local governments. During the 15th National Executive […]",
@@ -4765,6 +5725,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG designates kidnappers, militants as terrorists, deploys forest guards nationwide",
     date: "December 23, 2025",
     category: "Felonies",
+    categoryId: 188,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Felonies"],
     tags: ["kidnappers", "militants", "terrorists"],
     excerpt:
       "The Federal Government has designated kidnappers and violent armed groups as terrorists, escalating Nigeria’s response to abductions, attacks on farmers and community violence. The announcement was made by Information Minister Mohammed Idris at the end-of-the-year press briefing in Abuja on Monday. This signals a shift from treating mass kidnappings and rural attacks as ordinary crimes […]",
@@ -4779,6 +5741,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG introduces mandatory drug testing for federal public service recruitment",
     date: "December 23, 2025",
     category: "Public Health Infrastructure",
+    categoryId: 220,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Public Health Infrastructure"],
     tags: ["drug testing", "federal public service recruitment"],
     excerpt:
       "The Federal Government has approved mandatory pre-employment drug testing for applicants seeking entry into the federal public service. The disclosure was contained in a statement issued on Monday by Segun Imohiosen, Director, Information & Public Relations, Office of the Secretary to the Government of the Federation. The policy applies to recruitment across all federal Ministries, Departments and […]",
@@ -4793,6 +5757,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NDIC, NIBSS partner to speed up depositors’ reimbursement",
     date: "December 23, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["depositors’", "ndic", "NIBSS", "reimbursement"],
     excerpt:
       "The Nigeria Deposit Insurance Corporation (NDIC) and the Nigeria Inter-Bank Settlement System (NIBSS) Plc. are set to formalise a partnership through a Memorandum of Understanding (MoU) aimed at ensuring faster and more efficient reimbursement of depositors in the event of bank failures. The development was disclosed by NDIC Managing Director/CEO, Mr. Thompson Oludare Sunday, during a […]",
@@ -4807,6 +5773,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Companies to retain tax holidays for 2yrs under new law",
     date: "December 23, 2025",
     category: "Constitution, Reforms and Bills",
+    categoryId: 266,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Constitution, Reforms and Bills"],
     tags: ["companies", "new law", "tax holidays"],
     excerpt:
       "As Nigeria transitions to a new tax regime with effect from January 2026, the 149 companies currently enjoying pioneer status incentives (PSI) have been assured of retaining their tax holidays for at least two more years. Chairman of the presidential tax reform committee, Taiwo Oyedele, disclosed this at a media parley organised by the Nigerian Investment […]",
@@ -4821,6 +5789,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PenCom broadens mandate with healthcare initiative",
     date: "December 23, 2025",
     category: "Health Care Financing Mechanism",
+    categoryId: 221,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Health Care Financing Mechanism"],
     tags: ["health finace mechanism", "PenCom", "Retiree Healthcare Initiative", "seniors"],
     excerpt:
       "The National Pension Commission, in collaboration with licensed pension fund operators, has rolled out a healthcare scheme as part of its corporate social responsibility efforts targeted at low-income retirees. OLUWAKEMI ABIMBOLA explores the initiative, which seeks to ease retirees’ medical expenses, estimated at about 70 per cent of their costs, while safeguarding their dignity in later life […]",
@@ -4835,6 +5805,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "TCN records 131 vandalism cases in 2025",
     date: "December 23, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "Peak Transmission", "TCN", "Vandalism"],
     excerpt:
       "The Transmission Company of Nigeria recorded 131 cases of infrastructure vandalism across its network in 2025, even as it achieved a historic milestone in electricity transmission, the company has said. The Managing Director and Chief Executive Officer of TCN, Sule Abdulaziz, disclosed this in his end-of-year message to staff, partners, and stakeholders, in which he […]",
@@ -4848,6 +5820,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Why I Addressed Religious Violence In Nigeria — Nicki Minaj",
     date: "December 23, 2025",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["interconnedeness", "Nicki Minaj", "nigeria", "Religious Violence"],
     excerpt:
       "American rapper Nicki Minaj has explained why she chose to publicly address the alleged persecution of Christians in Nigeria, pointing to her personal connection to the country and reports of violent attacks on worshippers. Minaj spoke on the issue during a surprise appearance at AmericaFest on Sunday, where she responded to a question from Erika […]",
@@ -4862,6 +5836,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ogoni Clean-Up: HYPREP Targets 1,500 New Jobs, Expands Skills Training",
     date: "December 23, 2025",
     category: "Human Capital Development",
+    categoryId: 110,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Human Capital Development"],
     tags: ["human capital development", "new jobs", "Ogoni Clean-Up", "Skills Training"],
     excerpt:
       "The Hydrocarbon Pollution Remediation Project (HYPREP) has announced plans to create more than 1,500 direct jobs in Ogoniland in 2026 as it prepares to launch the next phase of its mangrove restoration and shoreline remediation projects. The disclosure was made by the Project Coordinator of HYPREP, Professor Nenibarini Zabbey, during a Project Review Meeting with […]",
@@ -4876,6 +5852,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Morocco claim easy win over Comoros in AFCON 2025 opener",
     date: "December 23, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON", "Comoros", "Morocco"],
     excerpt:
       "Morocco scored twice in the second half to seal a 2-0 win over Comoros in the opening match of the 2025 Africa Cup of Nations (AFCON) at the Prince Moulay Abdallah Stadium, Rabat, on Sunday night. In the group A encounter, the hosts missed a first half penalty but calmed jitters with two well-taken goals, […]",
@@ -4889,7 +5867,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "tinubu-engages-businessman-arthur-eze-to-commercialise-research-innovation",
     title: "Tinubu Engages Businessman Arthur Eze To Commercialise Research, Innovation",
     date: "December 23, 2025",
-    category: "Innovation And Technology",
+    category: "Innovation and Technology",
+    categoryId: 207,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Innovation and Technology"],
     tags: ["Arthur Eze", "Commercialise Research", "innovation", "tinubu"],
     excerpt:
       "President Bola Tinubu has engaged one of Nigeria’s most influential industrialists, elder statesman and global energy investor, Prince Arthur Eze, in a strategic partnership aimed at advancing Nigeria’s market-driven economic growth and commercilialisation of products of Nigerian research and innovation. According to a statement issued on Thursday by the Ministry of Innovation, Science and Technology, […]",
@@ -4905,6 +5885,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Avon Medical unveils N200 million enhanced ICU facility, expanding its critical-care capacity",
     date: "December 23, 2025",
     category: "Complex Medical Services",
+    categoryId: 89,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Complex Medical Services"],
     tags: [
       "Avon Medical",
       "complex medical services",
@@ -4924,6 +5906,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG mulls 50% textile sector upgrade",
     date: "December 23, 2025",
     category: "Manufacturing",
+    categoryId: 21,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Manufacturing"],
     tags: ["boost industry", "manufacturing", "Textile Sector Upgrade"],
     excerpt:
       "The Federal Government is considering modernising 50 per cent of Nigeria’s operational textile capacity with state-of-the-art equipment within five years as part of a broader revitalisation agenda. This follows a recent report by The PUNCH that textile imports rose to N814.27bn in the first nine months of 2025, despite the government’s promises to turn the […]",
@@ -4937,6 +5921,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Makinde signs N892bn 2026 appropriation today",
     date: "December 22, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Makinde", "Oyo State budget"],
     excerpt:
       "Oyo State Governor, Seyi Makinde, will sign the 2026 Appropriation Bill of N892bn into law today, Monday. This was contained in a statement by his Special Adviser on Media, Sulaimon Olarenwaju, in Ibadan, the state capital, on Sunday. The PUNCH reports that the budget signing ceremony, which will be held at the Executive Council Chambers […]",
@@ -4950,6 +5936,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Yuletide: FRSC declares ‘zero tolerance’ for dangerous driving",
     date: "December 22, 2025",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: ["Dangerous Driving", "frsc", "social performance", "Zero Tolerance"],
     excerpt:
       "The Federal Road Safety Corps has intensified nationwide enforcement to flush out dangerous drivers and eliminate life-threatening practices on major highways as Nigerians embark on end-of-year travels. The Corps Marshal, FRSC, Shehu Mohammed, said this on Monday during a strategic monitoring of vehicular movement in Kaduna as part of the ongoing Zero Tolerance special operation […]",
@@ -4964,6 +5952,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Kwara gov presents ₦644bn 2026 budget to assembly",
     date: "December 22, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budget to assembly", "Kwara"],
     excerpt:
       "The Kwara State Governor, AbdulRahman AbdulRazaq, on Monday presented a ₦644,004,816,893 appropriation bill for the 2026 fiscal year to the Kwara State House of Assembly. While presenting the budget at the House complex in Ilorin, the governor said ₦424.7bn, representing 65.98 per cent of the total estimate, was earmarked for capital expenditure, while ₦219.3bn, or […]",
@@ -4978,6 +5968,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG declares holidays for Christmas, New Year celebrations",
     date: "December 22, 2025",
     category: "Mass Media",
+    categoryId: 151,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Mass Media"],
     tags: ["fg", "new year", "xmas"],
     excerpt:
       "The Federal Government has declared Thursday, December 25, and Friday, December 26, 2025, as public holidays to mark Christmas and Boxing Day. The government also declared Thursday, January 1, 2026, for the New Year celebration. The declaration was contained in a statement issued on Monday by the Permanent Secretary of the Ministry of Interior, Dr […]",
@@ -4992,6 +5984,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PE-backed IPOs raised $18bn in Q3 –Report",
     date: "December 22, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["PE portfolios", "PE-backed IPOs", "relative strenght index"],
     excerpt:
       "Private equity (PE)-backed companies raised over $18 billion through initial public offerings (IPOs) in the third quarter of 2025, signalling a renewed appetite among public market investors for new issuances from PE portfolios, according to a recent EY report. “While modest compared with the pre-2021 boom years, these offerings are meaningful in signalling that public market […]",
@@ -5005,6 +6003,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "AFCON: CAF appoints Mauritanian referee for Super Eagles vs Tanzania clash",
     date: "December 22, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON", "Mauritanian referee", "Tanzania clash"],
     excerpt:
       "The Confederation of African Football, CAF, has named Dahane Beida of Mauritania as the centre referee for Nigeria’s 2025 Africa Cup of Nations Group C match against Tanzania. Beida is among Africa’s most experienced referees. The arbitrator was in charge of the use of Video Assistant Referee (VAR) during the opening game of AFCON 2025 […]",
@@ -5019,6 +6019,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Maternal health: Zamfara launches safe delivery initiative to boost services",
     date: "December 22, 2025",
     category: "Maternal Mortality Ratio",
+    categoryId: 213,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Maternal Mortality Ratio"],
     tags: ["boost services", "delivery initiative", "Maternal health", "zamfara"],
     excerpt:
       "The Zamfara Ministry of Health launched the Safe Delivery Initiative to strengthen maternal and newborn healthcare services across the state. The launch took place at the Unguwar Dallatu Primary Healthcare Centre, Gusau. In a speech at the event, the Commissioner for Health, Dr Nafisa Maradun, said the initiative was designed to ensure upgrading delivery rooms, […]",
@@ -5033,6 +6035,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Zamfara announces nursing scholarships for female students",
     date: "December 22, 2025",
     category: "Scholarships",
+    categoryId: 35,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Scholarships"],
     tags: ["female students", "nursing scholarships", "zamfara"],
     excerpt:
       "The Zamfara State government has announced a scholarship programme for eligible applicants across the state to study nursing. This was announced in a statement issued by the Zamfara State Scholarship Board on Tuesday. The statement said that “Zamfara State Government is offering a full scholarship opportunity for ONLY female students to study Nursing at Nexus […]",
@@ -5046,7 +6050,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "how-to-drive-rapid-technological-change",
     title: "‘How to drive rapid technological change’",
     date: "December 22, 2025",
-    category: "Innovation And Technology",
+    category: "Innovation and Technology",
+    categoryId: 207,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Innovation and Technology"],
     tags: ["drive mentorship", "technological change"],
     excerpt:
       "Stakeholders have raised concerns that leadership mentorship, STEM inclusivity and sustained advocacy are now critical to Africa’s development, as rapid technological innovation increasingly drives economic growth, job creation and governance across the continent. The urgency, they noted, stems from widening skills gaps, persistent gender exclusion and the need to deliberately prepare young Africans to drive science,",
@@ -5059,7 +6065,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "rivers-unveils-20000-low-cost-housing-units",
     title: "Rivers unveils 20,000 low-cost housing units",
     date: "December 22, 2025",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["low-cost housing units", "Rivers State"],
     excerpt:
       "The Rivers State Governor, Siminalayi Fubara, and TAF Africa Global Limited have unveiled the first phase of 20,000 low-cost housing units in the state, aiming to provide affordable homes for residents. In a statement, it was noted that having realised the huge housing deficit in Africa and with a passion to solve such housing needs, […]",
@@ -5072,7 +6084,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-flags-152-million-homes-as-structurally-unsafe",
     title: "FG flags 15.2 million homes as structurally unsafe",
     date: "December 22, 2025",
-    category: "Housing And Development",
+    category: "Housing and Development",
+    categoryId: 117,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Housing and Development",
+    ],
     tags: ["housing and development", "National Housing needs", "Unsafe Nigerian Homes"],
     excerpt:
       "The Federal Government has revealed that 15.2 million Nigerian homes are structurally unsafe, highlighting a severe housing crisis across the country. In a post on the ministry’s X handle recently, the Minister of Housing and Urban Development, Ahmed Dangiwa, disclosed the findings during the presentation of the National Housing Data Initiative by the National Housing […]",
@@ -5087,6 +6105,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote launches N739/litre petrol at MRS stations nationwide",
     date: "December 22, 2025",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["dangote", "downstream sector", "MRS Stations"],
     excerpt:
       "Dangote Petroleum Refinery has commenced nationwide sales of Premium Motor Spirit (petrol) at a pump price of N739 per litre across all MRS Oil Nigeria Plc filling stations, marking a significant milestone in the refinery’s mission to deliver affordable fuel to Nigerians and stabilise the downstream petroleum market. In a statement from the firm on […]",
@@ -5101,6 +6121,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Brokers key to boosting insurance penetration — Expert",
     date: "December 22, 2025",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["brokers", "Insurance Penetration", "wealth redistribution"],
     excerpt:
       "The Chief Executive Officer of Enterprise Life, Nelson Akerele, has said that brokers play a crucial role in bridging Nigeria’s insurance penetration gap. Akerele stated this while participating in the December edition of the Nigeria Council of Registered Insurance Brokers’ Abuja Area Committee Professional Members’ Evening, according to a statement from the firm. According to […]",
@@ -5115,6 +6137,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG opens Bodo-Bonny Road ahead of Yuletide",
     date: "December 22, 2025",
     category: "Hard Infrastructure",
+    categoryId: 18,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Hard Infrastructure"],
     tags: ["Bodo-Bonny Road", "Yuletide Season"],
     excerpt:
       "The Federal Government has temporarily opened the Bodo–Bonny Road to facilitate smoother transportation for residents during the yuletide. The President, who was represented by the Minister of Works, David Umahi, at the temporary opening of the road to ease transportation for residents in the communities along the route during the yuletide festivities, said the road […]",
@@ -5128,6 +6152,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ghana deports 42 Nigerians for prostitution, others",
     date: "December 22, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["Ghana", "nigerians", "Prostitution and Fraud"],
     excerpt:
       "No fewer than 42 Nigerians have been deported from Ghana’s Ashanti Region following rulings by various courts over alleged prostitution, fraud, and other related offences. The development was disclosed in a Facebook post on Thursday, December 18, 2025, by the Ashanti Regional Minister, Frank Amoakohene. According to him, other foreign nationals deported include 13 Cameroonian […]",
@@ -5142,6 +6172,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Economists flag revenue, debt risks in 2026",
     date: "December 22, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["Economic Risks", "economic volatilities", "Revenue Shortfalls", "Rising Debt"],
     excerpt:
       "Nigeria is heading toward a difficult 2026 as widening revenue shortfalls, rising public debt, new taxes and delayed capital spending threaten to deepen economic strain, economists have said, following confirmation by Finance Minister Wale Edun that government revenues are far below target. Edun told lawmakers this week that federal revenues for 2025 are now projected […]",
@@ -5155,6 +6187,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN pockets N192m from 82 BDC licensees",
     date: "December 22, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["CBN", "monetary policy", "New BDC Licence Fees"],
     excerpt:
       "The Central Bank of Nigeria may have earned at least N192m in non-refundable fees from the 82 Bureau De Change operators who have just secured final licences under the revised regulatory framework, according to an analysis by Saturday PUNCH. The amount is based on the fee schedule in the May 2024 Regulatory and Supervisory Guidelines for […]",
@@ -5167,7 +6201,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "world-bank-approves-500m-msme-finance-package-for-nigeria",
     title: "World Bank approves $500m MSME finance package for Nigeria",
     date: "December 22, 2025",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["MSME finance in Nigeria", "World Bank"],
     excerpt:
       "The World Bank has approved a $500 million financing package to expand access to finance for micro, small, and medium enterprises in Nigeria under the Fostering Inclusive Finance for MSMEs in Nigeria project. In a press release issued by the World Bank in Nigeria on Saturday, the global lender announced that the approval encompasses a […]",
@@ -5182,6 +6222,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Higher plant utilisation lifts gas supply to 4.68bscf",
     date: "December 22, 2025",
     category: "Gas and Infrastructure",
+    categoryId: 97,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Gas and Infrastructure"],
     tags: ["gas and infrastructure", "gas supply rises", "higher plant use"],
     excerpt:
       "Nigeria’s average daily gas supply climbed to 4.684 billion standard cubic feet per day in November 2025, reflecting a stronger performance compared with October, according to fresh operational data released by the Nigerian Midstream and Downstream Petroleum Regulatory Authority. The supply rose from the 3.94bscf/d average processing level recorded in October. A review of the latest […]",
@@ -5196,6 +6238,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Anxiety mounts over unsafe Indomie noodles",
     date: "December 22, 2025",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Indomie Noodles", "nafdac", "Public Safety Alert", "welbeing"],
     excerpt:
       "Anxiety is mounting across the country following a public alert by the National Agency for Food and Drug Administration and Control over the recall of Indomie Noodles, Vegetable Flavour, due to the presence of undeclared allergens. NAFDAC warned that the affected product contains milk and eggs, allergens that could trigger severe and potentially life-threatening reactions in […]",
@@ -5209,6 +6253,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Secure Foreign Card Transactions Nationwide, CBN Mandates Banks",
     date: "December 22, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["CBN", "Foreign Card Transactions", "monetary policy", "nigerian banks"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has instructed deposit money banks and non-bank acquirers to introduce multi-factor authentication for foreign-issued card transactions that exceed $200 daily. The directive was contained in a circular dated December 18 and signed by Rita Sike, director of the financial policy and regulation department. The apex bank also extended the […]",
@@ -5223,6 +6269,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Davido Set To Ignite AFCON 2025 Opening Ceremony In Rabat",
     date: "December 22, 2025",
     category: "Music",
+    categoryId: 75,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Music"],
     tags: ["AFCON 2025", "Davido"],
     excerpt:
       "The TotalEnergies Africa Cup of Nations (AFCON) 2025 will be officially kicked off on Sunday night with a spectacular opening ceremony slated for 6:00 PM WAT at the Prince Moulay Abdellah Stadium in Rabat, Morocco, setting the tone for what promises to be a month of continental football and cultural celebration. Nigerian Afrobeats titan Davido […]",
@@ -5237,6 +6285,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Resurgent Farmer Abductions May Cause Food Crisis In 2026 – Farmers’ union leader",
     date: "December 22, 2025",
     category: "Food Security",
+    categoryId: 30,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Food Security"],
     tags: ["Farmer Abductions", "food crisis", "food security"],
     excerpt:
       "A renewed surge in kidnappings targeting farmers across Kwara, Plateau, Taraba, Niger, and other Central Belt states is intensifying fears of a looming food emergency in 2026. LEADERSHIP Sunday gathered that, across the affected states, farmers have been forced to suspend dry-season operations after multiple abductions along irrigation corridors and riverbank fields. Cropland harvests are […]",
@@ -5250,7 +6300,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "police-arrest-4-suspects-for-unlawful-possession-of-fireworks",
     title: "Police Arrest 4 Suspects For Unlawful Possession Of Fireworks",
     date: "December 22, 2025",
-    category: "Simple And Miscellaneous Offences",
+    category: "Simple and Miscellaneous Offences",
+    categoryId: 49,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Simple and Miscellaneous Offences"],
     tags: ["fireworks", "Police", "simple offence", "Unlawful Possession"],
     excerpt:
       "The Imo State Police Command has arrested four suspects over unlawful possession and distribution of banned fireworks and various kinds of pyrotechnics within the Owerri metropolis.‎‎The suspects were Victor Amadi, male, 29 years, Moses Okoro, male, 31 years, Ebuka Onye, male, 28 years, and Isaac Amadi, male, 23 years.‎‎This was made known through a statement […]",
@@ -5265,6 +6317,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG issues N590 billion power sector bond to clear GENCO, gas arrears",
     date: "December 22, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "gencos", "power sector bond"],
     excerpt:
       "The Federal Government has issued the first bond under the Presidential Power Sector Debt Reduction Programme, marking a major step in efforts to address longstanding payment arrears in Nigeria’s electricity industry. The Presidency disclosed this on Friday in a statement signed by the Team Lead, Communications, Office of the Special Adviser to the President on Energy, Senan Murray. The N590 […]",
@@ -5280,6 +6334,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Kano approves N16.2 billion road contract for Gwarzo corridor, N4.4 billion for Karaye dualization",
     date: "December 22, 2025",
     category: "Critical Infrastructure",
+    categoryId: 143,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Critical Infrastructure"],
     tags: ["budget", "Kano", "road contract"],
     excerpt:
       "The Kano State Government has approved N16.2 billion for the re-award of the Gwarzo-Tsaure-Tsanyawa Road and N4.4 billion for the dualization of a five-kilometre road in Karaye Local Government Area. This was disclosed by Ibrahim Wayya, Commissioner for Information and Internal Affairs, on Friday at a news conference on the outcome of the 35th State […]",
@@ -5294,6 +6350,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tax reform or financial exclusion? The trouble with mandatory TINs",
     date: "December 22, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgeting and debt financing", "financial exclusion", "mandatory TINs", "tax reform"],
     excerpt:
       "It is not only questionable but an aberration that a nation where over 38million Nigerians remain financially excluded, where trust in institutions is fragile, and where citizens are pressured under the weight of rising living costs, the use of Tax Identification Number (TIN) has been specified as the only option for their bank accounts operation […]",
@@ -5308,6 +6366,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigerian artists earn $395m from touring and live performances",
     date: "December 22, 2025",
     category: "Music",
+    categoryId: 75,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Music"],
     tags: ["entertainment", "music", "touring and live performances"],
     excerpt:
       "Nigerian artists earned an estimated $395 million from touring and live performances in 2024/2025, reinforcing the dominance of concerts, festivals, and tours as the primary revenue driver in the country’s music industry, according to industry data and stakeholder insights. The figures are contained in Basslines to Billions: Nigeria’s Music Market Intelligence Report, a first-of-its-kind publication […]",
@@ -5322,6 +6382,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "US pledges $2 billion grants for Nigeria’s health sector from 2026–2030",
     date: "December 22, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["grants", "health sector"],
     excerpt:
       "The United States has pledged $2 billion in grants to support Nigeria’s health sector over the five-year period from 2026 to 2030. The development was conveyed in a statement issued by the Federal Ministry of Information and National Orientation on Friday, December 19, 2025. This commitment is part of a broader Memorandum of Understanding (MoU) recently signed […]",
@@ -5336,6 +6402,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote explains why cement costs more in Nigeria than abroad",
     date: "December 22, 2025",
     category: "Capital Expenditure",
+    categoryId: 225,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Capital Expenditure"],
     tags: ["capital expenditure", "cement costs", "dangote"],
     excerpt:
       "Nigerian billionaire industrialist, Aliko Dangote, has attributed the higher cost of locally produced cement to Nigeria’s high taxes and regulatory burden. He made the remark during an exclusive interview with Business Insider Africa, emphasizing how fiscal policies inflate domestic prices. The disparity has drawn public attention, as cement exported from Nigeria often sells for less […]",
@@ -5350,6 +6418,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FCCPC warns inter-city transporters against arbitrary yuletide fare hikes",
     date: "December 22, 2025",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: [
       "arbitrary yuletide",
       "fare hikes",
@@ -5370,6 +6440,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Troops foil terrorist logistics movement, neutralise 17 insurgents in Borno ambush",
     date: "December 22, 2025",
     category: "Security Agencies",
+    categoryId: 48,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Security Agencies"],
     tags: ["insurgents Borno ambush", "logistics movement", "securites agency", "terrorist"],
     excerpt:
       "Troops of Operation HADIN KAI (OPHK) have foiled a terrorist logistics movement and neutralised 17 suspected insurgents during a coordinated long-range ambush in Borno State. The operation, conducted in the early hours of December 21, 2025, is part of the Nigerian military’s intensified kinetic operations against terrorist elements in the North-East. The troops were working […]",
@@ -5384,6 +6456,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BPP raises alarm over fraudulent Facebook account",
     date: "December 22, 2025",
     category: "Procurement",
+    categoryId: 120,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Procurement"],
     tags: ["bpp", "fraudulent Facebook account", "procurement"],
     excerpt:
       "The Bureau of Public Procurement (BPP) has raised an alarm to members of the public on the activities of fraudsters who have created a fake Facebook account used to impersonate its Director-General, Dr Adebowale Adedokun. This was made known in a statement issued by the Head of Press and Public Relations, BPP, Zira Nagga, on Sunday, […]",
@@ -5398,6 +6472,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SEC sets January 31 deadline for 2026 CMO registration renewal",
     date: "December 22, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["CMO registration renewal", "financial health performance", "sec"],
     excerpt:
       "Nigeria’s Securities and Exchange Commission (SEC) has announced that all Capital Market Operators (CMOs) are required to renew their registration between January 1 and 31, 2026. In a release on Sunday, December 21, 2025, the Commission disclosed that beginning in the first quarter of 2026, it will commence electronic receipt and processing of registration applications […]",
@@ -5412,6 +6492,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NMDPRA CEO Farouk Ahmed resigns after meeting with Tinubu",
     date: "December 18, 2025",
     category: "Governance",
+    categoryId: 273,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Governance"],
     tags: ["governance", "NMDPRA", "resigns"],
     excerpt:
       "Farouk Ahmed, the chief executive officer (CEO) of the Nigerian Midstream and Downstream Petroleum Regulatory Authority (NMDPRA), has resigned following a meeting with President Bola Tinubu. Tinubu, on Wednesday, summoned Ahmed to the Presidential Villa in Abuja, following allegations of economic sabotage and corruption. Gbenga Komolafe, the CEO of the Nigeria Upstream Petroleum Regulatory Commission […]",
@@ -5427,6 +6509,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Tinubu moves to end multiple budgets, sends N43trn appropriation repeal, re-enactment bill to n’assembly",
     date: "December 18, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["appropriation repeal", "multiply budgets", "re-enactment bill"],
     excerpt:
       "President Bola Tinubu has transmitted the Appropriation, Repeal, and Re-enactment Bill 2 of 2024 to the national assembly for consideration. Godswill Akpabio, the senate president, read the president’s letter at plenary on Wednesday.Tajudeen Abass also read the letter in the house of representatives.“I hereby transmit to the Senate the enclosed Appropriation, Repeal, and Re-enactment Bill […]",
@@ -5441,6 +6525,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Airtel Africa, SpaceX sign deal to launch Starlink Direct-to-Cell in Nigeria, others",
     date: "December 18, 2025",
     category: "Mobile Phone Penetration",
+    categoryId: 210,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Mobile Phone Penetration"],
     tags: ["Airtel Africa", "SpaceX", "SpaceX mobile phone penetration"],
     excerpt:
       "Airtel Africa has signed an agreement with SpaceX to introduce Starlink Direct-to-Cell satellite connectivity across its 14 African markets, including Nigeria. The company disclosed this in a statement released on Tuesday. Under the partnership, Airtel Africa customers using compatible smartphones will be able to connect directly to Starlink satellites in locations without terrestrial mobile coverage. This move could",
@@ -5455,6 +6541,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria’s crude oil exports hit N37.7 trillion in 9 months",
     date: "December 18, 2025",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["crude oil exports"],
     excerpt:
       "Nigeria’s crude oil exports have surged to N37.7 trillion in the first nine months of the year. This is according to the Q3 2025 Foreign Trade in Goods Statistics released by the National Bureau of Statistics (NBS). The figure covers January to September 2025, a period of relatively stable oil export performance despite global market […]",
@@ -5469,6 +6557,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "PenCom begins disbursement of N758 billion pension bond to retirees",
     date: "December 18, 2025",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["PenCom", "pension bond to retirees"],
     excerpt:
       "The Director-General of the National Pension Commission (PenCom), Ms. Omolola Oloworaran, says the commission has commenced the disbursement of the N758 billion bond approved by the Federal Government. Oloworaran spoke at the Pension Revolution Summit in Abuja, disclosing that the bond, approved by President Bola Tinubu in February, had already been cashed. The fund is to clear outstanding pension liabilities […]",
@@ -5484,6 +6574,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "US adds Nigeria to new travel restriction list, cites “radical islamic terrorist”",
     date: "December 18, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["new applicants", "travel restrictions"],
     excerpt:
       "Nigeria’s inclusion in the United States’ expanded travel restriction framework has raised concerns among Nigerian travelers, students, professionals, and families with existing or planned ties to the U.S. While the policy stops short of a full travel ban, its practical impact differs significantly for current visa holders, those seeking renewals, and first-time applicants. The restrictions were […]",
@@ -5498,6 +6594,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Microsoft, FG train 4 million Nigerians in AI and tech skills in five years",
     date: "December 18, 2025",
     category: "Knowledge Transfer",
+    categoryId: 107,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Knowledge Transfer"],
     tags: ["knowledge transfer", "microsoft", "training in AI and tech skills"],
     excerpt:
       "Microsoft says its partnership with the Federal Government has trained over four million Nigerians in digital skills since 2021. The announcement was made on Tuesday by Nonye Ujam, Director for Government Affairs at Microsoft West Africa, during a media roundtable in Lagos. The milestone highlights Nigeria’s commitment to building a future-ready workforce and advancing the country’s digital […]",
@@ -5511,7 +6609,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nsib-confirms-crash-landing-of-skypower-express-aircraft-at-owerri-airport",
     title: "NSIB confirms crash landing of Skypower Express aircraft at Owerri airport",
     date: "December 18, 2025",
-    category: "Transportation Investigation And Safety Boards",
+    category: "Transportation Investigation and Safety Boards",
+    categoryId: 198,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Transportation Investigation and Safety Boards",
+    ],
     tags: ["NSIB", "Skypower Express aircraft"],
     excerpt:
       "The Nigerian Safety Investigation Bureau (NSIB) confirmed the crash landing of a Cessna 172 chartered aircraft operated by Skypower Express at the Sam Mbakwe International Cargo Airport, Owerri, Imo. Four persons escaped death as the aircraft, which was en route Port Harcourt International Airport from Kaduna International Airport, made an emergency landing at the Sam […]",
@@ -5526,6 +6630,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Four investors push for Lagos-Calabar highway concession",
     date: "December 18, 2025",
     category: "Capital Expenditure",
+    categoryId: 225,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Capital Expenditure"],
     tags: ["4 investors", "hard expenditure", "Lagos-Calabar highway concession"],
     excerpt:
       "The Minister of Works, David Umahi, on Wednesday said the Federal Government’s Lagos-Calabar Coastal Highway project has begun attracting strong interest from international investors, with at least four companies offering to refund the entire cost of Section One in exchange for operating and tolling the road. Umahi disclosed this while speaking at a press briefing […]",
@@ -5540,6 +6646,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Fresh storm brews over new tax law",
     date: "December 18, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["new tax law"],
     excerpt:
       "The Presidency, on Wednesday, rejected calls for the suspension of President Bola Tinubu’s recently-signed tax reform laws, insisting the legislation was “unstoppable” and would take effect from January 1, 2026. This was as opposition figures warned the policy could deepen hardship and trigger severe social and economic consequences. Special Adviser to the President on Information […]",
@@ -5553,6 +6661,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Profiling Nigeria’s 28-man AFCON squad as Eagles land in Morocco",
     date: "December 18, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Full Player list", "nigeria AFCON Squad", "team sport"],
     excerpt:
       "Francis Uzoho made his senior international debut in November 2017, replacing Daniel Akpeyi during a 4–2 friendly win over Argentina, and quickly rose to prominence within the Super Eagles set-up. He was Nigeria’s first-choice goalkeeper at the 2018 World Cup in Russia, starting all three matches, and later featured at the 2019 Africa Cup of […]",
@@ -5567,6 +6677,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Salaries, debt service gulp 105% of govt revenue",
     date: "December 18, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Debt & Salaries", "debt financing", "government revenue", "Total Income"],
     excerpt:
       "Debt service and personnel costs have swallowed more than the Federal Government’s total revenue for the first seven months of 2025, even as receipts fell sharply below target and capital projects suffered deep cuts. An analysis of the 2026–2028 Medium-Term Expenditure Framework and Fiscal Strategy Paper, released on Wednesday on the website of the Budget […]",
@@ -5580,6 +6692,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "African Youth Games: Nigeria’s Olalekan Storms Into 50kg Boxing Semifinals",
     date: "December 18, 2025",
     category: "Amateur Sports",
+    categoryId: 248,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Amateur Sports"],
     tags: ["African Youth Games", "Boxing Semifinals", "Olalekan"],
     excerpt:
       "Nigeria recorded another impressive feat at the ongoing 4th African Youth Games in Angola as its 50kg boxer, Abijuwon Furuk Olalekan, secured a convincing victory over Salmane Kochubati of Tunisia in the men’s 50kg category on Wednesday evening. Olalekan dominated the bout with confidence and technical superiority, earning a well-deserved win that has now qualified […]",
@@ -5593,7 +6707,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "apc-best-political-brand-for-winning-elections-gov-abdulrazaq",
     title: "APC Best Political Brand For Winning Elections – Gov AbdulRazaq",
     date: "December 18, 2025",
-    category: "Political Parties And Ideologies",
+    category: "Political Parties and Ideologies",
+    categoryId: 268,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Political Arena",
+      "Political Parties and Ideologies",
+    ],
     tags: ["APC", "Best Political Brand", "ecletion victory"],
     excerpt:
       "The Kwara State governor, AbdulRahman AbdulRazaq has said that the All Progressives Congress (APC) remains the best political brand to win elections in Nigeria, referencing the impacts of economic reforms of President Bola Ahmed Tinubu administration. The governor said the APC-led central and state governments have impacted the lives of citizens through the investments in […]",
@@ -5608,6 +6728,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ethical Financial System Key To Nigeria’s Economic Resilience — Expert",
     date: "December 18, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["Economic Resilience", "Ethical Financial System", "frc"],
     excerpt:
       "The executive director of the New Era for Sustainable Leadership and Accountability Initiative (NESLAI), Comrade Edwin Olorunfemi, has emphasised the need for a robust financial system to foster economic growth. He stated this on Tuesday when the Financial Reporting Council of Nigeria (FRC) and civil society leaders converged for the 2nd edition of the Roundtable […]",
@@ -5621,7 +6743,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigeria-produces-14m-metric-tonnes-of-fish-yearly-minister",
     title: "Nigeria Produces 1.4m Metric Tonnes Of Fish Yearly – Minister",
     date: "December 18, 2025",
-    category: "Life Stock And Aquaculture",
+    category: "Life Stock and Aquaculture",
+    categoryId: 126,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Life Stock and Aquaculture"],
     tags: ["1.4m Metric Tonnes Of Fish", "aquaculture"],
     excerpt:
       "Minister of Marine and Blue Economy, Adegboyega Oyetola, has revealed that local fish production has increased from 1.1 million metric tonnes to 1.4 million metric tonnes this year. Oyetola stated that the ministry and its agencies were working diligently and in collaboration with a specialised agencies to enhance local fish production, reduce dependence on imports […]",
@@ -5636,7 +6760,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title:
       "Dangote releases details of ‘$5m spent by NMDPRA CEO’ on his children’s education in Switzerland",
     date: "December 16, 2025",
-    category: "Simple And Miscellaneous Offences",
+    category: "Simple and Miscellaneous Offences",
+    categoryId: 49,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Simple and Miscellaneous Offences"],
     tags: [],
     excerpt:
       "Aliko Dangote, chairman of the Dangote Group, says Farouk Ahmed, chief executive officer (CEO) of the Nigerian Midstream and Downstream Petroleum Regulatory Authority (NMDPRA), spent about $5 million on the secondary school education of his children in Switzerland. In a paid newspaper advert on Tuesday, the billionaire said Ahmed paid the said amount for four […]",
@@ -5650,7 +6776,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "132-nigerian-firms-secured-n517bn-359m-in-local-content-funds-ncdmb",
     title: "132 Nigerian firms secured N51.7bn, $359m in local content funds – NCDMB",
     date: "December 16, 2025",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["Local Content Funds", "NCDMB"],
     excerpt:
       "A total of 132 Nigerian companies have accessed N51.785bn and $359.653m from local content intervention funds aimed at promoting indigenous participation in the country’s oil and gas sector, the Nigerian Content Development and Monitoring Board has disclosed. The funding, designed to strengthen the capacity of Nigerian firms, includes the $350 million Nigerian Content Intervention Fund, […]",
@@ -5665,6 +6797,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Buhari believed Aso Rock gossip I planned killing him – Aisha",
     date: "December 16, 2025",
     category: "Gossips and Attractions",
+    categoryId: 149,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Gossips and Attractions"],
     tags: ["Aisha Buhari", "gossip"],
     excerpt:
       "Former First Lady, Aisha Buhari, has narrated how her husband, the late President Muhammadu Buhari “began locking his room” following gossips in Aso Rock that she (Aisha) planned to kill him. The ex-First Lady also said the health crisis that forced Buhari, to take 154 days of medical leave in 2017 began with a broken […]",
@@ -5678,7 +6812,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "abia-state-enacts-law-to-become-technology-and-innovation-hub-of-south-east",
     title: "Abia State enacts law to become technology and innovation hub of South East",
     date: "December 16, 2025",
-    category: "Innovation And Technology",
+    category: "Innovation and Technology",
+    categoryId: 207,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Innovation and Technology"],
     tags: ["abia state", "south east", "technology and innovation hub"],
     excerpt:
       "The government of Abia State has enacted a new law aimed at positioning the southeastern Nigerian state as a hub for technology and innovation. The state is also laying out plans to introduce a fleet of electric buses as part of a broader push toward cleaner urban transportation. Gov. Alex Otti assented this week to […]",
@@ -5693,6 +6829,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "LASACO Assurance seeks to triple share capital to N36.08 billion",
     date: "December 16, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: [
       "financial health performance",
       "LASACO Assurance",
@@ -5713,6 +6855,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "OpenAI strikes equity-only deal with Disney to license 200+ animated characters",
     date: "December 16, 2025",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["animated characters", "bulk technology", "OpenAI"],
     excerpt:
       "OpenAI has entered an equity-only licensing agreement with the Walt Disney Company, allowing the artificial intelligence firm to use some of Disney’s most iconic characters without an upfront cash payment. Under the deal, OpenAI will grant Disney stock warrants, allowing the entertainment giant to purchase additional shares in the artificial intelligence company beyond its previously […]",
@@ -5727,6 +6871,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Police to resume enforcement of tinted glass permit from January 2, 2026",
     date: "December 16, 2025",
     category: "Enforcement",
+    categoryId: 191,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Enforcement"],
     tags: ["police enforcement", "tinted glass permit"],
     excerpt:
       "The Nigeria Police Force has announced that it will resume nationwide enforcement of the tinted glass permit from January 2, 2026. The announcement was made in a statement issued on Monday by CSP Benjamin Hundeyin, anipr, mipra, Force Public Relations Officer, Force Headquarters, Abuja. According to the police, the decision follows a review of escalating […]",
@@ -5740,7 +6886,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "2026-utme-jamb-begins-accreditation-of-848-cbt-centres-nationwide",
     title: "2026 UTME: JAMB begins accreditation of 848 CBT centres nationwide",
     date: "December 16, 2025",
-    category: "Primary Secondary And Vocational Education",
+    category: "Primary, Secondary and Vocational Education",
+    categoryId: 85,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Primary, Secondary and Vocational Education"],
     tags: ["cbt", "jamb"],
     excerpt:
       "The Joint Admissions and Matriculation Board has begun the nationwide accreditation of 848 Computer-Based Test centres for the 2026 Unified Tertiary Matriculation Examination. The exercise, announced by JAMB and commenced on Monday, December 15, is part of the Board’s early preparations to ensure standardisation, security, and technical readiness ahead of the examination. The accreditation comes amid sustained effort",
@@ -5755,6 +6903,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote appoints former CBN Director, Hassan Mahmud as Group Chief Economist",
     date: "December 16, 2025",
     category: "Appointment",
+    categoryId: 132,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Appointment"],
     tags: ["appointment", "CBN", "dangote", "Group Chief Economist"],
     excerpt:
       "Dangote Group has announced the appointment of renowned economist and former Central Bank of Nigeria (CBN) Director, Dr Hassan Mahmud, as its Group Chief Economist, reinforcing the conglomerate’s economic advisory capacity at a time of heightened global and domestic market uncertainty. The appointment announced in an emailed release on Monday positions Dr. Mahmud as the […]",
@@ -5768,7 +6918,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "federal-high-court-disposes-of-16019-cases-in-one-year-cj",
     title: "Federal High Court disposes of 16,019 cases in one year — CJ",
     date: "December 16, 2025",
-    category: "Judicial Arm Of Government",
+    category: "Judicial Arm of Government",
+    categoryId: 264,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Judicial Arm of Government"],
     tags: ["Federal High Court"],
     excerpt:
       "The Chief Judge of the Federal High Court of Nigeria, Justice John Terhemba Tsoho, has announced that judges of the court disposed of 16,019 cases out of 181,924 pending matters during the 2024/2025 legal year. The Chief Judge disclosed that 165,905 cases are now pending across the court’s divisions nationwide. Justice Tsoho made this known on Monday at the opening of […]",
@@ -5783,6 +6935,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FAAC: FG, states, LG councils share N1.928 trillion for November 2025",
     date: "December 16, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: [],
     excerpt:
       "The Federation Account Allocation Committee has shared a total of N1.928 trillion as federation allocation for November 2025 among the Federal Government, state governments, and local government councils. The allocation was agreed at FAAC’s December 2025 meeting, chaired by the Minister of State for Finance, Dr. Doris Uzoka-Anite. The funds were distributed from a gross […]",
@@ -5797,6 +6951,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN gives one-month deadline for dual connectivity on PoS",
     date: "December 12, 2025",
     category: "Supportive Government Policies",
+    categoryId: 65,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Supportive Government Policies"],
     tags: ["CBN", "dual connectivity", "pos", "supportive government policies"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has given all financial institutions, acquirers and payment service providers a one-month deadline to implement mandatory dual connectivity for all Point of Sale (PoS) transactions. The instruction is contained in a circular signed by the Director of the Payments System Supervision Department, Rakiya Yusuf, and dated December 11, 2025. […]",
@@ -5811,6 +6967,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FULL LIST: Okoye, Boniface dropped as Nwabali, Onuachu make Eagles’ AFCON final squad",
     date: "December 12, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["AFCON final squad", "super eagles", "team sports"],
     excerpt:
       "Eric Chelle, Super Eagles head coach, has named the final squad for the 2025 Africa Cup of Nations (AFCON). The 28-player squad is a mixture of familiar stars and new names as the Eagles prepare for the competition starting on December 21.Several players included in the initial 54-player provisional squad were culled from the list.The biggest surprise in the final squad […]",
@@ -5825,6 +6983,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "APPLY: PSC opens portal for recruitment of 50,000 constables",
     date: "December 12, 2025",
     category: "Vacancies",
+    categoryId: 72,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Vacancies"],
     tags: ["police constables", "psc", "recruitment"],
     excerpt:
       "The Police Service Commission (PSC) has opened the process for recruiting 50,000 constables into the Nigeria Police Force (NPF). The process follows a directive by President Bola Tinubu to strengthen community policing and enhance internal security.In a statement on Thursday, Torty Kalu, PSC’s head of protocol and public affairs, said the recruitment portal will open […]",
@@ -5839,6 +6999,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "WHO to unveil initiatives promoting safe, science-backed traditional medicine",
     date: "December 12, 2025",
     category: "Traditional Medicines",
+    categoryId: 87,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Traditional Medicines"],
     tags: ["traditional medicine", "WHO"],
     excerpt:
       "The World Health Organisation (WHO) says new scientific tools are creating an unprecedented opportunity to rigorously evaluate and safely integrate traditional medicine into modern health systems. Speaking at a press briefing on Tuesday from Geneva, WHO experts said traditional medicine has become a “global reality”, noting that many member states are relying on it as […]",
@@ -5853,6 +7015,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "INEC records 85,739 new voter registrations in Ogun",
     date: "December 12, 2025",
     category: "Electoral Commission",
+    categoryId: 256,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Electoral Commission"],
     tags: ["inec", "ogun", "voter Registrations"],
     excerpt:
       "The Independent National Electoral Commission (INEC) says 85,739 persons registered both online and in-person during the Continuous Voter Registration (CVR) from August 25 December 5 in Ogun. This is contained in a statement issued by the State Resident Electoral Commissioner (REC), Mrs. Feyijimi Saseyi, in Abeokuta, the state capital, on Thursday. According to him, 57,598 […]",
@@ -5866,7 +7030,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "bosun-tijani-3mtt-received-over-n6-billion-funding-commitment-from-3-core-partners",
     title: "Bosun Tijani: 3MTT received over N6 billion funding commitment from 3 core partners",
     date: "December 12, 2025",
-    category: "Investment In Sustainable Technologies",
+    category: "Investment in Sustainable Technologies",
+    categoryId: 208,
+    categoryPath: [
+      "TECHNOLOGY & INNOVATION",
+      "Technology",
+      "Investment in Sustainable Technologies",
+    ],
     tags: [
       "airtel",
       "Bosun Tijani",
@@ -5890,6 +7060,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Christmas travel: Lagos–South-East bus fares set to climb 20–30%",
     date: "December 12, 2025",
     category: "Data Collection and Analysis",
+    categoryId: 236,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Data Collection and Analysis",
+    ],
     tags: [
       "Alternatives to road transport",
       "bus fares",
@@ -5909,6 +7085,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria losing economic value to foreign markets despite tech push — Analyst",
     date: "December 12, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["economic value", "economic voltilities", "foreign markets"],
     excerpt:
       "Professor Olufemi Shuaib, a Lecturer at the University of Lagos, has warned that Nigeria’s growing focus on technology skills and digital solutions is reportedly driving talent and jobs away from the local economy rather than creating domestic value. He made the remarks last month at Protea Hotel, Alausa, Ikeja, during the Economic Roundtable Discussion organized […]",
@@ -5923,6 +7101,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG launches Nigeria’s first online gas trading, clearing and settlement platform",
     date: "December 12, 2025",
     category: "Gas and Infrastructure",
+    categoryId: 97,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Gas and Infrastructure"],
     tags: ["clearing and settlement", "gas and infrastructure", "online gas trading"],
     excerpt:
       "The Federal Government has officially launched the country’s first online gas trading, clearing, and settlement platform. The platform, also known as the Gas Trading Licence, Clearing House, and Settlement Authorization, aims to introduce transparency, efficiency, and competitiveness into the nation’s gas market. At the launch event held in Abuja, the Minister of State for Petroleum […]",
@@ -5937,6 +7117,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FSDH, BOI outline requirements to access loans for women-led businesses",
     date: "December 12, 2025",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access loans", "access to finance", "boi", "fsdh", "Women-Led Businesses"],
     excerpt:
       "Nigeria’s development and merchant banks, FSDH Merchant Bank (FSDH) and the Bank of Industry (BOI) have outlined conditions women-led businesses seeking credit must meet to be able to access such facilities, cautioning that gender-focused status alone does not guarantee access to formal financing. The institutions noted that the major barriers are not funding shortages, but the […]",
@@ -5951,6 +7133,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Enugu allocates N10 billion equity funding to first phase of 135.5km rail project",
     date: "December 12, 2025",
     category: "Capital Expenditure",
+    categoryId: 225,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Capital Expenditure"],
     tags: ["critical expenditure", "Enugu", "equity funding"],
     excerpt:
       "The Enugu State Government has allocated N10 billion as its equity contribution to the first phase of the planned 135.5-kilometre standard-gauge rail project in the N1.62 trillion 2026 budget. The disclosure was made in a statement issued by the Senior Special Assistant on Media to Governor Peter Mbah, Dan Nwomeh, via his official X account […]",
@@ -5965,6 +7149,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Equity market rebounds with N694bn gain",
     date: "December 12, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: [
       "Equity Market",
       "financial health performance",
@@ -5983,6 +7173,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote to support 1.3m students with N1tn education fund",
     date: "December 12, 2025",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["dangote", "education fund", "resource allocation", "students"],
     excerpt:
       "Nigerian industrialist Aliko Dangote, on Thursday, announced a N100bn annual education support initiative, describing it as a long-term investment aimed at reducing financial barriers that drive millions of young Nigerians out of school. According to a statement, the programme is expected to cost more than N1tn over the next decade. Speaking at the launch in […]",
@@ -5997,6 +7189,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NBS: Nigeria recorded N6trn trade surplus in Q3 | India, Spain top export destinations",
     date: "December 12, 2025",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["NBS", "top export destinations", "trade surplus", "trade volume"],
     excerpt:
       "The National Bureau of Statistics (NBS) says Nigeria recorded a trade surplus of N6.69 trillion in the third quarter (Q3) of 2025. The figure indicates a decrease of 10.36 percent compared to the N7.4 trillion recorded in the preceding quarter. A trade surplus occurs when a country’s exports exceed imports.The NBS, in its foreign trade […]",
@@ -6010,7 +7204,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "kaduna-adds-800000-bank-accounts-as-inclusion-rises",
     title: "Kaduna adds 800,000 bank accounts as inclusion rises",
     date: "December 12, 2025",
-    category: "Human Development Index Hdi And Poverty Rates",
+    category: "Human Development Index (HDI) and Poverty Rates",
+    categoryId: 39,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Human Development Index (HDI) and Poverty Rates",
+    ],
     tags: [
       "financial inclusion",
       "human development index",
@@ -6031,6 +7231,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria’s oil output rose to 1.43m bpd in November — highest in three months",
     date: "December 12, 2025",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["oil output", "OPEC data", "upstream sector"],
     excerpt:
       "The Organization of Petroleum Exporting Countries (OPEC) says Nigeria’s crude oil production increased to a new level in November, but remains below the country’s assigned quota. In its monthly report on Thursday, the oil alliance said the country’s production figure increased to 1.43 million barrels per day (bpd) in November — the highest in three […]",
@@ -6046,6 +7248,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "FEC endorses new industrial policy, okays ₦58bn for 200 electric buses, ₦187.8bn contract for BOI",
     date: "December 11, 2025",
     category: "Executive Arm of Government",
+    categoryId: 262,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Executive Arm of Government"],
     tags: ["contract for BOI", "electric buses", "new industrial policy"],
     excerpt:
       "ABUJA —THE Federal Executive Council, FEC, on Wednesday approved five major memoranda from the Ministry of Industry, Trade and Investment, including Nigeria’s Industrial Policy 2025, the procurement of electric buses, and key infrastructure projects in Lagos.Minister of State for Industry, Trade and Investment, Senator John Owan Enoh, disclosed this while briefing State House correspondents at […]",
@@ -6059,7 +7263,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fcmb-capital-markets-named-nigerias-best-corporate-bond-house",
     title: "FCMB Capital Markets named Nigeria’s best corporate bond house",
     date: "December 11, 2025",
-    category: "Savings Investment Credit And Other Ratings",
+    category: "Savings, Investment, Credit and other Ratings",
+    categoryId: 138,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Industry, Trade and Investment",
+      "Savings, Investment, Credit and other Ratings",
+    ],
     tags: ["Capital Markets", "corporate bond house", "fcmb", "rating"],
     excerpt:
       "FCMB Capital Markets Limited, a subsidiary of FCMB Group Plc, was named “Best Corporate Bond House of the Year” by the Association of Issuing Houses of Nigeria (“AIHN”) at the 2025 AIHN Investment Banking Awards in Lagos. This award recognizes the firm’s work in structuring and executing transactions that help businesses grow and supports the further development of […]",
@@ -6074,6 +7284,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "ICPC chair: Stronger procurement oversight required to tackle abandoned projects",
     date: "December 11, 2025",
     category: "Procurement",
+    categoryId: 120,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Procurement"],
     tags: ["icpc", "procurement oversight", "tackle abandoned projects |"],
     excerpt:
       "Musa Aliyu, chairman of the Independent Corrupt Practices and Other Related Offences Commission (ICPC), says stronger procurement oversight is needed to address abandoned and substandard projects across the country. Aliyu spoke on Tuesday during a workshop organised for directors and heads of procurement of ministries, departments and agencies (MDAs), following a series of infractions identified […]",
@@ -6088,6 +7300,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ligue 1 clubs want Moffi",
     date: "December 11, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Ligue 1 clubs", "team sport", "Terem Moffi transfer"],
     excerpt:
       "Reports in France say Ligue 1 clubs are showing interest in signing Nigeria striker Terem Moffi from Nice, although the player is yet to make up his mind, PUNCH Sports Extra reports. Moffi’s future at OGC Nice is up in the air after the Nigerian striker was subjected to violence from the club fans at the end of […]",
@@ -6100,7 +7314,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ican-inducts-1600-accounting-technicians",
     title: "ICAN inducts 1,600 accounting technicians",
     date: "December 11, 2025",
-    category: "Professional Institutes And Associations",
+    category: "Professional Institutes and Associations",
+    categoryId: 136,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Leadership",
+      "Professional Institutes and Associations",
+    ],
     tags: ["accounting technicians", "ican"],
     excerpt:
       "The Institute of Chartered Accountants of Nigeria on Tuesday made history by inducting 1,600 accounting technicians during the 63rd Accounting Technicians Scheme, West Africa Induction Ceremony, held at the ICAN Centre, Amuwo Odofin, Lagos. This cohort surpasses the previous record of 1,303 inductees set in July 2025, making it the largest in the history of […]",
@@ -6114,6 +7334,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Beer prices spike amid festive season demand, cost pressures",
     date: "December 11, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["Beer prices spike", "cost pressures", "economic votalities", "season demand"],
     excerpt:
       "Beer remains a defining element of Nigeria’s festive culture, deeply embedded in social traditions and end-of-year celebrations across the country. As families reunite, friends reconnect, and cities host a surge of concerts and entertainment activities, beer has continued to serve as a symbol of community bonding and shared enjoyment. Its role in the modern “Detty December” phenomenon—now both […]",
@@ -6128,6 +7350,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Crypto regulation in Nigeria needs CBN, SEC alignment to succeed— Chike Okonkwo",
     date: "December 11, 2025",
     category: "Critical Areas",
+    categoryId: 108,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Critical Areas"],
     tags: ["CBN", "Chike Okonkwo", "critical areas", "nigeria Crypto regulation", "sec"],
     excerpt:
       "Business Development and Marketing Lead at YDPay, a crypto exchange in Nigeria, Chike Okonkwo, has said that the country’s moves to regulate the crypto industry may not succeed without a proper alignment between the Central Bank of Nigeria (CBN) and the Securities and Exchange Commission (SEC). Speaking in an interview with Nairametrics, Okonkwo noted that the SEC has taken early steps to […]",
@@ -6142,6 +7366,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FIRS, French tax authority sign MoU on digital transformation, information exchange",
     date: "December 11, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: [
       "budgeting",
       "digital transformation",
@@ -6161,6 +7387,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Keyamo blames high airfares on plane scarcity, says FG engaging airline operators",
     date: "December 11, 2025",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: ["airline operators", "high airfares", "plane scarcity", "social performance"],
     excerpt:
       "Festus Keyamo, minister of aviation and aerospace development, has blamed the current high airfares on domestic routes on aircraft scarcity, and insufficient maintenance infrastructure. The senate had summoned Keyamo, and key industry stakeholders for an urgent meeting over the sharp rise in domestic airfares.The resolution followed a motion raised by Abdulfatai Buhari, senator representing Oyo north, who […]",
@@ -6175,6 +7403,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Trump administration revokes 85,000 visas in expansive immigration crackdown",
     date: "December 11, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["immigration crackdown", "trump n revokes visas"],
     excerpt:
       "The U.S. State Department has revoked roughly 85,000 visas over the past year, an unprecedented number that reflects the Trump administration’s broadened approach to immigration enforcement and its tightened review of foreign visitors and students. Administration officials say the surge in revocations is rooted in public-safety concerns, though immigrant-rights groups warn that the expanding criteria […]",
@@ -6189,6 +7423,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Petrol consumption in Nigeria drops to 52.9 million litres daily in November 2025",
     date: "December 11, 2025",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["Petrol consumption"],
     excerpt:
       "Nigeria’s daily petrol consumption dipped to an average of 52.9 million litres per day in November 2025, reflecting a notable shift in national fuel demand patterns. This is according to the latest Fact Sheet released by the Nigerian Midstream and Downstream Petroleum Regulatory Authority (NMDPRA). The November figure marks a decline from the 56.74 million litres […]",
@@ -6203,6 +7439,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "US to require five-year social media history from Visa Waiver tourists",
     date: "December 11, 2025",
     category: "Diplomatic Missions, Embassy and High Commission",
+    categoryId: 176,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "Diplomatic Missions, Embassy and High Commission",
+    ],
     tags: ["social media history", "Visa Waiver tourists"],
     excerpt:
       "The U.S. plans to mandate social media inspections for certain international tourists, requiring them to submit up to five years of their online activity when applying for travel. The notice was issued by the U.S. Customs and Border Protection (CBP) on Wednesday, opening a 60-day period for public comments. The move comes as part of a broader […]",
@@ -6217,6 +7459,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Public health investments crucial for economic stability – Fasuyi, CEO Aegis",
     date: "December 11, 2025",
     category: "Environmental and Social Standards",
+    categoryId: 222,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Environmental and Social Standards"],
     tags: ["Drive Economic and Stability", "healthcare gaps Aegis", "Public Health Investments"],
     excerpt:
       "Public health investments are not just social obligations but strategic economic drivers, says Founder and Chief Executive Officer of Aegis Private Health Consultant, Dr Tokumbo Fasuyi, who explains how healthier populations strengthen productivity, stability, and long-term national growth, in this interview with OKECHUKWU NNODIM What are the implications of health on business and the national economy? […]",
@@ -6231,6 +7475,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Emerging markets face $3.7tn ESG funding gap – Report",
     date: "December 11, 2025",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "Emerging markets", "esg", "funding gap"],
     excerpt:
       "Emerging markets risk falling further behind in the global sustainability transition as they face a $3.7tn annual Environmental, Social and Governance financing gap, according to a new report by Dun & Bradstreet. The report, titled “ESG Funding in Emerging Markets,” examines how data, regulation, and financial innovation can accelerate sustainable capital flows across South Asia, […]",
@@ -6245,6 +7491,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "N9.16tn manufacturing output dampened by weak expansion",
     date: "December 11, 2025",
     category: "Manufacturing",
+    categoryId: 21,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Manufacturing"],
     tags: ["Manufacturing Output", "weak growth"],
     excerpt:
       "N9.16tn manufacturing output dampened by weak expansion December 11, 2025 12:00 am By Arinze Nwafor Discover more Nigerian cultural insights Digital rights advocacy Health news updates Sports merchandise sales News subscription service Online news portal African history documentaries Nigerian business consulting Sports news coverage Editorial content access The manufacturing sector generated N9.16tn in nominal terms ",
@@ -6259,6 +7507,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Lagos unveils N150bn CNG trucks scheme",
     date: "December 11, 2025",
     category: "Road",
+    categoryId: 26,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Road"],
     tags: ["LAGOS", "New CNG Trucks", "road"],
     excerpt:
       "The Lagos State Government has launched a N150bn Compressed Natural Gas Trucks Scheme, a Public-Private Partnership initiative aimed at providing truck operators with structured financing for the acquisition of brand-new CNG-powered trucks. The scheme was unveiled on Wednesday by the state Governor, Babajide Sanwo-Olu, during a stakeholders’ engagement with maritime and logistics practitioners. The governor, […]",
@@ -6272,6 +7522,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Weak political commitment threatens women’s empowerment – BudgIt",
     date: "December 11, 2025",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["Weak Political Will", "Women’s Empowerment"],
     excerpt:
       "BudgIT has raised concerns that women’s economic empowerment is being held back by weak political commitment and significant gaps in data, despite years of legislation and advocacy. The warning came during the launch of the State of Women’s Economic Empowerment in Nigeria report held in Abuja on Wednesday. The Co-founder and Global Director of BudgIT, […]",
@@ -6286,6 +7538,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "JTB begins transition to implement new tax laws",
     date: "December 11, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Implement New Tax Laws", "jtb", "national revenue board"],
     excerpt:
       "The Joint Tax Board has begun its transition process ahead of the implementation of new tax laws, unveiling a new brand identity in Abuja. The move follows the signing into law of the Joint Revenue Board of Nigeria (Establishment) Act 2025 by President Bola Tinubu on June 26. The Act replaces the existing Joint Tax […]",
@@ -6300,6 +7554,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tinubu raises panel to settle N1.5tn contractor debts",
     date: "December 11, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["contractor debts", "Tinubu forms panel"],
     excerpt:
       "President Bola Tinubu on Wednesday expressed “grave displeasure” over the backlog of unpaid federal contractors and set up a high-level committee to resolve the bottlenecks and fund repayments. Briefing State House correspondents after the Federal Executive Council meeting in Abuja, Special Adviser on Information and Strategy, Bayo Onanuga, said the President was “upset” after learning […]",
@@ -6314,6 +7570,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN delists non-compliant BDCs",
     date: "December 11, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["bdc", "CBN", "monetary policy", "New License Requirements"],
     excerpt:
       "The Central Bank of Nigeria has announced that all legacy Bureau De Change operators who failed to meet its new licensing requirements by 30 November 2025 have automatically lost their licences, effectively ceasing to operate as BDCs in the country. This was disclosed in a Frequently Asked Questions document on the current reform of the […]",
@@ -6327,6 +7585,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG to capture N4tn power sector bond in MTEF",
     date: "December 11, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "NBET", "NERC", "Power Sector Bond"],
     excerpt:
       "The Federal Government on Thursday announced that the newly launched power sector liquidity bond, designed to settle decade-long N4tn debts owed to electricity generation companies will be fully captured in the country’s Medium-Term Expenditure Framework, a move officials say strengthens its credibility and guarantees repayment. This will also increase the nation’s public debt by N4tn. […]",
@@ -6340,6 +7600,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG pushes for N17.89tn new loans to finance 2026 budget",
     date: "December 11, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["financing 2026 budget", "loans"],
     excerpt:
       "The Federal Government plans to borrow N17.89tn in 2026 to fund a widening budget deficit as revenue projections fall sharply below expenditure needs, according to the 2026 budget framework obtained from the Budget Office of the Federation. Official figures in the 2026 Abridged Budget Call Circular issued by the Federal Ministry of Budget and Economic […]",
@@ -6354,7 +7616,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title:
       "Primary healthcare agency says 202,860 children vaccinated against malaria in Kebbi, Bayelsa",
     date: "December 10, 2025",
-    category: "Incidence And Prevalence Of Disease",
+    category: "Incidence and Prevalence of Disease",
+    categoryId: 214,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Incidence and Prevalence of Disease"],
     tags: [
       "incidence and prevalence of diseases",
       "Kebbi and Bayelsa",
@@ -6374,7 +7638,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "adeleke-joins-accord-party",
     title: "Adeleke joins Accord party",
     date: "December 10, 2025",
-    category: "Political Parties And Ideologies",
+    category: "Political Parties and Ideologies",
+    categoryId: 268,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Political Arena",
+      "Political Parties and Ideologies",
+    ],
     tags: ["Accord Party", "for re-election", "Governor Adeleke"],
     excerpt:
       "The Osun State Governor, Ademola Adeleke, has officially joined the Accord Party, days after leaving the Peoples Democratic Party. The governor made the announcement on Tuesday at the Banquet Hall of the Government House in the presence of national and state leaders of the party. According to a statement issued by his spokesperson, Olawale Rasheed, […]",
@@ -6388,6 +7658,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Governors vs NNPC: Tension rise over alleged $42bn oil revenue shortfall",
     date: "December 10, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgeting", "govonors", "NNPC", "Oil Revenue Shortfall"],
     excerpt:
       "A renewed clash has emerged between the Nigerian National Petroleum Company Limited and Periscope Consulting, the audit firm hired by the Nigeria Governors’ Forum to examine an alleged under remittance of oil revenue totalling $42.37bn (about N12.91tn) to the Federation Account between 2011 and 2017. The dispute, revived by fresh submissions from both sides, has […]",
@@ -6402,6 +7674,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Glo Confirms Nationwide Data Outage Disrupting Services Across Nigeria",
     date: "December 10, 2025",
     category: "Internet Service Providers",
+    categoryId: 105,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Internet Service Providers"],
     tags: ["Data Outage Disrupting Services", "Glo"],
     excerpt:
       "Glo acknowledged the disruption, apologising for the inconvenience and assuring subscribers that its technical team is working to restore services as quickly as possible. Millions of Glo subscribers across Nigeria faced a widespread disruption on Tuesday as the telecom giant experiences a nationwide data service outage. The outage, which began at approximately 8:30 a.m., has […]",
@@ -6416,6 +7690,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tinubu Appoints Ex-NAF Chief As Military Pensions Board Chairman",
     date: "December 10, 2025",
     category: "Appointment",
+    categoryId: 132,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Appointment"],
     tags: [
       "Air Vice Marshal Abubakar Idris Adamu (retd.)",
       "appointment",
@@ -6435,6 +7711,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Iwobi among most creative EPL players",
     date: "December 10, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Alex Iwobi", "creative EPL players", "team sport"],
     excerpt:
       "Nigeria midfielder Alex Iwobi has been ranked the fifth most creative player in the English Premier League this season by football statistics website, WhoScored, PUNCH Sports Extra reports. With 23 chances created, Iwobi occupies the fifth position on the chart and is the only Fulham player. Topping the chart is Manchester United midfielder Bruno Fernandes (40), followed by […]",
@@ -6447,7 +7725,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "sanwo-olu-inaugurates-logistics-park",
     title: "Sanwo-Olu inaugurates logistics park",
     date: "December 10, 2025",
-    category: "Infrastructure And Network",
+    category: "Infrastructure and Network",
+    categoryId: 235,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Infrastructure and Network"],
     tags: ["Babajide Sanwo-Olu", "Lagos logistics park", "TY Logistics Park FZE"],
     excerpt:
       "Lagos State Governor Babajide Sanwo-Olu has inaugurated a 29,000-square-metre TY Logistics Park FZE, a Grade-A contract logistics facility described as the first of its kind in West Africa. The launch, held inside the Alaro Free Zone within the Lekki corridor on Monday, marks another major step in Lagos’ ambition to build Africa’s most advanced industrial […]",
@@ -6461,6 +7741,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NAFDAC cautions Nigerians as OKI, FINO and other unsafe cooking oils circulate",
     date: "December 10, 2025",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["nafdac", "unsafe cooking oils", "welbeing"],
     excerpt:
       "The National Agency for Food and Drug Administration and Control (NAFDAC) has warned Nigerians about the widespread circulation of substandard and unregistered edible oils in the country. The warning was issued following a market surveillance conducted by Lebruni Agro Limited, a Nigerian company that produces premium soybean and palm kernel oils under the Liorga brand. NAFDAC stated that the alert […]",
@@ -6475,6 +7757,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Agricultural trade between Nigeria, U.S. projected to exceed $700 million in 2025",
     date: "December 10, 2025",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["Agricultural trade", "nigeria and usa"],
     excerpt:
       "Agricultural trade between the United States and Nigeria is on track to exceed $700 million in 2025, as new shipments of U.S. wheat arrive in Nigeria. The update was shared in a post on X by the U.S. Mission in Nigeria on Tuesday. “In 2025, U.S.-Nigeria agricultural trade is on track to more than double […]",
@@ -6489,6 +7773,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Firm reaffirms commitment to CSR",
     date: "December 10, 2025",
     category: "Coporate Social Responsibility",
+    categoryId: 45,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Coporate Social Responsibility"],
     tags: ["ABUMET", "corporate social responsibility"],
     excerpt:
       "ABUMET Nigeria Ltd has reaffirmed its commitment to community welfare with an outreach programme marking its annual CSR initiative and the International Day of Persons with Disabilities. In a statement, it was noted that the exercise saw the company visiting JKS Home for Children with Special Needs in the Kubwa area of the Federal Capital […]",
@@ -6502,6 +7788,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Enugu inaugurates task force to end gender violence",
     date: "December 10, 2025",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["enugu state", "gender violence", "task force"],
     excerpt:
       "The Enugu State Government on Monday launched the Enugu State Gender-Based Violence Taskforce, marking what stakeholders described as a historic turning point in the fight against gender-based violence across the state. The event, held at the International Conference Centre, brought together government officials, civil society groups, traditional rulers, religious institutions, and development partners to strengthen ",
@@ -6516,7 +7804,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title:
       "Chappal Energies, CAC clash in court over Commission’s directive to change business name",
     date: "December 10, 2025",
-    category: "Judicial Arm Of Government",
+    category: "Judicial Arm of Government",
+    categoryId: 264,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Judicial Arm of Government"],
     tags: ["CAC clash", "change business", "Chappal Energies", "judiciary"],
     excerpt:
       "The Corporate Affairs Commission (CAC) and Chappal Energies Nigeria Limited are locked in a legal battle at the Federal High Court, Abuja, over the Commission’s directive that the firm change its business name on allegations of “deceiving unsuspecting public,” Nairametrics exclusively reports. The pending case was commenced in 2024 by Chappal Energies, according to court documents exclusively reviewed by Nairametrics",
@@ -6532,6 +7822,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "IATA projects African airlines to sustain $0.2 billion profit with 6% passenger growth in 2026",
     date: "December 10, 2025",
     category: "Economic Performance",
+    categoryId: 232,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Economic Performance"],
     tags: ["African airlines profit", "economic performance", "passenger growth"],
     excerpt:
       "African airlines are projected to maintain a net profit of $0.2 billion in 2026, even as passenger traffic is expected to grow by 6%, according to the latest financial outlook for the global airline industry released by the International Air Transport Association (IATA) on Tuesday. Despite this growth, carriers in the region continue to face […]",
@@ -6546,6 +7838,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Standard Chartered completes transfer of Cameroon business to Access Bank",
     date: "December 10, 2025",
     category: "Acquisitions, Collaborations and Partnerships",
+    categoryId: 197,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Acquisitions, Collaborations and Partnerships",
+    ],
     tags: [
       "acquisation",
       "Cameroon business to Access Bank",
@@ -6566,6 +7864,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "FG launches N50 million Student Venture Capital program, sets Jan 23 application deadline",
     date: "December 10, 2025",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["Dr. Maruf Olatunji Alausa", "Student Venture Capital"],
     excerpt:
       "The Minister of Education, Dr. Maruf Olatunji Alausa, has officially launched the Student Venture Capital Grant (S-VCG) programme aimed at funding student-led ventures with up to N50 million in equity-free grants, with a deadline for applications fixed for January 23. The minister officially launched the S-VCG programme in Abuja on Monday, attended by Nairametrics. “It is therefore my pleasure, to the benefit […]",
@@ -6580,6 +7880,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria’s 26 states increase external debt stock by $239 million in H1 2025",
     date: "December 10, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["debt financing", "increase external debt"],
     excerpt:
       "In the first half of 2025, 26 states in Nigeria increased their external debt by a total of $239 million in fresh borrowings, according to the latest published figures by the Debt Management Office (DMO). According to the debt office, Nigeria’s external debt stood at $46.98 billion. Total state external debt rose only slightly, from $4.8 […]",
@@ -6593,7 +7895,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "attempted-coup-senate-approves-troops-deployment-to-benin-republic",
     title: "Attempted Coup: Senate Approves Troops Deployment To Benin Republic",
     date: "December 10, 2025",
-    category: "Legislative Arm Of Government",
+    category: "Legislative Arm of Government",
+    categoryId: 263,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Legislative Arm of Government"],
     tags: ["Benin Republic", "coup", "Troops Deployment"],
     excerpt:
       "The attempt follows two coups in Madagascar and Guinea-Bissau in as many months. Benin is bordered in the north by Niger and Burkina Faso, both of which have also experienced military takeovers.The Senate has approved President Bola Tinubu’s request to deploy Nigerian troops to the Republic of Benin in support of efforts to restore peace […]",
@@ -6607,7 +7911,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "gov-fubara-defects-to-apc",
     title: "Gov Fubara Defects To APC",
     date: "December 10, 2025",
-    category: "Political Parties And Ideologies",
+    category: "Political Parties and Ideologies",
+    categoryId: 268,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Political Arena",
+      "Political Parties and Ideologies",
+    ],
     tags: ["Gov Fubara Defects To APC", "political ideologies"],
     excerpt:
       "Governor Siminalayi Fubara of Rivers State has defected to the All Progressives Congress (APC) from the Peoples Democratic Party (PDP). He announced this at a stakeholders meeting at the government house in Port Harcourt on Tuesday. Fubara said he decided to leave the PDP to support President Bola Tinubu of the APC, saying that he […]",
@@ -6621,6 +7931,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "IKEDC announces power outage in parts of Lagos, blames ‘jumper cut’ at TCN substation",
     date: "December 10, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: [
       "decentralized power generation",
       "IKEDC",
@@ -6640,6 +7952,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Offences and penalties in new Nigerian Tax Act (2)",
     date: "December 10, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["debt financing", "new nigerian tax act", "offences and penalties"],
     excerpt:
       "THE new Nigerian Tax Act comes into effect on January 1, 2026. The new tax law is intended to transform the nation’s economy, promote equity among the populace, improve the financial capabilities of low and medium class workers and to bridge the nation’s infrastructural gap. To enforce compliance and effective implementation, some guidelines, including penalties […]",
@@ -6654,6 +7968,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN moves to boost lending for farmers",
     date: "December 10, 2025",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "Agricultural Lending boost", "nigerian farmers"],
     excerpt:
       "The Central Bank of Nigeria hopes to lift agricultural lending above the current level of less than five per cent of banks’ credit, with Governor Olayemi Cardoso declaring that agriculture must receive its “rightful place in our financial system and national priorities.” Cardoso spoke in Abuja on Tuesday at the inauguration of the newly constituted […]",
@@ -6667,6 +7983,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Enugu to ban tricycles, minibuses as BRT rollout begins",
     date: "December 10, 2025",
     category: "Road",
+    categoryId: 26,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Road"],
     tags: ["brt", "Enugu", "minibuses", "tricycles ban"],
     excerpt:
       "The Enugu State Government has announced plans to restrict the operation of tricycles, yellow buses, and minibuses from five major roads across Enugu city. This is to give way for the implementation of the state’s Bus Rapid Transit (BRT) system, which residents have refused to use since it was launched several months ago. The Commissioner […]",
@@ -6680,7 +7998,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nlc-to-hold-nationwide-protest-on-december-17-over-worsening-insecurity",
     title: "NLC to hold nationwide protest on December 17 over worsening insecurity",
     date: "December 9, 2025",
-    category: "Trade Unions And Congresses",
+    category: "Trade Unions and Congresses",
+    categoryId: 254,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Trade Unions and Congresses",
+    ],
     tags: ["nationwide protest", "nlc", "trade union congresses", "worsening insecurity"],
     excerpt:
       "The Nigeria Labour Congress says it will lead a nationwide protest on December 17 in response to the country’s worsening security challenges. The announcement was contained in a communiqué issued after the National Executive Council (NEC) meeting held on Thursday, 4 December 2025, at the NLC Sub-Secretariat in Yaba, Lagos. The resolution follows the abduction of 24 schoolgirls in […]",
@@ -6694,7 +8018,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "un-cuts-2026-humanitarian-appeal-to-23-billion-amid-record-global-crises",
     title: "UN cuts 2026 humanitarian appeal to $23 billion amid record global crises",
     date: "December 9, 2025",
-    category: "United Nations Un",
+    category: "United Nations (UN)",
+    categoryId: 52,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "United Nations (UN)",
+    ],
     tags: ["global crises", "united nations"],
     excerpt:
       "The United Nations has cut its 2026 humanitarian aid request to $23 billion, about half of what it sought in 2025, as donor support continues to fall. This funding is the immediate priority of its $33 billion Global Humanitarian Overview 2026 budget, which aims to provide lifesaving support to millions of people affected by war, […]",
@@ -6710,6 +8040,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "NBS, NIMC, NUPRC… underperforming agencies in FG’s business facilitation compliance ranking",
     date: "December 9, 2025",
     category: "Governance",
+    categoryId: 273,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Governance"],
     tags: ["good governance", "NBS", "nimc", "NUPRC", "underperforming agencies"],
     excerpt:
       "The presidential enabling business environment council (PEBEC) has released the 2025 Business Facilitation Act (BFA) performance report, assessing how ministries, departments, and agencies (MDAs) complied with transparency and efficiency requirements under the BFA 2022. The report reviews progress in service efficiency, transparency, monthly reporting, complaint resolution, and service-delivery innovation across MDAs",
@@ -6724,6 +8056,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NITDA warns of ChatGPT vulnerabilities that could cause data exposure",
     date: "December 9, 2025",
     category: "Technology",
+    categoryId: 56,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology"],
     tags: ["bulk technology", "ChatGPT", "data exposure", "NITDA"],
     excerpt:
       "The National Information Technology Development Agency (NITDA) has issued a security advisory, warning users about newly discovered vulnerabilities in OpenAI’s ChatGPT models. NITDA issued the advisory in a post on Sunday on its official X account.The agency said seven flaws were identified in “GPT-4o and GPT-5 models” that could enable attackers to manipulate the system through […]",
@@ -6738,6 +8072,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Paramount launches $108bn hostile bid for Warner Bros",
     date: "December 9, 2025",
     category: "Films and Theaters",
+    categoryId: 145,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Films and Theaters"],
     tags: ["bidding", "films and theaters", "Paramount", "Warner Bros"],
     excerpt:
       "Paramount Skydance has unveiled a hostile bid for Warner Bros. Discovery (WBD) after losing out to Netflix in a prolonged bidding contest. According to a report by CNBC, on Monday, Paramount said it is taking its $30-per-share all-cash offer directly to WBD shareholders, a proposal valued at $108.4 billion.The publication said the bid is backed by equity […]",
@@ -6752,6 +8088,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Keyamo says Port Harcourt airport concession agreements in final stage",
     date: "December 9, 2025",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["aviation", "kayemo", "Port Harcourt airport concession"],
     excerpt:
       "Festus Keyamo, minister of aviation and aerospace development, says the concession agreements for Port Harcourt International Airport are in their final stage. Speaking on a X space on Monday hosted by the National Orientation Agency (NOA), Keyamo explained that while Lagos, Abuja, and Kano airports generate significant revenue, many other airports operate at a loss.He […]",
@@ -6765,7 +8103,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nnpc-ltd-received-185m-n149bn-from-frontier-exploration-fund-nuprc",
     title: "NNPC Ltd received $185m, N14.9bn from frontier exploration fund – NUPRC",
     date: "December 9, 2025",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["Frontier Exploration Fund", "NNPC"],
     excerpt:
       "The Nigerian Upstream Petroleum Regulatory Commission has disclosed that over $185m and N14.9bn have so far been released to the Nigerian National Petroleum Company Limited from the Frontier Exploration Fund. The commission’s Head of Media and Strategic Communication, Eniola Akinkuotu, made the revelation in a statement issued on Monday, addressing recent reports that the NUPRC […]",
@@ -6780,6 +8124,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "82 BDCs meet CBN’s new guidelines",
     date: "December 9, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["BDCs", "CBN", "monetary policy"],
     excerpt:
       "The Central Bank of Nigeria has confirmed that only 82 Bureaux De Change have been licensed to operate, having met its new guidelines. This was disclosed in a statement signed by the Acting Director, Corporate Communications, CBN, Hakama Ali, on Monday. The PUNCH reports that the CBN introduced a new regulatory framework for BDCs in […]",
@@ -6793,6 +8139,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Govt restores 450MW to grid after power fleet revamp",
     date: "December 9, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power generation", "fleet revamp", "Nigeria Power Grid"],
     excerpt:
       "The Federal Government, through the Niger Delta Power Holding Company, has restored 450 megawatts of generation capacity to the national grid following the completion of scheduled maintenance works on the Geregu National Integrated Power Project plant in Kogi State. The four-week extended minor inspection, conducted by Siemens Energy, was executed to improve the facility’s reliability […]",
@@ -6807,6 +8155,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG reduces oil block entry costs to $3m",
     date: "December 9, 2025",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["investment", "oil block entry costs", "OML", "up stream sector"],
     excerpt:
       "As the 2025 licensing round gets underway, the Federal Government has reduced the signature bonus from $10m to $3m and $7m. The Nigerian Upstream Petroleum Regulatory Commission disclosed this in an update on its website. According to the commission, this was part of the government’s efforts to reduce entry barriers. “Interested in one of the […]",
@@ -6820,6 +8170,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Apply Now! Energia Graduate Trainee Programme for Nigerians 2026 | Application Guide",
     date: "December 5, 2025",
     category: "Vacancies",
+    categoryId: 72,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Vacancies"],
     tags: ["Energia Graduate Trainee", "vacancies"],
     excerpt:
       "Energia Graduate Trainee Programme for Nigerians 2026 | Application Guide The Energia Graduate Trainee Program 2026 is a fantastic opportunity for young Nigerians to kickstart their careers in the oil and gas industry. Here are the key details: Eligibility Criteria: Be a Nigerian citizen Hold a bachelor’s degree in relevant fields such as Engineering, Geoscience, […]",
@@ -6834,6 +8186,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Apply Now! Fidelity Bank Ongoing Recruitment – 2 Available Job Positions",
     date: "December 5, 2025",
     category: "Vacancies",
+    categoryId: 72,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Vacancies"],
     tags: ["Available Job Positions", "Fidelity Bank recruitment", "vacancies"],
     excerpt:
       "Fidelity Bank Ongoing Recruitment – 2 Available Job Positions Fidelity Bank is hiring for two Experienced Sales Officer positions: Corporate Banking and Retail/Commercial Banking. Here are the details: Job Details: Location: All States, Nigeria Type: Full-time Qualifications: BA/BSC/HND Experienced Sales Officer (Corporate Banking): Acquire new corporate clients and manage existing relationships Structure complex fin",
@@ -6849,6 +8203,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Apply Now! Qatar University 2026 Graduate Scholarships for International Students | Fully Funded",
     date: "December 5, 2025",
     category: "Scholarships",
+    categoryId: 35,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Scholarships"],
     tags: ["2026 Graduate Scholarships", "international students", "Qatar University"],
     excerpt:
       "Qatar University 2026 Graduate Scholarships for International Students | Fully Funded Qatar University is offering fully-funded Graduate Scholarships for international students to pursue Master’s and PhD programs in Qatar. Here are the details: Eligibility Criteria: Master’s Applicants: Bachelor’s degree with a minimum GPA of 2.8 PhD Applicants: Master’s degree with a minimum GPA of 3.0 Standardized test […]",
@@ -6863,6 +8219,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Akwa Ibom House Of Assembly Rejects Motion To Stop Dog-meat Consumption",
     date: "December 5, 2025",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Akwa Ibom House Of Assembly", "Dog-meat Consumption"],
     excerpt:
       "AKHA Rejects Uduak Ekpoufot’s Motion to Stop Dog-Meat Consumption By Asuquo Edem Akwa Ibom State House of Assembly today rejected a motion brought before it by the member representing Etinan State Constituency, Hon. Uduak Ekpoufot. The motion presented before the House seeks to discontinue the consumption and sale of dog meat in Akwa Ibom State has failed to scale […]",
@@ -6877,6 +8235,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "My marriage ended amicably – Comedian Sabinus confirms split from wife",
     date: "December 5, 2025",
     category: "Gossips and Attractions",
+    categoryId: 149,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Gossips and Attractions"],
     tags: ["Comedian Sabinus", "gossip"],
     excerpt:
       "Popular Nigerian comedian, Chukwuemeka Ejekwu, more popular as Sabinus, has confirmed the end of his marriage to Ciana Chapman. Sabinus revealed this while speaking during a recent TikTok live stream. According to him, the union which was formalized in 2023 ended amicably. Popular Nigerian comedian, Chukwuemeka Ejekwu, more popular as Sabinus, has confirmed the end […]",
@@ -6891,6 +8251,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Corruption is a poison to any institution – Amupitan to INEC staff",
     date: "December 5, 2025",
     category: "Electoral Commission",
+    categoryId: 256,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Electoral Commission"],
     tags: ["Amupitan", "Corruption", "electoral commission", "inec"],
     excerpt:
       "The Chairman of the Independent National Electoral Commission, INEC, Prof Joash Amupitan, has urged the leadership of the Commission’s Staff Multi-Purpose Co-Operative Society to uphold the commission’s core values of transparency, integrity, and accountability. Amupitan made the call in his keynote address at the Annual General Meeting, AGM, and Election of the Society. He advised […]",
@@ -6906,6 +8268,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Report of 96,000 malnourished children at death risk in 6 northern states raises concern",
     date: "December 5, 2025",
     category: "Nutritional Status",
+    categoryId: 215,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Nutritional Status"],
     tags: ["6 northern states", "malnourished children", "nutritional status"],
     excerpt:
       "A recent study by an international nongovernmental, not-for-profit organisation, Save the Children International, that over 96,000 children risk death before the end of this year in six northern states due to malnutrition, has again brought to the fore the failure of governments at all levels to provide for its citizens and it is a big […]",
@@ -6921,6 +8285,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "NEC approves N100bn for rehabilitation of security agencies’ training institutions across Nigeria",
     date: "December 5, 2025",
     category: "Human Capital Development",
+    categoryId: 110,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Human Capital Development"],
     tags: ["human capital development", "security agencies", "training institutions"],
     excerpt:
       "The National Economic Council (NEC) has approved N100 billion for the rehabilitation of training institutions for the police and other security agencies across Nigeria, subject to final ratification by President Bola Tinubu. This was disclosed in a statement issued on Wednesday by Stanley Nkwocha, Senior Special Assistant to the President on Media & Communications (Office of the Vice President). […]",
@@ -6934,7 +8300,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "world-bank-nigeria-bangladesh-pakistan-now-hold-nearly-30-of-all-ida-eligible-debt",
     title: "World Bank: Nigeria, Bangladesh, Pakistan now hold nearly 30% of all IDA-eligible debt",
     date: "December 5, 2025",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["Bangladesh", "IDA-eligible debt", "nigeria", "Pakistan", "worldbank"],
     excerpt:
       "The World Bank has revealed that Nigeria, Bangladesh, and Pakistan now collectively account for almost 30 percent of the total external debt owed by countries eligible for International Development Association (IDA) support. This was made known in the bank’s International Debt Report 2025 released on Wednesday. The report paints a picture of rising net debt inflows, shifting […]",
@@ -6949,6 +8321,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FIRS clarifies 4% Development Levy, says it’s a consolidation under new law",
     date: "December 5, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgetings", "Development Levy", "FIRS", "new law", "Presidential Fiscal Policy"],
     excerpt:
       "The Federal Inland Revenue Service (FIRS) has clarified that the much-debated 4% Development Levy on imported goods is not a new or additional burden on businesses, noting that it is a consolidation of multiple existing charges designed to simplify compliance, reduce unpredictability and strengthen Nigeria’s investment climate. The Service gave the explanation in a statement […]",
@@ -6963,6 +8337,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Gov. Dapo Abiodun presents N1.66 trillion 2026 budget proposal to Ogun Assembly",
     date: "December 5, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["2026 budget proposal", "Dapo Abiodun", "ogun"],
     excerpt:
       "Governor Dapo Abiodun has presented a N1.66 trillion appropriation bill for 2026 before the Ogun State House of Assembly. The governor unveiled the proposal on Wednesday at the Assembly Complex in Abeokuta. The proposed budget, Christened ‘Budget of Sustainable Legacy’, represents a 57% increase compared to the N1.055 trillion budget of 2025. Capital and recurrent expenditure breakdown Abiodun explained that the budg",
@@ -6977,6 +8353,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN proposes 48-hour reimbursement window after APP fraud investigations",
     date: "December 5, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["APP fraud investigations", "CBN"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has published draft guidelines that could require banks and other financial institutions to refund victims of Authorised Push Payment (APP) fraud within 48 hours after investigations are concluded. The document, released on November 26, 2025, marks one of the strongest consumer-protection measures introduced by the apex bank in response […]",
@@ -6991,6 +8369,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria loses $363m yearly to EU beans export ban",
     date: "December 5, 2025",
     category: "Policy Implementation",
+    categoryId: 33,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Policy Implementation"],
     tags: ["EU beans export ban"],
     excerpt:
       "Nigeria’s agricultural sector is losing an estimated $362.5 million to $363 million annually in foreign exchange due to the protracted international ban on its dried beans exports, primarily by the European Union (EU). The significant financial toll underscores the profound consequences of neglecting food safety standards and proper agricultural practices on the nation’s drive for economic diversification. […]",
@@ -7005,6 +8385,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Transafam Power launches CSR for senior citizens",
     date: "December 5, 2025",
     category: "Coporate Social Responsibility",
+    categoryId: 45,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Coporate Social Responsibility"],
     tags: ["corporate social responsibilities", "csr", "senior citizens", "Transafam Power"],
     excerpt:
       "Transafam Power Limited, a subsidiary of Transnational Corporation Plc, has launched the maiden edition of its Corporate Social Responsibility (CSR) for senior citizens of its host community, Okoloma-Afam, Oyigbo Local Government Area, Rivers State. The initiative covers provisions of comprehensive medical screenings, wellness education, food, and essential items for the elderly, as well as long-term health […]",
@@ -7019,6 +8401,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Fed Govt orders airlines to review flight schedules",
     date: "December 5, 2025",
     category: "Social Performance",
+    categoryId: 234,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Social Performance"],
     tags: ["airlines", "faan", "flight schedules", "social performance"],
     excerpt:
       "The Federal Airports Authority of Nigeria has urged airlines to review their schedules during the Yuletide to curb flight delays and cancellations. The Agency also revealed that it has commenced weekly meetings with relevant stakeholders to ensure a comfortable passenger experience and smooth flight operation between December and January. The Managing Director of the Federal Airports Authority […]",
@@ -7033,6 +8417,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Contractors still marching on Finance Ministry",
     date: "December 5, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["contractors", "debt financing", "Finance Ministry"],
     excerpt:
       "The protest by members of the Indigenous Contractors Association of Nigeria (ICAN) entered its second day yesterday with the protesters finally getting an audience with the Minister of Finance and Coordinating Minister of the Economy, Mr. Wale Edun, over their demand for the payment of 2024 contracts executed for the Federal Government. The demonstration, which brought […]",
@@ -7046,6 +8432,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Shettima rallies states, MDAs to deepen reforms",
     date: "December 5, 2025",
     category: "Constitution, Reforms and Bills",
+    categoryId: 266,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Constitution, Reforms and Bills"],
     tags: ["deepen reforms", "mdas", "Shettima"],
     excerpt:
       "Vice President Kashim Shettima has called on state governments, federal ministries, departments and agencies (MDAs), the organised private sector, and development partners to intensify efforts toward strengthening Nigeria’s business environment, insisting that national prosperity depends on sustained collaboration across all sectors. Speaking in Abuja at the PEBEC Gala and Awards Night, organised by the Presidential ",
@@ -7058,7 +8446,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ban-ki-moon-ex-un-secretary-general-to-speak-at-imo-economic-summit",
     title: "Ban Ki-Moon, ex-UN secretary-general, to speak at Imo economic summit",
     date: "December 4, 2025",
-    category: "Mentorship And Role Models",
+    category: "Mentorship and Role Models",
+    categoryId: 199,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Mentorship and Role Models"],
     tags: [
       "Ban Ki-Moon",
       "Imo economic summit",
@@ -7078,6 +8468,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BOI says N1.2trn was disbursed across 14 sectors in 2024",
     date: "December 4, 2025",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance", "boi", "disbusses to 14 sectors"],
     excerpt:
       "The Bank of Industry (BoI) says it disbursed over N1.27 trillion to enterprises across 14 sectors directly and indirectly in 2024. The disbursements showcase the bank’s commitment to driving economic growth and development, Olasupo Olusi, chief executive officer (CEO) of BoI, said at the 10th Nigeria energy forum (NEF) held virtually on Tuesday in Lagos.Represented […]",
@@ -7092,6 +8484,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Envoy: Nigeria hit $10bn trade surplus with EU in 2025",
     date: "December 4, 2025",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["trade surplus", "trade volume envoy"],
     excerpt:
       "Nigeria reportedly recorded a $10 billion trade surplus with the European Union (EU) in 2025, driven by surging agri-exports that outpaced imports by a wide margin. Gautier Mignot, EU envoy to Nigeria and the Economic Community of West African States (ECOWAS), spoke on Wednesday in Abuja during an end-of-year briefing on the bloc’s achievements. Mignot […]",
@@ -7106,6 +8500,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Breakdown Of Abia 2026 Proposed Budget",
     date: "December 4, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["2026", "abia budget"],
     excerpt:
       "Abia State Governor Alex Otti on Tuesday presented a N1.016 trillion budget proposal for 2026 to the State House of Assembly, describing it as a blueprint for accelerated growth and expanded opportunities.The appropriation bill, titled “Budget of Acceleration and New Possibilities,” was presented to Speaker Emmanuel Emereuwa and members of the 8th Assembly. Otti said […]",
@@ -7119,6 +8515,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Arsenal Battle Hard To Rescue Point From Resilient 10-Man Chelsea",
     date: "December 4, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Arsenal Battle"],
     excerpt:
       "Chelsea midfielder Moises Caicedo was sent off in the 38th minute at Stamford Bridge for a crude foul on Merino that caught the midfielder on his ankle.Mikel Merino rescued Arsenal as the Premier League leaders battled to a 1-1 draw against 10-man Chelsea in a heavyweight title clash. Chelsea midfielder Moises Caicedo was sent off […]",
@@ -7133,6 +8531,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "IBEDC Resumes Installation Of Over 55,000 Free Meters, Warns Against Extortion",
     date: "December 4, 2025",
     category: "Energy Consumption",
+    categoryId: 61,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Energy Consumption"],
     tags: ["free meter distribution", "IBEDC"],
     excerpt:
       "The company asked customers with outstanding arrears are encouraged to visit the nearest IBEDC office for resolution.After prolonged controversy over estimated billing and faulty meters by customers, the Ibadan Electricity Distribution Company (IBEDC) says the company is resuming the installation of free prepaid meters to its customers. The installation exercise under Tranche B of the […]",
@@ -7146,7 +8546,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fec-approves-deployment-of-4000-telecoms-towers-nationwide",
     title: "FEC approves deployment of 4,000 telecoms towers nationwide",
     date: "December 4, 2025",
-    category: "Investment In Sustainable Technologies",
+    category: "Investment in Sustainable Technologies",
+    categoryId: 208,
+    categoryPath: [
+      "TECHNOLOGY & INNOVATION",
+      "Technology",
+      "Investment in Sustainable Technologies",
+    ],
     tags: ["investment in sustainable technologies", "telecoms towers deployment"],
     excerpt:
       "The federal executive council (FEC) has approved the deployment of 4,000 telecommunications towers nationwide to expand digital access in underserved communities. ‎According to NAN, Mohammed Idris, minister of information and national orientation, briefed state house correspondents after the council meeting, presided over by President Bola Tinubu.‎“There is also an approval by FEC granted to the […]",
@@ -7161,6 +8567,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FEC okays $100m AfDB loan to support young entrepreneurs",
     date: "December 4, 2025",
     category: "Entrepreneurship",
+    categoryId: 135,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Entrepreneurship"],
     tags: ["AfDB", "young entrepreneurs"],
     excerpt:
       "The federal executive council (FEC) has approved a $100 million African Development Bank (AfDB) loan for the Nigeria youth investment fund. Wale Edun, minister of finance and coordinating minister of the economy, said the loan targets entrepreneurs between the ages of 18 and 35, particularly those operating small and medium-scale businesses.Edun spoke to journalists after […]",
@@ -7174,7 +8582,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "senate-foreign-affairs-committee-clears-oke-are-dalhatu-for-ambassadorial-roles",
     title: "Senate foreign affairs committee clears Oke, Are, Dalhatu for ambassadorial roles",
     date: "December 4, 2025",
-    category: "Legislative Arm Of Government",
+    category: "Legislative Arm of Government",
+    categoryId: 263,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Legislative Arm of Government"],
     tags: [
       "ambassadorial roles",
       "foreign affairs committee",
@@ -7194,6 +8604,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Seplat completes offshore facility upgrade",
     date: "December 4, 2025",
     category: "Energy",
+    categoryId: 59,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy"],
     tags: ["nigeria", "offshore facility upgrade", "seplat", "upstream"],
     excerpt:
       "Seplat Energy Plc has announced the completion and installation of its new inlet gas exchanger module on the East Area Project platform, located in OML 67 offshore Nigeria. This was disclosed in a corporate disclosure filed with the Nigerian Exchange Limited on Tuesday, signed by Seplat’s Chief Financial Officer, Eleanor Adaralegbe. The IGE module is […]",
@@ -7207,6 +8619,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Ogun empowers over 72,000 residents with agric skills",
     date: "December 4, 2025",
     category: "Youth Empowerment",
+    categoryId: 134,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Youth Empowerment"],
     tags: ["agricultural skills", "ogun empowerment"],
     excerpt:
       "The Ogun State government has disclosed that it has empowered over 72,000 residents of the state through various agricultural support and skills development programmes under the State Economic Transformation Project, a five-year World Bank-assisted programme which winds up on 31 December 2025. The beneficiaries, according to the state government, include 39,000 individuals trained under the […]",
@@ -7221,6 +8635,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria–S’Africa chamber celebrates 25-year economic partnership",
     date: "December 4, 2025",
     category: "Acquisitions, Collaborations and Partnerships",
+    categoryId: 197,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Acquisitions, Collaborations and Partnerships",
+    ],
     tags: ["Nigeria-S'Africa Chamber", "partnership"],
     excerpt:
       "The Nigeria-South Africa Chamber of Commerce has celebrated its 25th anniversary with a high-profile dinner in Lagos, drawing corporate leaders, diplomats, and state officials to honour a quarter-century of robust bilateral economic relations. The milestone event, themed “Building Together,” served as a testament to the resilience and deepening economic bond between Africa’s two largest economies, […]",
@@ -7235,6 +8655,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Edo plans N160bn fund to address ecological challenges",
     date: "December 4, 2025",
     category: "Climate Change",
+    categoryId: 118,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Climate Change"],
     tags: ["climate challenge", "ecological challenges", "edo state"],
     excerpt:
       "The Executive Chairman of the Edo State Ecological Fund and Management Commission, Blessing Agbomhere, has unveiled plans by the state government to raise N160 bn to tackle ecological challenges. Agbomhere, who spoke at a press parley on Wednesday, said the fund would be raised through the Ecological/Climate Trust, revealing that the Okpebholo Green Revolution for […]",
@@ -7249,6 +8671,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Deutsche Bank pursues financing role in Lagos bridge rehabilitation",
     date: "December 4, 2025",
     category: "Critical Infrastructure",
+    categoryId: 143,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Infrastructure", "Critical Infrastructure"],
     tags: [
       "critical infrastructure",
       "Deutsche Bank Finance",
@@ -7268,6 +8692,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "INTELS empowers 62 women in host communities",
     date: "December 4, 2025",
     category: "Gender Equality",
+    categoryId: 40,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Gender Equality"],
     tags: ["empowers", "gender equality", "intels", "women in its host communities"],
     excerpt:
       "INTELS Nigeria Limited has strengthened its commitment to women’s economic empowerment by graduating 62 trainees from its 2025 Women Empowerment Project Scheme, Synergy. In a statement on Monday, the company explained that the graduation ceremony was held over the weekend at the Rosa Volpi Women Development Centre, located within the Federal Lighter Terminal at the […]",
@@ -7280,7 +8706,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "minister-blames-low-economic-returns-for-poverty",
     title: "Minister blames low economic returns for poverty",
     date: "December 4, 2025",
-    category: "Human Development Index Hdi And Poverty Rates",
+    category: "Human Development Index (HDI) and Poverty Rates",
+    categoryId: 39,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Human Development Index (HDI) and Poverty Rates",
+    ],
     tags: ["human development index and poverty rate", "Low Economic Returns", "Nigerian Poverty"],
     excerpt:
       "The Minister of Budget and Economic Planning, Senator Abubakar Bagudu, has said most Nigerians remain trapped in poverty because their economic returns are limited. This was according to a press statement issued by the ministry on Wednesday following the visit of the World Bank Regional Manager for Social Protection and Labour for West and Central […]",
@@ -7295,6 +8727,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NSIA, GE HealthCare partner to boost diagnostic capacity",
     date: "December 4, 2025",
     category: "Health Care Financing Mechanism",
+    categoryId: 221,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Health Care Financing Mechanism"],
     tags: ["Boost Diagnostic Capacity", "HealthCare Partner", "nsia"],
     excerpt:
       "The Nigerian Sovereign Investment Authority has announced a new partnership with GE HealthCare to establish diagnostic centres, deploy advanced equipment, and train local professionals, as part of a national effort to improve access to medical diagnosis. In a statement, the authority, through its healthcare subsidiary, NSIA Advanced Medical Services Ltd (MedServe), noted that the collaboration […]",
@@ -7309,6 +8743,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NGX unveils commercial paper listings",
     date: "December 4, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["commercial paper", "listings", "NGX"],
     excerpt:
       "Nigerian Exchange Limited has introduced Commercial Paper listings, following approval from the Securities and Exchange Commission. In a statement from the NGX on Wednesday, the new market offering will deepen Nigeria’s short-term debt market. The PUNCH reports that with the new listing window for commercial papers, NGX now offers an integrated environment spanning equities, fixed income, […]",
@@ -7322,6 +8762,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN ends cash deposit limit for bank customers",
     date: "December 4, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["Cash Deposit Limit", "CBN", "customers", "monetarty policy"],
     excerpt:
       "The Central Bank of Nigeria has removed all cash-deposit limits for bank customers while maintaining strict weekly withdrawal ceilings under a revised set of cash-related policies that take effect on January 1, 2026. The changes were announced in a circular issued on Tuesday and signed by the Director, Financial Policy and Regulation Department, Dr Rita […]",
@@ -7335,6 +8777,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "‘Entrepreneurs must think differently to grow’",
     date: "December 4, 2025",
     category: "Entrepreneurship",
+    categoryId: 135,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Entrepreneurship"],
     tags: ["Entrepreneurship Growth", "principles to success"],
     excerpt:
       "This call was made by the Managing Director/Chief Executive Officer of Mainland Oil & Gas Co. Limited, Dr Chris Igwe, at the 10th annual conference & trade expo organised by the Masterpiece Resource Development Centre in Lagos. According to the 2024 PricewaterhouseCoopers MSMEs report, the growth potential of businesses was stunted by funding gaps, power […]",
@@ -7348,6 +8792,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG unveils N54.43tn budget as debt service gulps N15.91tn",
     date: "December 4, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budget deficit", "debt financing", "nigeria"],
     excerpt:
       "The Federal Government has projected total revenue of N50.74 trillion for 2026, alongside a targeted economic growth rate of 4.68 per cent, while its proposed 2026 deficit has risen so sharply that it now exceeds the entire national budget of 2022 by N2.78tn, The PUNCH reports. This deficit likely means the government plans to borrow about 16.1 […]",
@@ -7362,6 +8808,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Sahara Group deepens reforestation, adopts Gelegele forest reserve",
     date: "December 1, 2025",
     category: "Agriculture",
+    categoryId: 29,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture"],
     tags: ["forest reserve", "reforestation", "Sahara Group"],
     excerpt:
       "Sahara Group has expanded its environmental sustainability agenda through a strategic partnership between its flagship Adopt-A-Forest Initiative and the Gelegele Forest Reserve in Edo State, Nigeria. The collaboration, which kicks off with the planting of 20,000 tree seedlings, is aimed at regenerating degraded areas of the reserve and reinforcing Sahara’s long-term commitment to nature-based climate […]",
@@ -7376,6 +8824,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN: Agriculture, service subsectors recorded growth in November",
     date: "December 1, 2025",
     category: "Value Addition",
+    categoryId: 32,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Value Addition"],
     tags: ["agriculture", "CBN", "growth records", "value addition"],
     excerpt:
       "The Central Bank of Nigeria (CBN) says all agriculture and service subsectors recorded growth in November. CBN, in its purchasing managers’ index (PMI) report, said the composite PMI stood at 56.4 index points in November, compared with 55.4 index points in October.According to the apex bank, the figure indicates a stronger and broad-based expansion in […]",
@@ -7390,6 +8840,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NRC MD says revival plans for narrow-gauge rail network underway",
     date: "December 1, 2025",
     category: "Rail",
+    categoryId: 27,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Rail"],
     tags: ["narrow-gauge rail network", "nrc", "rail transportation"],
     excerpt:
       "Kayode Opeifa, managing director (MD) of the Nigerian Railway Corporation (NRC), says plans are underway to revive the old narrow-gauge rail network. Speaking on Sunday at The Exchange podcast, Opeifa said it remains a vital transport system for millions of Nigerians and the plan will rehabilitate the old rail network and reconnect communities that have […]",
@@ -7404,6 +8856,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "UMZA Air begins Abuja–Ilorin flights with low fares",
     date: "December 1, 2025",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["Abuja–Ilorin flights", "aviation", "low rates", "UMZA Air"],
     excerpt:
       "UMZA Air on Sunday commenced commercial flights on the Abuja–Ilorin route with what the airline described as permanently cheaper airfares for travellers using the Tunde Idiagbon International Airport, Ilorin. The Managing Director/Accountable Manager of UMZA Aviation Services Limited, Mr Anachuna Henry, told The PUNCH that the airline deliberately pegged its ticket prices between N145,000 and […]",
@@ -7418,6 +8872,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Study new tax laws, AIESEC Alumni urge Nigerians",
     date: "December 1, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgeting", "national revenue service", "new tax law"],
     excerpt:
       "AIESEC Alumni Nigeria, alongside the former Executive Chairman of the Federal Inland Revenue Service, Ifueko Okauru, has called on businesses, households and individuals to urgently study Nigeria’s new tax laws and invest in skilled tax professionals as the reforms become operational in January 2026. Okauru, in her business lecture at the AIESEC Alumni Nigeria National […]",
@@ -7432,6 +8888,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "LASG declares readiness for year-end tourism activities",
     date: "December 1, 2025",
     category: "Gossips and Attractions",
+    categoryId: 149,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Gossips and Attractions"],
     tags: ["LAGOS", "Year-End Tourism"],
     excerpt:
       "The Lagos State Government’s key tourism agencies have announced full readiness for a smooth, safe, and vibrant festive season, following a high-level multi-agency stakeholders’ engagement held at the Lagos Continental Hotel, Victoria Island. In a statement by the ministry, it was noted that the meeting, themed “Unlocking the Potentials and Opportunities of Lagos Tourism: Collaboration […]",
@@ -7446,6 +8904,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Dangote refinery pledges 1.5bn litres of petrol monthly",
     date: "December 1, 2025",
     category: "Downstream Sector",
+    categoryId: 93,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Downstream Sector"],
     tags: ["dangote"],
     excerpt:
       "Dangote Petroleum Refinery has confirmed its commitment to supplying Nigeria’s domestic petrol requirements, pledging 1.5 billion litres of Premium Motor Spirit (petrol) per month, equivalent to 50 million litres per day, starting in December 2025. The supply is set to rise to 1.7 billion litres per month (57 million litres daily) from February 2026, the […]",
@@ -7460,6 +8920,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "828m litres of petrol imported to avert nationwide shortage",
     date: "December 1, 2025",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["dangote refinary", "petrol imports"],
     excerpt:
       "Fuel security slowed in October as the Dangote Petroleum Refinery supplied only an average of 17.1 million litres per day of the nation’s petrol needs, forcing the country to rely heavily on imports despite earlier hopes of self-sufficiency. The Federal Government, through its Nigerian Midstream and Downstream Petroleum Regulatory Authority, revealed this. The regulator, in […]",
@@ -7474,6 +8936,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Enyimba end three-game winless run against Rangers",
     date: "December 1, 2025",
     category: "Team Sports",
+    categoryId: 246,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Team Sports"],
     tags: ["Enyimba", "NPFL", "rangers"],
     excerpt:
       "Former champions Enyimba returned to winning ways in the Nigeria Premier Football League on Sunday, thanks to a 2-1 win over Rangers International in an Oriental derby at the Aba Township Stadium, The PUNCH reports. Without a win in their previous three matches, Enyimba began life without coach Stanley Eguma with a resolve to turn their fortunes […]",
@@ -7488,6 +8952,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Crude-for-loans: NNPCL battles N8.07tn outstanding debt",
     date: "December 1, 2025",
     category: "Upstream Sector",
+    categoryId: 92,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Upstream Sector"],
     tags: ["(NNPCL)", "crude-for-loans", "deals", "debt", "up stream sector"],
     excerpt:
       "The Nigerian National Petroleum Company Limited is burdened with crude-backed loan obligations estimated at N8.07tn, according to an analysis of its 2024 financial statements and capital-commitment disclosures. The liabilities stretch across multiple forward-sale and project-financing arrangements that are expected to be serviced through substantial crude oil and gas deliveries. The commitments have become a major […",
@@ -7503,6 +8969,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NRC to reactivate Osogbo-Dagbolu-Erunmu, Idogo rail lines for freight",
     date: "November 28, 2025",
     category: "Rail",
+    categoryId: 27,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Rail"],
     tags: ["freight", "nrc", "rail transportation"],
     excerpt:
       "The Nigerian Railway Corporation (NRC) has confirmed plans to collaborate with the Southwest Development Commission (SWDC) to reactivate the Osogbo-Dagbolu-Erunmu and Idogo railway lines. The development was conveyed in a statement issued by the NRC via its official X account on Thursday, noting that the lines will be used for freight movement, transporting agricultural produce from southwest towns to […]",
@@ -7518,6 +8986,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Katsina Leads In Tackling Climate Change",
     date: "November 28, 2025",
     category: "Climate Change",
+    categoryId: 118,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Climate Change"],
     tags: ["Climate Change"],
     excerpt:
       "Katsina State has reinforced its position as a frontrunner in climate action in Nigeria, with Governor Dikko Umar Radda declaring that the state is taking bold and deliberate steps to address the effects of climate change through sustainable investments and green initiatives. The governor made the remark during the groundbreaking for a proposed Compressed Natural […]",
@@ -7531,6 +9001,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Abuja School Gets 2,000 Writing Materials, Books",
     date: "November 28, 2025",
     category: "Resource Allocation",
+    categoryId: 242,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Resource Allocation"],
     tags: ["Books", "resource allocation", "students in abuja school", "Writing Materials"],
     excerpt:
       "The Zephyrgold Foundation has distributed over 2,000 books and other writing materials to students of the Junior Secondary School (JSS), Nyayan, to improve their learning outcomes. The foundation’s team lead, Mr Mathew Ajiboye, said the initiative was part of the organisation’s commitment to promoting quality education as a pathway to a safer and more prosperous […]",
@@ -7544,6 +9016,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Kaduna Declares Last Saturday Of Every Month Sanitation Day",
     date: "November 28, 2025",
     category: "Environmental and Social Standards",
+    categoryId: 222,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Environmental and Social Standards"],
     tags: ["environmental and social standards", "kaduna state", "Month Sanitation Day"],
     excerpt:
       "Kaduna State government has reintroduced statewide sanitation, declaring the last Saturday of every month as Sanitation Day to boost public health, improve hygiene and tackle environmental threats across the state. In a statement issued by the commissioner for Information, Malam Ahmed Maiyaki, the government said the first exercise will take place tomorrow from 7:00am to […]",
@@ -7557,7 +9031,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "ican-inducts-2000-new-chartered-accountants",
     title: "ICAN inducts 2,000 new chartered accountants",
     date: "November 28, 2025",
-    category: "Professional Institutes And Associations",
+    category: "Professional Institutes and Associations",
+    categoryId: 136,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Leadership",
+      "Professional Institutes and Associations",
+    ],
     tags: ["chartered accountants", "ican", "professional institutions and associations"],
     excerpt:
       "THE Institute of Chartered Accountants of Nigeria on Wednesday welcomed over 2,000 new members in a grand induction ceremony at the ICAN Centre, Lagos, celebrating the next generation of the nation’s financial professionals. The atmosphere was charged with excitement and pride as the newly inducted chartered accountants, dressed in crisp suits and formal attire, filed […]",
@@ -7571,6 +9051,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Create crash database to curb accidents, expert urges FG",
     date: "November 28, 2025",
     category: "Data Collection and Analysis",
+    categoryId: 236,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Transportation",
+      "Data Collection and Analysis",
+    ],
     tags: ["data collection and analysis", "experts", "national crash database", "nigeria"],
     excerpt:
       "Experts have urged the Federal Government to establish a unified national crash database to reduce the spate of road accidents in the country. In a statement to The PUNCH, Transportation Safety Researcher, Mujeeb Abdulrazaq, cautioned that Nigeria may find it difficult to significantly improve road safety outcomes unless urgent steps are taken to enhance the […]",
@@ -7585,6 +9071,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CSCS goes live with T+2 settlement cycle",
     date: "November 28, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["cscs", "financial helt", "h performance", "t2", "trading and settlement cycle"],
     excerpt:
       "The Central Securities Clearing System Plc has officially implemented the T+2 settlement cycle in the Nigerian capital market, effective today, Friday, 28 November 2025. A statement from the CSCS indicated that this transition from the long-standing T+3 cycle marks a significant milestone in Nigeria’s post-trade infrastructure modernisation and demonstrates the market’s collective commitment to global […]",
@@ -7598,6 +9090,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Bancorp MD: I buy stocks based on their fundamentals — not emotions",
     date: "November 28, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["Bancorp", "buy stocks", "fundamentals", "relative stennght index"],
     excerpt:
       "Dolapo Ashiru, managing director (MD) at Bancorp Securities Limited, says his investment philosophy relies on fundamental analysis to guide stock selection and not based on emotion. Speaking on Thursday during a seminar organised by Bancorp, Ashiru advised investors to adopt a patient, diversified approach, urging them to purchase a list of stocks.He said sectors key to the Nigerian […]",
@@ -7613,6 +9111,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "AfDB approves $500m loan to support second phase of Nigeria’s energy transition programme",
     date: "November 28, 2025",
     category: "African Development Bank Group (AfDB)",
+    categoryId: 168,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "African Development Bank Group (AfDB)",
+    ],
     tags: ["AfDB", "energy transition", "nccc", "NERC"],
     excerpt:
       "The African Development Bank (AfDB) Group has approved a $500 million loan to the federal government to finance the second phase of its economic governance and energy transition support programme (EGET-SP). EGET-SP is an initiative aimed at accelerating the transformation of the country’s electricity infrastructure and improving access to cleaner sources of energy.On August 24, 2022, the […]",
@@ -7627,6 +9131,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FIRS: Small businesses exempted from tax must file annual returns",
     date: "November 28, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["file annual returns", "FIRS", "Small businesses", "tax"],
     excerpt:
       "The Federal Inland Revenue Service (FIRS) says small businesses will still go through the full tax computation process from 2026, even though they will not be required to pay tax. Speaking in a webinar on Wednesday, Kehinde Kajesomo, FIRS deputy director, said the revenue service will calculate such businesses’ assessable profits, deduct capital allowances and losses, and […]",
@@ -7641,6 +9147,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NBS says Nigeria generated N4.76trn from company income tax in H1 2025 — up 38%",
     date: "November 28, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["income tax", "NBS"],
     excerpt:
       "Nigeria generated N4.76 trillion from company income tax (CIT) in the first half (H1) of 2025, with domestic firms accounting for the bulk of the growth, according to new data from the National Bureau of Statistics (NBS). The data also showed that the CIT recorded in the first six months of this year exceeded the […]",
@@ -7655,6 +9163,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG partners NASRDA on agricultural produce traceability system, farmland monitoring",
     date: "November 28, 2025",
     category: "Sustainable Agriculture",
+    categoryId: 245,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Sustainable Agriculture"],
     tags: [
       "agricultural produce traceability system",
       "farm land monitoring",
@@ -7674,6 +9184,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NDA opens application for 78 Regular Course, sets April 30 deadline",
     date: "November 28, 2025",
     category: "Vacancies",
+    categoryId: 72,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Vacancies"],
     tags: ["78 Regular Course", "nda", "vacancies"],
     excerpt:
       "The Nigerian Defence Academy has announced the start of its application process for the 78 Regular Course, opening the portal to prospective candidates across the country. In a statement signed by the Academy Registrar, the Academy confirmed that the online application will run from Friday, November 28, 2025, to April 30, 2026. It added that the programme is open […]",
@@ -7687,7 +9199,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "world-bank-urges-fg-to-cut-import-tariffs-to-curb-inflation",
     title: "World Bank urges FG to cut import tariffs to curb inflation",
     date: "November 28, 2025",
-    category: "World Bank Wb",
+    category: "World Bank (WB)",
+    categoryId: 54,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "World Bank (WB)",
+    ],
     tags: ["curb inflation", "import tariff", "World Bank"],
     excerpt:
       "The World Bank has called on the Nigerian government to urgently reduce high import tariffs and lift certain import bans as a fast-track measure to ease soaring prices and curb rising poverty. This was made known by the World Bank Country Director for Nigeria, Mathew Verghis, during an interview with Arise TV on Thursday. He […]",
@@ -7703,6 +9221,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Governor Bala Mohammed presents N878 billion 2026 budget to Bauchi Assembly",
     date: "November 28, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["Bauchi Assembly", "bauchi budget"],
     excerpt:
       "Bauchi State Governor, Bala Mohammed has presented a N878 billion Appropriation Bill for the 2026 fiscal year to the State House of Assembly. Presenting the proposals tagged “Budget of Consolidation and Sustainability” on Thursday in Bauchi, Mohammed assured members of the House that the budget would be fully implemented. Governor Mohammed explained that the budget, […]",
@@ -7717,6 +9237,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tech Management Centre To Train 1m Nigerians In Critical Skills",
     date: "November 28, 2025",
     category: "Knowledge Transfer",
+    categoryId: 107,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Knowledge Transfer"],
     tags: ["Critical Skills", "knowledge transfer", "Tech Management Centre"],
     excerpt:
       "The director-general/chief executive of the National Centre for Technology Management (NACETEM), Dr Olushola Odusanya, has announced that the organisation will train one million Nigerians in critical skills for socio-economic development over the next five years. In an interactive session in Abuja on Wednesday, he said the initiative is designed to equip young people with the […]",
@@ -7731,6 +9253,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Cancer treatment: NNPC JV donates $300,000 to National Hospital",
     date: "November 28, 2025",
     category: "Complex Medical Services",
+    categoryId: 89,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Complex Medical Services"],
     tags: ["cancer treatment i", "complex medical service", "NNPC"],
     excerpt:
       "Cancer patients in Abuja have received a major lifeline after the NNPC/Renaissance Joint Venture donated $300,000 to the National Hospital, Abuja, to sustain the maintenance of its advanced cancer treatment machine. The funding, announced at the office of the Coordinating Minister of Health and Social Welfare, will support the continuous operation of the Linear Accelerator […]",
@@ -7745,6 +9269,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Tinubu Rejects Use Of Mercenaries In Counter-terrorism Efforts",
     date: "November 26, 2025",
     category: "Executive Arm of Government",
+    categoryId: 262,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Executive Arm of Government"],
     tags: ["counter terrorism", "Mercenaries", "tinubu"],
     excerpt:
       "President Bola Tinubu on Monday rejected the growing reliance on private military and security contractors in conflict zones in Africa, warning that their involvement undermines sovereignty and complicates counter-terrorism operations across the continent. Speaking during the first plenary session on ’Peace, Security, Governance and Multilateralism’ at the 7th African Union–European Union Summit in Luanda, Angola, Ti",
@@ -7758,7 +9284,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigerian-govt-bans-open-grazing-to-end-farmers-herders-conflicts",
     title: "Nigerian Govt Bans Open Grazing To End Farmers-Herders Conflicts",
     date: "November 26, 2025",
-    category: "Life Stock And Aquaculture",
+    category: "Life Stock and Aquaculture",
+    categoryId: 126,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Life Stock and Aquaculture"],
     tags: ["Farmers-Herders Conflicts", "open grazing"],
     excerpt:
       "The Federal Government has officially outlawed open grazing nationwide as part of a broader strategy to end the recurring clashes between farmers and herders. The decision was revealed on Tuesday by the Minister of Livestock Development, Alhaji Mukhtar Maiha, at the inauguration of the maiden National Council on Livestock Development held in Yola, Adamawa State. […]",
@@ -7773,6 +9301,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Sanwo-Olu presents N4.237 trillion 2026 budget proposal to Lagos Assembly",
     date: "November 26, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["2026 budget proposal", "lagos assemble members"],
     excerpt:
       "Lagos State Governor, Babajide Sanwo-Olu, on Tuesday presented a record-breaking N4.237 trillion budget proposal for the 2026 fiscal year to the Lagos State House of Assembly in Ikeja. The proposal marks a significant increase of more than N1 trillion compared to the N3.005 trillion budget for 2025, which was presented last November. Christening the new […]",
@@ -7787,6 +9317,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Armed herdsmen attack, disrupt church crusade in Nasarawa community",
     date: "November 26, 2025",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["Armed herdsmen", "disrupt church crusade", "Nasarawa community"],
     excerpt:
       "Lafia—Suspected armed herdsmen on Monday evening attacked Agboda community in Mararaba Udege, Nasarawa Local Government Area of Nasarawa State and macheted one person on his way to a church crusade on the head, which disrupted the gathering.The organiser of the crusade, Dr. Daniel Ukpo, who spoke to our reporter on the phone, lamented the level […]",
@@ -7800,7 +9332,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigeria-pushes-for-african-veto-seat-at-un-security-council",
     title: "Nigeria pushes for African veto seat at UN Security Council",
     date: "November 26, 2025",
-    category: "United Nations Un",
+    category: "United Nations (UN)",
+    categoryId: 52,
+    categoryPath: [
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+      "International and Regional Member Organizations",
+      "United Nations (UN)",
+    ],
     tags: ["nigeria/africa veto un seat"],
     excerpt:
       "Nigeria has renewed its push for Africa to secure permanent, veto-wielding seats on the United Nations Security Council, insisting that comprehensive reforms of global governance structures can no longer be delayed. President Bola Ahmed Tinubu made the call on Monday during the first plenary session on Peace, Security, Governance and Multilateralism at the 7th African Union–European Union […]",
@@ -7815,6 +9353,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CDCFIB announces recruitment for mid-management positions in Federal Fire Service",
     date: "November 26, 2025",
     category: "Vacancies",
+    categoryId: 72,
+    categoryPath: ["HUMAN DEVELOPMENT", "Education", "Vacancies"],
     tags: ["cdcfib", "fire service", "mid-management positions", "recruitment", "vacancies"],
     excerpt:
       "The Civil Defence, Correctional, Fire and Immigration Services Board (CDCFIB) has opened applications for mid-level roles within the Federal Fire Service, calling on qualified public sector workers to apply within one week of the announcement. The information was disclosed in a notice e-signed by A M Jibril, Maj Gen (Rtd) and dated 25th November 2025. According to the Board, the […]",
@@ -7829,6 +9369,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Offences and penalties in new Nigerian Tax Act (1)",
     date: "November 26, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["budgeting", "offences and penalties", "Tax Act"],
     excerpt:
       "The new Nigerian Tax Act, which comes into effect on January 1, 2026, has been hailed as containing reforms capable of transforming the nation’s economy, promoting equity among the populace, improving the financial capabilities of low and medium class workers while substantially bridging Nigeria’s age-long infrastructural gap. To enforce compliance and effective implementation, some guidelines, […]",
@@ -7843,6 +9385,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "JAR 2025: Federal Govt Moves To Curb Fraud, Improve Data In Health Sector",
     date: "November 26, 2025",
     category: "Public Health Infrastructure",
+    categoryId: 220,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Public Health Infrastructure"],
     tags: ["Curb Fraud", "fed govt", "health data", "public health"],
     excerpt:
       "The federal government and key health sector stakeholders have adopted far-reaching commitments to strengthen governance, financing, accountability and frontline service delivery as the 2025 Health Sector–Wide Joint Annual Review (JAR) ended in Abuja. The three-day meeting, chaired by the Coordinating Minister of Health and Social Welfare, Prof. Muhammad Ali Pate, alongside the Minister of State […]",
@@ -7857,6 +9401,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Group Backs Sachet Alcohol Ban, Says Public Health Must Come First",
     date: "November 26, 2025",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Alcohol Ban", "public health", "Sachet Alcohol"],
     excerpt:
       "The Network for Health Equity and Development (NHED) and Corporate Accountability and Public Participation Africa (CAPPA) have declared support for the National Agency for Food and Drug Administration and Control (NAFDAC) as it moves to enforce its ban on sachet alcohol and small-sized alcoholic beverages by December 2025. In a joint statement, the organisations described […]",
@@ -7871,6 +9417,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "CBN Retains Benchmark Interest Rate At 27%",
     date: "November 26, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["Benchmark Interest Rate", "CBN"],
     excerpt:
       "The Monetary Policy Committee of the Central Bank of Nigeria (CBN) has kept the benchmark interest rate unchanged at 27 per cent, extending its pause on monetary tightening. CBN Governor, Olayemi Cardoso, announced the decision on Tuesday at the end of the committee’s 303rd meeting in Abuja. Cardoso said, “The Committee decided by a majority […]",
@@ -7884,6 +9432,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FIFA 2026 World Cup Draw Format Unveiled",
     date: "November 26, 2025",
     category: "Amateur Sports",
+    categoryId: 248,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Amateur Sports"],
     tags: ["Draw Format Unveiled", "fifa", "worldcup"],
     excerpt:
       "With fewer than 200 days remaining until the kick-off of the expanded 48-team FIFA World Cup 2026 tournament, the procedures for the highly anticipated Final Draw have been confirmed. On Friday, December 5, coaches and officials from qualified nations, and those still vying for a spot, will gather at the prestigious John F. Kennedy Center […]",
@@ -7898,6 +9448,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Owerri, Enugu, Yola, Ilorin Airports Cleared For Night Operations, Says Airspace Agency",
     date: "November 26, 2025",
     category: "Aviation",
+    categoryId: 25,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Aviation"],
     tags: ["Airspace Agency", "nama"],
     excerpt:
       "The Nigeria Airspace Management Agency (NAMA) has approved four airports; Owerri, Enugu, Yola and Ilorin airports, to operate till 10 pm. The approval came after the calls by stakeholders to increase the time for flight operations at other airports other than Abuja and Lagos airports. Director General NAMA, Engr Ahmed Umar Farouk disclosed this at […]",
@@ -7911,7 +9463,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "varsity-lecturers-convene-to-take-final-decision-on-strike",
     title: "Varsity Lecturers Convene To Take Final Decision On Strike",
     date: "November 26, 2025",
-    category: "Trade Unions And Congresses",
+    category: "Trade Unions and Congresses",
+    categoryId: 254,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Trade Unions and Congresses",
+    ],
     tags: ["asuu strike", "Varsity Lecturers"],
     excerpt:
       "The Academic Staff Union of Universities (ASUU) has concluded its latest round of renegotiation meetings with the Federal Government, held between Monday and Tuesday. The discussions, which ended yesterday, form part of the government’s effort to prevent a fresh shutdown of public universities, following weeks of tension over unmet demands. The Union is therefore set […]",
@@ -7926,6 +9484,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SMDF, ORDF to create Nigeria’s first mining finance framework",
     date: "November 25, 2025",
     category: "Access to Finance",
+    categoryId: 42,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Access to Finance"],
     tags: ["access to finance for minners", "framework", "ORDF", "SMDF"],
     excerpt:
       "The Solid Minerals Development Fund (SMDF) has partnered with the Ores Reserves Development Forum (ORDF) to develop a mining finance framework addressing miners’ funding difficulties. ORDF is an initiative that evolved from roundtable discussions on mining finance held by the Geological Society of Nigeria with the aim of addressing the significant challenges miners face in accessing […]",
@@ -7940,6 +9500,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NRC to upgrade Iddo train station",
     date: "November 25, 2025",
     category: "Rail",
+    categoryId: 27,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Transportation", "Rail"],
     tags: ["iddo", "nrc", "rail transportation", "train station"],
     excerpt:
       "The Nigerian Railway Corporation (NRC) says no legitimate trader will lose their space as the corporation plans an upgrade of the Iddo train station in Lagos. According to NAN, Kayode Opeifa, managing director of the NRC, gave the assurance on Monday during a meeting with leaders of the Iddo train terminus traders, Ijora Olopa/Ajeloro fish […]",
@@ -7953,6 +9515,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "N60tn needed to bridge mass housing gap, says FDC",
     date: "November 25, 2025",
     category: "Sustainable Development",
+    categoryId: 38,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development"],
     tags: ["housing and development", "housing deficit"],
     excerpt:
       "The Director of the Federal Department of Cooperatives, Idris Ali Sani, has stated that Nigeria would require N60tn to build mass housing and address the country’s housing deficit. Sani stated this during a summit in Abuja, explaining that there was a need for developers, the Federal Ministry of Housing and Urban Development and others to […]",
@@ -7968,6 +9532,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "How Nigerian businesses can now pay taxes more easily: A step-by-step guide every taxpayer should know",
     date: "November 25, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["business taxes", "how to pay tax in nigeria", "taxpayers"],
     excerpt:
       "As Nigeria intensifies efforts to expand its revenue base and improve economic stability, understanding how to pay taxes correctly has become more important than ever. Many businesses still struggle with the process due to limited awareness or outdated information, yet the modern tax system is now simpler, fully digital, and free to access. Registration or […]",
@@ -7982,6 +9548,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "SEC To Begin Capital Market T+2 Settlement Cycle Transition Friday",
     date: "November 25, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["Capital Market", "sec", "T+2 Settlement Cycle Transition"],
     excerpt:
       "The move was designed to align with global best practices and enhance market efficiency.The Securities and Exchange Commission (SEC) will officially transition to a T+2 settlement cycle for equities transactions from Friday, November 28, 2025. Under the new system, all trades executed on Friday, November 28, 2025, will settle on Tuesday, December 2, 2025, while […]",
@@ -7996,6 +9568,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FCTA Begins Promotion Exams For 8,000 Workers On Tuesday",
     date: "November 25, 2025",
     category: "Human Capital Development",
+    categoryId: 110,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Human Capital Development"],
     tags: ["000 Workers", "fcta", "Promotion Exams"],
     excerpt:
       "Ezeh said the exam would be for staff across 165 different cadres in the Administration and the Federal Capital Development Authority. The Federal Capital Territory Administration says over 8,000 civil servants would write their Computer-Based Test promotion examinations from Tuesday, November 25, 2025. Disclosing this in a statement on Sunday, the Chairman of the […]",
@@ -8010,6 +9584,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Crayfish costs skyrocket in Lagos, traders warn prices may hit N15,000 by December",
     date: "November 25, 2025",
     category: "Economic Volatilities",
+    categoryId: 70,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Economic Volatilities"],
     tags: ["Crayfish costs", "economic votalities", "kyrocket crayfish prices"],
     excerpt:
       "Crayfish prices in Lagos have continued their sharp upward climb, with traders warning that a paint bucket of the seafood could sell for between N15,000 and N20,000 by December if current market pressures persist. Traders across major markets in Ikorodu, Oyingbo, and Surulere say the persistent rise is driven by a combination of fuel price […]",
@@ -8024,6 +9600,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Southwest leads voice calls, internet subscription",
     date: "November 25, 2025",
     category: "Mobile Phone Penetration",
+    categoryId: 210,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Mobile Phone Penetration"],
     tags: ["internet subscription", "mobile phone penetration", "Southwest", "voice calls"],
     excerpt:
       "Among the entire six regions captured in a new report, the South West region posted the highest numbers both in the voice call and internet subscription segments of the Nigerian telecom market. With a total number of 45,272,427 active voice subscription representing 28per cent of the total number 164,505,060 of both prepaid and post-paid mobile […]",
@@ -8037,7 +9615,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "fg-to-meet-asuu-on-monday-to-avert-strike",
     title: "FG To Meet ASUU On Monday To Avert Strike",
     date: "November 24, 2025",
-    category: "Trade Unions And Congresses",
+    category: "Trade Unions and Congresses",
+    categoryId: 254,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Trade Unions and Congresses",
+    ],
     tags: ["asuu", "Avert Strike", "fg"],
     excerpt:
       "Depending on the outcome of the meeting, the ASUU NEC will decide whether or not to embark on a strike. The Federal Government, through the Yayale Ahmed Renegotiation Committee, has scheduled meetings for Monday, November 24, 2025, and Tuesday, November 25, 2025, in an effort to prevent the impending strike by the Academic Staff Union […]",
@@ -8051,6 +9635,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "President Tinubu Orders Withdrawal Of Police Officers Attached To VIPs",
     date: "November 24, 2025",
     category: "Executive Arm of Government",
+    categoryId: 262,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Executive Arm of Government"],
     tags: ["order", "police attached to vips", "Withdrawal Of Police Officers"],
     excerpt:
       "A statement signed by Bayo Onanuga, his spokesman, said that henceforth, police authorities will deploy them to concentrate on their core policing duties. President Bola Ahmed Tinubu has directed the immediate withdrawal of police officers assigned to provide security for Very Important Persons (VIPs) across the country. A statement signed by Bayo Onanuga, his spokesman, […]",
@@ -8065,6 +9651,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Pension funds in subtle shift to corporate bonds, private equity",
     date: "November 24, 2025",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["corporate bonds and private equity", "Pension funds"],
     excerpt:
       "For the first time in years, pension funds administrators (PFAs) are making noticeable moves away from their traditionally heavy concentration in Federal Government securities, signaling a subtle but significant shift in portfolio strategy. While Federal Government’s instruments still dominate, soaking up N15.75 trillion or roughly 60 per cent of all pension funds in the period under review, […]",
@@ -8079,6 +9667,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Fed Govt ready to fund modular refineries, says Lokpobiri",
     date: "November 24, 2025",
     category: "Energy",
+    categoryId: 59,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy"],
     tags: ["fund modular refineries", "up steam sector"],
     excerpt:
       "In order to address the challenges of crude oil pipeline vandalism, the Minister of Petroleum Resources (Oil), Senator Heineken Lokpobiri at the weekend asked illegal operators to emulate the model of the ongoing Ebenco Global Link Limited refinery in Koko, Delta State to replicate other modular refineries. Addressing reporters after inspecting the refinery, he urged them to […]",
@@ -8093,6 +9683,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Southwest leads voice calls, internet subscription",
     date: "November 24, 2025",
     category: "Mobile Phone Penetration",
+    categoryId: 210,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Mobile Phone Penetration"],
     tags: ["internet subscription", "mobile phone penetration", "Southwest", "voice calls"],
     excerpt:
       "Among the entire six regions captured in a new report, the South West region posted the highest numbers both in the voice call and internet subscription segments of the Nigerian telecom market. With a total number of 45,272,427 active voice subscription representing 28per cent of the total number 164,505,060 of both prepaid and post-paid mobile […]",
@@ -8107,6 +9699,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Experts hinge $3b non-oil target on sunflower value chain",
     date: "November 24, 2025",
     category: "Fiber and Oil Crops",
+    categoryId: 129,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Fiber and Oil Crops"],
     tags: ["non-oil target on sunflower", "value chain"],
     excerpt:
       "Nigeria’s pursuit of a diversified economy, with non-oil export earnings recently topping $2.7 billion, is set for a significant boost if the country fully capitalised on the sunflower seed value chain, experts have said. South Africa is currently the African leader in production with an output of over 700,000 tons. Nigeria’s production is still below […]",
@@ -8121,6 +9715,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "6730 Treated At Free Medical Workshop",
     date: "November 24, 2025",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Free Medical Workshop", "wellbeinging"],
     excerpt:
       "The 2025 edition of the Mbo EMOIMEE Free Medical Workshop has been concluded with an impressive 6,730 beneficiaries receiving various forms of medical attention, reaffirming the initiative’s position as one of the most impactful community health interventions in the region. The programme, powered by the EMOIMEE Host Community Development Trust, lasted from October to the […]",
@@ -8135,6 +9731,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "5 Potential Company Stocks Of The Week",
     date: "November 24, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["Company Stocks", "financial health performance", "relative strengh index"],
     excerpt:
       "NESTLE NIGERIA Investors should consider buying Nestle Nigeria shares due to its strong recovery and profitability, growth potential, undervalued stock, stable volatility, and market leadership. Overall, Nestle Nigeria is a strong buy for investors seeking growth in a developing market; however, it is advisable to closely monitor the company’s foreign exchange exposure and economic conditions. […]",
@@ -8148,6 +9750,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Analysts Expect Wheat Prices Decline In 2026 As Supply Rises",
     date: "November 24, 2025",
     category: "Grains and Cereals",
+    categoryId: 130,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Agriculture", "Grains and Cereals"],
     tags: ["price decline", "Supply Rises", "Wheat Prices"],
     excerpt:
       "Global wheat prices are showing signs of easing as improved supply conditions emerge across major exporting regions, reversing months of tightness that had kept markets elevated. Traders say recent declines in U.S. futures and increased export availability from Russia and Europe are helping to stabilise the market, even as weather concerns linger. In recent sessions, […]",
@@ -8161,7 +9765,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "action-peoples-party-begins-membership-registration",
     title: "Action Peoples Party Begins Membership Registration",
     date: "November 24, 2025",
-    category: "Political Parties And Ideologies",
+    category: "Political Parties and Ideologies",
+    categoryId: 268,
+    categoryPath: [
+      "GOVERNANCE & LEADERSHIP",
+      "Political Arena",
+      "Political Parties and Ideologies",
+    ],
     tags: ["app", "Membership Registration", "political parties"],
     excerpt:
       "The Action Peoples Party (APP), has set a mechanism in place for the commencement of statewide physical membership registration exercise across all the 305 INEC wards in Imo State. This is even as the party pledged inclusive governance, coupled with steadfastness in its mission to foster peace, security, and broad-based development across the state. This […]",
@@ -8176,6 +9786,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "MATTERS ARISING: Why has Tinubu not presented 2026 budget — one month to end of 2025?",
     date: "November 22, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["2026 budet"],
     excerpt:
       "Before President Bola Tinubu’s administration, the federal government had maintained the January-December budget cycle for three consecutive years, however, it was disrupted when he assumed office. With a month and a week left in 2025, the delay in the presentation of the 2026 budget proposal signals a possible extension of the disruption to the annual […]",
@@ -8191,6 +9803,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Investors losing confidence in African tech startups due to poor structure, says Stellar Eminence CSO",
     date: "November 22, 2025",
     category: "Entrepreneurship",
+    categoryId: 135,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Entrepreneurship"],
     tags: ["African tech startups", "dual approach", "enterprenuership", "poor structure"],
     excerpt:
       "Kayode Alatise, chief strategy officer (CSO) at Stellar Eminence, says the lack of good internal systems is weakening investor confidence in African startups. Alatise spoke on Friday at Future X 2025, themed ‘Empowering Africa’s Development Through Technology,’ and organised by Stellar Eminence in Lagos.He said capital remains important for the growth of young companies, but […]",
@@ -8204,7 +9818,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "cbn-more-work-needed-to-improve-nigerians-living-standards-under-reforms",
     title: "CBN: More work needed to improve Nigerians’ living standards under reforms",
     date: "November 22, 2025",
-    category: "Human Development Index Hdi And Poverty Rates",
+    category: "Human Development Index (HDI) and Poverty Rates",
+    categoryId: 39,
+    categoryPath: [
+      "SUSTAINABILITY & DEVELOPMENT",
+      "Sustainable Development",
+      "Human Development Index (HDI) and Poverty Rates",
+    ],
     tags: ["CBN", "human development index", "living standards", "porvety rates", "reforms"],
     excerpt:
       "The Central Bank of Nigeria (CBN) has said that while recent reforms have helped to restore macroeconomic stability, there is still more work to do in improving living standards and addressing the country’s structural economic challenges. This was disclosed by the CBN Deputy Governor for Corporate Services, Ms. Emem Usoro, in a keynote address delivered on her […]",
@@ -8218,7 +9838,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nestoil-owners-receiver-manager-clash-in-lagos-over-new-court-ruling",
     title: "Nestoil owners, Receiver Manager clash in Lagos over new court ruling",
     date: "November 22, 2025",
-    category: "Peace And Conflict Resolutions",
+    category: "Peace and Conflict Resolutions",
+    categoryId: 187,
+    categoryPath: ["SECURITY & STABILITY", "Security Alerts", "Peace and Conflict Resolutions"],
     tags: ["court ruling", "Nestoil"],
     excerpt:
       "The owners of Nestoil and the Receiver Manager appointed for the company on Friday engaged in heated arguments at the headquarters of the company in Lagos. This came as the company owners attempted to return to take over the headquarters on account of a November 20 court ruling reversing an earlier freezing order on Nestoil. The Receiver Manager, however, insisted that the ruling does not affect […]",
@@ -8233,6 +9855,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "DMO set to raise N500 billion in reopening bonds auction on Monday",
     date: "November 22, 2025",
     category: "Budgeting and Debt Financing",
+    categoryId: 68,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Budgeting and Debt Financing"],
     tags: ["bonds auction", "debt financing", "dmo"],
     excerpt:
       "Nigeria’s Debt Management Office (DMO) will on Monday, November 24, 2025, seek to raise between N400 billion and N500 billion through the reopening of two benchmark Federal Government of Nigeria (FGN) bonds, representing a significant expansion from the initial issuance plan outlined earlier in the quarter. According to the revised Q4 2025 issuance calendar released […]",
@@ -8247,6 +9871,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "BAT Nigeria recognised for $300m export, others",
     date: "November 22, 2025",
     category: "Trade Volumes",
+    categoryId: 137,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Trade Volumes"],
     tags: ["bat", "Export Contribution", "trade volumes"],
     excerpt:
       "British American Tobacco Nigeria has been lauded for its significant contribution to Nigeria’s manufacturing sector, having generated over $300m in export sales between 2022 and 2024, the company announced at the 53rd Annual General Meeting of the Manufacturers Association of Nigeria.According to a statement, the company received the Diamond Sponsor Appreciation Award at the three-day […]",
@@ -8260,6 +9886,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FG, states shut schools as terrorists abduct 215 Niger pupils",
     date: "November 22, 2025",
     category: "Interconnectedness",
+    categoryId: 41,
+    categoryPath: ["SUSTAINABILITY & DEVELOPMENT", "Sustainable Development", "Interconnectedness"],
     tags: ["fg", "interconnectedness", "Shut Schools"],
     excerpt:
       "The Federal Government and some northern states have ordered a shutdown of academic activities in some schools over rising insecurity and abduction of pupils. While the Federal Government closed 41 unity schools, governors of Kwara, Plateau, Niger, Benue, and Katsina also shut down schools in their states. Tension escalated on Friday after bandits attacked St […]",
@@ -8274,6 +9902,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Nigeria Q3 2025 GDP: Analysts split between 3.9% moderation and 4.5% expansion",
     date: "November 21, 2025",
     category: "Gross Domestic Product (GDP)",
+    categoryId: 66,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Gross Domestic Product (GDP)"],
     tags: ["expansion", "GDP", "moderation"],
     excerpt:
       "Nigeria’s Gross Domestic Product (GDP) report for Q3 2025 is set for release soon, and expectations among analysts remain mixed. While some experts anticipate a slower but still positive growth of 3.6%–3.9%, others project a more robust expansion of about 4.5%, building on the 4.23% growth recorded in Q2 2025. The divide reflects differing assumptions around sectoral performance, inflation pressures, oil output stabi",
@@ -8289,6 +9919,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "Cancer risk: NAFDAC issues public warning on Bledine infant cereals circulating in Nigeria",
     date: "November 21, 2025",
     category: "Wellbeing",
+    categoryId: 249,
+    categoryPath: ["HUMAN DEVELOPMENT", "Health", "Wellbeing"],
     tags: ["Bledine infant cereals", "Cancer risk", "nafdac", "nigeria"],
     excerpt:
       "The National Agency for Food and Drug Administration and Control (NAFDAC) has issued a public alert following reports that Chad has banned Bledine Infant Cereals produced by the Danone Group over contamination concerns. The agency said the affected products are already circulating in Nigeria, particularly in border communities neighboring Chad. According to the report received […]",
@@ -8303,6 +9935,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Auditor-General Indicts CBN Over Recycled N29.7bn Dirty Banknotes",
     date: "November 21, 2025",
     category: "Monetary Policy",
+    categoryId: 67,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Monetary Policy"],
     tags: ["Auditor-General", "CBN", "Dirty Banknotes", "monetary policy"],
     excerpt:
       "According to the audit report, the CBN released the condemned notes across Abuja, Lagos, Bauchi and Jos branches between April and December 2022. The Office of the Auditor-General of the Federation has alleged that the Central Bank of Nigeria, under former Governor Godwin Emefiele, reintroduced unfit and dirty banknotes worth N29.77 billion into circulation, breaching […]",
@@ -8318,6 +9952,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "FCT Area Councils Buzz As Montage FM Football Tourney Kicks Off",
     date: "November 21, 2025",
     category: "Amateur Sports",
+    categoryId: 248,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Amateur Sports"],
     tags: ["FCT Area Councils", "Football Tourney", "Montage FM"],
     excerpt:
       "The eagerly awaited Montage FM Area Councils football tournament is set to kick off this weekend across the Federal Capital Territory’s six area councils. Football fans are gearing up for an exciting series of matches as local teams battle it out for glory. In Abaji, Future Planners will take on Dream Team, while Gum FA […]",
@@ -8333,6 +9969,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
       "“I Want To Bring Other Northern Cultures &; Experiences To The Fore” – Author Nana Sule",
     date: "November 21, 2025",
     category: "Arts and Culture",
+    categoryId: 144,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Arts and Culture"],
     tags: ["Experiences To The Fore", "Nana Sule", "Northern Cultures"],
     excerpt:
       "With her debut prose, ‘Not So Terrible People’, author and communication strategist, Nana Sule, said her aim is to make other cultures of northern Nigeria visible and accessible to her readers. This she does by featuring stories from her childhood, as a means of showcasing the vast and rich cultures, traditions, and belief systems of […]",
@@ -8347,6 +9985,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Imo automobile firm to create 5,000 jobs",
     date: "November 21, 2025",
     category: "Manufacturing",
+    categoryId: 21,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Industry, Trade and Investment", "Manufacturing"],
     tags: ["000 jobs", "automobile firm", "create 5", "EV plant"],
     excerpt:
       "EF Motors Limited, a subsidiary of EF Network Limited, has announced plans to create 5,000 direct jobs and over 20,000 indirect employment opportunities through its local electric vehicle assembly plant in Imo State. The company, in partnership with Chinese technical firm Zhejiang Pukao New Energy Vehicle Co., Ltd., plans to commence assembling hybrid electric cars […]",
@@ -8360,6 +10000,12 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "NGX foreign trades hit unprecedented N2.03tn milestone",
     date: "November 21, 2025",
     category: "Financial Health Performance and Relative Strength Index (RSI)",
+    categoryId: 69,
+    categoryPath: [
+      "ECONOMIC DEVELOPMENT",
+      "Wealth Creation",
+      "Financial Health Performance and Relative Strength Index (RSI)",
+    ],
     tags: ["foreign trades", "milestones", "NGX"],
     excerpt:
       "Foreign portfolio investors have returned to the Nigerian Exchange Limited in record numbers, with transactions hitting N2.03tn as of October 2025, a level that surpasses all annual foreign participation recorded since 2007. This was disclosed in the latest Domestic & Foreign Portfolio Investment Report of the Nigerian Exchange Limited.According to the report, foreign participation in […]",
@@ -8373,7 +10019,13 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "nigerian-content-board-society-bridge-skills-gap-with-engineering-olympiad-project",
     title: "Nigerian Content Board, Society Bridge Skills Gap With Engineering Olympiad Project",
     date: "November 21, 2025",
-    category: "Training Monitoring And Development",
+    category: "Training, Monitoring and Development",
+    categoryId: 96,
+    categoryPath: [
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "Energy",
+      "Training, Monitoring and Development",
+    ],
     tags: ["FIRST E&P", "Nigerian Content", "skills gap"],
     excerpt:
       "The Nigerian Content Development and Monitoring Board (NCDMB) and the Nigerian Society of Engineers (NSE) have launched the Nigerian Engineering Olympiad (NEO), a transformative initiative aimed at addressing the critical skills gap faced by engineering graduates in Nigeria. The Olympiad, officially launched on Thursday, November 20, 2025, in Abuja, aims to inspire and nurture engineering […]",
@@ -8388,6 +10040,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Bosun Tijani seeks data from Nigerian AI startups to support innovation",
     date: "November 20, 2025",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["Bosun Tijani", "bulk technology", "data", "Nigerian AI startups", "support innovation"],
     excerpt:
       "Bosun Tijani, minister of communications, innovation and digital economy, has called on Nigerian artificial intelligence (AI) startups to share data that will help deepen understanding of the landscape and strengthen support for innovation. In a post on X on Tuesday, Tijani described Nigeria’s AI ecosystem as “young but full of promise,” noting that each emerging […]",
@@ -8402,6 +10056,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "‘12 states yet to begin’ — PenCom DG asks governors to implement CPS",
     date: "November 20, 2025",
     category: "Wealth Redistribution",
+    categoryId: 63,
+    categoryPath: ["ECONOMIC DEVELOPMENT", "Wealth Creation", "Wealth Redistribution"],
     tags: ["governors to implement CPS", "PenCom"],
     excerpt:
       "The National Pension Commission (PenCom) has asked state governments to fully implement the contributory pension scheme (CPS). Omolola Oloworaran, the director-general (DG) of PenCom, spoke on Wednesday in Benin at the second run of the 2025 consultative forum for states and the FCT.Oloworaran said the success of Nigeria’s pension reforms depends on adoption at the […]",
@@ -8416,6 +10072,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Govt eyes N1.49tn electricity export revenue",
     date: "November 20, 2025",
     category: "Decentralized Power Generation",
+    categoryId: 60,
+    categoryPath: ["INFRASTRUCTURE & CONNECTIVITY", "Energy", "Decentralized Power Generation"],
     tags: ["decentralized power geeration", "Electricity Export Revenue", "nigeria 2026"],
     excerpt:
       "The Federal Government is projecting nearly $1bn (about N1.49tn) in annual revenue from electricity exports to 15 West African Countries under the Economic Community of West African States sub-region from June 2026. The earnings are based on what a full 600 megawatts export capacity is capable of generating at the prevailing regional tariff, as Nigeria […]",
@@ -8429,6 +10087,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Riyadh 2025: Team Nigeria’s Medals Hit 20 With Wrestling Gold, Silver Wins",
     date: "November 20, 2025",
     category: "Amateur Sports",
+    categoryId: 248,
+    categoryPath: ["CULTURE & CREATIVE ECONOMY", "Entertainment", "Amateur Sports"],
     tags: ["Riyadh 2025", "Silver Wins", "team nigeria Gold"],
     excerpt:
       "Nigeria’s wrestlers have significantly boosted Team Nigeria’s medal count at the ongoing Islamic Solidarity Games in Riyadh, Saudi Arabia, securing both gold and silver medals on Wednesday evening. Christianah Ogunsanya clinched gold in the Women’s Freestyle 53kg category, while Missinnei Mercy Genesis achieved a silver medal in the Women’s Freestyle 50kg division. These achievements bring […]",
@@ -8443,6 +10103,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Abdul Samad Initiatives Builds 110 Capacity Hostel For Minna Varsity At N310mn",
     date: "November 20, 2025",
     category: "Philanthropy",
+    categoryId: 44,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Leadership", "Philanthropy"],
     tags: ["Abdul Samad Initiatives", "Abdul Samad Initiativesmonna vasity"],
     excerpt:
       "The Abdul Samad Africa Initiatives (ASR Africa) has gifted the Federal University of Technology (FUT), Minna, with N310 million Students’ Hostel Building. The project was funded by the ASR Africa Tertiary Education Grant Scheme. It is part of the Initiative’s ongoing commitment to delivering sustainable and high-impact interventions within Nigeria’s tertiary education sector. Speaking at […]",
@@ -8456,7 +10118,9 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     slug: "national-assembly-to-transmit-police-pension-bill-for-assent-next-week",
     title: "National Assembly To Transmit Police Pension Bill For Assent Next Week",
     date: "November 20, 2025",
-    category: "Legislative Arm Of Government",
+    category: "Legislative Arm of Government",
+    categoryId: 263,
+    categoryPath: ["GOVERNANCE & LEADERSHIP", "Political Arena", "Legislative Arm of Government"],
     tags: ["National Assembly", "Police Pension Bill"],
     excerpt:
       "Barring last-minute changes, the National Assembly is expected to transmit the bill seeking the establishment of the Nigeria Police Force Pension Board and exemption of the force from the contributory pension scheme to President Bola Tinubu for assent next week. The Chairman of the House of Representatives Committee on Police Affairs, Hon. Abubakar Makki Yalleman, […]",
@@ -8471,6 +10135,8 @@ export const EDITORIAL_POSTS: EditorialPost[] = [
     title: "Google unveils AI Skilling Blueprint for African governments",
     date: "November 20, 2025",
     category: "Bulk Technology",
+    categoryId: 58,
+    categoryPath: ["TECHNOLOGY & INNOVATION", "Technology", "Bulk Technology"],
     tags: ["AI Skilling", "blueprint", "google"],
     excerpt:
       "Google has launched a major new initiative aimed at closing Africa’s widening artificial intelligence (AI) skills gap and preparing the continent’s workforce for an increasingly digital future. Google on Wednesday unveiled an AI Skilling Blueprint for Africa, a policy roadmap designed to guide governments in building national AI training strategies. The launch forms the centerpiece of […]",

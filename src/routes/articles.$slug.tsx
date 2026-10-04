@@ -44,6 +44,14 @@ function ArticlePage() {
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7a2ce2]">
             {post.category}
           </p>
+          <div className="mt-2 flex flex-wrap items-center gap-1 text-[11px] text-[#858598]" aria-label="Category hierarchy">
+            {post.categoryPath.map((segment, index) => (
+              <span key={`${segment}-${index}`} className="inline-flex items-center gap-1">
+                {index > 0 && <span aria-hidden="true">/</span>}
+                <span>{segment}</span>
+              </span>
+            ))}
+          </div>
           {post.image && (
             <img
               src={post.image}
