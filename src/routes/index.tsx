@@ -27,7 +27,7 @@ function EditorialHomePage() {
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-white/75">{lead.excerpt}</p>
             <a
-              href={lead.href}
+              href={`/articles/${lead.slug}`}
               className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#5f20c9] transition hover:-translate-y-0.5"
             >
               Read story <ArrowRight className="h-4 w-4" />
@@ -51,7 +51,7 @@ function EditorialHomePage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stories.slice(0, 8).map((post, index) => (
             <article
-              key={post.href}
+              key={post.slug}
               className="group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
             >
               <div
@@ -63,7 +63,7 @@ function EditorialHomePage() {
                 </p>
                 <p className="mt-2 text-[10px] text-[#9292a4]">{post.date}</p>
                 <h3 className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-[#262638]">
-                  <a href={post.href} className="hover:text-[#7a2ce2]">
+                  <a href={`/articles/${post.slug}`} className="hover:text-[#7a2ce2]">
                     {post.title}
                   </a>
                 </h3>
@@ -80,7 +80,7 @@ function EditorialHomePage() {
         </div>
         <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
           {stories.slice(8).map((post) => (
-            <article key={post.href} className="flex gap-4 border-b border-[#efeff4] pb-5">
+            <article key={post.slug} className="flex gap-4 border-b border-[#efeff4] pb-5">
               <div className="h-20 w-24 shrink-0 rounded-lg bg-gradient-to-br from-[#e7d6ff] to-[#78609f]" />
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#7a2ce2]">
@@ -88,7 +88,7 @@ function EditorialHomePage() {
                 </p>
                 <p className="mt-1 text-[10px] text-[#9292a4]">{post.date}</p>
                 <h3 className="mt-1 text-sm font-bold leading-5 text-[#28283a]">
-                  <a href={post.href} className="hover:text-[#7a2ce2]">
+                  <a href={`/articles/${post.slug}`} className="hover:text-[#7a2ce2]">
                     {post.title}
                   </a>
                 </h3>

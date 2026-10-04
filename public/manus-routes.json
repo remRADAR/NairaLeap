@@ -1,6 +1,7 @@
 {
   "routes": [
     { "path": "/", "title": "Nairaleap editorial homepage" },
+    { "path": "/articles/$slug", "title": "Local editorial article" },
     { "path": "/services", "title": "NairaLeap service portal" },
     { "path": "/services/$service", "title": "Service landing page" },
     { "path": "/auth", "title": "Authentication" },

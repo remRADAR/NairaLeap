@@ -1,5 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Sun, Moon, ChevronDown, Facebook, Instagram, Send, Youtube } from "lucide-react";
+import {
+  Search,
+  Sun,
+  Moon,
+  ChevronDown,
+  Facebook,
+  Instagram,
+  Send,
+  Youtube,
+  Menu,
+  X,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
@@ -14,6 +25,12 @@ const slugify = (label: string) =>
 export function EditorialLayout({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setActive(null);
+  };
 
   return (
     <div
@@ -27,11 +44,20 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
       </div>
       <header className="border-b border-[#ededf4] bg-white">
-        <div className="mx-auto flex max-w-[1180px] items-center justify-between px-4 py-5 sm:px-6">
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
+          <button
+            type="button"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="grid h-10 w-10 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] transition hover:border-[#d8c9f3] hover:text-[#8129e5] md:hidden"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
           <button
             type="button"
             aria-label="Open search"
-            className="grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
+            className="hidden h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5] md:grid"
           >
             <Search className="h-4 w-4" />
           </button>
@@ -52,7 +78,8 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
         </div>
-        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-center gap-1 px-4 pb-4 sm:gap-2 sm:px-6">
+
+        <div className="mx-auto hidden max-w-[1180px] items-center justify-center gap-1 px-4 pb-4 sm:gap-2 sm:px-6 md:flex">
           {WORDPRESS_MAIN_NAVIGATION.map((section) => {
             const open = active === section.label;
             return (
@@ -63,11 +90,11 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
                 onMouseLeave={() => setActive(null)}
               >
                 <a
-                  href={`https://nairaleap.ct.ws/category/${slugify(section.label)}/`}
+                  href={`/?topic=${slugify(section.label)}`}
                   aria-expanded={open}
                   aria-haspopup="menu"
                   onClick={(event) => {
-                    if (window.matchMedia("(max-width: 767px), (pointer: coarse)").matches) {
+                    if (window.matchMedia("(pointer: coarse)").matches) {
                       event.preventDefault();
                       setActive(open ? null : section.label);
                     }
@@ -75,34 +102,11 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
                   className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-[10px] font-bold uppercase tracking-[0.06em] text-[#515166] transition hover:bg-[#f3edff] hover:text-[#6f23dd] sm:text-[11px]"
                 >
                   {section.label}
-                  <ChevronDown className="h-3 w-3" />
+                  <ChevronDown
+                    className={cn("h-3 w-3 transition-transform", open && "rotate-180")}
+                  />
                 </a>
-                {open && (
-                  <div className="absolute left-1/2 top-full z-50 grid max-h-[70vh] w-[min(92vw,620px)] -translate-x-1/2 grid-cols-1 gap-4 overflow-y-auto rounded-xl border border-[#e8e1f5] bg-white p-4 text-left shadow-xl sm:grid-cols-3 sm:gap-5 sm:p-5">
-                    {section.groups.map((group) => (
-                      <div key={group.label}>
-                        <a
-                          href={`https://nairaleap.ct.ws/category/${slugify(group.label)}/`}
-                          className="text-xs font-bold text-[#6f23dd] hover:underline"
-                        >
-                          {group.label}
-                        </a>
-                        <ul className="mt-2 space-y-1 border-l border-[#ece5fb] pl-3">
-                          {group.items.slice(0, 8).map((item) => (
-                            <li key={item}>
-                              <a
-                                href={`https://nairaleap.ct.ws/category/${slugify(item)}/`}
-                                className="text-[11px] leading-5 text-[#77778a] hover:text-[#6f23dd]"
-                              >
-                                {item}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {open && <EditorialMegaMenu section={section} />}
               </div>
             );
           })}
@@ -113,6 +117,75 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             Services
           </Link>
         </div>
+
+        {mobileMenuOpen && (
+          <nav
+            aria-label="Mobile menu"
+            className="border-t border-[#ededf4] bg-[#fbfaff] px-4 py-3 md:hidden"
+          >
+            <div className="mx-auto max-w-[1180px] overflow-hidden rounded-xl border border-[#e8e1f5] bg-white shadow-[0_12px_28px_rgba(43,25,79,0.08)]">
+              <p className="border-b border-[#eeeaf6] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7a2ce2]">
+                Menu
+              </p>
+              {WORDPRESS_MAIN_NAVIGATION.map((section) => {
+                const open = active === section.label;
+                return (
+                  <div key={section.label} className="border-b border-[#eeeaf6] last:border-0">
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      onClick={() => setActive(open ? null : section.label)}
+                      className="flex w-full items-center justify-between px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.06em] text-[#515166] hover:bg-[#f8f5ff]"
+                    >
+                      {section.label}
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 text-[#7a2ce2] transition-transform",
+                          open && "rotate-180",
+                        )}
+                      />
+                    </button>
+                    {open && (
+                      <div className="grid gap-4 bg-[#fcfbff] px-4 pb-4 pt-1 sm:grid-cols-2">
+                        {section.groups.map((group) => (
+                          <div key={group.label}>
+                            <a
+                              href={`/?topic=${slugify(group.label)}`}
+                              onClick={closeMobileMenu}
+                              className="text-xs font-bold text-[#6f23dd] hover:underline"
+                            >
+                              {group.label}
+                            </a>
+                            <ul className="mt-2 space-y-1 border-l border-[#ece5fb] pl-3">
+                              {group.items.map((item) => (
+                                <li key={item}>
+                                  <a
+                                    href={`/?topic=${slugify(item)}`}
+                                    onClick={closeMobileMenu}
+                                    className="text-[11px] leading-5 text-[#77778a] hover:text-[#6f23dd]"
+                                  >
+                                    {item}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              <Link
+                to="/services"
+                onClick={closeMobileMenu}
+                className="block px-4 py-3 text-[11px] font-bold text-[#6f23dd]"
+              >
+                Services
+              </Link>
+            </div>
+          </nav>
+        )}
       </header>
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
@@ -151,6 +224,35 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         </div>
         <p className="mt-4">© {new Date().getFullYear()} Nairaleap — Indicator Drivers</p>
       </footer>
+    </div>
+  );
+}
+
+function EditorialMegaMenu({ section }: { section: (typeof WORDPRESS_MAIN_NAVIGATION)[number] }) {
+  return (
+    <div className="absolute left-1/2 top-full z-50 grid max-h-[70vh] w-[min(92vw,620px)] -translate-x-1/2 grid-cols-1 gap-4 overflow-y-auto rounded-xl border border-[#e8e1f5] bg-white p-4 text-left shadow-xl sm:grid-cols-3 sm:gap-5 sm:p-5">
+      {section.groups.map((group) => (
+        <div key={group.label}>
+          <a
+            href={`/?topic=${slugify(group.label)}`}
+            className="text-xs font-bold text-[#6f23dd] hover:underline"
+          >
+            {group.label}
+          </a>
+          <ul className="mt-2 space-y-1 border-l border-[#ece5fb] pl-3">
+            {group.items.slice(0, 8).map((item) => (
+              <li key={item}>
+                <a
+                  href={`/?topic=${slugify(item)}`}
+                  className="text-[11px] leading-5 text-[#77778a] hover:text-[#6f23dd]"
+                >
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 }

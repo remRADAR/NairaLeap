@@ -21,7 +21,10 @@ export default defineConfig({
   server: {
     host: "::",
     port: 8080,
-    allowedHosts: ["4173-ikesg3ji8mrwejzj11gup-de54a4f3.us4.manus.computer"],
+    allowedHosts: [
+      "4173-i9ccwwa57g0etaw0pjjfh-20dedd73.us4.manus.computer",
+      "4173-ikesg3ji8mrwejzj11gup-de54a4f3.us4.manus.computer",
+    ],
   },
   plugins: [
     tailwindcss(),
