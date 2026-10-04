@@ -64,7 +64,7 @@ function Header() {
     <header className="sticky top-0 z-40" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
         <div className="glass-panel relative flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Link to="/" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink-0">
+          <Link to="/services" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink-0">
             <img
               src="/nairaleap-wordmark.png"
               alt="Nairaleap - Service Portal"
@@ -101,6 +101,12 @@ function Header() {
                 );
               })}
             </nav>
+            <Link
+              to="/"
+              className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+            >
+              Blog
+            </Link>
             <Link
               to={user ? "/dashboard" : "/auth"}
               className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
@@ -177,6 +183,13 @@ function Header() {
                 </div>
               );
             })}
+            <Link
+              to="/"
+              onClick={closeMenus}
+              className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
+            >
+              Blog
+            </Link>
             <Link
               to={user ? "/dashboard" : "/auth"}
               onClick={closeMenus}

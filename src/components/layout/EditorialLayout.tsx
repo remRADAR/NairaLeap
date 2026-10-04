@@ -38,8 +38,23 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
       </div>
       <header className="border-b border-[#ededf4] bg-white">
-        <div className="mx-auto grid max-w-[1180px] grid-cols-[1fr_auto_1fr] items-center px-4 py-4 sm:px-6 sm:py-5">
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
+          <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
+            <img
+              src="/nairaleap-wordmark.png"
+              alt="Nairaleap"
+              className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
+            />
+          </Link>
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Toggle dark mode"
+              onClick={() => setDark((value) => !value)}
+              className="grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             <button
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -53,28 +68,10 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             <Link
               to="/articles"
               aria-label="Search articles"
-              className="hidden h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5] sm:grid"
+              className="grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
             >
               <Search className="h-4 w-4" />
             </Link>
-          </div>
-          <Link to="/" className="text-center" aria-label="Nairaleap home">
-            <span className="block text-2xl font-black tracking-[-0.08em] text-[#6f23dd] sm:text-3xl">
-              Nairaleap
-            </span>
-            <span className="mt-0.5 block text-[9px] font-semibold uppercase tracking-[0.26em] text-[#8f8fa3]">
-              Indicator Drivers
-            </span>
-          </Link>
-          <div className="flex justify-end">
-            <button
-              type="button"
-              aria-label="Toggle dark mode"
-              onClick={() => setDark((value) => !value)}
-              className="grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
-            >
-              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
           </div>
         </div>
         {menuOpen && <EditorialMenu onNavigate={() => setMenuOpen(false)} />}
