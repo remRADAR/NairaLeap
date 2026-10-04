@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Clock3, Sparkles } from "lucide-react";
 import { EditorialLayout } from "@/components";
 import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
 
@@ -27,23 +27,26 @@ function EditorialHomePage() {
         ),
       )
     : EDITORIAL_POSTS;
-  const [lead, ...stories] = filteredPosts;
+  const homepagePool = topic ? filteredPosts : EDITORIAL_POSTS.filter((post) => post.image);
+  const homepagePosts = homepagePool.slice(0, 10);
+  const [lead, ...supportingStories] = homepagePosts;
+  const tickerPosts = EDITORIAL_POSTS.slice(0, 20);
 
   if (!lead) {
     return (
       <EditorialLayout>
-        <section className="mx-auto max-w-[1180px] px-4 py-16 text-center sm:px-6">
+        <section className="mx-auto max-w-[1180px] px-4 py-20 text-center sm:px-6">
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
             No matching stories
           </p>
           <h1 className="mt-3 text-2xl font-extrabold text-[#262638]">
-            We couldn&apos;t find articles for this filter.
+            We couldn&apos;t find articles for this category.
           </h1>
           <Link
-            to="/"
+            to="/articles"
             className="mt-6 inline-flex rounded-lg bg-[#7a2ce2] px-4 py-2.5 text-xs font-bold text-white"
           >
-            View all stories
+            Open article archive
           </Link>
         </section>
       </EditorialLayout>
@@ -52,104 +55,205 @@ function EditorialHomePage() {
 
   return (
     <EditorialLayout>
-      <section className="mx-auto max-w-[1180px] px-4 pt-6 sm:px-6">
+      <section className="mx-auto max-w-[1180px] px-4 pb-8 pt-6 sm:px-6 sm:pt-8">
         {topic && (
-          <div className="mb-4 flex items-center justify-between rounded-xl border border-[#e8e1f5] bg-[#fbfaff] px-4 py-3">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#e8e1f5] bg-[#fbfaff] px-4 py-3">
             <p className="text-xs font-semibold text-[#5d5d72]">
-              Showing stories for{" "}
+              Showing 10 stories for{" "}
               <span className="text-[#6f23dd]">{topic.replaceAll("-", " ")}</span>
             </p>
             <Link to="/" className="text-[11px] font-bold text-[#7a2ce2]">
-              Clear filter
+              Clear category
             </Link>
           </div>
         )}
-        <div className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[linear-gradient(115deg,#20202d,#555565)] px-6 py-10 text-white shadow-sm sm:min-h-[410px] sm:px-10 sm:py-14">
-          <div
-            className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(164,89,255,0.5),transparent_34%),linear-gradient(90deg,rgba(12,12,24,0.72),rgba(18,18,30,0.1))]"
-            aria-hidden="true"
-          />
-          <div className="relative flex min-h-[290px] max-w-2xl flex-col justify-end sm:min-h-[330px]">
-            <span className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
-              <Sparkles className="h-3.5 w-3.5" />
-              {lead.category}
-            </span>
-            <p className="text-xs font-medium text-white/70">{lead.date}</p>
-            <h1 className="mt-2 max-w-2xl text-3xl font-extrabold leading-tight tracking-[-0.03em] sm:text-5xl">
-              {lead.title}
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7a2ce2]">
+              Nairaleap editorial desk
+            </p>
+            <h1 className="mt-1 text-2xl font-black tracking-[-0.04em] text-[#252537] sm:text-3xl">
+              What is shaping Nigeria today
             </h1>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-white/75">{lead.excerpt}</p>
-            <a
-              href={`/articles/${lead.slug}`}
-              className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#5f20c9] transition hover:-translate-y-0.5"
-            >
-              Read story <ArrowRight className="h-4 w-4" />
-            </a>
+          </div>
+          <Link
+            to="/articles"
+            className="hidden items-center gap-1 text-xs font-bold text-[#7a2ce2] sm:inline-flex"
+          >
+            Archive <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.75fr)]">
+          <article className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[#272638] text-white shadow-[0_16px_40px_rgba(43,25,79,0.14)] sm:min-h-[400px]">
+            {lead.image && (
+              <img
+                src={lead.image}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover opacity-65"
+              />
+            )}
+            <div
+              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(18,17,31,0.94),rgba(18,17,31,0.3)),linear-gradient(0deg,rgba(18,17,31,0.92),transparent_65%)]"
+              aria-hidden="true"
+            />
+            <div className="relative flex min-h-[360px] max-w-2xl flex-col justify-end p-6 sm:min-h-[400px] sm:p-9">
+              <span className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
+                <Sparkles className="h-3.5 w-3.5" />
+                {lead.category}
+              </span>
+              <p className="text-xs font-medium text-white/70">{lead.date}</p>
+              <h2 className="mt-2 text-3xl font-extrabold leading-tight tracking-[-0.04em] sm:text-5xl">
+                {lead.title}
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-white/75">{lead.excerpt}</p>
+              <Link
+                to="/articles/$slug"
+                params={{ slug: lead.slug }}
+                className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#5f20c9] transition hover:-translate-y-0.5"
+              >
+                Read story <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </article>
+          <aside className="rounded-2xl border border-[#ebe8f2] bg-white p-5 shadow-[0_10px_26px_rgba(43,25,79,0.06)]">
+            <div className="flex items-center justify-between border-b border-[#eeeaf6] pb-3">
+              <h2 className="text-sm font-extrabold text-[#29293b]">Latest indicators</h2>
+              <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#9a98aa]">
+                <Clock3 className="h-3.5 w-3.5" /> Live desk
+              </span>
+            </div>
+            <div className="divide-y divide-[#f0eef5]">
+              {tickerPosts.slice(0, 5).map((post) => (
+                <Link
+                  key={post.slug}
+                  to="/articles/$slug"
+                  params={{ slug: post.slug }}
+                  className="block py-3 first:pt-4"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#7a2ce2]">
+                    {post.category}
+                  </p>
+                  <p className="mt-1 text-sm font-bold leading-5 text-[#303044] hover:text-[#6f23dd]">
+                    {post.title}
+                  </p>
+                  <p className="mt-1 text-[10px] text-[#9a98aa]">{post.date}</p>
+                </Link>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section className="border-y border-[#eceaf2] bg-white py-3">
+        <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
+          <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            20 on the desk
+          </span>
+          <div className="flex min-w-max gap-8 motion-safe:animate-[ticker_70s_linear_infinite]">
+            {tickerPosts.map((post) => (
+              <Link
+                key={post.slug}
+                to="/articles/$slug"
+                params={{ slug: post.slug }}
+                className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
+              >
+                {post.title}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1180px] px-4 py-10 sm:px-6">
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
-            <span className="text-[#7a2ce2]">✦</span> Top Stories
-          </h2>
-          <a
-            href="#all-stories"
+      <section className="mx-auto max-w-[1180px] px-4 py-9 sm:px-6">
+        <div className="mb-5 flex items-end justify-between border-b border-[#e9e9f0] pb-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+              Curated now
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
+              Top stories
+            </h2>
+          </div>
+          <Link
+            to="/articles"
             className="inline-flex items-center gap-1 text-xs font-bold text-[#7a2ce2]"
           >
-            All Stories <ArrowRight className="h-3.5 w-3.5" />
-          </a>
+            View archive <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stories.slice(0, 8).map((post, index) => (
-            <article
-              key={post.slug}
-              className="group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
-            >
-              <div
-                className={`h-32 bg-gradient-to-br ${index % 3 === 0 ? "from-[#d9c7ff] via-[#8f65d9] to-[#34284e]" : index % 3 === 1 ? "from-[#f0c1d7] via-[#d86b85] to-[#51304e]" : "from-[#c9d9e7] via-[#7198ae] to-[#23384c]"}`}
-              />
-              <div className="p-4">
-                <p className="text-[10px] font-bold uppercase leading-4 tracking-[0.08em] text-[#7a2ce2]">
-                  {post.category}
-                </p>
-                <p className="mt-2 text-[10px] text-[#9292a4]">{post.date}</p>
-                <h3 className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-[#262638]">
-                  <a href={`/articles/${post.slug}`} className="hover:text-[#7a2ce2]">
-                    {post.title}
-                  </a>
-                </h3>
-              </div>
-            </article>
+          {supportingStories.slice(0, 4).map((post) => (
+            <StoryCard key={post.slug} post={post} />
           ))}
         </div>
       </section>
 
-      <section id="all-stories" className="mx-auto max-w-[1180px] px-4 pb-8 sm:px-6">
-        <div className="mb-5 flex items-center justify-between border-b border-[#e9e9f0] pb-3">
-          <h2 className="text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">All Stories</h2>
-          <span className="text-xs text-[#89899b]">Indicators</span>
+      <section className="mx-auto max-w-[1180px] px-4 pb-10 sm:px-6">
+        <div className="mb-5 flex items-end justify-between border-b border-[#e9e9f0] pb-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+              More from the desk
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
+              More perspectives
+            </h2>
+          </div>
+          <span className="text-xs text-[#89899b]">5 additional stories</span>
         </div>
-        <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
-          {stories.slice(8).map((post) => (
-            <article key={post.slug} className="flex gap-4 border-b border-[#efeff4] pb-5">
-              <div className="h-20 w-24 shrink-0 rounded-lg bg-gradient-to-br from-[#e7d6ff] to-[#78609f]" />
-              <div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {supportingStories.slice(4, 9).map((post) => (
+            <Link
+              key={post.slug}
+              to="/articles/$slug"
+              params={{ slug: post.slug }}
+              className="group flex gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)]"
+            >
+              <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-[#e7d6ff]">
+                {post.image && (
+                  <img
+                    src={post.image}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                )}
+              </div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#7a2ce2]">
                   {post.category}
                 </p>
-                <p className="mt-1 text-[10px] text-[#9292a4]">{post.date}</p>
-                <h3 className="mt-1 text-sm font-bold leading-5 text-[#28283a]">
-                  <a href={`/articles/${post.slug}`} className="hover:text-[#7a2ce2]">
-                    {post.title}
-                  </a>
+                <h3 className="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#28283a] group-hover:text-[#7a2ce2]">
+                  {post.title}
                 </h3>
+                <p className="mt-1 text-[10px] text-[#9292a4]">{post.date}</p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
     </EditorialLayout>
+  );
+}
+
+function StoryCard({ post }: { post: (typeof EDITORIAL_POSTS)[number] }) {
+  return (
+    <article className="group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]">
+      <div className="h-36 bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
+        {post.image && (
+          <img src={post.image} alt="" loading="lazy" className="h-full w-full object-cover" />
+        )}
+      </div>
+      <div className="p-4">
+        <p className="text-[10px] font-bold uppercase leading-4 tracking-[0.08em] text-[#7a2ce2]">
+          {post.category}
+        </p>
+        <p className="mt-2 text-[10px] text-[#9292a4]">{post.date}</p>
+        <h3 className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-[#262638]">
+          <Link to="/articles/$slug" params={{ slug: post.slug }} className="hover:text-[#7a2ce2]">
+            {post.title}
+          </Link>
+        </h3>
+      </div>
+    </article>
   );
 }

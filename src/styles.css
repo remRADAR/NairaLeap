@@ -787,17 +787,27 @@
   line-height: 1.25;
 }
 
-.article-copy h2 { font-size: 1.55rem; }
-.article-copy h3 { font-size: 1.3rem; }
-.article-copy h4 { font-size: 1.1rem; }
+.article-copy h2 {
+  font-size: 1.55rem;
+}
+.article-copy h3 {
+  font-size: 1.3rem;
+}
+.article-copy h4 {
+  font-size: 1.1rem;
+}
 
 .article-copy ul,
 .article-copy ol {
   padding-left: 1.35rem;
 }
 
-.article-copy ul { list-style: disc; }
-.article-copy ol { list-style: decimal; }
+.article-copy ul {
+  list-style: disc;
+}
+.article-copy ol {
+  list-style: decimal;
+}
 
 .article-copy a {
   color: #6f23dd;
@@ -807,11 +817,22 @@
   text-underline-offset: 3px;
 }
 
-.article-copy strong { color: #29293d; }
+.article-copy strong {
+  color: #29293d;
+}
 
 @media (max-width: 640px) {
   .article-copy {
     font-size: 1rem;
     line-height: 1.8;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
