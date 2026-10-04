@@ -24,6 +24,7 @@ export default defineConfig({
     allowedHosts: [
       "4173-i9ccwwa57g0etaw0pjjfh-20dedd73.us4.manus.computer",
       "4173-ikesg3ji8mrwejzj11gup-de54a4f3.us4.manus.computer",
+      "4173-it2pzhryhsqflzj6tzv2e-5c122d06.us4.manus.computer",
     ],
   },
   plugins: [

@@ -453,6 +453,60 @@
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.editorial-ticker-track {
+  animation: editorial-ticker 32s linear infinite;
+  will-change: transform;
+}
+
+.editorial-ticker:hover .editorial-ticker-track,
+.editorial-ticker:focus-within .editorial-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes editorial-ticker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.editorial-story-card,
+.editorial-segment-card {
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms ease,
+    border-color 280ms ease;
+}
+
+.editorial-story-card:hover,
+.editorial-story-card:focus-within,
+.editorial-segment-card:hover,
+.editorial-segment-card:focus-visible {
+  transform: translateY(-0.25rem);
+  border-color: #d8c9f3;
+  box-shadow: 0 16px 34px rgb(43 25 79 / 12%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .editorial-ticker-track {
+    animation: none;
+  }
+
+  .animate__animated,
+  .editorial-story-card,
+  .editorial-segment-card {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
 @utility text-gradient-brand {
   background-image: var(--gradient-brand);
   background-clip: text;
