@@ -14,3 +14,4 @@ export { GuidedRequestGateway } from "./ui/GuidedRequestGateway";
 export type { GuidedRequestGatewayProps } from "./ui/GuidedRequestGateway";
 export { NairaLeapGuideContainer } from "./ui/NairaLeapGuideContainer";
 export type { NairaLeapGuideContainerProps } from "./ui/NairaLeapGuideContainer";
+export { EditorialLayout } from "./layout/EditorialLayout";

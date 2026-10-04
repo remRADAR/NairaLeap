@@ -4,7 +4,7 @@ NairaLeap is a customer-facing multi-service portal that turns visitor needs int
 
 ## Current product checkpoint
 
-The repository currently contains the public portal foundation, a Supabase-backed authentication boundary, canonical landing pages for all 12 services, blueprint-driven multi-service intake, the first authenticated Agriculture intake, review and submission, a customer request-tracking surface, and a persistent deterministic LeapBot chauffeur. Agriculture remains the pilot vertical for proving the full request lifecycle while the other services use the same contract-driven landing and intake pattern.
+The public root now follows the authenticated WordPress Blogsy homepage architecture: newsletter strip, Nairaleap wordmark, exact indicator taxonomy navigation, ticker, featured story, Top Stories, All Stories, social footer, and a Services CTA into the portal. The existing service portal is preserved at `/services`, with the Supabase-backed authentication boundary, canonical landing pages, blueprint-driven multi-service intake, Agriculture pilot workflow, review and submission, request tracking, and LeapBot experience intact.
 
 Live Supabase authentication, migration execution, RLS behavior, and request insertion are **UNVERIFIED** until the project environment is configured. Copy `.env.example` to `.env.local`, fill in the Supabase URL and publishable key, and apply the migration under `supabase/migrations/` before testing a real account.
 
@@ -16,7 +16,8 @@ The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanSta
 
 | Route                        | Purpose                                                                               |
 | ---------------------------- | ------------------------------------------------------------------------------------- |
-| `/`                          | Public landing page and service discovery                                             |
+| `/`                          | Blogsy-inspired editorial homepage and indicator stories                              |
+| `/services`                  | Public NairaLeap service portal and service discovery                                  |
 | `/auth`                      | Sign-in and account creation                                                          |
 | `/dashboard`                 | Authenticated customer workspace                                                      |
 | `/services/{service}`        | Canonical landing page for each of the 12 services before onboarding                  |
