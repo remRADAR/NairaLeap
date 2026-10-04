@@ -240,6 +240,8 @@ function EditorialHomePage() {
         </div>
       </section>
 
+      <AdSlot label="Advertisement" />
+
       <section className="border-y border-[#eceaf2] bg-white py-3">
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
           <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
@@ -301,13 +303,13 @@ function EditorialHomePage() {
           </div>
           <span className="text-xs text-[#89899b]">5 additional stories</span>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]">
           {supportingStories.slice(4, 9).map((post) => (
             <Link
               key={post.slug}
               to="/articles/$slug"
               params={{ slug: post.slug }}
-              className="group flex gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)]"
+              className="group flex min-w-[286px] snap-start gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)] transition hover:-translate-y-0.5 hover:border-[#d9c7f5] hover:shadow-[0_10px_24px_rgba(43,25,79,0.08)] sm:min-w-[320px] lg:min-w-0 lg:flex-1"
             >
               <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-[#e7d6ff]">
                 {post.image && (
@@ -332,7 +334,21 @@ function EditorialHomePage() {
           ))}
         </div>
       </section>
+
+      <AdSlot label="Advertisement" />
     </EditorialLayout>
+  );
+}
+
+function AdSlot({ label }: { label: string }) {
+  return (
+    <section aria-label={label} className="mx-auto max-w-[1180px] px-4 py-3 sm:px-6">
+      <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
+          {label}
+        </span>
+      </div>
+    </section>
   );
 }
 
