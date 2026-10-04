@@ -57,6 +57,18 @@ function ArticlePage() {
           <div className="mt-5 flex items-center gap-2 text-xs text-[#858598]">
             <CalendarDays className="h-4 w-4" /> {post.date}
           </div>
+          {post.tags.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2" aria-label="Article tags">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-[#f7f2ff] px-3 py-1 text-[11px] font-semibold text-[#6f2bd4]"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </header>
         <div className="article-copy mt-9" dangerouslySetInnerHTML={{ __html: post.content }} />
         <footer className="mt-12 border-t border-[#e9e9f0] pt-6">
