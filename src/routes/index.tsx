@@ -1,16 +1,69 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { EditorialLayout } from "@/components";
 import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
 
-export const Route = createFileRoute("/")({ component: EditorialHomePage });
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+type HomeSearch = { topic?: string };
+
+export const Route = createFileRoute("/")({
+  validateSearch: (search): HomeSearch =>
+    typeof search.topic === "string" ? { topic: search.topic } : {},
+  component: EditorialHomePage,
+});
 
 function EditorialHomePage() {
-  const [lead, ...stories] = EDITORIAL_POSTS;
+  const { topic } = Route.useSearch();
+  const filteredPosts = topic
+    ? EDITORIAL_POSTS.filter((post) =>
+        [post.category, ...post.categoryPath, ...post.tags].some(
+          (value) => slugify(value) === topic,
+        ),
+      )
+    : EDITORIAL_POSTS;
+  const [lead, ...stories] = filteredPosts;
+
+  if (!lead) {
+    return (
+      <EditorialLayout>
+        <section className="mx-auto max-w-[1180px] px-4 py-16 text-center sm:px-6">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            No matching stories
+          </p>
+          <h1 className="mt-3 text-2xl font-extrabold text-[#262638]">
+            We couldn&apos;t find articles for this filter.
+          </h1>
+          <Link
+            to="/"
+            className="mt-6 inline-flex rounded-lg bg-[#7a2ce2] px-4 py-2.5 text-xs font-bold text-white"
+          >
+            View all stories
+          </Link>
+        </section>
+      </EditorialLayout>
+    );
+  }
 
   return (
     <EditorialLayout>
       <section className="mx-auto max-w-[1180px] px-4 pt-6 sm:px-6">
+        {topic && (
+          <div className="mb-4 flex items-center justify-between rounded-xl border border-[#e8e1f5] bg-[#fbfaff] px-4 py-3">
+            <p className="text-xs font-semibold text-[#5d5d72]">
+              Showing stories for{" "}
+              <span className="text-[#6f23dd]">{topic.replaceAll("-", " ")}</span>
+            </p>
+            <Link to="/" className="text-[11px] font-bold text-[#7a2ce2]">
+              Clear filter
+            </Link>
+          </div>
+        )}
         <div className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[linear-gradient(115deg,#20202d,#555565)] px-6 py-10 text-white shadow-sm sm:min-h-[410px] sm:px-10 sm:py-14">
           <div
             className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(164,89,255,0.5),transparent_34%),linear-gradient(90deg,rgba(12,12,24,0.72),rgba(18,18,30,0.1))]"
