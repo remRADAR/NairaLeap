@@ -44,6 +44,13 @@ function ArticlePage() {
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7a2ce2]">
             {post.category}
           </p>
+          {post.image && (
+            <img
+              src={post.image}
+              alt=""
+              className="mt-5 aspect-[16/9] w-full rounded-2xl object-cover shadow-[0_12px_28px_rgba(43,25,79,0.12)]"
+            />
+          )}
           <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-[-0.04em] text-[#232336] sm:text-5xl">
             {post.title}
           </h1>
