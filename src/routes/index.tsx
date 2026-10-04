@@ -101,15 +101,7 @@ function EditorialHomePage() {
             </Link>
           </div>
         )}
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7a2ce2]">
-              Nairaleap editorial desk
-            </p>
-            <h1 className="mt-1 text-2xl font-black tracking-[-0.04em] text-[#252537] sm:text-3xl">
-              What is shaping Nigeria today
-            </h1>
-          </div>
+        <div className="mb-4 flex items-center justify-end gap-3">
           <Link
             to="/articles"
             className="hidden items-center gap-1 text-xs font-bold text-[#7a2ce2] sm:inline-flex"

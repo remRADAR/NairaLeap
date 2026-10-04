@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { EditorialLayout } from "@/components";
 import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
@@ -22,6 +22,11 @@ export const Route = createFileRoute("/articles")({
 });
 
 function ArticleArchivePage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  if (pathname !== "/articles" && pathname.startsWith("/articles/")) {
+    return <Outlet />;
+  }
+
   const { topic, page = 1 } = Route.useSearch();
   const filtered = topic
     ? EDITORIAL_POSTS.filter((post) =>
