@@ -1,79 +1,81 @@
-# NairaLeap — Blogsy Homepage Checkpoint
+# NairaLeap — Continuity Checkpoint
 
-## Checkpoint scope
+**Checkpoint date:** 2026-10-04
+**Current branch:** `main`
+**Current pushed commit:** `2ee121e feat: migrate full WordPress editorial archive`
+**Remote state:** `origin/main` is synchronized and the working tree is clean.
 
-This checkpoint adapts the authenticated WordPress Blogsy homepage at `https://nairaleap.ct.ws/` into the NairaLeap repository while keeping the service portal as the product destination.
+## What is complete
 
-### Routes
+The NairaLeap repository now contains the full published WordPress editorial migration from the public CMS API at `https://nairaleap.ct.ws/wp-json/`.
 
-- `/` — editorial Blogsy-inspired homepage
-- `/services` — existing NairaLeap service portal
-- `/services/$service` — canonical service landing pages
-- `/auth`, `/dashboard`, `/requests`, and onboarding routes — existing portal flows
+The migration includes **3,688 published posts**, with their IDs, unique slugs, titles, dates, category hierarchy, tags, excerpts, HTML content, and original WordPress source links. The previous 600-post snapshot has been replaced by the complete normalized dataset in `src/data/wordpressEditorial.ts`.
 
-## Homepage architecture
+The available CMS media has also been resolved and stored locally under `public/editorial/cms/`. There are **385 unique media records and 385 local image files**. The source assigns featured media to **434 posts**, and all 434 post-to-image mappings were verified. The remaining **3,254 posts have `featured_media: 0` in the source CMS**, so no original featured image exists for those posts; the archive uses its visual fallback treatment for them.
 
-`src/components/layout/EditorialLayout.tsx` owns the shared editorial shell:
+A repeatable migration utility is available at `scripts/import-wordpress-migration.py`. It expects the browser-exported source files in `/home/ubuntu/Downloads/`:
 
-- newsletter strip
-- centered Nairaleap wordmark and Indicator Drivers tagline
-- exact WordPress Main Navigation taxonomy
-- touch-friendly taxonomy submenus for mobile/tablet
-- search and dark-mode controls
-- indicator ticker
-- Services CTA into `/services`
-- social footer
+- `nairaleap-wordpress-posts.json`
+- `nairaleap-wordpress-categories.json`
+- `nairaleap-wordpress-tags.json`
+- `nairaleap-wordpress-media.json`
 
-`src/routes/index.tsx` composes the homepage sections:
+The source host applies a browser JavaScript challenge to some direct command-line API requests. If the migration is refreshed, use the sandbox browser to export the WordPress API JSON first, then run the migration script with low media concurrency.
 
-- featured lead story
-- Top Stories card grid
-- All Stories list
+## Routes and UI state
 
-`src/data/wordpressEditorial.ts` contains a reusable snapshot of verified WordPress article titles, dates, categories, excerpts, and source links. It is intentionally isolated so a future WordPress REST/CMS adapter can replace the snapshot without changing page composition.
+- `/` — Blogsy-inspired editorial homepage.
+- `/articles` — paginated editorial archive, now displaying **3,688 stories**.
+- `/articles/$slug` — article detail route with migrated HTML body, image when available, tags, date, category path, source link, and next-story navigation.
+- `/services` — existing NairaLeap service portal.
+- `/services/$service`, `/auth`, `/dashboard`, `/requests`, and onboarding routes — existing portal flows.
 
-`src/features/navigation-agent/wordpressMainNavigation.ts` contains the typed navigation taxonomy extracted from the WordPress Main Navigation editor.
+The homepage heading **“What is shaping Nigeria today”** was removed.
 
-## Responsive verification
+The portal logo links to `/services`, and the portal menu includes a Blog link back to `/`. The blog header has the standalone Nairaleap wordmark on the left. The right-side control order is:
 
-Validated with Chromium screenshots at:
+1. dark/light mode toggle
+2. menu button and dropdown
+3. search button
 
-- mobile: `375 × 812`
-- tablet: `768 × 1024`
+## Important bug fixes included
 
-Verified behaviors:
+The article archive parent route previously rendered over the dynamic article child route, causing article clicks to show the archive instead of the article body. `src/routes/articles.tsx` now yields to `<Outlet />` for `/articles/$slug`, and article detail rendering is confirmed working in the preview.
 
-- taxonomy navigation wraps without horizontal overflow
-- Services CTA remains visible
-- hero typography remains readable
-- Top Stories cards adapt across breakpoints
-- ticker clips instead of widening the page
-- taxonomy submenu opens on touch devices
-- dark-mode control has editorial styles
+The homepage and article detail routes were rebuilt and checked after the full migration.
 
-## Validation commands
+## Verification completed
 
-```bash
-bun install --frozen-lockfile
-bunx tsc --noEmit
-bun run build
-bun run lint
-```
+- `npx tsc --noEmit` passed.
+- `npm run build` passed.
+- `git diff --check` passed.
+- Source integrity: 3,688 posts, 3,688 unique slugs, no empty source titles, no empty source content.
+- Featured-image integrity: 434 source assignments, 0 missing media records, 0 missing local media files, 0 missing generated mappings.
+- Archive preview shows `3688 stories`.
+- Representative article detail page returns HTTP 200 and renders the full article body.
+- Every one of the 3,688 article URLs returned HTTP 200 in the final route smoke test. Twelve automated title-content checks were false negatives caused by HTML entity normalization (`&#038;`, `&#8230;`, etc.); manual inspection confirmed those routes rendered correctly.
 
-TypeScript and production build passed at this checkpoint. The repository-wide lint command still reports pre-existing formatting errors in unrelated feature type files; the responsive editorial files are formatted.
+Preview used for the final local verification:
 
-## Local preview
+`https://4173-i46f0ywj4tr92urlbfpah-9057d539.us1.manus.computer/`
 
-```bash
-npm run dev -- --host 0.0.0.0 --port 4173
-```
+## Source-of-truth notes
 
-The Vite preview host is allowlisted in `vite.config.ts` for the current sandbox preview hostname.
+The CMS homepage is a public coming-soon page, but the WordPress REST API exposes the published post collection. Admin access is **not required** for the published posts currently exposed through the API. Admin/application-password access would only be needed for drafts, private posts, deleted content, restricted media, or CMS-side configuration.
 
-## Next recommended work
+The CMS source endpoints used for the migration are:
 
-1. Replace the static editorial snapshot with a WordPress REST API/content adapter.
-2. Add real featured/top-story image URLs from WordPress media instead of gradient placeholders.
-3. Add a functional search overlay and newsletter subscription flow.
-4. Preserve `/services` as the portal boundary; do not move service intake back into the editorial homepage.
-5. Reconcile remaining repository-wide lint formatting errors before the next feature checkpoint.
+- `https://nairaleap.ct.ws/wp-json/`
+- `https://nairaleap.ct.ws/wp-json/wp/v2/posts`
+- `https://nairaleap.ct.ws/wp-json/wp/v2/media`
+- `https://nairaleap.ct.ws/wp-json/wp/v2/categories`
+- `https://nairaleap.ct.ws/wp-json/wp/v2/tags`
+
+## Recommended next work for the next agent
+
+1. Re-check the deployed Vercel production deployment for commit `2ee121e` and verify that Vercel has picked up the large migration commit.
+2. If production deployment size or performance is a concern, move the 22 MB editorial snapshot into a database/API-backed content layer instead of bundling every post into the application JavaScript.
+3. Prepare the Admin Studio with two wings: Website and Portal.
+4. Design the article FAQ/discussion plugin with moderation, abuse controls, and per-article threads.
+5. Design social-media distribution as a draft/approval workflow first; add provider connectors only after the target platforms and credentials are confirmed.
+6. Do not move service intake back into the editorial homepage; `/services` remains the portal boundary.
