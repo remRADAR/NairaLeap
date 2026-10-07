@@ -100,7 +100,7 @@ function EditorialHomePage() {
 
       <section
         aria-label="Featured story"
-        className="mx-auto w-full max-w-[1180px] px-4 pt-6 sm:px-6 lg:px-8"
+        className="editorial-hero mx-auto w-full max-w-[1180px] px-4 pt-6 sm:px-6 lg:px-8"
       >
         <div
           className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[linear-gradient(115deg,#20202d,#555565)] px-6 py-10 text-white shadow-sm sm:min-h-[410px] sm:px-10 sm:py-14"
@@ -114,7 +114,7 @@ function EditorialHomePage() {
               key={hero.image}
               src={hero.image}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover object-center"
+              className="editorial-hero-media absolute inset-0 h-full w-full object-cover object-center"
               fetchPriority="high"
             />
           ) : null}
@@ -124,7 +124,7 @@ function EditorialHomePage() {
           />
           <div
             key={hero.slug}
-            className="animate__animated animate__fadeIn relative flex min-h-[290px] max-w-2xl flex-col justify-end sm:min-h-[330px]"
+            className="editorial-hero-copy animate__animated animate__fadeIn relative flex min-h-[290px] max-w-2xl flex-col justify-end sm:min-h-[330px]"
           >
             <span className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm">
               <Sparkles className="h-3.5 w-3.5" />
@@ -180,7 +180,10 @@ function EditorialHomePage() {
 
       <AdSlot label="Advertisement" />
 
-      <section aria-label="Desk ticker" className="border-y border-[#eceaf2] bg-white py-3">
+      <section
+        aria-label="Desk ticker"
+        className="editorial-desk-ticker border-y border-[#eceaf2] bg-white py-3"
+      >
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
           <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
             20 on the desk
@@ -204,7 +207,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
+      <section className="editorial-story-grid mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="animate__animated animate__fadeInUp mb-5 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
             <span className="text-[#7a2ce2]">✦</span> Top Stories
@@ -220,7 +223,7 @@ function EditorialHomePage() {
           {stories.map((post, index) => (
             <article
               key={post.slug}
-              className="editorial-story-card animate__animated animate__fadeInUp group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
+              className="editorial-story-card group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
               style={{ animationDelay: `${Math.min(index, 7) * 55}ms` }}
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
@@ -273,7 +276,7 @@ function EditorialHomePage() {
             <a
               key={post.slug}
               href={`/articles/${post.slug}`}
-              className="group flex min-w-[286px] snap-start gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)] transition hover:-translate-y-0.5 hover:border-[#d9c7f5] hover:shadow-[0_10px_24px_rgba(43,25,79,0.08)] sm:min-w-[320px] lg:min-w-0 lg:flex-1"
+              className="editorial-segment-card group flex min-w-[286px] snap-start gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)] transition hover:-translate-y-0.5 hover:border-[#d9c7f5] hover:shadow-[0_10px_24px_rgba(43,25,79,0.08)] sm:min-w-[320px] lg:min-w-0 lg:flex-1"
             >
               <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-[#e7d6ff]">
                 {post.image ? (
@@ -318,7 +321,10 @@ function EditorialHomePage() {
 
 function AdSlot({ label }: { label: string }) {
   return (
-    <section aria-label={label} className="mx-auto max-w-[1180px] px-4 py-3 sm:px-6">
+    <section
+      aria-label={label}
+      className="editorial-ad-slot mx-auto max-w-[1180px] px-4 py-3 sm:px-6"
+    >
       <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
           {label}

@@ -79,3 +79,27 @@ The CMS source endpoints used for the migration are:
 4. Design the article FAQ/discussion plugin with moderation, abuse controls, and per-article threads.
 5. Design social-media distribution as a draft/approval workflow first; add provider connectors only after the target platforms and credentials are confirmed.
 6. Do not move service intake back into the editorial homepage; `/services` remains the portal boundary.
+
+## Motion polish checkpoint — 2026-10-07
+
+### Recently completed
+- Added route-aware editorial page-enter transitions using a stable TanStack Router pathname/search key.
+- Added animated editorial menu entry, nested section/group reveal, active control treatment, and submenu hover/focus translation.
+- Added separate homepage hero frame/media entry motion, story-card reveals, carousel-card motion, ticker surface polish, and ad-slot hover feedback.
+- Extended `prefers-reduced-motion: reduce` handling to all new motion classes.
+
+### Animation/motion decisions
+- Motion is CSS-first and compositor-friendly: opacity, transform, color, border, and box-shadow only.
+- The existing homepage content, route structure, ticker, 10-story limit, and carousel remain unchanged.
+- Menu animation is mount-based; no exit animation is claimed because the panel is conditionally unmounted on close.
+- Route transition keys serialize TanStack Router search state with `JSON.stringify` to remain SSR-safe.
+
+### Verification
+- `npx eslint src/components/layout/EditorialLayout.tsx src/routes/index.tsx` — passed.
+- `npx tsc --noEmit` — passed.
+- `npm run build` — passed; bundler emitted existing third-party `use client` directive warnings only.
+- `git diff --check` — passed.
+- Local browser smoke check — homepage rendered, with `page-enter`, `editorial-hero-in`, `editorial-card-in`, and `editorial-menu-in` computed animations observed.
+
+### Known limitations
+- The legacy `cypress/e2e/service-navigation.cy.ts` suite still targets the old portal homepage at `/`; the current service directory is `/services`. Its 24 runtime failures are unrelated to this motion change and should be fixed by updating the suite contract separately.

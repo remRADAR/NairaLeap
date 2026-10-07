@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   ChevronDown,
   Facebook,
@@ -25,6 +25,9 @@ const slugify = (label: string) =>
 export function EditorialLayout({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const routeKey = useRouterState({
+    select: (state) => `${state.location.pathname}:${JSON.stringify(state.location.search)}`,
+  });
 
   return (
     <div
@@ -51,7 +54,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
               type="button"
               aria-label="Toggle dark mode"
               onClick={() => setDark((value) => !value)}
-              className="grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
+              className="editorial-control grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -60,7 +63,10 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-[#e5e5ee] px-3 text-[#626277] transition hover:border-[#d8c9f3] hover:text-[#8129e5]"
+              className={cn(
+                "editorial-control inline-flex h-10 items-center gap-2 rounded-full border border-[#e5e5ee] px-3 text-[#626277] transition hover:border-[#d8c9f3] hover:text-[#8129e5]",
+                menuOpen && "editorial-control-active",
+              )}
             >
               {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               <span className="text-[11px] font-bold uppercase tracking-[0.12em]">Menu</span>
@@ -68,7 +74,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             <Link
               to="/archive"
               aria-label="Search articles"
-              className="grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
+              className="editorial-control grid h-9 w-9 place-items-center rounded-full border border-[#e5e5ee] text-[#6e6e82] hover:text-[#8129e5]"
             >
               <Search className="h-4 w-4" />
             </Link>
@@ -98,7 +104,9 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </div>
-      <main>{children}</main>
+      <main key={routeKey} className="page-transition">
+        {children}
+      </main>
       <footer className="mt-16 border-t border-[#e9e9f0] bg-white px-4 py-10 text-center text-xs text-[#858598]">
         <div className="flex justify-center gap-4">
           <a href="https://www.facebook.com/" aria-label="Facebook">
@@ -135,7 +143,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
   return (
     <nav
       aria-label="Editorial menu"
-      className="animate__animated animate__fadeIn border-t border-[#ededf4] bg-[#fbfaff] px-4 py-4 sm:px-6"
+      className="editorial-menu border-t border-[#ededf4] bg-[#fbfaff] px-4 py-4 sm:px-6"
     >
       <div className="mx-auto max-w-[1180px] rounded-2xl border border-[#e8e1f5] bg-white p-4 shadow-[0_18px_42px_rgba(43,25,79,0.12)] sm:p-5">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[#eeeaf6] pb-4">
@@ -182,7 +190,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
                   />
                 </button>
                 {sectionOpen && (
-                  <div className="animate__animated animate__fadeIn border-t border-[#eeeaf6] bg-[#fcfbff] px-3 py-2">
+                  <div className="editorial-menu-section border-t border-[#eeeaf6] bg-[#fcfbff] px-3 py-2">
                     {section.groups.map((group) => {
                       const groupKey = `${section.label}:${group.label}`;
                       const groupOpen = openGroup === groupKey;
@@ -205,7 +213,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
                             />
                           </button>
                           {groupOpen && (
-                            <ul className="animate__animated animate__fadeIn grid gap-1 border-l border-[#ece5fb] pb-3 pl-3 sm:grid-cols-2 lg:grid-cols-3">
+                            <ul className="editorial-menu-items grid gap-1 border-l border-[#ece5fb] pb-3 pl-3 sm:grid-cols-2 lg:grid-cols-3">
                               {group.items.map((item) => (
                                 <li key={item}>
                                   <Link
