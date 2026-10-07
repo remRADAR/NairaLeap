@@ -61,6 +61,36 @@ export const saveStudioCategories = (categories: StudioCategory[]) => {
   announceChange();
 };
 
+export const renameStudioCategory = (
+  id: number,
+  name: string,
+  categories: StudioCategory[],
+): StudioCategory[] => {
+  const cleanName = name.trim();
+  const target = categories.find((category) => category.id === id);
+  if (!target || !cleanName) return categories;
+  const oldPath = target.path;
+  const nextPath = [...oldPath.slice(0, -1), cleanName];
+  return categories.map((category) => {
+    if (category.id === id) {
+      return { ...category, name: cleanName, slug: slugify(cleanName), path: nextPath };
+    }
+    if (category.path.slice(0, oldPath.length).join("/") === oldPath.join("/")) {
+      return {
+        ...category,
+        path: [...nextPath, ...category.path.slice(oldPath.length)],
+      };
+    }
+    return category;
+  });
+};
+
+export const deleteStudioCategory = (id: number, categories: StudioCategory[]) => {
+  const hasChildren = categories.some((category) => category.parent === id);
+  if (hasChildren) return categories;
+  return categories.filter((category) => category.id !== id);
+};
+
 export const mergeStudioArticles = (posts: EditorialPost[]) => {
   const local = readStudioArticles();
   const localBySlug = new Map(local.map((post) => [post.slug, post]));

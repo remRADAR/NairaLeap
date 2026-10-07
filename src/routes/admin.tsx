@@ -1,45 +1,58 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import {
   BookOpen,
   CheckCircle2,
+  ClipboardList,
   ChevronRight,
+  ExternalLink,
   FolderTree,
   Globe2,
   LayoutDashboard,
   LockKeyhole,
   Plus,
+  Pencil,
   Save,
   Settings2,
   ShieldCheck,
   Store,
+  Trash2,
   Upload,
+  Wrench,
 } from "lucide-react";
 import { EditorialLayout } from "@/components";
 import {
   createStudioArticle,
   createStudioCategory,
+  deleteStudioCategory,
   readStudioArticles,
   readStudioCategories,
+  renameStudioCategory,
   saveStudioArticles,
   saveStudioCategories,
   STUDIO_CHANGE_EVENT,
   type StudioArticle,
   type StudioCategory,
 } from "@/features/editorial/studio";
+import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/admin")({
   component: AdminStudioPage,
 });
 
 type Workspace = "website" | "portal";
-type AdminView = "overview" | "articles" | "categories" | "plugins";
+type AdminView = "overview" | "articles" | "categories" | "services" | "requests" | "plugins";
 
 function AdminStudioPage() {
   const [workspace, setWorkspace] = useState<Workspace>("website");
   const [view, setView] = useState<AdminView>("overview");
   const [articles, setArticles] = useState<StudioArticle[]>([]);
   const [categories, setCategories] = useState<StudioCategory[]>([]);
+
+  const selectWorkspace = (nextWorkspace: Workspace) => {
+    setWorkspace(nextWorkspace);
+    setView("overview");
+  };
 
   const reload = () => {
     setArticles(readStudioArticles());
@@ -79,7 +92,7 @@ function AdminStudioPage() {
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
-                onClick={() => setWorkspace("website")}
+                onClick={() => selectWorkspace("website")}
                 className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition ${workspace === "website" ? "border-[#c8a7ff] bg-[#7a2ce2]/25" : "border-white/10 bg-white/5 hover:bg-white/10"}`}
               >
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10">
@@ -92,7 +105,7 @@ function AdminStudioPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setWorkspace("portal")}
+                onClick={() => selectWorkspace("portal")}
                 className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition ${workspace === "portal" ? "border-[#c8a7ff] bg-[#7a2ce2]/25" : "border-white/10 bg-white/5 hover:bg-white/10"}`}
               >
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10">
@@ -108,26 +121,15 @@ function AdminStudioPage() {
         </section>
 
         <div className="mx-auto grid max-w-[1240px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[220px_1fr]">
-          <aside className="h-fit rounded-2xl border border-[#e8e1f1] bg-white p-2 shadow-[0_8px_24px_rgba(43,25,79,0.05)]">
-            {[
-              { id: "overview", label: "Overview", icon: LayoutDashboard },
-              { id: "articles", label: "Articles", icon: BookOpen },
-              { id: "categories", label: "Categories", icon: FolderTree },
-              { id: "plugins", label: "Plugins & setup", icon: Settings2 },
-            ].map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setView(id as AdminView)}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-bold transition ${view === id ? "bg-[#f2ebff] text-[#6f23dd]" : "text-[#6f6f82] hover:bg-[#faf8ff]"}`}
-              >
-                <Icon className="h-4 w-4" /> {label}
-              </button>
-            ))}
-          </aside>
+          <AdminSidebar
+            workspace={workspace}
+            view={view}
+            onNavigate={setView}
+            onWorkspaceChange={selectWorkspace}
+          />
 
           <main>
-            {view === "overview" && (
+            {view === "overview" && workspace === "website" && (
               <Overview
                 workspace={workspace}
                 articles={articles}
@@ -137,11 +139,181 @@ function AdminStudioPage() {
             )}
             {view === "articles" && <ArticleStudio categories={categories} onPublished={reload} />}
             {view === "categories" && <CategoryStudio categories={categories} onChanged={reload} />}
+            {view === "overview" && workspace === "portal" && <PortalOverview onView={setView} />}
+            {view === "services" && <PortalServices />}
+            {view === "requests" && <PortalRequests />}
             {view === "plugins" && <PluginStudio workspace={workspace} />}
           </main>
         </div>
       </div>
     </EditorialLayout>
+  );
+}
+
+function AdminSidebar({
+  workspace,
+  view,
+  onNavigate,
+  onWorkspaceChange,
+}: {
+  workspace: Workspace;
+  view: AdminView;
+  onNavigate: (view: AdminView) => void;
+  onWorkspaceChange: (workspace: Workspace) => void;
+}) {
+  const group = (
+    title: string,
+    groupWorkspace: Workspace,
+    items: { id: AdminView; label: string; icon: typeof LayoutDashboard }[],
+  ) => (
+    <div className="mb-4 last:mb-0">
+      <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#a29caf]">
+        {title}
+      </p>
+      {items.map(({ id, label, icon: Icon }) => (
+        <button
+          key={id}
+          type="button"
+          onClick={() => {
+            onWorkspaceChange(groupWorkspace);
+            onNavigate(id);
+          }}
+          className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold transition ${view === id && ((workspace === "website" && ["overview", "articles", "categories"].includes(id)) || (workspace === "portal" && ["overview", "services", "requests"].includes(id)) || id === "plugins") ? "bg-[#f2ebff] text-[#6f23dd]" : "text-[#6f6f82] hover:bg-[#faf8ff]"}`}
+        >
+          <Icon className="h-4 w-4" /> {label}
+        </button>
+      ))}
+    </div>
+  );
+
+  return (
+    <aside className="h-fit rounded-2xl border border-[#e8e1f1] bg-white p-3 shadow-[0_8px_24px_rgba(43,25,79,0.05)]">
+      {group("Website", "website", [
+        { id: "overview", label: "Overview", icon: LayoutDashboard },
+        { id: "articles", label: "Articles", icon: BookOpen },
+        { id: "categories", label: "Categories", icon: FolderTree },
+      ])}
+      {group("Services portal", "portal", [
+        { id: "overview", label: "Portal overview", icon: Store },
+        { id: "services", label: "Service catalog", icon: Wrench },
+        { id: "requests", label: "Request queue", icon: ClipboardList },
+      ])}
+      {group("System", workspace, [{ id: "plugins", label: "Plugins & setup", icon: Settings2 }])}
+    </aside>
+  );
+}
+
+function PortalOverview({ onView }: { onView: (view: AdminView) => void }) {
+  return (
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          Service Portal workspace
+        </p>
+        <h2 className="mt-2 text-2xl font-black text-[#262638]">Operate the service side.</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+          Manage the live service catalog, jump into customer request operations, and keep portal
+          integrations separate from editorial publishing.
+        </p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Metric label="Available services" value={SERVICE_CATALOG.length} icon={Store} />
+        <Metric label="Portal destinations" value="3" icon={ExternalLink} />
+        <Metric label="Gateway status" value="Pending" icon={Settings2} />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <ActionCard
+          icon={Wrench}
+          title="Review service catalog"
+          description="Inspect every service currently exposed on the public portal and jump to its live landing page."
+          action="Open service catalog"
+          onClick={() => onView("services")}
+        />
+        <ActionCard
+          icon={ClipboardList}
+          title="Open request operations"
+          description="The customer request queue remains protected by Supabase Auth. Open it in the authenticated workspace when configured."
+          action="Open request workspace"
+          onClick={() => {
+            window.location.href = "/requests";
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function PortalServices() {
+  return (
+    <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            Service Portal workspace
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-[#262638]">Service catalog</h2>
+          <p className="mt-2 text-sm text-[#77778a]">
+            The catalog is the source of truth for the public portal cards and service landing
+            pages.
+          </p>
+        </div>
+        <Link
+          to="/services"
+          className="inline-flex items-center gap-2 rounded-xl border border-[#e5dafa] px-3 py-2 text-xs font-bold text-[#6f23dd]"
+        >
+          <ExternalLink className="h-3.5 w-3.5" /> View portal
+        </Link>
+      </div>
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        {SERVICE_CATALOG.map((service) => {
+          const Icon = service.icon;
+          return (
+            <Link
+              key={service.id}
+              to="/services/$service"
+              params={{ service: service.id }}
+              className="flex items-start gap-3 rounded-xl border border-[#eeeaf6] p-4 transition hover:-translate-y-0.5 hover:border-[#d8c9f3] hover:bg-[#fbf9ff]"
+            >
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#f2ebff] text-[#7a2ce2]">
+                <Icon className="h-4 w-4" />
+              </span>
+              <span>
+                <strong className="block text-sm text-[#262638]">{service.title}</strong>
+                <span className="mt-1 block text-xs leading-5 text-[#77778a]">
+                  {service.shortDescription}
+                </span>
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function PortalRequests() {
+  return (
+    <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+        Service Portal workspace
+      </p>
+      <h2 className="mt-2 text-2xl font-black text-[#262638]">Request queue</h2>
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+        Customer requests are protected by Supabase Auth and currently scoped to the signed-in
+        customer workspace. The admin queue is grouped here as the next protected operations
+        surface.
+      </p>
+      <div className="mt-6 rounded-xl bg-[#fff8e6] p-4 text-xs leading-5 text-[#8b6500]">
+        Admin request triage requires an admin role and server-side RLS policy. No unauthenticated
+        queue is exposed from this panel.
+      </div>
+      <Link
+        to="/auth"
+        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white"
+      >
+        Open authenticated workspace <ChevronRight className="h-4 w-4" />
+      </Link>
+    </section>
   );
 }
 
@@ -457,8 +629,14 @@ function CategoryStudio({
         {message && <p className="mt-3 text-xs font-semibold text-[#6f23dd]">{message}</p>}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {grouped.slice(0, 16).map((root) => (
-          <CategoryCard key={root.id} category={root} categories={categories} />
+        {grouped.map((root) => (
+          <CategoryCard
+            key={root.id}
+            category={root}
+            categories={categories}
+            onChanged={onChanged}
+            onMessage={setMessage}
+          />
         ))}
       </div>
     </section>
@@ -468,16 +646,70 @@ function CategoryStudio({
 function CategoryCard({
   category,
   categories,
+  onChanged,
+  onMessage,
 }: {
   category: StudioCategory;
   categories: StudioCategory[];
+  onChanged: () => void;
+  onMessage: (message: string) => void;
 }) {
   const children = categories.filter((item) => item.parent === category.id).slice(0, 7);
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(category.name);
+  const canDelete = category.source === "studio" && children.length === 0;
+
+  const saveName = () => {
+    const next = renameStudioCategory(category.id, name, categories);
+    if (next === categories) {
+      onMessage("Enter a new category name.");
+      return;
+    }
+    saveStudioCategories(next);
+    setEditing(false);
+    onMessage(`Updated “${name.trim()}” and its category path.`);
+    onChanged();
+  };
+
+  const remove = () => {
+    if (category.source !== "studio") {
+      onMessage(
+        "Imported WordPress categories are locked. Create a studio category to manage it here.",
+      );
+      return;
+    }
+    if (children.length > 0) {
+      onMessage("Move or delete child categories before deleting this parent.");
+      return;
+    }
+    saveStudioCategories(deleteStudioCategory(category.id, categories));
+    onMessage(`Deleted “${category.name}”.`);
+    onChanged();
+  };
+
   return (
     <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="font-extrabold text-[#262638]">{category.name}</h3>
+          {editing ? (
+            <div className="flex items-center gap-2">
+              <input
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                className="studio-input max-w-[15rem]"
+                aria-label={`Rename ${category.name}`}
+              />
+              <button
+                type="button"
+                onClick={saveName}
+                className="rounded-lg bg-[#7a2ce2] px-2.5 py-2 text-[10px] font-bold text-white"
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <h3 className="font-extrabold text-[#262638]">{category.name}</h3>
+          )}
           <p className="mt-1 text-[11px] text-[#9292a4]">
             {category.source === "studio" ? "Created in studio" : "Imported from WordPress"}
           </p>
@@ -485,6 +717,23 @@ function CategoryCard({
         <span className="rounded-full bg-[#f4efff] px-2 py-1 text-[10px] font-bold text-[#7a2ce2]">
           {category.count} posts
         </span>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2 border-t border-[#f0ebf6] pt-3">
+        <button
+          type="button"
+          onClick={() => setEditing((value) => !value)}
+          className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#6f23dd]"
+        >
+          <Pencil className="h-3.5 w-3.5" /> Rename
+        </button>
+        <button
+          type="button"
+          onClick={remove}
+          disabled={!canDelete && category.source !== "studio"}
+          className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#b04a5a] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <Trash2 className="h-3.5 w-3.5" /> Delete
+        </button>
       </div>
       {children.length > 0 && (
         <ul className="mt-4 space-y-2 border-l border-[#e8e1f1] pl-4">
