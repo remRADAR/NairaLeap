@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { EDITORIAL_POSTS, type EditorialPost } from "@/data/wordpressEditorial";
+import { withEditorialImageFallbacks } from "@/features/editorial/images";
 
 type WordPressTerm = {
   id?: number;
@@ -105,23 +106,23 @@ const getWordPressEndpoint = () => {
 
 export const getEditorialPosts = createServerFn({ method: "GET" }).handler(async () => {
   const endpoint = getWordPressEndpoint();
-  if (!endpoint) return FALLBACK_POSTS;
+  if (!endpoint) return withEditorialImageFallbacks(FALLBACK_POSTS);
 
   try {
     const response = await fetch(endpoint, {
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(4000),
     });
-    if (!response.ok) return FALLBACK_POSTS;
+    if (!response.ok) return withEditorialImageFallbacks(FALLBACK_POSTS);
 
     const payload = (await response.json()) as unknown;
-    if (!Array.isArray(payload)) return FALLBACK_POSTS;
+    if (!Array.isArray(payload)) return withEditorialImageFallbacks(FALLBACK_POSTS);
 
     const posts = payload
       .map((post, index) => normalizePost(post as WordPressPost, index))
       .filter((post): post is EditorialPost => post !== null);
-    return posts.length > 0 ? posts : FALLBACK_POSTS;
+    return withEditorialImageFallbacks(posts.length > 0 ? posts : FALLBACK_POSTS);
   } catch {
-    return FALLBACK_POSTS;
+    return withEditorialImageFallbacks(FALLBACK_POSTS);
   }
 });

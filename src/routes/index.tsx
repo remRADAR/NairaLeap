@@ -3,6 +3,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
+import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
@@ -28,7 +29,7 @@ function EditorialHomePage() {
   const [heroIndex, setHeroIndex] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
   useEffect(() => {
-    const refresh = () => setAllPosts(mergeStudioArticles(posts));
+    const refresh = () => setAllPosts(withEditorialImageFallbacks(mergeStudioArticles(posts)));
     refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
     return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
@@ -96,7 +97,10 @@ function EditorialHomePage() {
         </div>
       )}
 
-      <section className="mx-auto w-full max-w-[1180px] px-4 pt-6 sm:px-6 lg:px-8">
+      <section
+        aria-label="Featured story"
+        className="mx-auto w-full max-w-[1180px] px-4 pt-6 sm:px-6 lg:px-8"
+      >
         <div
           className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[linear-gradient(115deg,#20202d,#555565)] px-6 py-10 text-white shadow-sm sm:min-h-[410px] sm:px-10 sm:py-14"
           onMouseEnter={() => setHeroPaused(true)}
@@ -173,6 +177,8 @@ function EditorialHomePage() {
         </div>
       </section>
 
+      <AdSlot label="Advertisement" />
+
       <section className="mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="animate__animated animate__fadeInUp mb-5 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
@@ -189,7 +195,7 @@ function EditorialHomePage() {
           {stories.map((post, index) => (
             <article
               key={post.slug}
-              className="editorial-story-card animate__animated animate__fadeInUp group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)]"
+              className="editorial-story-card animate__animated animate__fadeInUp group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
               style={{ animationDelay: `${Math.min(index, 7) * 55}ms` }}
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
@@ -225,6 +231,8 @@ function EditorialHomePage() {
         </div>
       </section>
 
+      <AdSlot label="Advertisement" />
+
       <section className="mx-auto w-full max-w-[1180px] px-4 pb-12 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between border-t border-[#e9e9f0] pt-5">
           <p className="text-xs text-[#77778a]">Showing 10 featured stories</p>
@@ -237,5 +245,17 @@ function EditorialHomePage() {
         </div>
       </section>
     </EditorialLayout>
+  );
+}
+
+function AdSlot({ label }: { label: string }) {
+  return (
+    <section aria-label={label} className="mx-auto max-w-[1180px] px-4 py-3 sm:px-6">
+      <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
+          {label}
+        </span>
+      </div>
+    </section>
   );
 }
