@@ -103,3 +103,24 @@ The CMS source endpoints used for the migration are:
 
 ### Known limitations
 - The legacy `cypress/e2e/service-navigation.cy.ts` suite still targets the old portal homepage at `/`; the current service directory is `/services`. Its 24 runtime failures are unrelated to this motion change and should be fixed by updating the suite contract separately.
+
+## Portal blog link and grid tightening — 2026-10-07
+
+### Recently completed
+- Tightened the homepage Top Stories grid spacing while preserving the three-column desktop layout introduced by `76fc263`.
+- Replaced the desktop portal header's text-only Blog item with a dedicated accessible `BookOpen` icon control, and added the same icon beside the mobile menu trigger.
+- Both responsive controls link to `/`, the editorial website homepage; the mobile menu retains its text Blog item for discoverability.
+- Updated the branding regression to exercise the canonical portal route at `/services` and assert the visible blog icon destination.
+
+### Verification
+- Targeted ESLint for `AppLayout.tsx`, `index.tsx`, and `brand-auth.cy.ts` — passed.
+- `npx tsc --noEmit` — passed.
+- `npm run build` — passed; existing third-party `use client` directive warnings only.
+- `git diff --check` — passed.
+- `npx cypress run --spec cypress/e2e/brand-auth.cy.ts` — passed, 4 tests.
+- Full `npm run lint` remains blocked by four pre-existing Prettier errors in unrelated type files under `src/features/*/types.ts`.
+
+### Files changed
+- `src/components/layout/AppLayout.tsx`
+- `src/routes/index.tsx`
+- `cypress/e2e/brand-auth.cy.ts`

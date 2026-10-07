@@ -219,11 +219,11 @@ function EditorialHomePage() {
             Archive <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {stories.map((post, index) => (
             <article
               key={post.slug}
-              className="editorial-story-card group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
+              className="editorial-story-card group min-w-0 overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)] transition hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(43,25,79,0.12)]"
               style={{ animationDelay: `${Math.min(index, 7) * 55}ms` }}
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">

@@ -1,12 +1,15 @@
 describe("canonical Nairaleap branding", () => {
   it("renders the canonical wordmark in the shared portal header", () => {
-    cy.visit("/");
+    cy.visit("/services");
 
     cy.title().should("eq", "Nairaleap - Service Portal");
     cy.get('header a[aria-label="Nairaleap - Service Portal"] img')
       .should("be.visible")
       .and("have.attr", "src", "/nairaleap-wordmark.png")
       .and("have.attr", "alt", "Nairaleap - Service Portal");
+    cy.get('header a[aria-label="Go to Nairaleap blog"]:visible')
+      .should("be.visible")
+      .and("have.attr", "href", "/");
 
     cy.screenshot("branding-home-header");
   });

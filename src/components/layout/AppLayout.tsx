@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { BookOpen, ChevronDown, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NairaLeapBot } from "../ui/NairaLeapBot";
 import { NairaLeapGuideContainer } from "../ui/NairaLeapGuideContainer";
@@ -102,12 +102,6 @@ function Header() {
               })}
             </nav>
             <Link
-              to="/"
-              className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
-            >
-              Blog
-            </Link>
-            <Link
               to={user ? "/dashboard" : "/auth"}
               className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
@@ -119,17 +113,35 @@ function Header() {
             >
               Admin
             </a>
+            <Link
+              to="/"
+              aria-label="Go to Nairaleap blog"
+              title="Go to Nairaleap blog"
+              className="portal-nav-link grid h-9 w-9 shrink-0 place-items-center rounded-lg text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+            >
+              <BookOpen className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
 
-          <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => setOpen((o) => !o)}
-            className="interactive-button inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link
+              to="/"
+              aria-label="Go to Nairaleap blog"
+              title="Go to Nairaleap blog"
+              className="portal-nav-link grid h-10 w-10 place-items-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <BookOpen className="h-5 w-5" aria-hidden="true" />
+            </Link>
+            <button
+              type="button"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              onClick={() => setOpen((o) => !o)}
+              className="interactive-button inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         <div
