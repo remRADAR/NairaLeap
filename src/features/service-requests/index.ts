@@ -2,3 +2,4 @@ export type { ServiceRequest, ServiceRequestSource, ServiceRequestStatus } from 
 
 export { submitServiceRequest } from "./submit";
 export { submitServiceRequestSchema } from "./submit";
+export { listAdminServiceRequests, updateAdminServiceRequest } from "./server";

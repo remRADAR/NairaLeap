@@ -124,3 +124,24 @@ The CMS source endpoints used for the migration are:
 - `src/components/layout/AppLayout.tsx`
 - `src/routes/index.tsx`
 - `cypress/e2e/brand-auth.cy.ts`
+
+## Admin customer request workspace — 2026-10-07
+
+### Recently completed
+- Merged customer onboarding requests into the Admin Studio → Service Portal → Request queue workspace.
+- Added a protected server-side admin read path for `service_requests`, using the signed-in Supabase user's `app_metadata.role = 'admin'` claim.
+- Added admin follow-up status controls for Submitted, In review, Resolved, and Needs attention.
+- Added customer contact links, onboarding payload detail cards, search/status filters, refresh, and CSV export for the full request queue.
+- Added the additive migration `supabase/migrations/20261007190000_admin_service_request_access.sql` with the matching RLS policies.
+
+### Verification
+- `npm run lint` — passed with 8 existing non-blocking warnings.
+- `npx tsc --noEmit` — passed.
+- `npm run build` — passed; bundler emitted existing third-party `use client` directive warnings only.
+- `git diff --check` — passed.
+- `npx cypress run --spec cypress/e2e/admin-studio.cy.ts` — passed, 4 tests.
+
+### Required deployment step
+- Apply the new Supabase migration after the base service-request migration.
+- Set `app_metadata.role = 'admin'` only for approved internal operators before using the queue.
+- The migration has not been applied to the production Supabase project in this checkpoint.

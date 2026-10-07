@@ -20,6 +20,15 @@ describe("Admin Studio workspace", () => {
     cy.contains("button", "Overview").should("have.class", "bg-[#f2ebff]");
   });
 
+  it("opens the merged customer request review workspace", () => {
+    cy.contains("button", "Service Portal").click();
+    cy.contains("button", "Request queue").click();
+    cy.contains("h2", "Customer request queue").should("be.visible");
+    cy.contains("button", "Export CSV").should("be.visible");
+    cy.get('input[placeholder="Search customer, request or details"]').should("be.visible");
+    cy.get("select").contains("All statuses").should("exist");
+  });
+
   it("publishes an article and opens its public detail route", () => {
     const title = "Cypress Admin Regression Article";
     const slug = "cypress-admin-regression-article";

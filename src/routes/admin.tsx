@@ -12,14 +12,19 @@ import {
   CheckCircle2,
   ClipboardList,
   ChevronRight,
+  Download,
   ExternalLink,
   FolderTree,
   Globe2,
   LayoutDashboard,
   LockKeyhole,
+  Mail,
   Plus,
   Pencil,
+  Phone,
+  RefreshCw,
   Save,
+  Search,
   Settings2,
   ShieldCheck,
   Store,
@@ -43,6 +48,7 @@ import {
 } from "@/features/editorial/studio";
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
+import { listAdminServiceRequests, updateAdminServiceRequest } from "@/features/service-requests";
 
 export const Route = createFileRoute("/admin")({
   component: AdminStudioPage,
@@ -300,27 +306,269 @@ function PortalServices() {
 }
 
 function PortalRequests() {
+  type AdminRequest = Awaited<ReturnType<typeof listAdminServiceRequests>>["requests"][number];
+  const [requests, setRequests] = useState<AdminRequest[]>([]);
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  const loadRequests = async (isRefresh = false) => {
+    setError("");
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    try {
+      const result = await listAdminServiceRequests();
+      setRequests(result.requests);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "We could not load the request queue.");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadRequests();
+  }, []);
+
+  const updateStatus = async (requestId: string, status: AdminRequest["status"]) => {
+    setUpdatingId(requestId);
+    setError("");
+    try {
+      await updateAdminServiceRequest({ data: { requestId, status } });
+      setRequests((current) =>
+        current.map((request) =>
+          request.id === requestId
+            ? { ...request, status, updated_at: new Date().toISOString() }
+            : request,
+        ),
+      );
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "We could not update this request.");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const visibleRequests = requests.filter((request) => {
+    const payload = request.submitted_payload as Record<string, unknown>;
+    const haystack = [
+      request.id,
+      request.user_id,
+      request.service_id,
+      request.status,
+      ...Object.values(payload).map((value) => String(value)),
+    ]
+      .join(" ")
+      .toLowerCase();
+    return (
+      (statusFilter === "all" || request.status === statusFilter) &&
+      haystack.includes(query.toLowerCase())
+    );
+  });
+
+  const exportCsv = () => {
+    const payloadKeys = Array.from(
+      new Set(
+        requests.flatMap((request) =>
+          Object.keys(request.submitted_payload as Record<string, unknown>),
+        ),
+      ),
+    );
+    const headers = [
+      "request_id",
+      "customer_id",
+      "service_id",
+      "status",
+      "source",
+      "created_at",
+      "updated_at",
+      ...payloadKeys,
+    ];
+    const csvValue = (value: unknown) => {
+      const text = value == null ? "" : typeof value === "string" ? value : JSON.stringify(value);
+      return `"${text.replaceAll('"', '""')}"`;
+    };
+    const rows = requests.map((request) => {
+      const payload = request.submitted_payload as Record<string, unknown>;
+      return [
+        request.id,
+        request.user_id,
+        request.service_id,
+        request.status,
+        request.source,
+        request.created_at,
+        request.updated_at,
+        ...payloadKeys.map((key) => payload[key]),
+      ]
+        .map(csvValue)
+        .join(",");
+    });
+    const blob = new Blob([[headers.map(csvValue).join(","), ...rows].join("\n")], {
+      type: "text/csv;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `nairaleap-customer-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
-        Service Portal workspace
-      </p>
-      <h2 className="mt-2 text-2xl font-black text-[#262638]">Request queue</h2>
-      <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
-        Customer requests are protected by Supabase Auth and currently scoped to the signed-in
-        customer workspace. The admin queue is grouped here as the next protected operations
-        surface.
-      </p>
-      <div className="mt-6 rounded-xl bg-[#fff8e6] p-4 text-xs leading-5 text-[#8b6500]">
-        Admin request triage requires an admin role and server-side RLS policy. No unauthenticated
-        queue is exposed from this panel.
+    <section className="space-y-5">
+      <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+              Service Portal workspace
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-[#262638]">Customer request queue</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+              Review onboarding answers submitted from the customer workspace, update follow-up
+              status, and export a CSV for your operations team.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => void loadRequests(true)}
+              disabled={refreshing}
+              className="inline-flex items-center gap-2 rounded-xl border border-[#e5dafa] px-3 py-2 text-xs font-bold text-[#6f23dd] disabled:opacity-50"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} /> Refresh
+            </button>
+            <button
+              type="button"
+              onClick={exportCsv}
+              disabled={requests.length === 0}
+              className="inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-3 py-2 text-xs font-bold text-white disabled:opacity-40"
+            >
+              <Download className="h-3.5 w-3.5" /> Export CSV
+            </button>
+          </div>
+        </div>
+        <div className="mt-6 grid gap-3 md:grid-cols-[1fr_12rem]">
+          <label className="relative block">
+            <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-[#9a95a8]" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search customer, request or details"
+              className="studio-input pl-9"
+            />
+          </label>
+          <select
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+            className="studio-input"
+          >
+            <option value="all">All statuses</option>
+            <option value="submitted">Submitted</option>
+            <option value="in_review">In review</option>
+            <option value="resolved">Resolved</option>
+            <option value="rejected">Needs attention</option>
+          </select>
+        </div>
       </div>
-      <Link
-        to="/auth"
-        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white"
-      >
-        Open authenticated workspace <ChevronRight className="h-4 w-4" />
-      </Link>
+
+      {error && (
+        <div
+          role="alert"
+          className="rounded-xl border border-[#f1c5c5] bg-[#fff5f5] p-4 text-xs font-semibold text-[#a33a3a]"
+        >
+          {error}
+        </div>
+      )}
+      {loading ? (
+        <div className="rounded-2xl border border-[#e8e1f1] bg-white p-8 text-sm text-[#77778a]">
+          Loading customer requests…
+        </div>
+      ) : visibleRequests.length === 0 ? (
+        <div className="rounded-2xl border border-[#e8e1f1] bg-white p-8 text-center text-sm text-[#77778a]">
+          {requests.length === 0
+            ? "No customer requests are available for this admin account."
+            : "No requests match the current filters."}
+        </div>
+      ) : (
+        visibleRequests.map((request) => {
+          const payload = request.submitted_payload as Record<string, unknown>;
+          const service = SERVICE_CATALOG.find((item) => item.id === request.service_id);
+          const email = typeof payload.contactEmail === "string" ? payload.contactEmail : "";
+          const phone = typeof payload.contactPhone === "string" ? payload.contactPhone : "";
+          const name = typeof payload.contactName === "string" ? payload.contactName : "Customer";
+          return (
+            <article
+              key={request.id}
+              className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-6"
+            >
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+                    {service?.title ?? request.service_id}
+                  </p>
+                  <h3 className="mt-1 text-lg font-black text-[#262638]">{name}</h3>
+                  <p className="mt-1 text-xs text-[#858598]">
+                    Request {request.id.slice(0, 8)} · Customer {request.user_id.slice(0, 8)} ·
+                    Submitted {new Date(request.created_at).toLocaleString()}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-3 text-xs font-semibold">
+                    {email && (
+                      <a
+                        href={`mailto:${email}`}
+                        className="inline-flex items-center gap-1.5 text-[#6f23dd] hover:underline"
+                      >
+                        <Mail className="h-3.5 w-3.5" /> {email}
+                      </a>
+                    )}
+                    {phone && (
+                      <a
+                        href={`tel:${phone}`}
+                        className="inline-flex items-center gap-1.5 text-[#6f23dd] hover:underline"
+                      >
+                        <Phone className="h-3.5 w-3.5" /> {phone}
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <label className="grid gap-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#858598]">
+                  Follow-up status
+                  <select
+                    value={request.status}
+                    disabled={updatingId === request.id}
+                    onChange={(event) =>
+                      void updateStatus(request.id, event.target.value as AdminRequest["status"])
+                    }
+                    className="studio-input min-w-40 text-xs normal-case tracking-normal"
+                  >
+                    <option value="submitted">Submitted</option>
+                    <option value="in_review">In review</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="rejected">Needs attention</option>
+                  </select>
+                </label>
+              </div>
+              <div className="mt-5 grid gap-3 border-t border-[#f0ebf6] pt-4 sm:grid-cols-2">
+                {Object.entries(payload).map(([key, value]) => (
+                  <div key={key} className="rounded-xl bg-[#fbf9ff] p-3">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#9292a4]">
+                      {key
+                        .replace(/[A-Z]/g, (letter) => ` ${letter}`)
+                        .replace(/^./, (letter) => letter.toUpperCase())}
+                    </p>
+                    <p className="mt-1 whitespace-pre-wrap text-xs leading-5 text-[#4f4f61]">
+                      {typeof value === "string" ? value : JSON.stringify(value)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          );
+        })
+      )}
     </section>
   );
 }
