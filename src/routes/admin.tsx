@@ -749,7 +749,43 @@ function CategoryCard({
 }
 
 function PluginStudio({ workspace }: { workspace: Workspace }) {
-  const keyPayReady = Boolean(import.meta.env.VITE_KEYPAY_PUBLIC_KEY);
+  const plugins = {
+    website: [
+      {
+        title: "WordPress editorial source",
+        description:
+          "Feeds the local editorial snapshot and can optionally sync public posts from the WordPress REST API.",
+        ready: Boolean(import.meta.env.VITE_WORDPRESS_API_URL),
+        env: "VITE_WORDPRESS_API_URL",
+        link: "/",
+        action: "View website",
+      },
+    ],
+    portal: [
+      {
+        title: "Supabase Auth & requests",
+        description:
+          "Powers portal authentication and customer service-request persistence. Admin triage still requires a protected role and RLS policy.",
+        ready: Boolean(
+          import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        ),
+        env: "VITE_SUPABASE_URL + VITE_SUPABASE_PUBLISHABLE_KEY",
+        link: "/services",
+        action: "View portal",
+      },
+    ],
+    shared: [
+      {
+        title: "KeyPay gateway",
+        description:
+          "Reserved for portal payments and paid website flows. Only the public key belongs in the frontend; gateway pass and secret credentials stay server-side.",
+        ready: Boolean(import.meta.env.VITE_KEYPAY_PUBLIC_KEY),
+        env: "VITE_KEYPAY_PUBLIC_KEY",
+        link: "/services",
+        action: "View payment surfaces",
+      },
+    ],
+  };
   return (
     <section className="space-y-5">
       <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
@@ -758,27 +794,70 @@ function PluginStudio({ workspace }: { workspace: Workspace }) {
         </p>
         <h2 className="mt-2 text-2xl font-black text-[#262638]">Plugins & setup</h2>
         <p className="mt-2 text-sm leading-6 text-[#77778a]">
-          Keep website publishing and portal operations separate while managing their integrations
-          from the same studio.
+          Configure the website and portal plugins from one place. Values are read at build time
+          from the deployment environment; this panel never stores or exposes gateway secrets.
         </p>
       </div>
-      <PluginCard
-        title="KeyPay gateway"
-        description="Payment gateway configuration is scaffolded here. Add the public key and gateway pass when the merchant account is ready."
-        ready={keyPayReady}
+      <PluginGroup
+        title="Website plugins"
+        description="Editorial publishing, content source, and public website operations."
+        plugins={plugins.website}
+        active={workspace === "website"}
       />
-      <PluginCard
-        title="Editorial source"
-        description="Local WordPress migration is active, with optional REST synchronization configured through VITE_WORDPRESS_API_URL."
-        ready={Boolean(import.meta.env.VITE_WORDPRESS_API_URL)}
+      <PluginGroup
+        title="Services portal plugins"
+        description="Authentication, request persistence, and portal operations."
+        plugins={plugins.portal}
+        active={workspace === "portal"}
       />
-      <PluginCard
-        title="Supabase service portal"
-        description="Authentication and service request persistence are available when the Supabase project is configured and migrations are applied."
-        ready={Boolean(
-          import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+      <PluginGroup
+        title="Shared payment plugin"
+        description="Available to both workspaces when the merchant gateway is configured."
+        plugins={plugins.shared}
+        active
+      />
+    </section>
+  );
+}
+
+function PluginGroup({
+  title,
+  description,
+  plugins,
+  active,
+}: {
+  title: string;
+  description: string;
+  plugins: {
+    title: string;
+    description: string;
+    ready: boolean;
+    env: string;
+    link: string;
+    action: string;
+  }[];
+  active: boolean;
+}) {
+  return (
+    <section
+      className={`rounded-2xl border p-5 sm:p-6 ${active ? "border-[#d8c9f3] bg-[#fcfaff]" : "border-[#e8e1f1] bg-white"}`}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-extrabold text-[#262638]">{title}</h3>
+          <p className="mt-1 text-sm text-[#77778a]">{description}</p>
+        </div>
+        {active && (
+          <span className="rounded-full bg-[#f2ebff] px-2.5 py-1 text-[10px] font-bold text-[#6f23dd]">
+            Active workspace
+          </span>
         )}
-      />
+      </div>
+      <div className="mt-4 grid gap-3">
+        {plugins.map((plugin) => (
+          <PluginCard key={plugin.title} {...plugin} />
+        ))}
+      </div>
     </section>
   );
 }
@@ -787,19 +866,25 @@ function PluginCard({
   title,
   description,
   ready,
+  env,
+  link,
+  action,
 }: {
   title: string;
   description: string;
   ready: boolean;
+  env: string;
+  link: string;
+  action: string;
 }) {
   return (
-    <div className="flex items-start gap-4 rounded-2xl border border-[#e8e1f1] bg-white p-5">
+    <div className="flex flex-col gap-4 rounded-2xl border border-[#e8e1f1] bg-white p-5 sm:flex-row sm:items-start">
       <span
         className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${ready ? "bg-[#e9f9f0] text-[#16824d]" : "bg-[#fff6df] text-[#a36b00]"}`}
       >
         {ready ? <CheckCircle2 className="h-5 w-5" /> : <Settings2 className="h-5 w-5" />}
       </span>
-      <div>
+      <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="font-extrabold text-[#262638]">{title}</h3>
           <span
@@ -809,6 +894,15 @@ function PluginCard({
           </span>
         </div>
         <p className="mt-2 text-sm leading-6 text-[#77778a]">{description}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-[11px]">
+          <span className="rounded-lg bg-[#f8f5ff] px-2 py-1 font-mono text-[#6f23dd]">{env}</span>
+          <Link
+            to={link}
+            className="inline-flex items-center gap-1 font-bold text-[#6f23dd] hover:underline"
+          >
+            {action} <ExternalLink className="h-3 w-3" />
+          </Link>
+        </div>
       </div>
     </div>
   );
