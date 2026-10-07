@@ -38,6 +38,10 @@ function AuthPage() {
   const [confirmationSent, setConfirmationSent] = useState(false);
 
   const navigateAfterAuth = useCallback(async () => {
+    if (user?.app_metadata?.role === "admin") {
+      await navigate({ to: "/admin", replace: true });
+      return;
+    }
     const pendingServiceId = getPendingGuideServiceId();
     if (pendingServiceId) {
       await navigate({
@@ -48,7 +52,7 @@ function AuthPage() {
       return;
     }
     await navigate({ to: "/dashboard", replace: true });
-  }, [navigate]);
+  }, [navigate, user]);
 
   useEffect(() => {
     if (!loading && user) void navigateAfterAuth();

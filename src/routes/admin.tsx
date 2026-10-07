@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import {
   useEffect,
   useMemo,
@@ -18,6 +18,7 @@ import {
   Globe2,
   LayoutDashboard,
   LockKeyhole,
+  LogOut,
   Mail,
   Plus,
   Pencil,
@@ -49,8 +50,15 @@ import {
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
 import { listAdminServiceRequests, updateAdminServiceRequest } from "@/features/service-requests";
+import { getAdminAccess } from "@/features/auth/server";
+import { useAuth } from "@/features/auth";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: async ({ location }) => {
+    const { user, isAdmin } = await getAdminAccess();
+    if (!user || !isAdmin) throw redirect({ to: "/admin-login" });
+    return { user };
+  },
   component: AdminStudioPage,
 });
 
@@ -58,6 +66,8 @@ type Workspace = "website" | "portal";
 type AdminView = "overview" | "articles" | "categories" | "services" | "requests" | "plugins";
 
 function AdminStudioPage() {
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
   const [workspace, setWorkspace] = useState<Workspace>("website");
   const [view, setView] = useState<AdminView>("overview");
   const [articles, setArticles] = useState<StudioArticle[]>([]);
@@ -99,8 +109,20 @@ function AdminStudioPage() {
                   service portal organized from one focused workspace.
                 </p>
               </div>
-              <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs text-white/75">
-                <LockKeyhole className="h-3.5 w-3.5 text-[#d2b8ff]" /> Gateway pass pending setup
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs text-white/75">
+                  <LockKeyhole className="h-3.5 w-3.5 text-[#d2b8ff]" /> Admin access enabled
+                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await signOut();
+                    await navigate({ to: "/admin-login", replace: true });
+                  }}
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-3 py-2 text-xs font-bold text-white/80 transition hover:bg-white/10"
+                >
+                  <LogOut className="h-3.5 w-3.5" /> Sign out
+                </button>
               </div>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -310,6 +332,8 @@ function PortalRequests() {
   const [requests, setRequests] = useState<AdminRequest[]>([]);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [serviceFilter, setServiceFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
@@ -353,22 +377,48 @@ function PortalRequests() {
     }
   };
 
-  const visibleRequests = requests.filter((request) => {
-    const payload = request.submitted_payload as Record<string, unknown>;
-    const haystack = [
-      request.id,
-      request.user_id,
-      request.service_id,
-      request.status,
-      ...Object.values(payload).map((value) => String(value)),
-    ]
-      .join(" ")
-      .toLowerCase();
-    return (
-      (statusFilter === "all" || request.status === statusFilter) &&
-      haystack.includes(query.toLowerCase())
-    );
-  });
+  const visibleRequests = useMemo(() => {
+    const filtered = requests.filter((request) => {
+      const payload = request.submitted_payload as Record<string, unknown>;
+      const haystack = [
+        request.id,
+        request.user_id,
+        request.service_id,
+        request.status,
+        ...Object.values(payload).map((value) => String(value)),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return (
+        (statusFilter === "all" || request.status === statusFilter) &&
+        (serviceFilter === "all" || request.service_id === serviceFilter) &&
+        haystack.includes(query.trim().toLowerCase())
+      );
+    });
+
+    return [...filtered].sort((left, right) => {
+      const leftPayload = left.submitted_payload as Record<string, unknown>;
+      const rightPayload = right.submitted_payload as Record<string, unknown>;
+      const leftName = String(leftPayload.contactName ?? "Customer");
+      const rightName = String(rightPayload.contactName ?? "Customer");
+
+      if (sortBy === "oldest") {
+        return left.created_at.localeCompare(right.created_at);
+      }
+      if (sortBy === "customer-asc") {
+        return leftName.localeCompare(rightName);
+      }
+      if (sortBy === "customer-desc") {
+        return rightName.localeCompare(leftName);
+      }
+      if (sortBy === "status") {
+        return (
+          left.status.localeCompare(right.status) || right.created_at.localeCompare(left.created_at)
+        );
+      }
+      return right.created_at.localeCompare(left.created_at);
+    });
+  }, [query, requests, serviceFilter, sortBy, statusFilter]);
 
   const exportCsv = () => {
     const payloadKeys = Array.from(
@@ -451,7 +501,7 @@ function PortalRequests() {
             </button>
           </div>
         </div>
-        <div className="mt-6 grid gap-3 md:grid-cols-[1fr_12rem]">
+        <div className="mt-6 grid gap-3 md:grid-cols-[minmax(16rem,1fr)_12rem_12rem_12rem]">
           <label className="relative block">
             <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-[#9a95a8]" />
             <input
@@ -472,7 +522,35 @@ function PortalRequests() {
             <option value="resolved">Resolved</option>
             <option value="rejected">Needs attention</option>
           </select>
+          <select
+            value={serviceFilter}
+            onChange={(event) => setServiceFilter(event.target.value)}
+            className="studio-input"
+            aria-label="Filter by service"
+          >
+            <option value="all">All services</option>
+            {SERVICE_CATALOG.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.title}
+              </option>
+            ))}
+          </select>
+          <select
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value)}
+            className="studio-input"
+            aria-label="Sort customer requests"
+          >
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="customer-asc">Customer A–Z</option>
+            <option value="customer-desc">Customer Z–A</option>
+            <option value="status">Status</option>
+          </select>
         </div>
+        <p className="mt-3 text-xs text-[#858598]">
+          Showing {visibleRequests.length} of {requests.length} customer requests
+        </p>
       </div>
 
       {error && (

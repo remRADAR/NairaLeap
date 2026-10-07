@@ -145,3 +145,11 @@ The CMS source endpoints used for the migration are:
 - Apply the new Supabase migration after the base service-request migration.
 - Set `app_metadata.role = 'admin'` only for approved internal operators before using the queue.
 - The migration has not been applied to the production Supabase project in this checkpoint.
+
+## Protected Admin Studio and request queue controls — 2026-10-07
+
+The Admin Studio now has a dedicated `/admin-login` entry point. `/admin` is guarded server-side by the Supabase Auth `app_metadata.role = 'admin'` claim; unauthenticated and non-admin users are redirected to the admin login. Admins can sign in once, manage both Website and Service Portal workspaces, and sign out from the Admin Studio shell. The customer `/auth` flow remains the customer entry point and redirects an authenticated admin to Admin Studio rather than the customer dashboard.
+
+The customer request queue now supports search, status filtering, service filtering, newest/oldest ordering, customer-name A–Z/Z–A ordering, status ordering, result counts, CSV export, and follow-up status updates. The Supabase admin RLS migration from the prior checkpoint remains required in the target database, and approved admin users still need `app_metadata.role = 'admin'`.
+
+Verification for this checkpoint: targeted ESLint, `npx tsc --noEmit`, `npm run lint`, `npm run build`, and the protected Admin Studio Cypress spec passed. The full Admin Studio workflow is only accessible in tests when a real approved admin session is available; unauthenticated access is covered by the current regression.

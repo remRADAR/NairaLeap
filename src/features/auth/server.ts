@@ -21,3 +21,21 @@ export const getCurrentUser = createServerFn({ method: "GET" }).handler(async ()
     return { user: null };
   }
 });
+
+export const getAdminAccess = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    const supabase = getSupabaseServerClient();
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) return { user: null, isAdmin: false };
+
+    return {
+      user: {
+        id: data.user.id,
+        email: data.user.email ?? null,
+      },
+      isAdmin: data.user.app_metadata?.role === "admin",
+    };
+  } catch {
+    return { user: null, isAdmin: false };
+  }
+});
