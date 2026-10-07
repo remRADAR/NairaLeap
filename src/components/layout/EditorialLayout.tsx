@@ -124,12 +124,20 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
 }
 
 function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
+  const [openSection, setOpenSection] = useState<string | null>(null);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+
+  const toggleSection = (label: string) => {
+    setOpenSection((current) => (current === label ? null : label));
+    setOpenGroup(null);
+  };
+
   return (
     <nav
       aria-label="Editorial menu"
       className="animate__animated animate__fadeIn border-t border-[#ededf4] bg-[#fbfaff] px-4 py-4 sm:px-6"
     >
-      <div className="mx-auto max-h-[62vh] max-w-[1180px] overflow-y-auto rounded-2xl border border-[#e8e1f5] bg-white p-4 shadow-[0_18px_42px_rgba(43,25,79,0.12)] sm:p-5">
+      <div className="mx-auto max-w-[1180px] rounded-2xl border border-[#e8e1f5] bg-white p-4 shadow-[0_18px_42px_rgba(43,25,79,0.12)] sm:p-5">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[#eeeaf6] pb-4">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7a2ce2]">Menu</p>
@@ -161,42 +169,72 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             </a>
           </div>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {WORDPRESS_MAIN_NAVIGATION.map((section) => (
-            <div key={section.label} className="min-w-0">
-              <p className="border-b border-[#eeeaf6] pb-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#303044]">
-                {section.label}
-              </p>
-              <div className="mt-3 space-y-4">
-                {section.groups.map((group) => (
-                  <div key={group.label}>
-                    <Link
-                      to="/archive"
-                      search={{ topic: slugify(group.label) }}
-                      onClick={onNavigate}
-                      className="text-xs font-bold text-[#6f23dd] hover:underline"
-                    >
-                      {group.label}
-                    </Link>
-                    <ul className="mt-2 grid gap-x-3 gap-y-1 border-l border-[#ece5fb] pl-3">
-                      {group.items.map((item) => (
-                        <li key={item}>
-                          <Link
-                            to="/archive"
-                            search={{ topic: slugify(item) }}
-                            onClick={onNavigate}
-                            className="text-[11px] leading-5 text-[#77778a] hover:text-[#6f23dd]"
+        <div className="divide-y divide-[#eeeaf6] overflow-hidden rounded-xl border border-[#eeeaf6]">
+          {WORDPRESS_MAIN_NAVIGATION.map((section) => {
+            const sectionOpen = openSection === section.label;
+            return (
+              <div key={section.label}>
+                <button
+                  type="button"
+                  aria-expanded={sectionOpen}
+                  onClick={() => toggleSection(section.label)}
+                  className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#303044] transition hover:bg-[#faf8ff]"
+                >
+                  <span>{section.label}</span>
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 shrink-0 text-[#7a2ce2] transition-transform",
+                      sectionOpen && "rotate-180",
+                    )}
+                  />
+                </button>
+                {sectionOpen && (
+                  <div className="animate__animated animate__fadeIn border-t border-[#eeeaf6] bg-[#fcfbff] px-3 py-2">
+                    {section.groups.map((group) => {
+                      const groupKey = `${section.label}:${group.label}`;
+                      const groupOpen = openGroup === groupKey;
+                      return (
+                        <div key={group.label} className="border-b border-[#f0ecf7] last:border-0">
+                          <button
+                            type="button"
+                            aria-expanded={groupOpen}
+                            onClick={() =>
+                              setOpenGroup((current) => (current === groupKey ? null : groupKey))
+                            }
+                            className="flex w-full items-center justify-between gap-4 rounded-lg px-3 py-2.5 text-left text-xs font-bold text-[#6f23dd] transition hover:bg-[#f8f4ff]"
                           >
-                            {item}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                            <span>{group.label}</span>
+                            <ChevronDown
+                              className={cn(
+                                "h-3.5 w-3.5 shrink-0 transition-transform",
+                                groupOpen && "rotate-180",
+                              )}
+                            />
+                          </button>
+                          {groupOpen && (
+                            <ul className="animate__animated animate__fadeIn grid gap-1 border-l border-[#ece5fb] pb-3 pl-3 sm:grid-cols-2 lg:grid-cols-3">
+                              {group.items.map((item) => (
+                                <li key={item}>
+                                  <Link
+                                    to="/archive"
+                                    search={{ topic: slugify(item) }}
+                                    onClick={onNavigate}
+                                    className="block rounded-md px-2 py-1.5 text-[11px] leading-5 text-[#77778a] hover:bg-white hover:text-[#6f23dd]"
+                                  >
+                                    {item}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </nav>
