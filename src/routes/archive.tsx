@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Archive, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
+import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
@@ -26,7 +27,7 @@ function ArticleArchivePage() {
   const { posts } = Route.useLoaderData();
   const [allPosts, setAllPosts] = useState(posts);
   useEffect(() => {
-    const refresh = () => setAllPosts(mergeStudioArticles(posts));
+    const refresh = () => setAllPosts(withEditorialImageFallbacks(mergeStudioArticles(posts)));
     refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
     return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
