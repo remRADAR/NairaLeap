@@ -171,7 +171,9 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
         "GET",
         "**/service-backgrounds/vendor-marketplace-background.webp",
         (request) => {
-          request.on("response", (response) => response.setDelay(350));
+          request.on("response", (response) => {
+            response.setDelay(350);
+          });
         },
       ).as("vendorBackground");
       cy.get('main a[href="/services/vendor-marketplace"]').click();
