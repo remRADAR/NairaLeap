@@ -485,9 +485,36 @@
 .editorial-story-card:focus-within,
 .editorial-segment-card:hover,
 .editorial-segment-card:focus-visible {
+  animation-name: none;
   transform: translateY(-0.25rem);
   border-color: #d8c9f3;
   box-shadow: 0 16px 34px rgb(43 25 79 / 12%);
+}
+
+.studio-input {
+  width: 100%;
+  border: 1px solid #e3dced;
+  border-radius: 0.75rem;
+  background: #fcfbff;
+  padding: 0.75rem 0.875rem;
+  color: #29283a;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.studio-input:focus {
+  border-color: #9d6ce7;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgb(122 44 226 / 12%);
+}
+
+.studio-input::placeholder {
+  color: #aaa5b7;
 }
 
 @media (prefers-reduced-motion: reduce) {

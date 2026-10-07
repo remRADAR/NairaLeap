@@ -1,7 +1,9 @@
-import { Link, createFileRoute, notFound } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
+import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { EDITORIAL_POSTS, getEditorialPost } from "@/data/wordpressEditorial";
+import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 export const Route = createFileRoute("/articles/$slug")({
   head: ({ params }) => {
@@ -18,18 +20,26 @@ export const Route = createFileRoute("/articles/$slug")({
   },
   loader: ({ params }) => {
     const post = getEditorialPost(params.slug);
-    if (!post) throw notFound();
-    return { post };
+    return { post: post ?? null };
   },
   component: ArticlePage,
 });
 
 function ArticlePage() {
   const { slug } = Route.useParams();
-  const post = getEditorialPost(slug);
+  const loadedPost = getEditorialPost(slug) ?? null;
+  const [post, setPost] = useState(loadedPost);
+  useEffect(() => {
+    const refresh = () =>
+      setPost(mergeStudioArticles(EDITORIAL_POSTS).find((item) => item.slug === slug) ?? null);
+    refresh();
+    window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
+    return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
+  }, [slug, loadedPost]);
   if (!post) return null;
-  const postIndex = EDITORIAL_POSTS.findIndex((item) => item.slug === post.slug);
-  const nextPost = EDITORIAL_POSTS[postIndex + 1];
+  const allPosts = mergeStudioArticles(EDITORIAL_POSTS);
+  const postIndex = allPosts.findIndex((item) => item.slug === post.slug);
+  const nextPost = allPosts[postIndex + 1];
 
   return (
     <EditorialLayout>

@@ -117,6 +117,12 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             Services
           </Link>
           <a
+            href="/admin"
+            className="rounded-md border border-[#d9c9f3] px-3 py-2 text-[11px] font-bold text-[#6f23dd] transition hover:bg-[#f3edff]"
+          >
+            Admin
+          </a>
+          <a
             href="/archive"
             className="rounded-md px-3 py-2 text-[11px] font-bold text-[#6f23dd] transition hover:bg-[#f3edff]"
           >
@@ -189,6 +195,13 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
               >
                 Services
               </Link>
+              <a
+                href="/admin"
+                onClick={closeMobileMenu}
+                className="block border-t border-[#eeeaf6] px-4 py-3 text-[11px] font-bold text-[#6f23dd]"
+              >
+                Admin
+              </a>
               <a
                 href="/archive"
                 onClick={closeMobileMenu}

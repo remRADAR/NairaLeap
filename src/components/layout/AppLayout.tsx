@@ -113,6 +113,12 @@ function Header() {
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
+            <a
+              href="/admin"
+              className="portal-nav-link shrink-0 rounded-lg border border-primary/40 px-3 py-2 text-primary-glow transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+            >
+              Admin
+            </a>
           </div>
 
           <button
@@ -197,6 +203,13 @@ function Header() {
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
+            <a
+              href="/admin"
+              onClick={closeMenus}
+              className="portal-nav-link rounded-lg px-3 py-3 text-primary-glow"
+            >
+              Admin
+            </a>
           </nav>
         </div>
       </div>

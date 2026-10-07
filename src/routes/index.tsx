@@ -3,6 +3,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
+import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
   value
@@ -23,15 +24,23 @@ export const Route = createFileRoute("/")({
 function EditorialHomePage() {
   const { topic } = Route.useSearch();
   const { posts } = Route.useLoaderData();
+  const [allPosts, setAllPosts] = useState(posts);
   const [heroIndex, setHeroIndex] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
+  useEffect(() => {
+    const refresh = () => setAllPosts(mergeStudioArticles(posts));
+    refresh();
+    window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
+    return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
+  }, [posts]);
+
   const filteredPosts = topic
-    ? posts.filter((post) =>
+    ? allPosts.filter((post) =>
         [post.category, ...post.categoryPath, ...post.tags].some(
           (value) => slugify(value) === topic,
         ),
       )
-    : posts;
+    : allPosts;
   const heroPosts = filteredPosts.slice(0, 5);
 
   useEffect(() => {

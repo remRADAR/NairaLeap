@@ -1,7 +1,9 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Archive, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
+import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
   value
@@ -22,13 +24,20 @@ export const Route = createFileRoute("/archive")({
 function ArticleArchivePage() {
   const { topic } = Route.useSearch();
   const { posts } = Route.useLoaderData();
+  const [allPosts, setAllPosts] = useState(posts);
+  useEffect(() => {
+    const refresh = () => setAllPosts(mergeStudioArticles(posts));
+    refresh();
+    window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
+    return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
+  }, [posts]);
   const filteredPosts = topic
-    ? posts.filter((post) =>
+    ? allPosts.filter((post) =>
         [post.category, ...post.categoryPath, ...post.tags].some(
           (value) => slugify(value) === topic,
         ),
       )
-    : posts;
+    : allPosts;
 
   return (
     <EditorialLayout>
