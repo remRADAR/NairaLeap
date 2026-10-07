@@ -46,6 +46,7 @@ function EditorialHomePage() {
   // editorial posts belong here. Everything else remains in /archive.
   const featuredPosts = filteredPosts.slice(0, 10);
   const heroPosts = featuredPosts.slice(0, 5);
+  const tickerPosts = allPosts.slice(0, 20);
 
   useEffect(() => {
     setHeroIndex(0);
@@ -179,6 +180,30 @@ function EditorialHomePage() {
 
       <AdSlot label="Advertisement" />
 
+      <section aria-label="Desk ticker" className="border-y border-[#eceaf2] bg-white py-3">
+        <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
+          <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            20 on the desk
+          </span>
+          <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_70s_linear_infinite]">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
+                {tickerPosts.map((post) => (
+                  <a
+                    key={`${copy}-${post.slug}`}
+                    tabIndex={copy === 1 ? -1 : undefined}
+                    href={`/articles/${post.slug}`}
+                    className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
+                  >
+                    {post.title}
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="animate__animated animate__fadeInUp mb-5 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
@@ -227,6 +252,49 @@ function EditorialHomePage() {
                 </h3>
               </div>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section aria-label="More perspectives" className="mx-auto max-w-[1180px] px-4 pb-10 sm:px-6">
+        <div className="mb-5 flex items-end justify-between border-b border-[#e9e9f0] pb-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+              More from the desk
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
+              More perspectives
+            </h2>
+          </div>
+          <span className="text-xs text-[#89899b]">5 additional stories</span>
+        </div>
+        <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]">
+          {stories.slice(4, 9).map((post) => (
+            <a
+              key={post.slug}
+              href={`/articles/${post.slug}`}
+              className="group flex min-w-[286px] snap-start gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)] transition hover:-translate-y-0.5 hover:border-[#d9c7f5] hover:shadow-[0_10px_24px_rgba(43,25,79,0.08)] sm:min-w-[320px] lg:min-w-0 lg:flex-1"
+            >
+              <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-[#e7d6ff]">
+                {post.image ? (
+                  <img
+                    src={post.image}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#7a2ce2]">
+                  {post.category}
+                </p>
+                <h3 className="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#28283a] group-hover:text-[#7a2ce2]">
+                  {post.title}
+                </h3>
+                <p className="mt-1 text-[10px] text-[#9292a4]">{post.date}</p>
+              </div>
+            </a>
           ))}
         </div>
       </section>
