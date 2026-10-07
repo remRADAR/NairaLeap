@@ -147,13 +147,6 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
           </div>
           <div className="flex flex-wrap gap-2">
             <Link
-              to="/archive"
-              onClick={onNavigate}
-              className="rounded-full border border-[#e5dafa] px-3 py-2 text-[11px] font-bold text-[#6f23dd] hover:bg-[#f8f4ff]"
-            >
-              Article archive
-            </Link>
-            <Link
               to="/services"
               onClick={onNavigate}
               className="rounded-full bg-[#7a2ce2] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#6620c8]"

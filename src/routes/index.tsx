@@ -41,7 +41,10 @@ function EditorialHomePage() {
         ),
       )
     : allPosts;
-  const heroPosts = filteredPosts.slice(0, 5);
+  // The homepage is a showcase, not a second archive: only the first ten
+  // editorial posts belong here. Everything else remains in /archive.
+  const featuredPosts = filteredPosts.slice(0, 10);
+  const heroPosts = featuredPosts.slice(0, 5);
 
   useEffect(() => {
     setHeroIndex(0);
@@ -78,14 +81,7 @@ function EditorialHomePage() {
     );
   }
 
-  const stories = filteredPosts.filter((post) => post.slug !== hero.slug);
-  const segmentMap = new Map<string, { label: string; count: number }>();
-  stories.forEach((post) => {
-    const label = post.categoryPath[0] ?? post.category;
-    const current = segmentMap.get(label);
-    segmentMap.set(label, { label, count: (current?.count ?? 0) + 1 });
-  });
-  const segments = Array.from(segmentMap.values()).slice(0, 3);
+  const stories = featuredPosts.filter((post) => post.slug !== hero.slug);
 
   return (
     <EditorialLayout>
@@ -100,7 +96,7 @@ function EditorialHomePage() {
         </div>
       )}
 
-      <section className="mx-auto max-w-[1180px] px-4 pt-6 sm:px-6">
+      <section className="mx-auto w-full max-w-[1180px] px-4 pt-6 sm:px-6 lg:px-8">
         <div
           className="relative min-h-[360px] overflow-hidden rounded-2xl bg-[linear-gradient(115deg,#20202d,#555565)] px-6 py-10 text-white shadow-sm sm:min-h-[410px] sm:px-10 sm:py-14"
           onMouseEnter={() => setHeroPaused(true)}
@@ -113,7 +109,7 @@ function EditorialHomePage() {
               key={hero.image}
               src={hero.image}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover object-center"
               fetchPriority="high"
             />
           ) : null}
@@ -177,7 +173,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1180px] px-4 py-10 sm:px-6">
+      <section className="mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="animate__animated animate__fadeInUp mb-5 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
             <span className="text-[#7a2ce2]">✦</span> Top Stories
@@ -190,26 +186,30 @@ function EditorialHomePage() {
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stories.slice(0, 8).map((post, index) => (
+          {stories.map((post, index) => (
             <article
               key={post.slug}
               className="editorial-story-card animate__animated animate__fadeInUp group overflow-hidden rounded-xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)]"
               style={{ animationDelay: `${Math.min(index, 7) * 55}ms` }}
             >
-              <div className="relative h-32 overflow-hidden bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
                 {post.image ? (
                   <img
                     src={post.image}
                     alt=""
                     loading="lazy"
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
                   />
                 ) : null}
               </div>
               <div className="p-4">
-                <p className="text-[10px] font-bold uppercase leading-4 tracking-[0.08em] text-[#7a2ce2]">
+                <Link
+                  to="/archive"
+                  search={{ topic: slugify(post.category) }}
+                  className="text-[10px] font-bold uppercase leading-4 tracking-[0.08em] text-[#7a2ce2] hover:underline"
+                >
                   {post.category}
-                </p>
+                </Link>
                 <p className="mt-2 text-[10px] text-[#9292a4]">{post.date}</p>
                 <h3 className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-[#262638]">
                   <a
@@ -225,78 +225,15 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      {segments.length > 0 && (
-        <section className="mx-auto max-w-[1180px] px-4 pb-10 sm:px-6">
-          <div className="animate__animated animate__fadeInUp mb-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
-              Explore by segment
-            </p>
-            <h2 className="mt-1 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
-              Indicator segments
-            </h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {segments.map((segment, index) => (
-              <a
-                key={segment.label}
-                href={`/?topic=${slugify(segment.label)}`}
-                className="editorial-segment-card animate__animated animate__fadeInUp group rounded-2xl border border-[#ececf3] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)]"
-                style={{ animationDelay: `${index * 75}ms` }}
-              >
-                <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#7a2ce2]">
-                  0{index + 1}
-                </span>
-                <h3 className="mt-5 line-clamp-2 text-lg font-extrabold leading-6 text-[#262638]">
-                  {segment.label}
-                </h3>
-                <p className="mt-3 text-xs text-[#89899b]">{segment.count} stories to explore</p>
-                <ArrowRight className="mt-5 h-4 w-4 text-[#7a2ce2] transition-transform group-hover:translate-x-1" />
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section id="all-stories" className="mx-auto max-w-[1180px] px-4 pb-8 sm:px-6">
-        <div className="animate__animated animate__fadeInUp mb-5 flex items-center justify-between border-b border-[#e9e9f0] pb-3">
-          <h2 className="text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">Latest stories</h2>
-          <Link to="/archive" className="text-xs font-bold text-[#7a2ce2]">
-            View archive
+      <section className="mx-auto w-full max-w-[1180px] px-4 pb-12 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between border-t border-[#e9e9f0] pt-5">
+          <p className="text-xs text-[#77778a]">Showing 10 featured stories</p>
+          <Link
+            to="/archive"
+            className="inline-flex items-center gap-1 text-xs font-bold text-[#7a2ce2]"
+          >
+            Browse all articles <ArrowRight className="h-3.5 w-3.5" />
           </Link>
-        </div>
-        <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
-          {stories.slice(8).map((post, index) => (
-            <article
-              key={post.slug}
-              className="animate__animated animate__fadeInUp flex gap-4 border-b border-[#efeff4] pb-5"
-              style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
-            >
-              <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-[#e7d6ff] to-[#78609f]">
-                {post.image ? (
-                  <img
-                    src={post.image}
-                    alt=""
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                ) : null}
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#7a2ce2]">
-                  {post.category}
-                </p>
-                <p className="mt-1 text-[10px] text-[#9292a4]">{post.date}</p>
-                <h3 className="mt-1 text-sm font-bold leading-5 text-[#28283a]">
-                  <a
-                    href={`/articles/${post.slug}`}
-                    className="transition-colors hover:text-[#7a2ce2]"
-                  >
-                    {post.title}
-                  </a>
-                </h3>
-              </div>
-            </article>
-          ))}
         </div>
       </section>
     </EditorialLayout>

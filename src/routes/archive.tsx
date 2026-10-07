@@ -41,7 +41,7 @@ function ArticleArchivePage() {
 
   return (
     <EditorialLayout>
-      <section className="mx-auto max-w-[1180px] px-4 pb-16 pt-8 sm:px-6 sm:pt-12">
+      <section className="mx-auto w-full max-w-[1180px] px-4 pb-16 pt-8 sm:px-6 sm:pt-12 lg:px-8">
         <div className="animate__animated animate__fadeInUp mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <Link
@@ -82,22 +82,26 @@ function ArticleArchivePage() {
                 className="editorial-story-card animate__animated animate__fadeInUp group overflow-hidden rounded-2xl border border-[#ececf3] bg-white shadow-[0_8px_24px_rgba(43,25,79,0.05)]"
                 style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
               >
-                <div className="relative h-44 overflow-hidden bg-gradient-to-br from-[#e7d6ff] to-[#78609f]">
+                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#e7d6ff] to-[#78609f]">
                   {post.image ? (
                     <img
                       src={post.image}
                       alt=""
                       loading="lazy"
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
                     />
                   ) : (
                     <div className="grid h-full place-items-center text-white/70">
                       <Sparkles className="h-7 w-7" />
                     </div>
                   )}
-                  <span className="absolute left-3 top-3 rounded-full bg-black/35 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-white backdrop-blur-sm">
+                  <Link
+                    to="/archive"
+                    search={{ topic: slugify(post.category) }}
+                    className="absolute left-3 top-3 rounded-full bg-black/35 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-white backdrop-blur-sm hover:bg-[#7a2ce2]"
+                  >
                     {post.category}
-                  </span>
+                  </Link>
                 </div>
                 <div className="p-5">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9292a4]">
