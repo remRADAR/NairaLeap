@@ -31,8 +31,8 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
 
   return (
     <>
-      <main className="service-page-content min-h-[calc(100dvh-5rem)] text-foreground">
-        <Container className="flex min-h-[calc(100dvh-5rem)] items-center py-6 sm:py-10">
+      <main className="service-page-content min-h-[calc(100dvh-5rem)] text-foreground lg:h-full lg:min-h-0">
+        <Container className="flex min-h-[calc(100dvh-5rem)] items-center py-6 sm:py-10 lg:h-full lg:min-h-0">
           <section
             aria-labelledby="service-page-title"
             className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-glass-border bg-background/75 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr]"
