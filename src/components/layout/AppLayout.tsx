@@ -41,8 +41,8 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
       data-app-hydrated={hydrated ? "true" : "false"}
       data-service-id={serviceId}
     >
-      <Header />
-      <main className="flex-1">{children}</main>
+      <Header compact={Boolean(serviceId)} />
+      <main className="min-h-0 flex-1">{children}</main>
       <div className={serviceId ? "lg:hidden" : undefined}>
         <Footer />
       </div>
@@ -52,7 +52,7 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
   );
 }
 
-function Header() {
+function Header({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const { user } = useAuth();
@@ -74,7 +74,12 @@ function Header() {
             />
           </Link>
 
-          <div className="hidden min-w-0 flex-1 items-center justify-end gap-1 text-sm lg:flex">
+          <div
+            className={cn(
+              "hidden min-w-0 flex-1 items-center justify-end gap-1 text-sm",
+              compact ? "lg:hidden" : "lg:flex",
+            )}
+          >
             <nav aria-label="Primary" className="flex min-w-0 items-center gap-1">
               {WORDPRESS_MAIN_NAVIGATION.map((section) => {
                 const isActive = activeSection === section.label;
@@ -125,7 +130,7 @@ function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className={cn("flex items-center gap-2", !compact && "lg:hidden")}>
             <Link
               to="/"
               aria-label="Go to Nairaleap blog"
@@ -153,7 +158,7 @@ function Header() {
           )}
         >
           <nav
-            aria-label="Mobile"
+            aria-label={compact ? "Portal menu" : "Mobile"}
             className="glass-panel flex max-h-[70vh] flex-col overflow-y-auto p-2 text-sm"
           >
             {WORDPRESS_MAIN_NAVIGATION.map((section) => {
