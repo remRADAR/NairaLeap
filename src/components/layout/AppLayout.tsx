@@ -43,7 +43,9 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
     >
       <Header />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <div className={serviceId ? "hidden lg:block" : undefined}>
+        <Footer />
+      </div>
       <NairaLeapBot onGuide={() => setGuideOpen(true)} />
       <NairaLeapGuideContainer service={null} open={guideOpen} onOpenChange={setGuideOpen} />
     </div>
