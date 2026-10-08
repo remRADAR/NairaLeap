@@ -23,7 +23,7 @@ type HomeSearch = { topic?: string };
 export const Route = createFileRoute("/")({
   validateSearch: (search): HomeSearch =>
     typeof search.topic === "string" ? { topic: search.topic } : {},
-  loader: async () => ({ posts: await getEditorialPosts() }),
+  loader: async () => ({ posts: (await getEditorialPosts()).slice(0, 24) }),
   component: EditorialHomePage,
 });
 

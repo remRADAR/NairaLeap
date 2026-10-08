@@ -24,7 +24,12 @@ type WordPressPost = {
   };
 };
 
-const FALLBACK_POSTS = EDITORIAL_POSTS;
+const toEditorialSummary = (post: EditorialPost): EditorialPost => ({
+  ...post,
+  content: "",
+});
+
+const FALLBACK_POSTS = EDITORIAL_POSTS.map(toEditorialSummary);
 
 const stripHtml = (value: string) =>
   decodeEntities(
@@ -86,7 +91,7 @@ const normalizePost = (post: WordPressPost, index: number): EditorialPost | null
     categoryPath,
     tags,
     excerpt: stripHtml(post.excerpt?.rendered ?? ""),
-    content: post.content?.rendered ?? "",
+    content: "",
     sourceUrl: post.link ?? `/articles/${slug}`,
     image: featuredMedia?.source_url,
   };
@@ -98,6 +103,10 @@ const getWordPressEndpoint = () => {
 
   const endpoint = new URL(baseUrl);
   endpoint.searchParams.set("_embed", "1");
+  endpoint.searchParams.set(
+    "_fields",
+    "id,slug,date,link,title,excerpt,categories,tags,_embedded",
+  );
   endpoint.searchParams.set("per_page", "24");
   endpoint.searchParams.set("orderby", "date");
   endpoint.searchParams.set("order", "desc");
@@ -121,7 +130,9 @@ export const getEditorialPosts = createServerFn({ method: "GET" }).handler(async
     const posts = payload
       .map((post, index) => normalizePost(post as WordPressPost, index))
       .filter((post): post is EditorialPost => post !== null);
-    return withEditorialImageFallbacks(posts.length > 0 ? posts : FALLBACK_POSTS);
+    return withEditorialImageFallbacks(
+      posts.length > 0 ? posts.map(toEditorialSummary) : FALLBACK_POSTS,
+    );
   } catch {
     return withEditorialImageFallbacks(FALLBACK_POSTS);
   }
