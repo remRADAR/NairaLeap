@@ -31,8 +31,8 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
 
   return (
     <>
-      <main className="service-page-content min-h-[calc(100dvh-5rem)] text-foreground">
-        <Container className="flex min-h-[calc(100dvh-5rem)] items-center py-6 sm:py-10">
+      <main className="service-page-content min-h-[calc(100dvh-5rem)] text-foreground lg:h-full lg:min-h-0">
+        <Container className="flex min-h-[calc(100dvh-5rem)] items-center py-6 sm:py-10 lg:h-full lg:min-h-0">
           <section
             aria-labelledby="service-page-title"
             className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-glass-border bg-background/75 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr]"
@@ -94,11 +94,10 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                 Start onboarding
               </div>
               <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                What brings you here?
+                Choose your role
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Select one path. You can pause, edit your answers, and review the request before it
-                is submitted.
+                Select the option that best describes what you need.
               </p>
 
               <div className="mt-7 grid gap-3">
@@ -114,10 +113,10 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                   <span className="flex items-center justify-between gap-4">
                     <span>
                       <span className="block text-base font-semibold text-foreground">
-                        I&apos;m a customer
+                        I&apos;m a buyer or customer
                       </span>
                       <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        I want to find, request, buy, access, or get help with this service.
+                        I want to find, buy, use, or get help with this service.
                       </span>
                     </span>
                     <ArrowRight
@@ -138,7 +137,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                         I&apos;m a seller or provider
                       </span>
                       <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        I want to list, supply, partner, sell, or offer this service.
+                        I want to list, sell, supply, or offer this service.
                       </span>
                     </span>
                     <ArrowRight
