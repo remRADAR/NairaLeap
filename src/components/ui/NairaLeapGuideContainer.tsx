@@ -232,7 +232,7 @@ export function NairaLeapGuideContainer({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
                   <Sparkles className="h-3 w-3 text-primary-glow" aria-hidden="true" />
-                  NairaLeap Guide · brain box
+                  NairaLeap Guide · service request
                 </div>
                 <DialogTitle className="truncate text-base font-semibold tracking-tight sm:text-lg">
                   {selectedService?.title ?? "Let’s find the right path"}
@@ -241,7 +241,7 @@ export function NairaLeapGuideContainer({
                   <p className="mt-0.5 text-xs text-primary-glow">
                     {onboardingRole === "seller"
                       ? "Seller / provider onboarding"
-                      : "Customer onboarding"}
+                      : "Buyer / customer onboarding"}
                   </p>
                 ) : null}
               </div>
@@ -328,8 +328,8 @@ export function NairaLeapGuideContainer({
                 <>
                   <AssistantMessage title={`Let’s prepare your ${selectedService.title} request.`}>
                     {onboardingRole === "seller"
-                      ? "Tell us what you offer, list, supply, or want to sell. Required questions are enforced by the flow; optional details help the team review your provider request."
-                      : "Tell us what you need, want to find, buy, access, or ask for. Required questions are enforced by the flow; optional details help the team give you a more accurate response."}
+                      ? "Tell us what you offer. Answer the service questions and review your request before submitting."
+                      : "Tell us what you need. Answer the service questions and review your request before submitting."}
                   </AssistantMessage>
                   <QuestionEngine
                     questionSet={getServiceQuestionSet(selectedService.id as ServiceId)}
