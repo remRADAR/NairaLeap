@@ -72,6 +72,9 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
       expect(document.documentElement.scrollHeight).to.be.at.most(
         document.documentElement.clientHeight,
       );
+      expect(document.documentElement.scrollWidth).to.be.at.most(
+        document.documentElement.clientWidth,
+      );
     });
   });
 
