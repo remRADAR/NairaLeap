@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, Compass, ClipboardList, FileCheck2, Send, Sparkles } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
@@ -31,6 +31,11 @@ const STEPS: Step[] = [
 
 function LandingPage() {
   const [guideOpen, setGuideOpen] = useState(false);
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  if (pathname.startsWith("/services/")) {
+    return <Outlet />;
+  }
 
   return (
     <AppLayout>

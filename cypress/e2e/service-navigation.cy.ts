@@ -56,6 +56,9 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
 
       cy.location("pathname").should("eq", `/services/${id}`);
       cy.assertServicePage(title);
+      cy.get("#service-page-title").should("be.visible").and("have.text", title);
+      cy.get("#services").should("not.exist");
+      cy.get(".service-page-shell").should("have.attr", "data-service-id", id);
       cy.get('[role="dialog"]').should("not.exist");
     });
   });
