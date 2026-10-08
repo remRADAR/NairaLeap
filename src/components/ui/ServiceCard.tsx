@@ -1,6 +1,7 @@
 import type { ComponentType, SVGProps } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import type { ServiceId } from "@/features/services/serviceCatalog";
 import { cn } from "@/lib/utils";
 
 export interface ServiceCardProps {
@@ -54,10 +55,11 @@ export function ServiceCard({
   );
 
   if (href) {
+    const serviceId = href.replace("/services/", "") as ServiceId;
     return (
       <Link
-        to={href as "/services/$service"}
-        params={{ service: href.replace("/services/", "") }}
+        to="/services/$service"
+        params={{ service: serviceId }}
         className={classNameValue}
         aria-label={`${title} — ${description}`}
       >

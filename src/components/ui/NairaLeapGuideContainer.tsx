@@ -35,10 +35,12 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 
 export interface NairaLeapGuideContainerProps {
   service: ServiceDefinition | null;
+  onboardingRole?: OnboardingRole;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onBack?: (service: ServiceDefinition) => void;
 }
+export type OnboardingRole = "customer" | "seller";
 
 type GuideStage = "discovery" | "service" | "questions" | "review" | "success";
 
@@ -57,6 +59,7 @@ function stageIndex(stage: GuideStage): number {
 
 export function NairaLeapGuideContainer({
   service,
+  onboardingRole,
   open,
   onOpenChange,
   onBack,
@@ -79,13 +82,13 @@ export function NairaLeapGuideContainer({
     setSelectedService(service);
     setDiscoveryAnswers(null);
     const pendingDraft = service ? consumePendingGuideDraft(service.id as ServiceId) : null;
-    setAnswers(pendingDraft?.answers ?? {});
+    setAnswers({ ...(pendingDraft?.answers ?? {}), ...(onboardingRole ? { onboardingRole } : {}) });
     setRundown(null);
     setRequestId(null);
     setError(null);
     setSubmitting(false);
     idempotencyKey.current = crypto.randomUUID();
-  }, [open, service]);
+  }, [open, service, onboardingRole]);
 
   const resolvedIntent = useMemo(() => {
     const rawIntent = discoveryAnswers?.["discovery-goal"];
@@ -234,6 +237,13 @@ export function NairaLeapGuideContainer({
                 <DialogTitle className="truncate text-base font-semibold tracking-tight sm:text-lg">
                   {selectedService?.title ?? "Let’s find the right path"}
                 </DialogTitle>
+                {onboardingRole && selectedService ? (
+                  <p className="mt-0.5 text-xs text-primary-glow">
+                    {onboardingRole === "seller"
+                      ? "Seller / provider onboarding"
+                      : "Customer onboarding"}
+                  </p>
+                ) : null}
               </div>
             </div>
 
@@ -317,8 +327,9 @@ export function NairaLeapGuideContainer({
               {stage === "questions" && selectedService ? (
                 <>
                   <AssistantMessage title={`Let’s prepare your ${selectedService.title} request.`}>
-                    Answer the practical questions below. Required questions are enforced by the
-                    flow; optional details help the team give you a more accurate response.
+                    {onboardingRole === "seller"
+                      ? "Tell us what you offer, list, supply, or want to sell. Required questions are enforced by the flow; optional details help the team review your provider request."
+                      : "Tell us what you need, want to find, buy, access, or ask for. Required questions are enforced by the flow; optional details help the team give you a more accurate response."}
                   </AssistantMessage>
                   <QuestionEngine
                     questionSet={getServiceQuestionSet(selectedService.id as ServiceId)}
