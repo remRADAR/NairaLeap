@@ -63,6 +63,18 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     });
   });
 
+  it("keeps a service detail page within one desktop viewport", () => {
+    cy.viewport(1280, 800);
+    cy.visit("/services/agriculture");
+
+    cy.get("footer").should("not.be.visible");
+    cy.document().should((document) => {
+      expect(document.documentElement.scrollHeight).to.be.at.most(
+        document.documentElement.clientHeight,
+      );
+    });
+  });
+
   it("opens Agriculture onboarding directly from its dedicated landing page", () => {
     cy.visit("/services/agriculture");
     cy.get('[data-testid="nairaleap-guide-dialog"]').should("not.exist");
