@@ -40,10 +40,13 @@ import {
   deleteStudioCategory,
   readStudioArticles,
   readStudioCategories,
+  readHomepageSettings,
   renameStudioCategory,
   saveStudioArticles,
   saveStudioCategories,
+  saveHomepageSettings,
   STUDIO_CHANGE_EVENT,
+  type HomepageSettings,
   type StudioArticle,
   type StudioCategory,
 } from "@/features/editorial/studio";
@@ -63,7 +66,8 @@ export const Route = createFileRoute("/admin")({
 });
 
 type Workspace = "website" | "portal";
-type AdminView = "overview" | "articles" | "categories" | "services" | "requests" | "plugins";
+type AdminView =
+  "overview" | "homepage" | "articles" | "categories" | "services" | "requests" | "plugins";
 
 function AdminStudioPage() {
   const { signOut } = useAuth();
@@ -173,6 +177,9 @@ function AdminStudioPage() {
                 onView={setView}
               />
             )}
+            {view === "homepage" && workspace === "website" && (
+              <HomepageStudio categories={categories} />
+            )}
             {view === "articles" && <ArticleStudio categories={categories} onPublished={reload} />}
             {view === "categories" && <CategoryStudio categories={categories} onChanged={reload} />}
             {view === "overview" && workspace === "portal" && <PortalOverview onView={setView} />}
@@ -214,7 +221,7 @@ function AdminSidebar({
             onWorkspaceChange(groupWorkspace);
             onNavigate(id);
           }}
-          className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold transition ${view === id && ((workspace === "website" && ["overview", "articles", "categories"].includes(id)) || (workspace === "portal" && ["overview", "services", "requests"].includes(id)) || id === "plugins") ? "bg-[#f2ebff] text-[#6f23dd]" : "text-[#6f6f82] hover:bg-[#faf8ff]"}`}
+          className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold transition ${view === id && ((workspace === "website" && ["overview", "homepage", "articles", "categories"].includes(id)) || (workspace === "portal" && ["overview", "services", "requests"].includes(id)) || id === "plugins") ? "bg-[#f2ebff] text-[#6f23dd]" : "text-[#6f6f82] hover:bg-[#faf8ff]"}`}
         >
           <Icon className="h-4 w-4" /> {label}
         </button>
@@ -226,6 +233,7 @@ function AdminSidebar({
     <aside className="h-fit rounded-2xl border border-[#e8e1f1] bg-white p-3 shadow-[0_8px_24px_rgba(43,25,79,0.05)]">
       {group("Website", "website", [
         { id: "overview", label: "Overview", icon: LayoutDashboard },
+        { id: "homepage", label: "Homepage", icon: Globe2 },
         { id: "articles", label: "Articles", icon: BookOpen },
         { id: "categories", label: "Categories", icon: FolderTree },
       ])}
@@ -675,6 +683,13 @@ function Overview({
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <ActionCard
+          icon={Globe2}
+          title="Shape the homepage"
+          description="Edit the first ticker text, choose the second ticker taxonomy, and control the final carousel taxonomy and item limit."
+          action="Open homepage controls"
+          onClick={() => onView("homepage")}
+        />
+        <ActionCard
           icon={Plus}
           title="Publish a new article"
           description="Create a headline, excerpt, body, category and tags, then publish it to this studio workspace."
@@ -700,6 +715,157 @@ function Overview({
         </p>
       </div>
     </div>
+  );
+}
+
+function HomepageStudio({ categories }: { categories: StudioCategory[] }) {
+  const [settings, setSettings] = useState<HomepageSettings>(readHomepageSettings);
+  const [saved, setSaved] = useState(false);
+  const taxonomyOptions = useMemo(
+    () => ["all", ...Array.from(new Set(categories.map((category) => category.name)))],
+    [categories],
+  );
+  const update = <K extends keyof HomepageSettings>(key: K, value: HomepageSettings[K]) => {
+    setSaved(false);
+    setSettings((current) => ({ ...current, [key]: value }));
+  };
+  const save = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    saveHomepageSettings({
+      ...settings,
+      primaryTickerText: settings.primaryTickerText.trim() || "20 on the desk",
+      carouselLimit: Math.max(3, Math.min(5000, Math.round(Number(settings.carouselLimit) || 5))),
+    });
+    setSettings(readHomepageSettings());
+    setSaved(true);
+  };
+  const selectClassName =
+    "mt-2 w-full rounded-xl border border-[#e8e1f1] bg-white px-3 py-3 text-sm text-[#333346] outline-none transition focus:border-[#9b63e8] focus:ring-2 focus:ring-[#eadcff]";
+  return (
+    <form onSubmit={save} className="space-y-6">
+      <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          Website / Homepage
+        </p>
+        <h2 className="mt-2 text-2xl font-black text-[#262638]">Homepage presentation controls</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+          These settings control the live homepage layout. The first ticker accepts free-form text;
+          the second ticker and final carousel are driven by the taxonomy selectors below.
+        </p>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            First ticker
+          </p>
+          <h3 className="mt-2 text-lg font-extrabold text-[#262638]">Custom ticker text</h3>
+          <p className="mt-2 text-sm leading-6 text-[#77778a]">
+            Type the label that appears at the start of the first scrolling ticker.
+          </p>
+          <label
+            className="mt-5 block text-xs font-bold text-[#4c4c60]"
+            htmlFor="primary-ticker-text"
+          >
+            Ticker text
+          </label>
+          <input
+            id="primary-ticker-text"
+            data-testid="homepage-primary-ticker-text"
+            value={settings.primaryTickerText}
+            onChange={(event) => update("primaryTickerText", event.target.value)}
+            className={selectClassName}
+            placeholder="20 on the desk"
+          />
+        </section>
+
+        <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            Second ticker
+          </p>
+          <h3 className="mt-2 text-lg font-extrabold text-[#262638]">Taxonomy selection</h3>
+          <p className="mt-2 text-sm leading-6 text-[#77778a]">
+            Choose the taxonomy used to filter the second ticker’s indicator stories.
+          </p>
+          <label
+            className="mt-5 block text-xs font-bold text-[#4c4c60]"
+            htmlFor="secondary-ticker-taxonomy"
+          >
+            Ticker taxonomy
+          </label>
+          <select
+            id="secondary-ticker-taxonomy"
+            data-testid="homepage-secondary-ticker-taxonomy"
+            value={settings.secondaryTickerTaxonomy}
+            onChange={(event) => update("secondaryTickerTaxonomy", event.target.value)}
+            className={selectClassName}
+          >
+            {taxonomyOptions.map((taxonomy) => (
+              <option key={taxonomy} value={taxonomy}>
+                {taxonomy === "all" ? "All taxonomies" : taxonomy}
+              </option>
+            ))}
+          </select>
+        </section>
+      </div>
+
+      <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          Final parallel grid carousel
+        </p>
+        <h3 className="mt-2 text-lg font-extrabold text-[#262638]">Carousel content rules</h3>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+          Select the taxonomy shown in the final “More perspectives” carousel and set how many
+          stories it may contain. The limit is constrained to 3–5,000.
+        </p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-[minmax(0,1fr)_180px]">
+          <label className="block text-xs font-bold text-[#4c4c60]" htmlFor="carousel-taxonomy">
+            Carousel taxonomy
+            <select
+              id="carousel-taxonomy"
+              data-testid="homepage-carousel-taxonomy"
+              value={settings.carouselTaxonomy}
+              onChange={(event) => update("carouselTaxonomy", event.target.value)}
+              className={selectClassName}
+            >
+              {taxonomyOptions.map((taxonomy) => (
+                <option key={taxonomy} value={taxonomy}>
+                  {taxonomy === "all" ? "All taxonomies" : taxonomy}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block text-xs font-bold text-[#4c4c60]" htmlFor="carousel-limit">
+            Story limit
+            <input
+              id="carousel-limit"
+              data-testid="homepage-carousel-limit"
+              type="number"
+              min={3}
+              max={5000}
+              step={1}
+              value={settings.carouselLimit}
+              onChange={(event) => update("carouselLimit", Number(event.target.value))}
+              className={selectClassName}
+            />
+          </label>
+        </div>
+      </section>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eadffb] bg-[#fbf9ff] p-4">
+        <p className="text-xs text-[#66667a]">
+          Settings are saved to this Admin Studio browser and applied immediately on the homepage.
+        </p>
+        <button
+          type="submit"
+          data-testid="save-homepage-settings"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white transition hover:bg-[#6820c9]"
+        >
+          <Save className="h-4 w-4" /> Save homepage controls
+        </button>
+        {saved ? <span className="text-xs font-bold text-[#2f8a5b]">Saved</span> : null}
+      </div>
+    </form>
   );
 }
 

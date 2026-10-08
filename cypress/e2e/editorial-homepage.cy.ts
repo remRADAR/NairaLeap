@@ -12,6 +12,8 @@ describe("Editorial homepage restoration", () => {
     cy.get('section[aria-label="Advertisement"]').should("have.length", 2);
     cy.get('section[aria-label="Desk ticker"]').should("be.visible");
     cy.get('section[aria-label="Desk ticker"] a').should("have.length", 40);
+    cy.get('section[aria-label="Taxonomy ticker"]').should("be.visible");
+    cy.get('section[aria-label="Taxonomy ticker"] a').should("have.length", 40);
     cy.get('section[aria-label="More perspectives"]').should("be.visible");
     cy.get('section[aria-label="More perspectives"] a').should("have.length", 5);
     cy.contains("Showing 10 featured stories").should("be.visible");

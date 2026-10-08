@@ -3,6 +3,7 @@ import type { EditorialPost } from "@/data/wordpressEditorial";
 
 export const STUDIO_ARTICLES_KEY = "nairaleap.studio.articles.v1";
 export const STUDIO_CATEGORIES_KEY = "nairaleap.studio.categories.v1";
+export const HOMEPAGE_SETTINGS_KEY = "nairaleap.studio.homepage.v1";
 export const STUDIO_CHANGE_EVENT = "nairaleap:studio-change";
 
 export type StudioArticle = EditorialPost & {
@@ -13,6 +14,20 @@ export type StudioArticle = EditorialPost & {
 
 export type StudioCategory = EditorialCategory & {
   source: "wordpress" | "studio";
+};
+
+export type HomepageSettings = {
+  primaryTickerText: string;
+  secondaryTickerTaxonomy: string;
+  carouselTaxonomy: string;
+  carouselLimit: number;
+};
+
+export const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
+  primaryTickerText: "20 on the desk",
+  secondaryTickerTaxonomy: "all",
+  carouselTaxonomy: "all",
+  carouselLimit: 5,
 };
 
 const browserStorage = () => (typeof window === "undefined" ? null : window.localStorage);
@@ -45,6 +60,14 @@ export const readStudioCategories = (): StudioCategory[] => {
   return EDITORIAL_CATEGORIES.map((category) => ({ ...category, source: "wordpress" }));
 };
 
+export const readHomepageSettings = (): HomepageSettings => ({
+  ...DEFAULT_HOMEPAGE_SETTINGS,
+  ...safeParse<Partial<HomepageSettings>>(
+    browserStorage()?.getItem(HOMEPAGE_SETTINGS_KEY) ?? null,
+    {},
+  ),
+});
+
 const announceChange = () => {
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent(STUDIO_CHANGE_EVENT));
@@ -58,6 +81,11 @@ export const saveStudioArticles = (articles: StudioArticle[]) => {
 
 export const saveStudioCategories = (categories: StudioCategory[]) => {
   browserStorage()?.setItem(STUDIO_CATEGORIES_KEY, JSON.stringify(categories));
+  announceChange();
+};
+
+export const saveHomepageSettings = (settings: HomepageSettings) => {
+  browserStorage()?.setItem(HOMEPAGE_SETTINGS_KEY, JSON.stringify(settings));
   announceChange();
 };
 

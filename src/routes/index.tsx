@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
-import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
+import {
+  mergeStudioArticles,
+  readHomepageSettings,
+  STUDIO_CHANGE_EVENT,
+  type HomepageSettings,
+} from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
   value
@@ -26,10 +31,14 @@ function EditorialHomePage() {
   const { topic } = Route.useSearch();
   const { posts } = Route.useLoaderData();
   const [allPosts, setAllPosts] = useState(posts);
+  const [homepageSettings, setHomepageSettings] = useState<HomepageSettings>(readHomepageSettings);
   const [heroIndex, setHeroIndex] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
   useEffect(() => {
-    const refresh = () => setAllPosts(withEditorialImageFallbacks(mergeStudioArticles(posts)));
+    const refresh = () => {
+      setAllPosts(withEditorialImageFallbacks(mergeStudioArticles(posts)));
+      setHomepageSettings(readHomepageSettings());
+    };
     refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
     return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
@@ -47,6 +56,14 @@ function EditorialHomePage() {
   const featuredPosts = filteredPosts.slice(0, 10);
   const heroPosts = featuredPosts.slice(0, 5);
   const tickerPosts = allPosts.slice(0, 20);
+  const matchesTaxonomy = (post: (typeof allPosts)[number], taxonomy: string) =>
+    taxonomy === "all" || post.category === taxonomy || post.categoryPath.includes(taxonomy);
+  const secondaryTickerPosts = allPosts
+    .filter((post) => matchesTaxonomy(post, homepageSettings.secondaryTickerTaxonomy))
+    .slice(0, 20);
+  const carouselPosts = allPosts
+    .filter((post) => matchesTaxonomy(post, homepageSettings.carouselTaxonomy))
+    .slice(0, Math.max(3, Math.min(5000, homepageSettings.carouselLimit)));
 
   useEffect(() => {
     setHeroIndex(0);
@@ -186,12 +203,38 @@ function EditorialHomePage() {
       >
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
           <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
-            20 on the desk
+            {homepageSettings.primaryTickerText || "20 on the desk"}
           </span>
           <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_70s_linear_infinite]">
             {[0, 1].map((copy) => (
               <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
                 {tickerPosts.map((post) => (
+                  <a
+                    key={`${copy}-${post.slug}`}
+                    tabIndex={copy === 1 ? -1 : undefined}
+                    href={`/articles/${post.slug}`}
+                    className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
+                  >
+                    {post.title}
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Taxonomy ticker" className="border-b border-[#eceaf2] bg-[#fbfaff] py-3">
+        <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
+          <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            {homepageSettings.secondaryTickerTaxonomy === "all"
+              ? "Latest indicators"
+              : homepageSettings.secondaryTickerTaxonomy}
+          </span>
+          <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_85s_linear_infinite]">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
+                {secondaryTickerPosts.map((post) => (
                   <a
                     key={`${copy}-${post.slug}`}
                     tabIndex={copy === 1 ? -1 : undefined}
@@ -269,10 +312,13 @@ function EditorialHomePage() {
               More perspectives
             </h2>
           </div>
-          <span className="text-xs text-[#89899b]">5 additional stories</span>
+          <span className="text-xs text-[#89899b]">
+            {carouselPosts.length}{" "}
+            {homepageSettings.carouselTaxonomy === "all" ? "additional stories" : "stories"}
+          </span>
         </div>
         <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]">
-          {stories.slice(4, 9).map((post) => (
+          {carouselPosts.map((post) => (
             <a
               key={post.slug}
               href={`/articles/${post.slug}`}
