@@ -10,10 +10,11 @@ describe("Editorial homepage restoration", () => {
     cy.get("article.editorial-story-card").should("have.length", 9);
     cy.get("article.editorial-story-card img[src]").should("have.length", 9);
     cy.get('section[aria-label="Advertisement"]').should("have.length", 2);
-    cy.get('section[aria-label="Desk ticker"]').should("be.visible");
-    cy.get('section[aria-label="Desk ticker"] a').should("have.length", 40);
+    cy.get('section[aria-label="Desk ticker"]').should("not.exist");
     cy.get('section[aria-label="Taxonomy ticker"]').should("be.visible");
-    cy.get('section[aria-label="Taxonomy ticker"] a').should("have.length", 40);
+    cy.get('section[aria-label="Taxonomy ticker"] a').should("have.length", 12);
+    cy.get('section[aria-label="Taxonomy ticker"]').contains("Latest").should("be.visible");
+    cy.get('section[aria-label="Taxonomy ticker"]').should("not.contain", "Latest indicators");
     cy.get('section[aria-label="More perspectives"]').should("be.visible");
     cy.get('section[aria-label="More perspectives"] a').should("have.length", 5);
     cy.contains("Showing 10 featured stories").should("be.visible");

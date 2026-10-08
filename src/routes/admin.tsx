@@ -51,7 +51,6 @@ import {
   type StudioCategory,
 } from "@/features/editorial/studio";
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
-import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
 import { listAdminServiceRequests, updateAdminServiceRequest } from "@/features/service-requests";
 import { getAdminAccess } from "@/features/auth/server";
 import { useAuth } from "@/features/auth";
@@ -685,7 +684,7 @@ function Overview({
         <ActionCard
           icon={Globe2}
           title="Shape the homepage"
-          description="Edit the first ticker text, choose the second ticker taxonomy, and control the final carousel taxonomy and item limit."
+          description="Choose the latest-story taxonomy and control the final carousel taxonomy and item limit."
           action="Open homepage controls"
           onClick={() => onView("homepage")}
         />
@@ -733,7 +732,6 @@ function HomepageStudio({ categories }: { categories: StudioCategory[] }) {
     event.preventDefault();
     saveHomepageSettings({
       ...settings,
-      primaryTickerText: settings.primaryTickerText.trim() || "20 on the desk",
       carouselLimit: Math.max(3, Math.min(5000, Math.round(Number(settings.carouselLimit) || 5))),
     });
     setSettings(readHomepageSettings());
@@ -749,36 +747,12 @@ function HomepageStudio({ categories }: { categories: StudioCategory[] }) {
         </p>
         <h2 className="mt-2 text-2xl font-black text-[#262638]">Homepage presentation controls</h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
-          These settings control the live homepage layout. The first ticker accepts free-form text;
-          the second ticker and final carousel are driven by the taxonomy selectors below.
+          These settings control the live homepage layout. The latest-story ticker and final
+          carousel are driven by the taxonomy selectors below.
         </p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
-            First ticker
-          </p>
-          <h3 className="mt-2 text-lg font-extrabold text-[#262638]">Custom ticker text</h3>
-          <p className="mt-2 text-sm leading-6 text-[#77778a]">
-            Type the label that appears at the start of the first scrolling ticker.
-          </p>
-          <label
-            className="mt-5 block text-xs font-bold text-[#4c4c60]"
-            htmlFor="primary-ticker-text"
-          >
-            Ticker text
-          </label>
-          <input
-            id="primary-ticker-text"
-            data-testid="homepage-primary-ticker-text"
-            value={settings.primaryTickerText}
-            onChange={(event) => update("primaryTickerText", event.target.value)}
-            className={selectClassName}
-            placeholder="20 on the desk"
-          />
-        </section>
-
+      <div className="grid gap-4">
         <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
             Second ticker
@@ -925,14 +899,7 @@ function ArticleStudio({
   onPublished: () => void;
 }) {
   const roots = categories.filter((category) => category.parent === 0);
-  const tagOptions = useMemo(
-    () =>
-      Array.from(new Set(EDITORIAL_POSTS.flatMap((post) => post.tags)))
-        .filter(Boolean)
-        .sort((a, b) => a.localeCompare(b))
-        .slice(0, 80),
-    [],
-  );
+  const [tagOptions, setTagOptions] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState(roots[0]?.id ?? 0);
   const [excerpt, setExcerpt] = useState("");
@@ -945,6 +912,22 @@ function ArticleStudio({
   const [message, setMessage] = useState("");
   const [publishedSlug, setPublishedSlug] = useState("");
   const selectedCategory = categories.find((category) => category.id === categoryId) ?? roots[0];
+
+  useEffect(() => {
+    let active = true;
+    void import("@/data/wordpressEditorial").then(({ EDITORIAL_POSTS }) => {
+      if (!active) return;
+      setTagOptions(
+        Array.from(new Set(EDITORIAL_POSTS.flatMap((post) => post.tags)))
+          .filter(Boolean)
+          .sort((a, b) => a.localeCompare(b))
+          .slice(0, 80),
+      );
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((current) =>

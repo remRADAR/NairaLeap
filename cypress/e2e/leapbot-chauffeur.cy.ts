@@ -27,7 +27,7 @@ function assertLeapBotPanel() {
 
 describe("LeapBot persistent chauffeur", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/services");
     cy.get('[data-app-hydrated="true"]').should("exist");
     assertLeapBotTrigger();
   });
@@ -70,7 +70,7 @@ describe("LeapBot persistent chauffeur", () => {
       .and("contain.text", "provider terms or quote")
       .and("not.contain.text", "25000")
       .and("not.contain.text", "guarantee approval");
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/services");
     assertLeapBotPanel();
   });
 

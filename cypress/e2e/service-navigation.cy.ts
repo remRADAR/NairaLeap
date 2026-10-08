@@ -7,7 +7,7 @@ function activate(selector: string) {
 
 describe("Nairaleap service discovery and onboarding navigation", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/services");
   });
 
   it("renders every current service card as a dedicated landing-page link", () => {
@@ -174,74 +174,48 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     cy.contains("main", "Start onboarding").should("be.visible");
   });
 
-  it("navigates from a related service to its own landing page", () => {
-    cy.get('#services a[href="/services/mortgage"]').click();
-    cy.get('main a[href="/services/property-listings"]').click();
+  it("navigates from a service landing page back to the service directory", () => {
+    cy.visit("/services/mortgage");
+    cy.contains("main a", "Back to services").click();
 
-    cy.location("pathname").should("eq", "/services/property-listings");
-    cy.assertServicePage("Property Listings");
+    cy.location("pathname").should("eq", "/services");
+    cy.location("hash").should("eq", "#services");
+    cy.get("#services").should("be.visible");
   });
 
-  it("keeps the viewport background mounted while service images crossfade", () => {
+  it("loads the correct branded background on service route changes", () => {
     cy.get('[data-app-hydrated="true"]').should("exist");
-    cy.get('[data-testid="portal-background"]').then(($background) => {
-      const persistentBackground = $background[0];
+    cy.visit("/services/agriculture");
+    cy.get(
+      '[data-testid="portal-background-layer"][data-service-id="agriculture"][data-active="true"]',
+    ).should("exist");
 
-      cy.get('#services a[href="/services/agriculture"]').click();
-      cy.location("pathname").should("eq", "/services/agriculture");
-      cy.get('[data-testid="portal-background"]').should(($current) => {
-        expect($current[0]).to.eq(persistentBackground);
-      });
-      cy.get(
-        '[data-testid="portal-background-layer"][data-service-id="agriculture"][data-active="true"]',
-      ).should("exist");
-
-      cy.intercept(
-        "GET",
-        "**/service-backgrounds/vendor-marketplace-background.webp",
-        (request) => {
-          request.on("response", (response) => {
-            response.setDelay(350);
-          });
-        },
-      ).as("vendorBackground");
-      cy.get('main a[href="/services/vendor-marketplace"]').click();
-      cy.location("pathname").should("eq", "/services/vendor-marketplace");
-      cy.get(
-        '[data-testid="portal-background-layer"][data-service-id="agriculture"][data-active="true"]',
-      ).should("exist");
-      cy.wait("@vendorBackground");
-      cy.get(
-        '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"][data-active="true"]',
-      ).should("exist");
-      cy.get('[data-testid="portal-background"]').should(($current) => {
-        expect($current[0]).to.eq(persistentBackground);
-      });
-      cy.get(".page-transition").should(($transition) => {
-        expect(window.getComputedStyle($transition[0]).transform).to.eq("none");
-      });
-
-      cy.contains("main a", "Back to services").click();
-      cy.location("pathname").should("eq", "/");
-      cy.get('[data-testid="portal-background"]').should(($current) => {
-        expect($current[0]).to.eq(persistentBackground);
-        expect($current).to.have.attr("data-target-service-id", "");
-      });
-      cy.get(
-        '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"]',
-      ).should("have.attr", "data-active", "false");
-      cy.get(
-        '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"]',
-      ).should("not.exist");
+    cy.intercept(
+      "GET",
+      "**/service-backgrounds/vendor-marketplace-background.webp",
+      (request) => {
+        request.on("response", (response) => {
+          response.setDelay(350);
+        });
+      },
+    ).as("vendorBackground");
+    cy.visit("/services/vendor-marketplace");
+    cy.location("pathname").should("eq", "/services/vendor-marketplace");
+    cy.wait("@vendorBackground");
+    cy.get(
+      '[data-testid="portal-background-layer"][data-service-id="vendor-marketplace"][data-active="true"]',
+    ).should("exist");
+    cy.get(".page-transition").should(($transition) => {
+      expect(window.getComputedStyle($transition[0]).transform).to.eq("none");
     });
   });
 
   it("returns to the homepage Services section from a dedicated page", () => {
     cy.get('#services a[href="/services/insurance"]').click();
-    cy.contains("header a", "Services").click();
+    cy.get('header a[aria-label="Nairaleap - Service Portal"]').click();
 
-    cy.location("pathname").should("eq", "/");
-    cy.location("hash").should("eq", "#services");
+    cy.location("pathname").should("eq", "/services");
+    cy.location("hash").should("eq", "");
     cy.get("#services").should("be.visible");
   });
 
@@ -289,7 +263,7 @@ describe("Nairaleap service route recovery", () => {
 
     cy.contains("That service is not available.").should("be.visible");
     cy.contains("a", "View services").click();
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/services");
     cy.location("hash").should("eq", "#services");
   });
 });

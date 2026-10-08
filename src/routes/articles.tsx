@@ -1,11 +1,9 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { EditorialLayout } from "@/components";
-import { EDITORIAL_POSTS } from "@/data/wordpressEditorial";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 
 const PAGE_SIZE = 24;
-const EDITORIAL_POSTS_WITH_IMAGES = withEditorialImageFallbacks(EDITORIAL_POSTS);
 const slugify = (value: string) =>
   value
     .toLowerCase()
@@ -20,23 +18,28 @@ export const Route = createFileRoute("/articles")({
     topic: typeof search.topic === "string" ? search.topic : undefined,
     page: typeof search.page === "number" && search.page > 0 ? search.page : 1,
   }),
+  loader: async () => {
+    const { EDITORIAL_POSTS } = await import("@/data/wordpressEditorial");
+    return { posts: withEditorialImageFallbacks(EDITORIAL_POSTS) };
+  },
   component: ArticleArchivePage,
 });
 
 function ArticleArchivePage() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { topic, page = 1 } = Route.useSearch();
+  const { posts: editorialPosts } = Route.useLoaderData();
   if (pathname !== "/articles" && pathname.startsWith("/articles/")) {
     return <Outlet />;
   }
 
   const filtered = topic
-    ? EDITORIAL_POSTS_WITH_IMAGES.filter((post) =>
+    ? editorialPosts.filter((post) =>
         [post.category, ...post.categoryPath, ...post.tags].some(
           (value) => slugify(value) === topic,
         ),
       )
-    : EDITORIAL_POSTS_WITH_IMAGES;
+    : editorialPosts;
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const posts = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);

@@ -42,7 +42,7 @@ function ServiceLandingRoute() {
             portal.
           </p>
           <Link
-            to="/"
+            to="/services"
             hash="services"
             className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl gradient-brand px-5 text-sm font-semibold text-primary-foreground"
           >

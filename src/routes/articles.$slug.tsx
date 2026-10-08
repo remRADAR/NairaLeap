@@ -2,18 +2,16 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
-import { EDITORIAL_POSTS, getEditorialPost } from "@/data/wordpressEditorial";
-import { withEditorialImageFallbacks } from "@/features/editorial/images";
+import {
+  withEditorialImageFallbacks,
+  type EditorialPostWithImage,
+} from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
-const getArticlePost = (slug: string) => {
-  const post = getEditorialPost(slug);
-  return post ? withEditorialImageFallbacks([post])[0] : null;
-};
-
 export const Route = createFileRoute("/articles/$slug")({
-  head: ({ params }) => {
-    const post = getArticlePost(params.slug);
+  head: async ({ params }) => {
+    const { getEditorialPost } = await import("@/data/wordpressEditorial");
+    const post = getEditorialPost(params.slug);
     return {
       meta: [
         { title: post ? `${post.title} — Nairaleap` : "Article — Nairaleap" },
@@ -24,30 +22,45 @@ export const Route = createFileRoute("/articles/$slug")({
       ],
     };
   },
-  loader: ({ params }) => {
-    const post = getArticlePost(params.slug);
-    return { post: post ?? null };
+  loader: async ({ params }) => {
+    const { EDITORIAL_POSTS, getEditorialPost } = await import("@/data/wordpressEditorial");
+    const post = getEditorialPost(params.slug);
+    return {
+      post: post ? withEditorialImageFallbacks([post])[0] : null,
+      allPosts: withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS)),
+    };
   },
   component: ArticlePage,
 });
 
+type ArticleLoaderData = {
+  post: EditorialPostWithImage | null;
+  allPosts: EditorialPostWithImage[];
+};
+
 function ArticlePage() {
   const { slug } = Route.useParams();
-  const loadedPost = getArticlePost(slug);
+  const { post: loadedPost, allPosts: loadedPosts } =
+    Route.useLoaderData() as unknown as ArticleLoaderData;
   const [post, setPost] = useState(loadedPost);
+  const [allPosts, setAllPosts] = useState(loadedPosts);
   useEffect(() => {
-    const refresh = () =>
-      setPost(
-        withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS)).find(
-          (item) => item.slug === slug,
-        ) ?? null,
-      );
-    refresh();
+    let active = true;
+    const refresh = async () => {
+      const { EDITORIAL_POSTS } = await import("@/data/wordpressEditorial");
+      const nextPosts = withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS));
+      if (!active) return;
+      setAllPosts(nextPosts);
+      setPost(nextPosts.find((item) => item.slug === slug) ?? null);
+    };
+    void refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
-    return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
-  }, [slug, loadedPost]);
+    return () => {
+      active = false;
+      window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
+    };
+  }, [slug]);
   if (!post) return null;
-  const allPosts = withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS));
   const postIndex = allPosts.findIndex((item) => item.slug === post.slug);
   const nextPost = allPosts[postIndex + 1];
 

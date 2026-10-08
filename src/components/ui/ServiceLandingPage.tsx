@@ -44,7 +44,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
               />
               <div className="relative">
                 <Link
-                  to="/"
+                  to="/services"
                   hash="services"
                   className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >

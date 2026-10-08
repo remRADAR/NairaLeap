@@ -17,14 +17,12 @@ export type StudioCategory = EditorialCategory & {
 };
 
 export type HomepageSettings = {
-  primaryTickerText: string;
   secondaryTickerTaxonomy: string;
   carouselTaxonomy: string;
   carouselLimit: number;
 };
 
 export const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
-  primaryTickerText: "20 on the desk",
   secondaryTickerTaxonomy: "all",
   carouselTaxonomy: "all",
   carouselLimit: 5,

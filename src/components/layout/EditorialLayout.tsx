@@ -47,6 +47,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
               src="/nairaleap-wordmark.png"
               alt="Nairaleap"
               className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
+              decoding="async"
             />
           </Link>
           <div className="flex items-center gap-2">
@@ -85,7 +86,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
-            Indicators
+            Latest
           </span>
           <div className="editorial-ticker flex min-w-0 flex-1 overflow-hidden">
             <div className="editorial-ticker-track flex min-w-max gap-8 pr-8">

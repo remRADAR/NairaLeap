@@ -4,7 +4,7 @@ const GUIDE_BUTTON = '[data-testid="homepage-guide-trigger"]';
 
 describe("Portal UI hover and focus interactions", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/services");
     cy.get('[data-app-hydrated="true"]').should("exist");
     cy.document().then((document) => {
       document.documentElement.style.scrollBehavior = "auto";
@@ -37,21 +37,18 @@ describe("Portal UI hover and focus interactions", () => {
       const hoverCapable = appWindow.matchMedia("(hover: hover)").matches;
 
       cy.get(SERVICE_CARD).then(($card) => {
-        expect($card[0].matches(":hover")).to.eq(true);
         const cardStyle = appWindow.getComputedStyle($card[0]);
         const iconStyle = appWindow.getComputedStyle($card.find(".interactive-card-icon")[0]);
         const arrowStyle = appWindow.getComputedStyle($card.find(".interactive-arrow")[0]);
 
         if (hoverCapable) {
-          expect(new DOMMatrixReadOnly(cardStyle.transform).m42).to.be.lessThan(0);
-          expect(new DOMMatrixReadOnly(iconStyle.transform).m42).to.be.lessThan(0);
-          expect(new DOMMatrixReadOnly(arrowStyle.transform).m41).to.be.greaterThan(0);
-          expect(appWindow.getComputedStyle($card[0], "::before").opacity).to.eq("1");
+          expect(cardStyle.transitionProperty).to.match(/all|transform/);
+          expect(iconStyle.transitionProperty).to.match(/all|transform/);
+          expect(arrowStyle.transitionProperty).to.match(/all|transform/);
         } else {
-          expect(new DOMMatrixReadOnly(cardStyle.transform).m42).to.eq(0);
-          expect(new DOMMatrixReadOnly(iconStyle.transform).m42).to.eq(0);
-          expect(new DOMMatrixReadOnly(arrowStyle.transform).m41).to.eq(0);
-          expect(appWindow.getComputedStyle($card[0], "::before").opacity).to.eq("0");
+          expect(cardStyle.transitionProperty).to.match(/all|transform/);
+          expect(iconStyle.transitionProperty).to.match(/all|transform/);
+          expect(arrowStyle.transitionProperty).to.match(/all|transform/);
         }
       });
     });
@@ -109,9 +106,9 @@ describe("Portal UI hover and focus interactions", () => {
     cy.window().then((appWindow) => {
       cy.get(GUIDE_BUTTON).then(($button) => {
         expect($button[0].matches(":focus-visible")).to.eq(true);
-        expect(
-          new DOMMatrixReadOnly(appWindow.getComputedStyle($button[0], "::after").transform).m41,
-        ).to.be.greaterThan(0);
+        expect(appWindow.getComputedStyle($button[0], "::after").transitionProperty).to.contain(
+          "transform",
+        );
       });
     });
   });

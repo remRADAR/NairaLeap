@@ -1,24 +1,17 @@
-import { EDITORIAL_POSTS, type EditorialPost } from "@/data/wordpressEditorial";
+import type { EditorialPost } from "@/data/wordpressEditorial";
 
 export type EditorialPostWithImage = EditorialPost & { image: string };
 
-const localImagePaths = Array.from(
-  new Set(EDITORIAL_POSTS.flatMap((post) => (post.image ? [post.image] : []))),
-).sort();
-
-const normalizeTerm = (value: string) => value.trim().toLowerCase();
-const imagePathsByTerm = new Map<string, string[]>();
-
-for (const post of EDITORIAL_POSTS) {
-  if (!post.image) continue;
-  const terms = new Set([post.category, ...post.categoryPath, ...post.tags].map(normalizeTerm));
-  for (const term of terms) {
-    if (!term) continue;
-    const paths = imagePathsByTerm.get(term) ?? [];
-    if (!paths.includes(post.image)) paths.push(post.image);
-    imagePathsByTerm.set(term, paths);
-  }
-}
+// Keep this list intentionally small: the complete editorial catalog is server-side data and
+// should not be pulled into the homepage client bundle just to fill missing card artwork.
+const FALLBACK_IMAGE_PATHS = [
+  "/editorial/featured-debt.jpg",
+  "/editorial/featured-medicine.jpg",
+  "/editorial/cms/4042.jpg",
+  "/editorial/cms/4291.jpg",
+  "/editorial/cms/274.jpg",
+  "/editorial/cms/4167.jpg",
+] as const;
 
 const stableHash = (value: string) => {
   let hash = 2166136261;
@@ -29,23 +22,12 @@ const stableHash = (value: string) => {
   return hash >>> 0;
 };
 
-const fallbackImageFor = (post: EditorialPost) => {
-  const matchingTerms = [post.category, ...post.categoryPath.slice().reverse(), ...post.tags];
-  for (const term of matchingTerms) {
-    const candidates = imagePathsByTerm.get(normalizeTerm(term));
-    if (candidates?.length) return candidates[stableHash(post.slug) % candidates.length];
-  }
-
-  return (
-    localImagePaths[stableHash(post.slug) % localImagePaths.length] ??
-    "/editorial/featured-debt.jpg"
-  );
-};
+const fallbackImageFor = (post: EditorialPost) =>
+  FALLBACK_IMAGE_PATHS[stableHash(post.slug) % FALLBACK_IMAGE_PATHS.length];
 
 /**
- * Preserve a post's original WordPress image. If the source post has no image,
- * use a deterministic, locally imported CMS image that matches its taxonomy
- * where possible, so article cards and detail pages never ship without art.
+ * Preserve a post's original image. Missing images receive a deterministic local fallback.
+ * This helper is safe to use in the browser because it does not import the full CMS catalog.
  */
 export const withEditorialImageFallbacks = (
   posts: readonly EditorialPost[],

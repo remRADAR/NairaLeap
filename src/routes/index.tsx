@@ -55,12 +55,11 @@ function EditorialHomePage() {
   // editorial posts belong here. Everything else remains in /archive.
   const featuredPosts = filteredPosts.slice(0, 10);
   const heroPosts = featuredPosts.slice(0, 5);
-  const tickerPosts = allPosts.slice(0, 20);
   const matchesTaxonomy = (post: (typeof allPosts)[number], taxonomy: string) =>
     taxonomy === "all" || post.category === taxonomy || post.categoryPath.includes(taxonomy);
   const secondaryTickerPosts = allPosts
     .filter((post) => matchesTaxonomy(post, homepageSettings.secondaryTickerTaxonomy))
-    .slice(0, 20);
+    .slice(0, 6);
   const carouselPosts = allPosts
     .filter((post) => matchesTaxonomy(post, homepageSettings.carouselTaxonomy))
     .slice(0, Math.max(3, Math.min(5000, homepageSettings.carouselLimit)));
@@ -133,6 +132,7 @@ function EditorialHomePage() {
               alt=""
               className="editorial-hero-media absolute inset-0 h-full w-full object-cover object-center"
               fetchPriority="high"
+              decoding="async"
             />
           ) : null}
           <div
@@ -197,38 +197,11 @@ function EditorialHomePage() {
 
       <AdSlot label="Advertisement" />
 
-      <section
-        aria-label="Desk ticker"
-        className="editorial-desk-ticker border-y border-[#eceaf2] bg-white py-3"
-      >
-        <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
-          <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
-            {homepageSettings.primaryTickerText || "20 on the desk"}
-          </span>
-          <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_70s_linear_infinite]">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
-                {tickerPosts.map((post) => (
-                  <a
-                    key={`${copy}-${post.slug}`}
-                    tabIndex={copy === 1 ? -1 : undefined}
-                    href={`/articles/${post.slug}`}
-                    className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
-                  >
-                    {post.title}
-                  </a>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section aria-label="Taxonomy ticker" className="border-b border-[#eceaf2] bg-[#fbfaff] py-3">
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
           <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
             {homepageSettings.secondaryTickerTaxonomy === "all"
-              ? "Latest indicators"
+              ? "Latest"
               : homepageSettings.secondaryTickerTaxonomy}
           </span>
           <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_85s_linear_infinite]">
@@ -250,7 +223,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <section className="editorial-story-grid mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
+      <section className="editorial-story-grid editorial-below-fold mx-auto w-full max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="animate__animated animate__fadeInUp mb-5 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-xl font-extrabold tracking-[-0.03em] sm:text-2xl">
             <span className="text-[#7a2ce2]">✦</span> Top Stories
@@ -275,6 +248,7 @@ function EditorialHomePage() {
                     src={post.image}
                     alt=""
                     loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
                   />
                 ) : null}
@@ -302,7 +276,10 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <section aria-label="More perspectives" className="mx-auto max-w-[1180px] px-4 pb-10 sm:px-6">
+      <section
+        aria-label="More perspectives"
+        className="editorial-below-fold mx-auto max-w-[1180px] px-4 pb-10 sm:px-6"
+      >
         <div className="mb-5 flex items-end justify-between border-b border-[#e9e9f0] pb-3">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
@@ -330,6 +307,7 @@ function EditorialHomePage() {
                     src={post.image}
                     alt=""
                     loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                 ) : null}

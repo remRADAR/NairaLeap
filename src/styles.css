@@ -260,6 +260,11 @@
   opacity: 0;
 }
 
+.editorial-below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 720px;
+}
+
 .interactive-button,
 .interactive-card {
   will-change: transform;
@@ -470,26 +475,6 @@
 
 .editorial-hero-copy {
   animation-delay: 120ms;
-}
-
-.editorial-desk-ticker {
-  position: relative;
-  isolation: isolate;
-}
-
-.editorial-desk-ticker::after {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  content: "";
-  background: linear-gradient(
-    90deg,
-    rgb(122 44 226 / 5%),
-    transparent 20%,
-    transparent 80%,
-    rgb(249 0 122 / 5%)
-  );
-  pointer-events: none;
 }
 
 .editorial-story-card {
