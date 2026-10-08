@@ -59,6 +59,14 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
       cy.get("#service-page-title").should("be.visible").and("have.text", title);
       cy.get("#services").should("not.exist");
       cy.get(".service-page-shell").should("have.attr", "data-service-id", id);
+      cy.get('[data-testid="service-start-onboarding"]').should(
+        "contain.text",
+        "buyer or customer",
+      );
+      cy.get('[data-testid="service-seller-onboarding"]').should(
+        "contain.text",
+        "seller or provider",
+      );
       cy.get('[role="dialog"]').should("not.exist");
     });
   });
@@ -84,6 +92,9 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     cy.assertServicePage("Agriculture");
 
     activate('[data-testid="service-start-onboarding"]');
+    cy.contains("NairaLeap Guide · service request").should("be.visible");
+    cy.contains("Buyer / customer onboarding").should("be.visible");
+    cy.contains("Tell us what you need.").should("be.visible");
 
     cy.location("pathname").should("eq", "/services/agriculture");
     cy.get('[data-testid="service-start-onboarding"]').should("have.attr", "aria-expanded", "true");
