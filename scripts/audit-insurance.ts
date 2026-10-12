@@ -1,6 +1,9 @@
 import { SERVICE_CATALOG } from "../src/features/services/serviceCatalog";
 import { SERVICE_INTELLIGENCE_MAP } from "../src/features/service-intelligence-catalog";
-import { REQUEST_BLUEPRINT_MAP } from "../src/features/request-blueprint-engine";
+import {
+  getMissingRequiredBlueprintFields,
+  REQUEST_BLUEPRINT_MAP,
+} from "../src/features/request-blueprint-engine";
 import {
   getServiceQuestionSet,
   buildServiceRundown,
@@ -23,7 +26,8 @@ const checks = [
   ["truthful quote label", SERVICE_PRICING_MAP[serviceId]?.label === "Quote required after review"],
   [
     "rundown reports required fields",
-    rundown.missingRequiredFields.length === blueprint.requiredFields.length,
+    rundown.missingRequiredFields.length ===
+      getMissingRequiredBlueprintFields(blueprint, {}).length,
   ],
   ["no required upload blocker", rundown.requiredDocuments.length === 0],
   ["recommended documents present", rundown.recommendedDocuments.length >= 3],
@@ -45,7 +49,7 @@ console.log(
       catalogTitle: catalog?.title,
       estimatedCompletionTime: intelligence?.estimatedCompletionTime,
       questionCount: questions.length,
-      requiredFieldCount: blueprint?.requiredFields.length,
+      requiredFieldCount: getMissingRequiredBlueprintFields(blueprint, {}).length,
       optionalFieldCount: blueprint?.optionalFields.length,
       recommendedDocumentCount: rundown.recommendedDocuments.length,
     },

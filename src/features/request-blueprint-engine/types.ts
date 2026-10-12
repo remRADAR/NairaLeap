@@ -37,6 +37,12 @@ export type RequestPriority = "low" | "normal" | "high" | "urgent";
 export type AdminChecklistCategory =
   "verification" | "review" | "compliance" | "assignment" | "communication";
 
+/** A simple answer-based condition used to disclose product-specific fields. */
+export interface BlueprintCondition {
+  key: string;
+  values: Array<string | boolean>;
+}
+
 /**
  * A single field expected in the final request package.
  *
@@ -61,6 +67,15 @@ export interface BlueprintField {
 
   /** Optional helper text describing what the field should contain. */
   description?: string;
+
+  /** Optional key grouping related fields on one guided screen. */
+  pageGroup?: string;
+
+  /** Show this field only when the referenced answer matches one of these values. */
+  showWhen?: BlueprintCondition;
+
+  /** Require this otherwise-optional field when the referenced answer matches. */
+  requiredWhen?: BlueprintCondition;
 
   /** Optional reference to the Question Engine question that collects this value. */
   questionRef?: string;

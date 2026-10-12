@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  BookOpen,
   BriefcaseBusiness,
   CarFront,
   HeartPulse,
   House,
   Leaf,
+  Package,
   Plane,
   Sailboat,
   ShieldCheck,
@@ -15,6 +17,14 @@ import {
 import { AppLayout, BrandButton, Container, GlassCard } from "@/components";
 import { NairaLeapGuideContainer } from "@/components/ui/NairaLeapGuideContainer";
 import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
+import {
+  INSURANCE_CATEGORY_CATALOG,
+  type InsuranceCategoryDefinition,
+} from "@/features/insurance/catalog";
+import {
+  INSURANCE_PRODUCT_DISCLOSURE,
+  INSURANCE_VERIFIED_PRODUCTS,
+} from "@/features/insurance/productCatalogue";
 
 export const Route = createFileRoute("/insurance")({
   head: () => ({
@@ -40,82 +50,28 @@ export const Route = createFileRoute("/insurance")({
 
 const INSURANCE_SERVICE = SERVICE_CATALOG.find((service) => service.id === "insurance") ?? null;
 
-type InsuranceOffering = {
-  title: string;
-  description: string;
-  examples: string;
-  icon: typeof CarFront;
-};
+const INSURANCE_ICONS = {
+  car: CarFront,
+  health: HeartPulse,
+  home: House,
+  contents: Package,
+  agriculture: Leaf,
+  life: Users,
+  savings: ShieldCheck,
+  annuity: ShieldCheck,
+  education: BookOpen,
+  group: Users,
+  business: BriefcaseBusiness,
+  travel: Plane,
+  marine: Sailboat,
+  liability: ShieldCheck,
+  inclusion: Umbrella,
+} satisfies Record<InsuranceCategoryDefinition["icon"], typeof CarFront>;
 
-const INSURANCE_OFFERINGS: InsuranceOffering[] = [
-  {
-    title: "Motor & Auto",
-    description:
-      "Vehicle protection, third-party, comprehensive, commercial vehicle and fleet enquiries.",
-    examples: "Quotes, renewals, policy verification",
-    icon: CarFront,
-  },
-  {
-    title: "Health & Medical",
-    description: "Individual, family, group and corporate health-cover enquiries.",
-    examples: "Plans, comparisons, family cover",
-    icon: HeartPulse,
-  },
-  {
-    title: "Life & Family",
-    description:
-      "Life protection and family financial-support needs, including group-life enquiries.",
-    examples: "Term life, group life, family protection",
-    icon: Users,
-  },
-  {
-    title: "Home & Property",
-    description:
-      "Protection for homes, contents, landlords, renters, buildings and property risks.",
-    examples: "Home, contents, fire and theft",
-    icon: House,
-  },
-  {
-    title: "Business & Commercial",
-    description: "SME and commercial risk enquiries for premises, stock, equipment and operations.",
-    examples: "SME packages, stock, equipment",
-    icon: BriefcaseBusiness,
-  },
-  {
-    title: "Agriculture",
-    description:
-      "Protection needs connected to farms, crops, livestock, equipment and agricultural activity.",
-    examples: "Farm, crop, livestock, equipment",
-    icon: Leaf,
-  },
-  {
-    title: "Travel",
-    description:
-      "Travel and travel-medical protection requests for individuals, families and trips.",
-    examples: "Single trip, annual, travel medical",
-    icon: Plane,
-  },
-  {
-    title: "Marine, Cargo & Aviation",
-    description:
-      "Risk enquiries for goods in transit, cargo, vessels, voyages and aviation activity.",
-    examples: "Cargo, marine, aviation enquiries",
-    icon: Sailboat,
-  },
-  {
-    title: "Liability & Compulsory Cover",
-    description:
-      "Requests involving third-party, builders, occupiers, public or professional liability.",
-    examples: "Third-party, builders, occupiers",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Microinsurance, Takaful & Inclusion",
-    description: "Lower-cost, cooperative and inclusion-focused protection preferences.",
-    examples: "Microinsurance, Takaful, community cover",
-    icon: Umbrella,
-  },
-];
+const INSURANCE_OFFERINGS = INSURANCE_CATEGORY_CATALOG.map((category) => ({
+  ...category,
+  iconComponent: INSURANCE_ICONS[category.icon],
+}));
 
 function InsurancePage() {
   const [guideOpen, setGuideOpen] = useState(false);
@@ -169,30 +125,148 @@ function InsurancePage() {
               </h2>
             </div>
             <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              The guide can combine categories when your protection need crosses more than one area.
+              Choose the closest category. Use the request details to note any related risks that
+              should be reviewed together.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {INSURANCE_OFFERINGS.map(({ title, description, examples, icon: Icon }) => (
-              <GlassCard key={title} className="h-full">
-                <div className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
-                  >
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <h3 className="font-semibold tracking-tight">{title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {description}
-                    </p>
-                    <p className="mt-3 text-xs font-medium text-primary-glow">{examples}</p>
+            {INSURANCE_OFFERINGS.map(
+              ({ id, title, description, examples, iconComponent: Icon }) => (
+                <GlassCard key={id} className="h-full">
+                  <div className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold tracking-tight">{title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {description}
+                      </p>
+                      <p className="mt-3 text-xs font-medium text-primary-glow">{examples}</p>
+                    </div>
                   </div>
+                </GlassCard>
+              ),
+            )}
+          </div>
+        </Container>
+      </section>
+
+      <section id="insurance-products" aria-labelledby="insurance-products-title">
+        <Container className="pb-12 sm:pb-16">
+          <div className="mb-6 max-w-4xl">
+            <p className="text-sm font-medium text-primary-glow">Published product references</p>
+            <h2
+              id="insurance-products-title"
+              className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl"
+            >
+              Verified insurer product references
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              These summaries cover selected savings, endowment, annuity and home-cover products and
+              were checked against insurer pages on {INSURANCE_PRODUCT_DISCLOSURE.checkedAt}. They
+              are not recommendations, live quotations, policy wording or proof of a NairaLeap
+              provider relationship. Availability, eligibility, licensing, product approval, rates
+              and terms must be confirmed with the insurer before proceeding.
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              {INSURANCE_PRODUCT_DISCLOSURE.naicomMcrDisclaimer}{" "}
+              {INSURANCE_PRODUCT_DISCLOSURE.quoteDisclaimer}
+            </p>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {INSURANCE_VERIFIED_PRODUCTS.map((product) => (
+              <GlassCard key={product.id} className="h-full">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wide text-primary-glow">
+                      {product.provider.legalName}
+                    </p>
+                    <h3 className="mt-1 text-lg font-semibold tracking-tight">{product.name}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {product.category === "personal-annuity"
+                        ? "Personal & retirement annuity"
+                        : product.category === "education-endowment"
+                          ? "Education & endowment"
+                          : product.category === "home-property"
+                            ? "Home & household property"
+                            : "Savings & investment-linked insurance"}
+                    </p>
+                  </div>
+                  <span className="rounded-full border border-glass-border bg-glass px-3 py-1 text-xs text-muted-foreground">
+                    Provider quote required
+                  </span>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  {product.intendedCustomer}
+                </p>
+                <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
+                  {product.publishedTerms.map((term) => (
+                    <li key={term} className="flex items-start gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70" />
+                      <span>{term}</span>
+                    </li>
+                  ))}
+                </ul>
+                <details className="mt-4 rounded-xl border border-glass-border bg-glass p-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    Formal application and verification notes
+                  </summary>
+                  <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
+                    {product.formalApplicationDocuments.map((document) => (
+                      <li key={document}>{document}</li>
+                    ))}
+                    <li>
+                      NAICOM's 31 July 2026 minimum-capital compliance list records this legal
+                      entity as {product.provider.naicomMcrClass} (
+                      {product.provider.naicomMcrReference}). That is not a substitute for checking
+                      its current operating licence or product approval.
+                    </li>
+                    <li>{product.ratingStatus}. No provider is ranked by this portal.</li>
+                    <li>{INSURANCE_PRODUCT_DISCLOSURE.relationshipDisclaimer}</li>
+                  </ul>
+                </details>
+                <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium">
+                  <a
+                    href={product.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary-glow underline-offset-4 hover:underline"
+                  >
+                    Official product page
+                  </a>
+                  {product.additionalSources?.map((source) => (
+                    <a
+                      key={source.url}
+                      href={source.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-primary-glow underline-offset-4 hover:underline"
+                    >
+                      {source.label}
+                    </a>
+                  ))}
+                  <a
+                    href={product.provider.naicomMcrSource}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary-glow underline-offset-4 hover:underline"
+                  >
+                    NAICOM MCR list
+                  </a>
                 </div>
               </GlassCard>
             ))}
           </div>
+          <p className="mt-5 rounded-2xl border border-glass-border bg-glass p-4 text-sm leading-relaxed text-muted-foreground">
+            {INSURANCE_PRODUCT_DISCLOSURE.ratingsDisclaimer} The Leadway Householder reference is
+            limited to the published product page and is not a quote. Provider-specific references
+            for motor, health, agriculture, group and commercial products are not yet verified in
+            this catalogue; use the guide to request a manual review instead.
+          </p>
         </Container>
       </section>
 
