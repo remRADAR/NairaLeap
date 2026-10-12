@@ -20,6 +20,12 @@ function chooseOption(label: string) {
   cy.get(dialog).contains('[role="radio"]', label).click();
 }
 
+function startInsuranceGuide() {
+  cy.get('[data-app-hydrated="true"]').should("exist");
+  cy.contains("button", "Start insurance guide").should("be.visible").click();
+  cy.get(dialog).should("be.visible");
+}
+
 describe("Insurance portal and conditional onboarding", () => {
   it("shows the expanded insurance categories on the dedicated portal", () => {
     cy.visit("/insurance");
@@ -36,16 +42,36 @@ describe("Insurance portal and conditional onboarding", () => {
       "Education Savings & Endowment",
       "Group & Association",
       "Business & Commercial",
+      "Travel",
+      "Marine, Cargo & Aviation",
+      "Liability & Compulsory Cover",
+      "Microinsurance, Takaful & Inclusion",
     ].forEach((category) => cy.contains("h3", category).should("be.visible"));
 
-    cy.contains("button", "Start insurance guide").click();
-    cy.get(dialog).should("be.visible");
+    cy.contains("h2", "Source-checked insurer product references").should("be.visible");
+    cy.get('[data-testid="insurance-product-disclosures"]').should("have.length", 10);
+    cy.get('[data-testid="insurance-product-disclosures"]').each(($disclosure) => {
+      cy.wrap($disclosure).should("contain.text", "Source freshness (checked 2026-10-12)");
+      cy.wrap($disclosure).should("contain.text", "Price / rate:");
+    });
+    cy.get('[data-testid="insurance-product-disclosures"][data-product-id="leadway-householder"]')
+      .should("contain.text", "₦20,000/year")
+      .and("contain.text", "₦10,000/year")
+      .and("contain.text", "no minimum");
+    cy.get(
+      '[data-testid="insurance-product-disclosures"][data-product-id="aiico-annuity-plan"]',
+    ).should("contain.text", "Version 07-2019");
+    cy.get(
+      '[data-testid="insurance-product-disclosures"][data-product-id="igi-annuity-plan"]',
+    ).should("contain.text", "28 November 2019");
+
+    startInsuranceGuide();
     cy.get(dialog).find("input[aria-labelledby]").should("have.length", 3);
   });
 
   it("asks for an organization name only on the organization path and requires it there", () => {
     cy.visit("/insurance");
-    cy.contains("button", "Start insurance guide").click();
+    startInsuranceGuide();
 
     answerText("Full name", "Ada Example");
     answerText("Phone number", "+2348012345678");
@@ -65,7 +91,7 @@ describe("Insurance portal and conditional onboarding", () => {
 
   it("uses a distinct annuity questionnaire and requires provider quote confirmation", () => {
     cy.visit("/insurance");
-    cy.contains("button", "Start insurance guide").click();
+    startInsuranceGuide();
 
     answerText("Full name", "Nneka Example");
     answerText("Phone number", "+2348098765432");
@@ -101,7 +127,7 @@ describe("Insurance portal and conditional onboarding", () => {
     nextQuestion();
     nextQuestion();
     cy.contains("Final rundown").should("be.visible");
-    cy.contains("Quote required after review").should("be.visible");
-    cy.contains("Sign in to submit").should("be.visible");
+    cy.contains("Quote required after review").scrollIntoView().should("be.visible");
+    cy.contains("Sign in to submit").scrollIntoView().should("be.visible");
   });
 });

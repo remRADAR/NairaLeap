@@ -205,7 +205,11 @@ function InsurancePage() {
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                   {product.intendedCustomer}
                 </p>
-                <div className="mt-4 space-y-2 rounded-xl border border-glass-border bg-glass p-3 text-xs leading-relaxed text-muted-foreground">
+                <div
+                  data-testid="insurance-product-disclosures"
+                  data-product-id={product.id}
+                  className="mt-4 space-y-2 rounded-xl border border-glass-border bg-glass p-3 text-xs leading-relaxed text-muted-foreground"
+                >
                   <p>
                     <span className="font-semibold text-foreground">
                       Source freshness (checked {product.lastChecked}):
