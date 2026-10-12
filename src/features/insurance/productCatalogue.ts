@@ -20,6 +20,8 @@ export interface InsuranceProductSnapshot {
   sourceUrl: string;
   additionalSources?: Array<{ label: string; url: string }>;
   lastChecked: string;
+  freshnessNote: string;
+  pricingNote: string;
   ratingStatus: "No verified comparable ratings available";
   availabilityStatus: "Provider confirmation required";
 }
@@ -65,7 +67,7 @@ const STANBIC_IBTC: InsuranceProviderSnapshot = {
  * terms change; re-confirm product terms, licensing and availability before
  * making any referral or collecting formal-application data.
  */
-export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
+export const INSURANCE_SOURCE_CHECKED_PRODUCTS: InsuranceProductSnapshot[] = [
   {
     id: "leadway-investment-plan",
     name: "Investment Plan",
@@ -75,7 +77,7 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     publishedTerms: [
       "Leadway's official page describes a lump sum held for an agreed policy term of 1–20 years.",
       "The page lists life cover and optional critical-illness and accidental-permanent-disability cover.",
-      "The public page does not provide a live individualized illustration or a current rate for this portal to reproduce.",
+      "The page describes interest as highly competitive but gives no numerical rate or individualized illustration; its FAQ says additional deposits cannot be added to the original guaranteed policy and may instead require a new policy.",
     ],
     formalApplicationDocuments: [
       "Leadway's product page lists valid identification, a passport photograph and a completed proposal form.",
@@ -83,6 +85,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     ],
     sourceUrl: "https://www.leadway.com/leadway-investment-plan/",
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The official page has no visible publication, update or effective date. Checked on 12 October 2026; this is the retrieval date, not confirmation that the terms remain current.",
+    pricingNote:
+      "The page uses qualitative 'highly competitive' interest wording but publishes no numerical rate or personalized illustration. Request current policy terms and an insurer-issued illustration.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -94,7 +100,7 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     intendedCustomer: "Applicants saving toward a medium-term personal goal.",
     publishedTerms: [
       "The official page states a minimum monthly premium of ₦10,000 and monthly, quarterly, semi-annual or annual payment frequencies.",
-      "The page says additional contributions must be at least ₦10,000; its FAQ describes a policy loan subject to agreement and once-yearly partial surrender after one active year (₦50,000 minimum, up to 25% of policy value).",
+      "The page permits customers to pay more and states ₦10,000 or above; it does not separately define additional-contribution conditions. Its FAQ describes a policy loan subject to agreement and once-yearly partial surrender after one active year (₦50,000 minimum, up to 25% of policy value).",
       "The page states a minimum policy term of 3 years and describes optional critical-illness or accidental-permanent-disability cover.",
       "Full surrender is subject to provider conditions and possible penalties; request the current policy wording and illustration before comparing.",
       "No rate, maturity value or personalized benefit is quoted by NairaLeap.",
@@ -111,6 +117,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
       },
     ],
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The product page and savings overview show no visible publication, update or effective date. Checked on 12 October 2026; confirm current terms with Leadway.",
+    pricingNote:
+      "The page does not give a personalized rate or maturity value; loan terms and full-surrender penalties are not quantified. Obtain a current illustration and policy wording.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -121,7 +131,7 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     category: "education-endowment",
     intendedCustomer: "Applicants planning toward a future target amount or milestone.",
     publishedTerms: [
-      "Leadway describes the plan as a defined-benefit endowment policy, not a conventional savings account.",
+      "Leadway calls this a defined-benefit policy and says it is not a savings policy; the page does not call it a bank savings account.",
       "The page states that the target sum assured is payable when due when premiums are paid as due, subject to its policy terms.",
       "Optional critical-illness and accidental-total-and-permanent-disability covers are listed; maturity proceeds may be converted to an annuity subject to provider terms.",
       "The page states a 10% per-annum prorated late-premium charge, which may change, and says risk may be reassessed after non-payment exceeds one year.",
@@ -133,6 +143,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     ],
     sourceUrl: "https://www.leadway.com/leadway-target-plan/",
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The official page has no visible publication or update date. Checked on 12 October 2026; the page says its 10% late-payment rate may change.",
+    pricingNote:
+      "A current target, price, term and missed-premium impact require an insurer illustration and policy wording. The page's late-payment charge is expressly changeable.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -153,6 +167,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     ],
     sourceUrl: "https://www.leadway.com/leadway-smart-cash-plan/",
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The official page has no visible publication, update or effective date. Checked on 12 October 2026; renewal and surrender conditions should be confirmed with Leadway.",
+    pricingNote:
+      "The page describes interest qualitatively as competitive but publishes no numerical rate or personalized quote. Confirm current interest, renewal and surrender terms.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -164,16 +182,20 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     intendedCustomer: "Applicants considering a long-term investment-linked insurance policy.",
     publishedTerms: [
       "AIICO describes this as an investment-linked policy combining investment, savings and insurance protection.",
-      "The current product page lists monthly minimum contributions of ₦5,000, policy durations of 10, 12, 15 or 20 years, and insurance periods of 6, 9, 12 or 15 years.",
-      "The page describes target-savings contributions, account crediting, a loan up to 70% of account balance after three years, and maturity/death benefits; verify current product wording and illustration directly with AIICO.",
+      "The page lists a monthly minimum contribution of ₦5,000, policy durations as 10, 12, 15 or 20 (the page does not state the unit), and insurance periods of 6, 9, 12 or 15 years.",
+      "The page describes target-savings contributions, account crediting, a loan up to 70% of account balance after three years, and maturity/death benefits; it does not clearly explain how target savings relate to the individual account.",
       "The reviewed page provides no numerical interest rate, charges or individualized illustration.",
     ],
     formalApplicationDocuments: [
-      "The official form-download page we checked did not expose a clearly labelled current application form for this specific product; confirm the correct pack and requirements with AIICO.",
+      "The official forms listing we inspected is an undated staging page and does not show a clearly labelled form for this specific product; that absence does not prove no current form exists. Confirm the correct pack and requirements with AIICO.",
       "Do not submit provider application or bank details through this discovery form.",
     ],
     sourceUrl: "https://www.aiicoplc.com/home/home-insurance/new-income-investment",
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The product page was checked on 12 October 2026 but shows no visible publication or update date. The policy-duration units are unstated, and the inspected forms listing is an undated staging page.",
+    pricingNote:
+      "No numerical interest rate, fee schedule or individualized illustration is published on the reviewed product page. Obtain current charges, policy wording and an insurer-issued illustration.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -195,6 +217,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     ],
     sourceUrl: "https://www.leadway.com/personal-annuity-plan/",
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "Leadway page metadata reports a modification date of 18 August 2026, not a product effective date. Confirm current policy wording and pension eligibility before application.",
+    pricingNote:
+      "The page does not disclose a personalized payout, purchase-price range or guaranteed-period length. 'Augment' does not specify which additional funds are permitted; request a current provider quotation.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -205,7 +231,7 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     category: "personal-annuity",
     intendedCustomer: "Prospective retirees enquiring about immediate or deferred annuity options.",
     publishedTerms: [
-      "AIICO's current public page describes deferred and immediate options, flat or annually increasing income (5% or 10%), and a 10-year guaranteed period. Its dated 2019 form lists a 5- or 10-year guarantee and flat or 5% increasing choices, so confirm current options and wording directly with AIICO.",
+      "AIICO's undated public page describes deferred and immediate options, flat or annually increasing income (5% or 10%), and a 10-year guaranteed period. Its Version 07-2019 form lists a 5- or 10-year guarantee and flat or 5% increasing choices; confirm the mismatch and current wording directly with AIICO.",
       "The page describes 75% spouse continuation for its immediate annuity option and a death benefit for its deferred option; these are product-specific features subject to the current policy terms.",
       "The official page states that a deferred plan may be funded by lump sum or annual premium; the provider determines the current quote and eligibility.",
       "The portal does not calculate or promise an annuity rate or payout.",
@@ -222,6 +248,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
       },
     ],
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The public product page is undated. Its application form is Version 07-2019; the page and form differ on escalation and guaranteed-period options. Treat the form as historical pending AIICO confirmation.",
+    pricingNote:
+      "No personalized payout, premium minimum or numerical annuity quote is provided. The page's 10% increase/10-year guarantee language conflicts with the dated form; obtain current written terms.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -234,9 +264,8 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
       "Prospective policyholders or retirees considering immediate or deferred income from a lump sum.",
     publishedTerms: [
       "IGI describes immediate and deferred options, level or increasing income (5% or 10%), a 10-year guaranteed period and monthly, quarterly, half-yearly or annual payment frequencies.",
-      "The official page is undated and its page metadata indicates it was last modified in 2019; confirm current availability, terms and requirements before relying on it.",
-      "The official page has no visible current version date; its WordPress metadata indicates last modification in 2019, so current product terms, prices and eligibility remain unverified.",
-      "The published example is illustrative only; NairaLeap does not reproduce it as a current rate or quote.",
+      "IGI's official page metadata records publication in 2019 and last modification on 28 November 2019; confirm current availability, terms and requirements before relying on it.",
+      "The published age-based example is historical and illustrative only; NairaLeap does not reproduce it as a current rate or quote.",
       "The provider page states payout depends on purchase amount and selected option; request a current personalized quotation and terms.",
     ],
     formalApplicationDocuments: [
@@ -244,7 +273,17 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
       "The initial NairaLeap enquiry intentionally avoids collecting beneficiary identities, dates of birth and document images.",
     ],
     sourceUrl: "https://www.iginigeria.com/products/life-products/individual-life/annuity-plan/",
+    additionalSources: [
+      {
+        label: "IGI official page metadata (2019 publication/update dates)",
+        url: "https://www.iginigeria.com/wp-json/wp/v2/pages/371",
+      },
+    ],
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "IGI's official page metadata dates publication to 2019 and last modification to 28 November 2019. Treat its terms and examples as historical unless IGI confirms them.",
+    pricingNote:
+      "The page's age-based example uses a ₦2,000,000 single premium and is not a current quote. Request a current personalized quotation and confirm product availability with IGI.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -274,6 +313,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
       },
     ],
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The product page is undated; the official FAQ PDF metadata is dated 28 February 2023. Confirm that its terms and document requirements remain current.",
+    pricingNote:
+      "The cited page and FAQ provide no current premium or payout amount. Request a current insurer quotation; the 2023 FAQ is not a price offer.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },
@@ -287,7 +330,7 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
     publishedTerms: [
       "Leadway's official page describes cover for building and contents against insured perils, plus additional-accommodation expense, public liability and an insured-death benefit.",
       "The page says jewellery, laptops, phones and certain personal effects are excluded unless added as extensions; request the current full cover/exclusion list.",
-      "The same official page displays two different 'as low as' annual premium figures (₦20,000 and ₦10,000). NairaLeap deliberately omits a minimum price and requires a current insurer quote.",
+      "The official page conflicts with itself: the body says premiums are as low as ₦20,000 per year, while its FAQ says as low as ₦10,000 per year. NairaLeap does not display either as a minimum; obtain a current written quote from Leadway.",
     ],
     formalApplicationDocuments: [
       "The official page lists a completed proposal form, valid identification and a passport photograph.",
@@ -301,6 +344,10 @@ export const INSURANCE_VERIFIED_PRODUCTS: InsuranceProductSnapshot[] = [
       },
     ],
     lastChecked: "2026-10-12",
+    freshnessNote:
+      "The main product page is undated. A timestamp on the selector page is ambiguous and is not an effective date. Checked on 12 October 2026; current terms and availability remain unconfirmed.",
+    pricingNote:
+      "Leadway's product page states ₦20,000/year in its body and ₦10,000/year in its FAQ. The conflict is unresolved; NairaLeap shows no minimum and requires a current written quote.",
     ratingStatus: "No verified comparable ratings available",
     availabilityStatus: "Provider confirmation required",
   },

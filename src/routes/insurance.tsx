@@ -23,7 +23,7 @@ import {
 } from "@/features/insurance/catalog";
 import {
   INSURANCE_PRODUCT_DISCLOSURE,
-  INSURANCE_VERIFIED_PRODUCTS,
+  INSURANCE_SOURCE_CHECKED_PRODUCTS,
 } from "@/features/insurance/productCatalogue";
 
 export const Route = createFileRoute("/insurance")({
@@ -163,14 +163,16 @@ function InsurancePage() {
               id="insurance-products-title"
               className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl"
             >
-              Verified insurer product references
+              Source-checked insurer product references
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               These summaries cover selected savings, endowment, annuity and home-cover products and
-              were checked against insurer pages on {INSURANCE_PRODUCT_DISCLOSURE.checkedAt}. They
+              were checked against official insurer pages and documents on{" "}
+              {INSURANCE_PRODUCT_DISCLOSURE.checkedAt}. That is the source retrieval date, not a
+              product effective date; several sources are undated or historical. These references
               are not recommendations, live quotations, policy wording or proof of a NairaLeap
-              provider relationship. Availability, eligibility, licensing, product approval, rates
-              and terms must be confirmed with the insurer before proceeding.
+              provider relationship. Confirm availability, eligibility, licensing, product approval,
+              rates and terms with the insurer before proceeding.
             </p>
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
               {INSURANCE_PRODUCT_DISCLOSURE.naicomMcrDisclaimer}{" "}
@@ -178,7 +180,7 @@ function InsurancePage() {
             </p>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
-            {INSURANCE_VERIFIED_PRODUCTS.map((product) => (
+            {INSURANCE_SOURCE_CHECKED_PRODUCTS.map((product) => (
               <GlassCard key={product.id} className="h-full">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
@@ -203,6 +205,18 @@ function InsurancePage() {
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                   {product.intendedCustomer}
                 </p>
+                <div className="mt-4 space-y-2 rounded-xl border border-glass-border bg-glass p-3 text-xs leading-relaxed text-muted-foreground">
+                  <p>
+                    <span className="font-semibold text-foreground">
+                      Source freshness (checked {product.lastChecked}):
+                    </span>{" "}
+                    {product.freshnessNote}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-foreground">Price / rate:</span>{" "}
+                    {product.pricingNote}
+                  </p>
+                </div>
                 <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
                   {product.publishedTerms.map((term) => (
                     <li key={term} className="flex items-start gap-2">
