@@ -24,12 +24,20 @@ export interface QuestionChoice {
   description?: string;
 }
 
+export interface QuestionCondition {
+  questionId: string;
+  values: Array<string | boolean>;
+}
+
 interface BaseQuestion {
   id: string;
   type: QuestionType;
   title: string;
   helper?: string;
   required?: boolean;
+  pageGroup?: string;
+  showWhen?: QuestionCondition;
+  requiredWhen?: QuestionCondition;
 }
 
 export interface ShortTextQuestion extends BaseQuestion {

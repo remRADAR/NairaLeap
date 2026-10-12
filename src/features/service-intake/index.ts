@@ -1,10 +1,14 @@
 import type { AnswersState, Question, QuestionChoice } from "@/features/question-engine";
 import {
   REQUEST_BLUEPRINT_MAP,
+  getMissingRequiredBlueprintFields,
+  isBlueprintFieldRequired,
+  isBlueprintFieldVisible,
   type BlueprintField,
   type BlueprintFieldType,
 } from "@/features/request-blueprint-engine";
 import { SERVICE_INTELLIGENCE_MAP, type ServiceId } from "@/features/service-intelligence-catalog";
+import { INSURANCE_CATEGORY_CATALOG } from "@/features/insurance/catalog";
 
 export type PriceMode = "fixed" | "estimate" | "quote" | "no-charge";
 
@@ -233,23 +237,114 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "renew-or-change", label: "Renew or change a policy" },
     { value: "verify-or-support", label: "Verify a policy or get policy support" },
   ],
-  insuranceCategory: [
-    { value: "motor-auto", label: "Motor and auto" },
-    { value: "health-medical", label: "Health and medical" },
-    { value: "life-family", label: "Life and family" },
-    { value: "home-property", label: "Home and property" },
-    { value: "business-commercial", label: "Business and commercial" },
-    { value: "agriculture", label: "Agriculture" },
-    { value: "travel", label: "Travel" },
-    { value: "marine-cargo-aviation", label: "Marine, cargo and aviation" },
-    { value: "liability-compulsory", label: "Liability and compulsory cover" },
-    { value: "micro-takaful-inclusion", label: "Microinsurance, Takaful and inclusion" },
+  insuranceCategory: INSURANCE_CATEGORY_CATALOG.map(({ id, title }) => ({
+    value: id,
+    label: title,
+  })),
+  insuranceApplicantType: [
+    { value: "individual", label: "Individual" },
+    { value: "organization", label: "Company, association or organization" },
+  ],
+  savingsGoal: [
+    { value: "short-term-savings", label: "Short-term savings" },
+    { value: "planned-expense", label: "A planned future expense" },
+    { value: "long-term-accumulation", label: "Long-term savings or accumulation" },
+    { value: "education", label: "Education" },
+    { value: "retirement", label: "Retirement" },
+    { value: "other", label: "Another goal" },
+  ],
+  contributionStructure: [
+    { value: "lump-sum", label: "One-off contribution or lump sum" },
+    { value: "recurring", label: "Recurring contributions, if offered" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  contributionFrequency: [
+    { value: "monthly", label: "Monthly" },
+    { value: "quarterly", label: "Quarterly" },
+    { value: "semi-annually", label: "Every six months" },
+    { value: "annually", label: "Annually" },
+    { value: "provider-advice", label: "Ask which frequencies are available" },
+  ],
+  annuityType: [
+    { value: "immediate", label: "Immediate annuity enquiry" },
+    { value: "deferred", label: "Deferred annuity enquiry" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  annuityAgeBand: [
+    { value: "under-50", label: "Under 50" },
+    { value: "50-54", label: "50–54" },
+    { value: "55-59", label: "55–59" },
+    { value: "60-64", label: "60–64" },
+    { value: "65-plus", label: "65 or above" },
+    { value: "prefer-not-to-say", label: "Prefer not to say at this stage" },
+  ],
+  annuityFundingSource: [
+    { value: "rsa", label: "Retirement savings account (RSA) balance" },
+    { value: "other-retirement-funds", label: "Other retirement-related funds" },
+    { value: "other-permitted-lump-sum", label: "Another lump sum (subject to provider rules)" },
+    { value: "not-sure", label: "Not sure / discuss with provider" },
+  ],
+  incomePaymentFrequency: [
+    { value: "monthly", label: "Monthly" },
+    { value: "quarterly", label: "Quarterly" },
+    { value: "other", label: "Another frequency, if offered" },
+  ],
+  healthCoverType: [
+    { value: "individual", label: "Just me" },
+    { value: "family", label: "Me and my dependants" },
+    { value: "group", label: "A company, association or cooperative" },
+  ],
+  propertyCoverType: [
+    { value: "building", label: "Building or structure" },
+    { value: "contents", label: "Household contents" },
+    { value: "combined", label: "Building and contents" },
+    { value: "warehouse-stock", label: "Warehouse stock or business contents" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  propertyRelationship: [
+    { value: "owner", label: "Owner" },
+    { value: "tenant", label: "Tenant or occupier" },
+    { value: "landlord", label: "Landlord" },
+    { value: "company", label: "Company or authorized representative" },
+  ],
+  motorUse: [
+    { value: "private", label: "Private use" },
+    { value: "commercial", label: "Commercial use" },
+    { value: "fleet", label: "Fleet" },
+  ],
+  yesNoUnsure: [
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" },
+    { value: "not-sure", label: "Not sure yet" },
   ],
   providerPreference: [
     { value: "no-preference", label: "No preference" },
     { value: "conventional", label: "Conventional insurance" },
     { value: "takaful", label: "Takaful / cooperative model" },
     { value: "microinsurance", label: "Microinsurance / lower-cost cover" },
+  ],
+  providerSelection: [
+    { value: "no-preference", label: "No preference" },
+    { value: "leadway", label: "Leadway Assurance" },
+    { value: "aiico", label: "AIICO Insurance" },
+    { value: "igi", label: "IGI Nigeria" },
+    { value: "stanbic-ibtc", label: "Stanbic IBTC Insurance" },
+    { value: "other", label: "Another provider (please specify below)" },
+  ],
+  savingsProductPreference: [
+    { value: "leadway-investment-plan", label: "Leadway Investment Plan" },
+    { value: "leadway-savings-plan", label: "Leadway Savings Plan" },
+    { value: "leadway-target-plan", label: "Leadway Target Plan" },
+    { value: "leadway-smart-cash-plan", label: "Leadway Smart Cash Plan" },
+    { value: "aiico-income-investment-plan", label: "AIICO Income Investment Plan" },
+    { value: "another-product", label: "Another product / not sure" },
+  ],
+  annuityProductPreference: [
+    { value: "leadway-personal-annuity", label: "Leadway Personal Annuity" },
+    { value: "aiico-annuity", label: "AIICO Annuity Plan" },
+    { value: "igi-annuity", label: "IGI Annuity Plan" },
+    { value: "stanbic-retiree-annuity", label: "Stanbic IBTC Retiree Annuity" },
+    { value: "another-product", label: "Another product / not sure" },
   ],
   mortgageRequestType: [
     { value: "home-purchase", label: "Buy a completed home" },
@@ -344,6 +439,19 @@ const FIELD_HELPERS: Record<string, string> = {
     "A broad range helps route your request; exact affordability is assessed by the selected partner.",
   mortgageStatus: "Choose the option closest to your current mortgage position.",
   nhfPreference: "This indicates a routing preference, not confirmation of NHF eligibility.",
+  savingsContribution:
+    "This is an enquiry amount only. Contribution minimums, accepted frequencies and product terms must be confirmed by the provider.",
+  annuityPurchaseAmount:
+    "An indicative amount helps a provider prepare a quote. Do not send bank details or pension account credentials here.",
+  annuityCommencementAge:
+    "This helps route an annuity enquiry. It is not a provider eligibility decision.",
+  companyRegistrationNumber:
+    "Registration details are optional during initial discovery and may be requested during a formal application.",
+  buildingReplacementValue:
+    "If known, enter an approximate building reconstruction or replacement value, not the land or market value.",
+  contentsValue: "If known, enter the approximate value of contents, separate from building value.",
+  warehouseStockValue:
+    "If known, enter the approximate value of stock or equipment, separate from the building.",
 };
 
 function questionTypeForField(type: BlueprintFieldType): Question["type"] {
@@ -352,6 +460,15 @@ function questionTypeForField(type: BlueprintFieldType): Question["type"] {
 
 const SERVICE_CHOICE_ALIASES: Partial<Record<ServiceId, Record<string, string>>> = {
   mortgage: { propertyType: "mortgagePropertyType" },
+  insurance: {
+    applicantType: "insuranceApplicantType",
+    insuranceProviderPreference: "providerSelection",
+    savingsProductPreference: "savingsProductPreference",
+    annuityProductPreference: "annuityProductPreference",
+    annuityCommencementAgeBand: "annuityAgeBand",
+    annuityPaymentFrequency: "incomePaymentFrequency",
+    earlyAccessNeed: "yesNoUnsure",
+  },
 };
 
 function choiceKeyForField(field: BlueprintField, serviceId?: ServiceId): string {
@@ -372,6 +489,13 @@ function fieldToQuestion(field: BlueprintField, serviceId: ServiceId): Question 
     title: field.label,
     helper: field.description ?? FIELD_HELPERS[field.key],
     required: field.required,
+    pageGroup: field.pageGroup,
+    showWhen: field.showWhen
+      ? { questionId: field.showWhen.key, values: field.showWhen.values }
+      : undefined,
+    requiredWhen: field.requiredWhen
+      ? { questionId: field.requiredWhen.key, values: field.requiredWhen.values }
+      : undefined,
   };
 
   switch (questionTypeForField(field.type)) {
@@ -449,14 +573,16 @@ function formatAnswer(
 export function buildServiceRundown(serviceId: ServiceId, answers: AnswersState): ServiceRundown {
   const blueprint = REQUEST_BLUEPRINT_MAP[serviceId];
   const intelligence = SERVICE_INTELLIGENCE_MAP[serviceId];
-  const fields = [...blueprint.requiredFields, ...blueprint.optionalFields];
+  const fields = [...blueprint.requiredFields, ...blueprint.optionalFields].filter((field) =>
+    isBlueprintFieldVisible(field, answers),
+  );
   const answerRows = fields
     .filter((field) => hasAnswer(answers[field.key]))
     .map((field) => ({
       key: field.key,
       label: field.label,
       value: formatAnswer(field, answers[field.key], serviceId),
-      required: field.required,
+      required: isBlueprintFieldRequired(field, answers),
     }));
 
   return {
@@ -465,9 +591,9 @@ export function buildServiceRundown(serviceId: ServiceId, answers: AnswersState)
     outputTitle: blueprint.outputTitle,
     summary: blueprint.summaryTemplate,
     answers: answerRows,
-    missingRequiredFields: blueprint.requiredFields
-      .filter((field) => !hasAnswer(answers[field.key]))
-      .map((field) => field.label),
+    missingRequiredFields: getMissingRequiredBlueprintFields(blueprint, answers).map(
+      (field) => field.label,
+    ),
     requiredDocuments: blueprint.requiredDocuments
       .filter((document) => document.required)
       .map((document) => document.documentTypeId),
