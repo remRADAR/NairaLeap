@@ -142,10 +142,11 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
             aria-labelledby="service-page-title"
             className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-glass-border bg-background/75 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr]"
           >
+            {/* Left: service info */}
             <div className="relative flex flex-col justify-between overflow-hidden p-6 sm:p-10 lg:p-12">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl"
+                className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-primary/30 blur-3xl"
               />
               <div className="relative">
                 <Link
@@ -179,7 +180,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                   {service.examples.slice(0, 3).map((example) => (
                     <span
                       key={example}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-glass px-3 py-1.5 text-xs text-muted-foreground"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-primary/12 px-3 py-1.5 text-xs text-muted-foreground"
                     >
                       <Check className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
                       {example}
@@ -193,7 +194,8 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
               </p>
             </div>
 
-            <div className="flex flex-col justify-center border-t border-glass-border bg-glass/35 p-6 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
+            {/* Right: onboarding highlight panel — purple glass, clearly visible */}
+            <div className="flex flex-col justify-center border-t border-glass-border bg-primary/14 p-6 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary-glow">
                 <Sparkles className="h-4 w-4" aria-hidden="true" />
                 Start onboarding
@@ -217,8 +219,8 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                     onClick={() => startOnboarding(option.role)}
                     className={`group rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                       index === 0
-                        ? "border-primary/35 bg-primary/10 hover:border-primary/70 hover:bg-primary/15"
-                        : "border-glass-border bg-background/45 hover:border-primary/50 hover:bg-primary/5"
+                        ? "border-primary/45 bg-primary/20 hover:border-primary/70 hover:bg-primary/25"
+                        : "border-glass-border bg-primary/8 hover:border-primary/50 hover:bg-primary/14"
                     }`}
                   >
                     <span className="flex items-center justify-between gap-4">
@@ -256,4 +258,3 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
     </>
   );
 }
-

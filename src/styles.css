@@ -95,9 +95,9 @@
   --input: oklch(0.98 0.01 285 / 15%);
   --ring: oklch(0.72 0.19 300);
 
-  /* Glassmorphism */
-  --glass: oklch(0.98 0.01 285 / 6%);
-  --glass-border: oklch(0.98 0.01 285 / 12%);
+  /* Glassmorphism — purple-tinted glass so the brand background shows through */
+  --glass: oklch(0.55 0.15 295 / 14%);
+  --glass-border: oklch(0.75 0.12 300 / 22%);
 
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, var(--brand-deep), var(--brand) 55%, var(--brand-glow));
@@ -231,9 +231,10 @@
       0 5px 16px oklch(0 0 0 / 46%);
   }
 
+  /* Service pages: stronger purple glass so the highlight panels are clearly visible */
   .service-page-shell .glass-panel {
-    background-color: oklch(0.08 0.02 285 / 48%);
-    box-shadow: 0 18px 56px oklch(0 0 0 / 22%);
+    background-color: oklch(0.35 0.18 295 / 35%);
+    box-shadow: 0 18px 56px oklch(0.35 0.18 295 / 25%);
   }
 
   h1,
