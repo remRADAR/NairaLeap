@@ -63,6 +63,42 @@ function getRoleOptions(serviceId: string): RoleOption[] {
           description: "I want to fund businesses or partner with founders.",
         },
       ];
+    case "mortgage":
+      return [
+        {
+          role: "customer",
+          title: "I'm a home applicant",
+          description: "I want to buy a home, build, renovate, or explore NHF / FMBN pathways.",
+        },
+        {
+          role: "developer",
+          title: "I'm a Developer",
+          description: "I develop estates or property projects and want to onboard with a KYC profile.",
+        },
+        {
+          role: "mortgage-bank",
+          title: "I'm a Mortgage Bank",
+          description: "I am a mortgage bank or lender and want to onboard with a KYC profile.",
+        },
+      ];
+    case "insurance":
+      return [
+        {
+          role: "compare-cover",
+          title: "Compare Cover",
+          description: "I want to compare insurance options and see indicative starting prices.",
+        },
+        {
+          role: "get-quote",
+          title: "Get a Quote",
+          description: "I want a quote for a specific insurance cover.",
+        },
+        {
+          role: "make-claim",
+          title: "Make a Claim",
+          description: "I need to report an incident and start a claim.",
+        },
+      ];
     default:
       return [
         {
@@ -220,3 +256,4 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
     </>
   );
 }
+

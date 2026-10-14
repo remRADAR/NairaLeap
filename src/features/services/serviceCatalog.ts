@@ -123,23 +123,23 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     id: "insurance",
     icon: ShieldCheck,
     title: "Insurance",
-    shortDescription: "Find cover for life, health, assets and business risks.",
+    shortDescription: "Compare cover, get a quote, or make a claim.",
     longDescription:
-      "Describe the protection you need and NairaLeap will help route you to suitable insurance options and licensed providers for review.",
-    examples: ["Get a Quote", "Compare Cover", "Make a Claim", "Renew or Verify a Policy"],
+      "Three flows: Compare Cover (see indicative starting prices across motor, health, life, home, business, agriculture, travel, liability and microinsurance), Get a Quote, or Make a Claim. NairaLeap routes your request to licensed insurance operators for review.",
+    examples: ["Compare Cover", "Get a Quote", "Make a Claim"],
   },
   {
     id: "mortgage",
     icon: House,
     title: "Mortgage",
-    shortDescription: "Explore home finance and property funding pathways.",
+    shortDescription: "Buy, build, renovate, or explore NHF / FMBN housing finance.",
     longDescription:
-      "Describe your home purchase, construction, renovation, refinancing or housing-finance need and NairaLeap will prepare it for review by a suitable verified finance partner.",
+      "Three pathways: Buy a Home / Build, Renovate, or Explore NHF / FMBN Pathways. Developers and mortgage banks can onboard with a KYC profile. NairaLeap prepares your request for review by a suitable verified finance partner.",
     examples: [
-      "Buy a Home",
-      "Build or Renovate",
+      "Buy a Home / Build",
+      "Renovate",
       "Explore NHF / FMBN Pathways",
-      "Refinance or Get Mortgage Support",
+      "Developer or Mortgage Bank onboarding",
     ],
   },
 ];

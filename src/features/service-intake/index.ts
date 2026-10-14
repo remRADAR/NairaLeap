@@ -248,11 +248,9 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "general-business", label: "General business" },
   ],
   insuranceRequestType: [
-    { value: "new-cover", label: "Get new cover" },
-    { value: "compare-options", label: "Compare cover options" },
-    { value: "claim", label: "Make a claim" },
-    { value: "renew-or-change", label: "Renew or change a policy" },
-    { value: "verify-or-support", label: "Verify a policy or get policy support" },
+    { value: "compare-cover", label: "Compare Cover" },
+    { value: "get-quote", label: "Get a Quote" },
+    { value: "make-claim", label: "Make a Claim" },
   ],
   insuranceCategory: [
     { value: "motor-auto", label: "Motor and auto" },
@@ -273,17 +271,30 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "microinsurance", label: "Microinsurance / lower-cost cover" },
   ],
   mortgageRequestType: [
-    { value: "home-purchase", label: "Buy a completed home" },
-    { value: "land-and-build", label: "Buy land and build" },
-    { value: "construction", label: "Build on land I already have" },
-    { value: "renovation", label: "Renovate or improve a home" },
-    { value: "rent-to-own", label: "Explore rent-to-own or affordable housing" },
-    { value: "nhf-fmbn", label: "Explore NHF / FMBN housing finance" },
-    { value: "diaspora", label: "Diaspora mortgage enquiry" },
-    { value: "refinance", label: "Refinance or transfer an existing mortgage" },
-    { value: "restructure", label: "Discuss repayment support or restructuring" },
-    { value: "developer-finance", label: "Estate development or developer finance" },
-    { value: "mortgage-support", label: "Mortgage readiness, documents or support" },
+    { value: "buy-or-build", label: "Buy a Home / Build" },
+    { value: "renovate", label: "Renovate" },
+    { value: "nhf-fmbn", label: "Explore NHF / FMBN Pathways" },
+  ],
+  mortgageRole: [
+    { value: "developer", label: "Developer", description: "I develop estates or property projects" },
+    { value: "mortgage-bank", label: "Mortgage Bank", description: "I am a mortgage bank or lender" },
+  ],
+  estateFacilities: [
+    { value: "asphalt-road", label: "Asphalt road" },
+    { value: "security-247", label: "24/7 security" },
+    { value: "power-supply", label: "Power supply" },
+    { value: "streetlight", label: "Streetlight" },
+    { value: "water-supply", label: "Water supply" },
+    { value: "drainage", label: "Drainage" },
+    { value: "perimeter-fence", label: "Perimeter fence" },
+    { value: "other", label: "Other facility" },
+  ],
+  bankLicenseType: [
+    { value: "pmb", label: "Primary Mortgage Bank (PMB)" },
+    { value: "commercial", label: "Commercial Bank" },
+    { value: "non-interest", label: "Non-Interest Bank" },
+    { value: "mfb", label: "Microfinance Bank (MFB)" },
+    { value: "other", label: "Other license type" },
   ],
   applicantProfile: [
     { value: "individual", label: "Individual applicant" },
@@ -365,6 +376,25 @@ const FIELD_HELPERS: Record<string, string> = {
     "A broad range helps route your request; exact affordability is assessed by the selected partner.",
   mortgageStatus: "Choose the option closest to your current mortgage position.",
   nhfPreference: "This indicates a routing preference, not confirmation of NHF eligibility.",
+  mortgageRole: "Developer or mortgage bank. Leave blank if you are a home applicant.",
+  estateName: "The name of the estate or development project.",
+  developerState: "The state where the estate or project is located.",
+  developerLga: "The Local Government Area where the estate or project is located.",
+  estateLandmark: "A nearby landmark, bus stop, or reference point.",
+  estateSizeSqm: "Total estate size in square meters.",
+  propertyDescription: "Describe the property, units, and key features.",
+  amountPerSqm: "Your asking price per square meter. This is not a NairaLeap fee.",
+  mortgageBackQualified: "Indicate whether the project qualifies for mortgage-back arrangements.",
+  yearsInService: "Number of years the developer company has been in operation.",
+  monthlyPaymentAmount: "The monthly payment amount you expect or can offer.",
+  estateFacilities: "Select all facilities available in the estate.",
+  developerCompanyKyc: "Company registration, team, past projects, and KYC details.",
+  siteLocation: "The physical site location of the estate or project.",
+  bankName: "The registered name of the mortgage bank.",
+  bankRcNumber: "The bank's RC or registration number.",
+  bankLicenseType: "The type of license the bank operates under.",
+  bankYearsInOperation: "Number of years the bank has been in operation.",
+  bankAob: "Any other business activities or relevant notes.",
 };
 
 function questionTypeForField(type: BlueprintFieldType): Question["type"] {
@@ -501,3 +531,4 @@ export function buildServiceRundown(serviceId: ServiceId, answers: AnswersState)
     price: SERVICE_PRICING_MAP[serviceId],
   };
 }
+

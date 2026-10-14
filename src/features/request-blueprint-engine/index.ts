@@ -2,7 +2,7 @@
  * Request Blueprint Engine
  *
  * The master configuration for the final structured output package that every
- * NairaLeap onboarding process must produce. This is a pure data module — no
+ * NairaLeap onboarding process must produce. This is a pure data module â no
  * UI, no business logic, no backend calls, no routes.
  *
  * Consumer layers (review screens, admin dashboards, notifications, PDF
@@ -29,7 +29,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     serviceId: "agriculture",
     outputTitle: "Agriculture Service Request",
     summaryTemplate:
-      "Your Agriculture request has been prepared. NairaLeap will review your farm or input-supplier profile and match you with verified opportunities within 1–2 business days.",
+      "Your Agriculture request has been prepared. NairaLeap will review your farm or input-supplier profile and match you with verified opportunities within 1â2 business days.",
     requiredFields: [
       {
         id: "contact-name",
@@ -55,7 +55,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       {
         id: "agriculture-role",
         key: "agricultureRole",
-        label: "I am a…",
+        label: "I am aâ¦",
         type: "single-choice",
         required: true,
         description: "Choose whether you are a farmer or an input supplier.",
@@ -185,7 +185,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       {
         id: "property-role",
         key: "propertyRole",
-        label: "I am a…",
+        label: "I am aâ¦",
         type: "single-choice",
         required: true,
         description: "Buyer, developer, or agent.",
@@ -439,7 +439,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     serviceId: "vendor-marketplace",
     outputTitle: "Vendor Marketplace Request",
     summaryTemplate:
-      "Your Vendor Marketplace request has been recorded. NairaLeap will match you with verified vendors or evaluate your vendor registration and follow up within 1–2 business days.",
+      "Your Vendor Marketplace request has been recorded. NairaLeap will match you with verified vendors or evaluate your vendor registration and follow up within 1â2 business days.",
     requiredFields: [
       {
         id: "contact-name",
@@ -986,47 +986,13 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         label: "What mortgage help do you need?",
         type: "single-choice",
         required: true,
-      },
-      {
-        id: "applicant-profile",
-        key: "applicantProfile",
-        label: "Which applicant profile best describes you?",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "property-stage",
-        key: "propertyStage",
-        label: "What stage is the property or project at?",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "property-type",
-        key: "propertyType",
-        label: "What type of property or project is involved?",
-        type: "single-choice",
-        required: true,
+        description: "Buy a Home / Build, Renovate, or Explore NHF / FMBN Pathways.",
       },
       {
         id: "mortgage-location",
         key: "mortgageLocation",
         label: "Where is the property or project located?",
         type: "location",
-        required: true,
-      },
-      {
-        id: "income-source",
-        key: "incomeSource",
-        label: "What is your main income source?",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "mortgage-timeline",
-        key: "mortgageTimeline",
-        label: "When would you like to move forward?",
-        type: "single-choice",
         required: true,
       },
       {
@@ -1038,6 +1004,50 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
     ],
     optionalFields: [
+      {
+        id: "mortgage-role",
+        key: "mortgageRole",
+        label: "Choose your role",
+        type: "single-choice",
+        required: false,
+        description:
+          "Developer or mortgage bank. Leave blank if you are a home applicant (buyer, builder, or renovator).",
+      },
+      {
+        id: "applicant-profile",
+        key: "applicantProfile",
+        label: "Which applicant profile best describes you?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "property-stage",
+        key: "propertyStage",
+        label: "What stage is the property or project at?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "property-type",
+        key: "propertyType",
+        label: "What type of property or project is involved?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "income-source",
+        key: "incomeSource",
+        label: "What is your main income source?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "mortgage-timeline",
+        key: "mortgageTimeline",
+        label: "When would you like to move forward?",
+        type: "single-choice",
+        required: false,
+      },
       {
         id: "income-range",
         key: "incomeRange",
@@ -1088,6 +1098,136 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: false,
       },
       {
+        id: "estate-name",
+        key: "estateName",
+        label: "Estate name (Developer KYC)",
+        type: "short-text",
+        required: false,
+        description: "For developers: the name of the estate or project.",
+      },
+      {
+        id: "developer-state",
+        key: "developerState",
+        label: "State (Developer KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "developer-lga",
+        key: "developerLga",
+        label: "LGA (Developer KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "estate-landmark",
+        key: "estateLandmark",
+        label: "Landmark / nearest reference (Developer KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "estate-size-sqm",
+        key: "estateSizeSqm",
+        label: "Estate size in square meters (Developer KYC)",
+        type: "number",
+        required: false,
+      },
+      {
+        id: "property-description",
+        key: "propertyDescription",
+        label: "Property description (Developer KYC)",
+        type: "long-text",
+        required: false,
+      },
+      {
+        id: "amount-per-sqm",
+        key: "amountPerSqm",
+        label: "Amount per square meter (Developer KYC)",
+        type: "currency",
+        required: false,
+      },
+      {
+        id: "mortgage-back-qualified",
+        key: "mortgageBackQualified",
+        label: "Qualified for mortgage-back requirement? (Developer KYC)",
+        type: "yes-no",
+        required: false,
+      },
+      {
+        id: "years-in-service",
+        key: "yearsInService",
+        label: "Number of years in service (Developer KYC)",
+        type: "number",
+        required: false,
+      },
+      {
+        id: "monthly-payment-amount",
+        key: "monthlyPaymentAmount",
+        label: "Amount to pay monthly (Developer KYC)",
+        type: "currency",
+        required: false,
+      },
+      {
+        id: "estate-facilities",
+        key: "estateFacilities",
+        label: "Estate facilities (Developer KYC)",
+        type: "multiple-choice",
+        required: false,
+        description: "Select all facilities available in the estate.",
+      },
+      {
+        id: "developer-company-kyc",
+        key: "developerCompanyKyc",
+        label: "Developer company onboarding / KYC details",
+        type: "long-text",
+        required: false,
+      },
+      {
+        id: "site-location",
+        key: "siteLocation",
+        label: "Site location (Developer KYC)",
+        type: "location",
+        required: false,
+      },
+      {
+        id: "bank-name",
+        key: "bankName",
+        label: "Bank name (Mortgage Bank KYC)",
+        type: "short-text",
+        required: false,
+        description: "For mortgage banks: the registered bank name.",
+      },
+      {
+        id: "bank-rc-number",
+        key: "bankRcNumber",
+        label: "RC / registration number (Mortgage Bank KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "bank-license-type",
+        key: "bankLicenseType",
+        label: "License type (Mortgage Bank KYC)",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "bank-years-in-operation",
+        key: "bankYearsInOperation",
+        label: "Years in operation (Mortgage Bank KYC)",
+        type: "number",
+        required: false,
+      },
+      {
+        id: "bank-aob",
+        key: "bankAob",
+        label: "Any other business — AOB (Mortgage Bank KYC)",
+        type: "long-text",
+        required: false,
+        description: "Describe any other business activities or notes.",
+      },
+      {
         id: "additional-notes",
         key: "additionalNotes",
         label: "Additional notes",
@@ -1129,6 +1269,12 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         description: "A valuation or project document may be requested by the selected partner.",
       },
       {
+        documentTypeId: "business-registration",
+        required: false,
+        description:
+          "Developer company or mortgage bank registration may be requested during partner review.",
+      },
+      {
         documentTypeId: "supporting-documents",
         required: false,
         description:
@@ -1144,6 +1290,16 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       {
         id: "verify-applicant-contact",
         label: "Verify requester identity and contact details before referral",
+        category: "verification",
+      },
+      {
+        id: "review-developer-kyc",
+        label: "Review developer KYC profile (estate, location, facilities, pricing, company) where applicable",
+        category: "verification",
+      },
+      {
+        id: "review-bank-kyc",
+        label: "Review mortgage bank KYC profile (name, RC, license, operations, AOB) where applicable",
         category: "verification",
       },
       {
@@ -1325,3 +1481,4 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
 /** Ordered catalog of all request blueprints. */
 export const REQUEST_BLUEPRINT_CATALOG: RequestBlueprintCatalog =
   Object.values(REQUEST_BLUEPRINT_MAP);
+

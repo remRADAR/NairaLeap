@@ -175,9 +175,9 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     id: "mortgage",
     title: "Mortgage",
     icon: "House",
-    shortDescription: "Explore home finance and property funding pathways.",
+    shortDescription: "Buy, build, renovate, or explore NHF / FMBN housing finance.",
     detailedDescription:
-      "Describe a home purchase, land-and-build, construction, renovation, rent-to-own, NHF/FMBN, diaspora, refinancing or mortgage-support need. NairaLeap will structure the request for review and route it to a suitable verified finance partner where available.",
+      "Three pathways — Buy a Home / Build, Renovate, or Explore NHF / FMBN Pathways. Home applicants describe their housing-finance need. Developers onboard with estate KYC (location, size, facilities, pricing, company details). Mortgage banks onboard with bank KYC (name, RC number, license type, years in operation, AOB). NairaLeap structures the request for review by a suitable verified finance partner.",
     onboardingCategory: "mortgage",
     estimatedCompletionTime: "5–7 minutes",
     requiresGuidedQuestions: true,
@@ -201,9 +201,9 @@ export const SERVICE_INTELLIGENCE_CATALOG: ServiceIntelligenceCatalog = [
     id: "insurance",
     title: "Insurance",
     icon: "ShieldCheck",
-    shortDescription: "Find cover for life, health, assets and business risks.",
+    shortDescription: "Compare cover, get a quote, or make a claim.",
     detailedDescription:
-      "Describe a new cover, comparison, claim, renewal, policy-support or verification need. NairaLeap will structure the request for review and route it to suitable licensed insurance operators where available.",
+      "Three flows — Compare Cover (with indicative starting prices across motor, health, life, home, business, agriculture, travel, liability and microinsurance), Get a Quote, or Make a Claim. NairaLeap structures the request for review and routes it to suitable licensed insurance operators where available. Indicative prices are starting points only; final premiums are confirmed by a licensed insurer.",
     onboardingCategory: "insurance",
     estimatedCompletionTime: "4–6 minutes",
     requiresGuidedQuestions: true,

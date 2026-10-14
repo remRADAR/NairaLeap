@@ -195,42 +195,46 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
   insurance: {
     audience: "Individuals, families, asset owners and businesses seeking protection",
     purpose:
-      "Describe a protection, claim, renewal, policy-support or verification need for review by suitable licensed insurance operators.",
+      "Three flows — Compare Cover (with indicative starting prices), Get a Quote, or Make a Claim. NairaLeap routes your request to suitable licensed insurance operators.",
     informationIntro:
       "The navigator helps organise your protection need before any provider discussion.",
     information: [
-      "Protection category and request type",
+      "Your flow: Compare Cover, Get a Quote, or Make a Claim",
+      "Protection category (motor, health, life, home, business, agriculture, travel, liability, microinsurance)",
       "Person, asset, health or business context",
       "Timing and existing-policy information where relevant",
       "Supporting documents only where the review requires them",
     ],
     process: [
-      "Choose the protection area and request type",
-      "Answer a small set of guided questions",
+      "Choose your flow: Compare Cover, Get a Quote, or Make a Claim",
+      "Select the protection category and answer guided questions",
       "Review the insurance request and next-step summary",
       "Submit for licensed-operator review where available",
     ],
     afterSubmission:
       "The protection request is prepared for review by a suitable licensed operator where available. The operator—not NairaLeap—determines terms, premiums, claims decisions and cover.",
     boundary:
-      "NairaLeap does not underwrite risk, bind cover or issue a policy. Terms, premiums, claims decisions and cover are determined by the licensed operator.",
+      "NairaLeap does not underwrite risk, bind cover or issue a policy. Indicative prices shown are starting points only; final premiums are confirmed by a licensed insurer. Terms, premiums, claims decisions and cover are determined by the licensed operator.",
     relatedServiceIds: ["mortgage", "property-listings", "customer-support"],
   },
   mortgage: {
-    audience: "Home buyers, builders, property owners, developers and diaspora applicants",
+    audience: "Home buyers, builders, renovators, developers and mortgage banks",
     purpose:
-      "Describe a home purchase, construction, renovation, refinancing or housing-finance need for review by a suitable verified finance partner.",
+      "Three pathways — Buy a Home / Build, Renovate, or Explore NHF / FMBN Pathways. Developers and mortgage banks onboard with a KYC profile. NairaLeap prepares your request for review by a suitable verified finance partner.",
     informationIntro:
-      "The navigator organises the housing-finance context before any lender or mortgage-partner review.",
+      "The navigator organises your housing-finance context — or your developer / mortgage-bank KYC profile — before any partner review.",
     information: [
-      "Mortgage purpose, property stage and location",
+      "Mortgage pathway: Buy a Home / Build, Renovate, or Explore NHF / FMBN",
+      "Your role: home applicant, developer, or mortgage bank",
+      "Developer KYC: estate name, location (state, LGA, landmark), size, facilities, pricing, and company details",
+      "Mortgage bank KYC: bank name, RC number, license type, years in operation, and AOB notes",
       "Applicant, income and contribution context",
       "Requested amount, property value and timing",
-      "Property, identity and income evidence where relevant",
     ],
     process: [
-      "Choose the housing-finance pathway",
-      "Answer practical questions about the applicant and property",
+      "Choose your mortgage pathway: Buy a Home / Build, Renovate, or Explore NHF / FMBN",
+      "Choose your role if you are a developer or mortgage bank",
+      "Answer practical questions about the applicant, property, or KYC profile",
       "Review the mortgage request and recommended next documents",
       "Submit for partner review and next-step confirmation",
     ],

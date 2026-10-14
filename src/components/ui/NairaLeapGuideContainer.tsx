@@ -36,6 +36,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 export interface NairaLeapGuideContainerProps {
   service: ServiceDefinition | null;
   onboardingRole?: OnboardingRole;
+  initialAnswers?: AnswersState;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onBack?: (service: ServiceDefinition) => void;
@@ -49,7 +50,11 @@ export type OnboardingRole =
   | "developer"
   | "agent"
   | "funding-client"
-  | "investor";
+  | "investor"
+  | "mortgage-bank"
+  | "compare-cover"
+  | "get-quote"
+  | "make-claim";
 
 const ROLE_LABELS: Record<OnboardingRole, string> = {
   customer: "Buyer / customer onboarding",
@@ -61,6 +66,10 @@ const ROLE_LABELS: Record<OnboardingRole, string> = {
   agent: "Agent onboarding",
   "funding-client": "Funding / partnership seeker onboarding",
   investor: "Investor / funder onboarding",
+  "mortgage-bank": "Mortgage bank onboarding",
+  "compare-cover": "Compare cover onboarding",
+  "get-quote": "Get a quote onboarding",
+  "make-claim": "Make a claim onboarding",
 };
 
 type GuideStage = "discovery" | "service" | "questions" | "review" | "success";
@@ -81,6 +90,7 @@ function stageIndex(stage: GuideStage): number {
 export function NairaLeapGuideContainer({
   service,
   onboardingRole,
+  initialAnswers,
   open,
   onOpenChange,
   onBack,
@@ -103,13 +113,17 @@ export function NairaLeapGuideContainer({
     setSelectedService(service);
     setDiscoveryAnswers(null);
     const pendingDraft = service ? consumePendingGuideDraft(service.id as ServiceId) : null;
-    setAnswers({ ...(pendingDraft?.answers ?? {}), ...(onboardingRole ? { onboardingRole } : {}) });
+    setAnswers({
+      ...(pendingDraft?.answers ?? {}),
+      ...(initialAnswers ?? {}),
+      ...(onboardingRole ? { onboardingRole } : {}),
+    });
     setRundown(null);
     setRequestId(null);
     setError(null);
     setSubmitting(false);
     idempotencyKey.current = crypto.randomUUID();
-  }, [open, service, onboardingRole]);
+  }, [open, service, onboardingRole, initialAnswers]);
 
   const resolvedIntent = useMemo(() => {
     const rawIntent = discoveryAnswers?.["discovery-goal"];
@@ -357,7 +371,9 @@ export function NairaLeapGuideContainer({
                     initialAnswers={answers}
                     onComplete={handleQuestionsComplete}
                     layout={
-                      selectedService.id === "agriculture" ? "horizontal" : "sequential"
+                      selectedService.id === "agriculture" || selectedService.id === "mortgage"
+                        ? "horizontal"
+                        : "sequential"
                     }
                   />
                 </>
@@ -642,3 +658,4 @@ function SummaryMetric({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
