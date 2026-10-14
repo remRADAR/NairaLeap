@@ -62,7 +62,7 @@ function Header({ compact = false }: { compact?: boolean }) {
             />
           </Link>
 
-          {/* Desktop nav — portal-focused: Services + Sign in + Admin */}
+          {/* Desktop nav — portal-focused: Services + Blog + Sign in + Admin */}
           <div
             className={cn(
               "hidden min-w-0 flex-1 items-center justify-end gap-2 text-sm",
@@ -74,6 +74,12 @@ function Header({ compact = false }: { compact?: boolean }) {
               className="portal-nav-link shrink-0 rounded-lg px-4 py-2 font-medium text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               Services
+            </Link>
+            <Link
+              to="/"
+              className="portal-nav-link shrink-0 rounded-lg px-4 py-2 font-medium text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
+            >
+              Blog
             </Link>
             <Link
               to={user ? "/dashboard" : "/auth"}
@@ -103,7 +109,7 @@ function Header({ compact = false }: { compact?: boolean }) {
           </div>
         </div>
 
-        {/* Mobile dropdown — portal-focused: Services + Sign in + Admin */}
+        {/* Mobile dropdown — portal-focused: Services + Blog + Sign in + Admin */}
         <div
           className={cn(
             "overflow-hidden transition-all duration-300 lg:hidden",
@@ -120,6 +126,13 @@ function Header({ compact = false }: { compact?: boolean }) {
               className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
             >
               Services
+            </Link>
+            <Link
+              to="/"
+              onClick={closeMenu}
+              className="portal-nav-link rounded-lg px-3 py-3 text-muted-foreground hover:text-foreground"
+            >
+              Blog
             </Link>
             <Link
               to={user ? "/dashboard" : "/auth"}
