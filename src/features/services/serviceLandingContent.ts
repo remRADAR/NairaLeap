@@ -13,95 +13,73 @@ export interface ServiceLandingContent {
 
 export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> = {
   agriculture: {
-    audience: "Farmers, farm owners, agribusinesses and agricultural partners",
+    audience: "Farmers and input suppliers across Nigeria",
     purpose:
-      "Use this service to describe the farm, inputs, production, market or training support you are looking for across the agricultural value chain.",
+      "Use this service to register your farm, find farm inputs, or connect as an input supplier — fertilizers, improved seeds, tractors, extension services, laborers, and chemical suppliers.",
     informationIntro:
-      "You will provide the practical details that help NairaLeap understand your agricultural need.",
+      "You will provide the practical details that help NairaLeap understand your agricultural role and needs.",
     information: [
-      "Your contact and farming profile",
-      "Farm location, scale and current activity",
-      "Crop, livestock or production focus",
-      "Inputs, buyers, training or support needs",
+      "Your contact details and role (farmer or input supplier)",
+      "Farm location and crop or animal types",
+      "Inputs, equipment, or services you need or supply",
+      "Timeline and budget context",
     ],
     process: [
-      "Choose the agricultural need that best describes your request",
-      "Answer a short set of practical questions",
+      "Choose whether you are a farmer or an input supplier",
+      "Answer a short set of practical questions on one page",
       "Review the structured Agriculture rundown",
       "Submit for NairaLeap review and follow-up",
     ],
     afterSubmission:
-      "NairaLeap reviews the request context and may follow up about missing information, suitable buyers, partners or next steps. Submission does not guarantee a transaction or outcome.",
+      "NairaLeap reviews the request context and may follow up about missing information, suitable matches, or next steps. Submission does not guarantee a transaction or outcome.",
     relatedServiceIds: ["vendor-marketplace", "business-funding", "insurance"],
   },
   "property-listings": {
-    audience: "Property owners, buyers, renters, developers and investors",
+    audience: "Buyers, developers, agents, property owners and renters",
     purpose:
-      "Describe a property to list, find, buy, rent or inspect, with the context needed for a clearer property enquiry.",
+      "List a property, find a home to rent, or buy land — all in one place. NairaLeap helps you connect with the right people for property and distress sales.",
     informationIntro: "Prepare the property and contact information relevant to your enquiry.",
     information: [
-      "Property type, location and intended action",
-      "Ownership or listing context",
+      "Your role: buyer, developer, or agent",
+      "Property type, location and intended action (sell, rent, buy, or rent-search)",
       "Property features, condition and supporting details",
       "Preferred viewing, buyer or renter requirements",
     ],
     process: [
-      "Tell us whether you are listing, buying, renting or enquiring",
+      "Choose your role: buyer, developer, or agent",
+      "Tell us whether you are listing, buying, renting, or searching",
       "Share the property context and what you need next",
-      "Review the property request before submission",
-      "Receive follow-up on the next review step",
+      "Review and submit your property request",
     ],
     afterSubmission:
       "The property enquiry is reviewed with any relevant ownership, inspection or valuation context. NairaLeap may request clarification before follow-up.",
     boundary:
       "Property details, ownership documents, inspections and valuation remain subject to review where applicable.",
-    relatedServiceIds: ["mortgage", "distress-sales", "professional-services"],
+    relatedServiceIds: ["mortgage", "professional-services", "business-funding"],
   },
   "business-funding": {
-    audience: "Businesses, founders, cooperatives and growth-stage operators",
+    audience: "Businesses, founders, cooperatives, investors and growth-stage operators",
     purpose:
-      "Use this service to describe a business funding, grant, investment or working-capital need without treating the request as an approval.",
+      "Describe a business funding, grant, investment, working-capital or partnership need. NairaLeap helps connect both clients seeking funding and investors looking to fund or partner.",
     informationIntro:
-      "The onboarding focuses on your business context and the type of support you are seeking.",
+      "The onboarding focuses on your business context and the type of support you are seeking. No KYC documents are required at this stage.",
     information: [
       "Business stage, sector and location",
-      "Funding or investment purpose",
+      "Funding or partnership purpose",
       "Requested amount and timing context",
-      "Business, financial or supporting information where relevant",
+      "Business and financial context",
     ],
     process: [
-      "Choose the type of funding or support you need",
+      "Choose the type of funding or partnership support you need",
       "Answer questions about the business and request",
       "Review the funding profile and next-step summary",
       "Submit for review and possible partner routing",
     ],
     afterSubmission:
-      "The funding request is reviewed for context and possible partner routing. Funding, eligibility, rates and approval remain subject to an authorised provider.",
+      "The funding or partnership request is reviewed for context and possible routing. Funding, eligibility, rates and approval remain subject to an authorised provider. KYC documents may be requested after initial review.",
     boundary:
       "NairaLeap does not promise funding, approval, rates or investment returns. Any offer is decided by the relevant authorised provider.",
-    relatedServiceIds: ["agriculture", "partnerships", "professional-services"],
-  },
-  partnerships: {
-    audience: "Businesses, founders, institutions and potential collaborators",
-    purpose:
-      "Structure a partnership, joint-venture, co-founder, distribution or collaboration enquiry for review.",
-    informationIntro:
-      "Explain the opportunity, the counterpart you need and the kind of collaboration you have in mind.",
-    information: [
-      "Your organisation or operating context",
-      "Partnership purpose and expected contribution",
-      "Sector, location and preferred counterpart",
-      "Supporting proposal or business information",
-    ],
-    process: [
-      "Describe the partnership opportunity",
-      "Share the fit, scope and intended next step",
-      "Review the structured partnership request",
-      "Submit for NairaLeap review and possible introductions",
-    ],
-    afterSubmission:
-      "NairaLeap reviews the collaboration context and may follow up for clarification or a suitable introduction. An introduction is not guaranteed.",
-    relatedServiceIds: ["business-funding", "vendor-marketplace", "professional-services"],
+    relatedServiceIds: ["agriculture", "vendor-marketplace", "professional-services"],
   },
   "vendor-marketplace": {
     audience: "Buyers, suppliers, vendors and service providers",
@@ -123,31 +101,7 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
     ],
     afterSubmission:
       "The marketplace request is reviewed for category, location and fit. Any vendor, product, quotation or match remains subject to the relevant review process.",
-    relatedServiceIds: ["agriculture", "partnerships", "recycling-scrap"],
-  },
-  "distress-sales": {
-    audience: "Owners, buyers and intermediaries handling time-sensitive assets",
-    purpose:
-      "Describe an urgent listing or enquiry for property, vehicles, equipment or inventory that needs structured review.",
-    informationIntro:
-      "The flow helps capture urgency, ownership and asset details without publishing anything automatically.",
-    information: [
-      "Asset type, location and condition",
-      "Ownership and urgency context",
-      "Expected price or transaction objective",
-      "Photos, valuation or supporting information where relevant",
-    ],
-    process: [
-      "Tell us what is being listed or sought",
-      "Explain the urgency and asset context",
-      "Review the request before it is shared for review",
-      "Submit for verification and possible buyer routing",
-    ],
-    afterSubmission:
-      "NairaLeap reviews the asset and urgency context before any buyer routing or publication decision. Ownership, valuation and a sale are not guaranteed.",
-    boundary:
-      "Urgency, ownership, pricing and publication remain subject to NairaLeap review; a buyer or sale is not guaranteed.",
-    relatedServiceIds: ["property-listings", "vendor-marketplace", "recycling-scrap"],
+    relatedServiceIds: ["agriculture", "business-funding", "recycling-scrap"],
   },
   "recycling-scrap": {
     audience: "Material owners, recyclers, scrap dealers and responsible buyers",
@@ -169,7 +123,7 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
     ],
     afterSubmission:
       "The material request is reviewed for location, quantity and handling context. Any price, buyer, recycler or pickup arrangement must be confirmed through review.",
-    relatedServiceIds: ["vendor-marketplace", "distress-sales", "customer-support"],
+    relatedServiceIds: ["vendor-marketplace", "property-listings", "customer-support"],
   },
   "business-briefs": {
     audience: "People who want concise market, sector and opportunity updates",
@@ -214,7 +168,7 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
       "The request is reviewed for scope and suitability before any specialist follow-up. The portal does not provide a professional opinion or guarantee a match.",
     boundary:
       "A request is not a legal, tax, financial or professional opinion. Any advice is provided by the engaged qualified professional.",
-    relatedServiceIds: ["business-funding", "partnerships", "customer-support"],
+    relatedServiceIds: ["business-funding", "vendor-marketplace", "customer-support"],
   },
   "customer-support": {
     audience: "Anyone who needs help, clarification or human follow-up",
