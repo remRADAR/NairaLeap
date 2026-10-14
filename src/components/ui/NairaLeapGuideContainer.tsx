@@ -40,7 +40,28 @@ export interface NairaLeapGuideContainerProps {
   onOpenChange: (open: boolean) => void;
   onBack?: (service: ServiceDefinition) => void;
 }
-export type OnboardingRole = "customer" | "seller";
+export type OnboardingRole =
+  | "customer"
+  | "seller"
+  | "farmer"
+  | "input-supplier"
+  | "buyer"
+  | "developer"
+  | "agent"
+  | "funding-client"
+  | "investor";
+
+const ROLE_LABELS: Record<OnboardingRole, string> = {
+  customer: "Buyer / customer onboarding",
+  seller: "Seller / provider onboarding",
+  farmer: "Farmer onboarding",
+  "input-supplier": "Input supplier onboarding",
+  buyer: "Buyer onboarding",
+  developer: "Developer onboarding",
+  agent: "Agent onboarding",
+  "funding-client": "Funding / partnership seeker onboarding",
+  investor: "Investor / funder onboarding",
+};
 
 type GuideStage = "discovery" | "service" | "questions" | "review" | "success";
 
@@ -235,13 +256,11 @@ export function NairaLeapGuideContainer({
                   NairaLeap Guide · service request
                 </div>
                 <DialogTitle className="truncate text-base font-semibold tracking-tight sm:text-lg">
-                  {selectedService?.title ?? "Let’s find the right path"}
+                  {selectedService?.title ?? "Let's find the right path"}
                 </DialogTitle>
                 {onboardingRole && selectedService ? (
                   <p className="mt-0.5 text-xs text-primary-glow">
-                    {onboardingRole === "seller"
-                      ? "Seller / provider onboarding"
-                      : "Buyer / customer onboarding"}
+                    {ROLE_LABELS[onboardingRole] ?? "Service onboarding"}
                   </p>
                 ) : null}
               </div>
@@ -326,15 +345,20 @@ export function NairaLeapGuideContainer({
 
               {stage === "questions" && selectedService ? (
                 <>
-                  <AssistantMessage title={`Let’s prepare your ${selectedService.title} request.`}>
-                    {onboardingRole === "seller"
-                      ? "Tell us what you offer. Answer the service questions and review your request before submitting."
-                      : "Tell us what you need. Answer the service questions and review your request before submitting."}
+                  <AssistantMessage title={`Let's prepare your ${selectedService.title} request.`}>
+                    {onboardingRole && onboardingRole !== "customer" && onboardingRole !== "seller"
+                      ? "Tell us about your needs. Answer the service questions and review your request before submitting."
+                      : onboardingRole === "seller"
+                        ? "Tell us what you offer. Answer the service questions and review your request before submitting."
+                        : "Tell us what you need. Answer the service questions and review your request before submitting."}
                   </AssistantMessage>
                   <QuestionEngine
                     questionSet={getServiceQuestionSet(selectedService.id as ServiceId)}
                     initialAnswers={answers}
                     onComplete={handleQuestionsComplete}
+                    layout={
+                      selectedService.id === "agriculture" ? "horizontal" : "sequential"
+                    }
                   />
                 </>
               ) : null}
@@ -563,6 +587,9 @@ function RundownPanel({
                 Recommended: {document.replaceAll("-", " ")}
               </li>
             ))}
+            {rundown.requiredDocuments.length === 0 && rundown.recommendedDocuments.length === 0 ? (
+              <li className="text-muted-foreground">No documents required at this stage.</li>
+            ) : null}
           </ul>
         </div>
         <div className="glass-panel rounded-3xl p-5">

@@ -11,11 +11,80 @@ interface ServiceLandingPageProps {
   service: ServiceDefinition;
 }
 
+interface RoleOption {
+  role: OnboardingRole;
+  title: string;
+  description: string;
+}
+
+function getRoleOptions(serviceId: string): RoleOption[] {
+  switch (serviceId) {
+    case "agriculture":
+      return [
+        {
+          role: "farmer",
+          title: "I'm a Farmer",
+          description: "I grow crops (maize, sesame, sorghum, cocoa, etc.) or raise animals (goats, cows, fish, etc.).",
+        },
+        {
+          role: "input-supplier",
+          title: "I'm an Input Supplier",
+          description: "I supply fertilizers, improved seeds, tractors, extension services, laborers, or chemicals.",
+        },
+      ];
+    case "property-listings":
+      return [
+        {
+          role: "buyer",
+          title: "I'm a Buyer",
+          description: "I want to buy land, find a home to rent, or purchase a property.",
+        },
+        {
+          role: "developer",
+          title: "I'm a Developer",
+          description: "I develop, build, or manage property projects.",
+        },
+        {
+          role: "agent",
+          title: "I'm an Agent",
+          description: "I list, broker, or manage properties on behalf of owners.",
+        },
+      ];
+    case "business-funding":
+      return [
+        {
+          role: "funding-client",
+          title: "I need funding or a partner",
+          description: "I want to access loans, grants, investment, or find a business partner.",
+        },
+        {
+          role: "investor",
+          title: "I'm an investor or funder",
+          description: "I want to fund businesses or partner with founders.",
+        },
+      ];
+    default:
+      return [
+        {
+          role: "customer",
+          title: "I'm a buyer or customer",
+          description: "I want to find, buy, use, or get help with this service.",
+        },
+        {
+          role: "seller",
+          title: "I'm a seller or provider",
+          description: "I want to list, sell, supply, or offer this service.",
+        },
+      ];
+  }
+}
+
 export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
   const [guideOpen, setGuideOpen] = useState(false);
   const [onboardingRole, setOnboardingRole] = useState<OnboardingRole>("customer");
   const intelligence = SERVICE_INTELLIGENCE_MAP[service.id];
   const Icon = service.icon;
+  const roleOptions = getRoleOptions(service.id);
 
   useEffect(() => {
     if (getPendingGuideServiceId() === service.id) {
@@ -101,51 +170,37 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
               </p>
 
               <div className="mt-7 grid gap-3">
-                <button
-                  type="button"
-                  data-testid="service-start-onboarding"
-                  data-onboarding-role="customer"
-                  aria-expanded={guideOpen}
-                  aria-controls="nairaleap-guide-dialog"
-                  onClick={() => startOnboarding("customer")}
-                  className="group rounded-2xl border border-primary/35 bg-primary/10 p-4 text-left transition hover:-translate-y-0.5 hover:border-primary/70 hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  <span className="flex items-center justify-between gap-4">
-                    <span>
-                      <span className="block text-base font-semibold text-foreground">
-                        I&apos;m a buyer or customer
+                {roleOptions.map((option, index) => (
+                  <button
+                    key={option.role}
+                    type="button"
+                    data-testid={index === 0 ? "service-start-onboarding" : undefined}
+                    data-onboarding-role={option.role}
+                    aria-expanded={guideOpen}
+                    aria-controls="nairaleap-guide-dialog"
+                    onClick={() => startOnboarding(option.role)}
+                    className={`group rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                      index === 0
+                        ? "border-primary/35 bg-primary/10 hover:border-primary/70 hover:bg-primary/15"
+                        : "border-glass-border bg-background/45 hover:border-primary/50 hover:bg-primary/5"
+                    }`}
+                  >
+                    <span className="flex items-center justify-between gap-4">
+                      <span>
+                        <span className="block text-base font-semibold text-foreground">
+                          {option.title}
+                        </span>
+                        <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
+                          {option.description}
+                        </span>
                       </span>
-                      <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        I want to find, buy, use, or get help with this service.
-                      </span>
+                      <ArrowRight
+                        className="h-5 w-5 shrink-0 text-primary transition group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
                     </span>
-                    <ArrowRight
-                      className="h-5 w-5 shrink-0 text-primary transition group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  data-testid="service-seller-onboarding"
-                  onClick={() => startOnboarding("seller")}
-                  className="group rounded-2xl border border-glass-border bg-background/45 p-4 text-left transition hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  <span className="flex items-center justify-between gap-4">
-                    <span>
-                      <span className="block text-base font-semibold text-foreground">
-                        I&apos;m a seller or provider
-                      </span>
-                      <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        I want to list, sell, supply, or offer this service.
-                      </span>
-                    </span>
-                    <ArrowRight
-                      className="h-5 w-5 shrink-0 text-primary transition group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </button>
+                  </button>
+                ))}
               </div>
 
               <div className="mt-7 flex items-center justify-between border-t border-glass-border pt-4 text-xs text-muted-foreground">
