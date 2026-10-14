@@ -87,8 +87,9 @@ function ArticleArchivePage() {
                   {post.image ? (
                     <img
                       src={post.image}
-                      alt=""
+                      alt={post.title}
                       loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
                     />
                   ) : (
@@ -109,22 +110,24 @@ function ArticleArchivePage() {
                     {post.date}
                   </p>
                   <h2 className="mt-2 line-clamp-3 text-base font-extrabold leading-6 text-[#262638]">
-                    <a
-                      href={`/articles/${post.slug}`}
+                    <Link
+                      to="/articles/$slug"
+                      params={{ slug: post.slug }}
                       className="transition-colors hover:text-[#7a2ce2]"
                     >
                       {post.title}
-                    </a>
+                    </Link>
                   </h2>
                   <p className="mt-3 line-clamp-2 text-xs leading-5 text-[#77778a]">
                     {post.excerpt}
                   </p>
-                  <a
-                    href={`/articles/${post.slug}`}
+                  <Link
+                    to="/articles/$slug"
+                    params={{ slug: post.slug }}
                     className="mt-5 inline-flex items-center gap-1 text-xs font-bold text-[#7a2ce2] transition-all hover:gap-2"
                   >
                     Read story <ArrowRight className="h-3.5 w-3.5" />
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}

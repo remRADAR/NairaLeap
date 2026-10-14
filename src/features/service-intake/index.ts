@@ -47,7 +47,7 @@ export const SERVICE_PRICING_MAP = {
     mode: "quote",
     label: "Quote required after review",
     detail:
-      "The NairaLeap team will confirm any service or matching fee after reviewing your request and documents.",
+      "The NairaLeap team will confirm any service or matching fee after reviewing your request.",
   },
   "property-listings": {
     mode: "quote",
@@ -61,23 +61,11 @@ export const SERVICE_PRICING_MAP = {
     detail:
       "Any advisory or matching fee is confirmed after eligibility and funding requirements are reviewed.",
   },
-  partnerships: {
-    mode: "quote",
-    label: "Quote required after review",
-    detail:
-      "Any partnership facilitation fee is confirmed after the proposal and fit requirements are reviewed.",
-  },
   "vendor-marketplace": {
     mode: "quote",
     label: "Quote required after review",
     detail:
       "Any marketplace or quote-request fee is confirmed after the request or vendor profile is reviewed.",
-  },
-  "distress-sales": {
-    mode: "quote",
-    label: "Quote required after review",
-    detail:
-      "Any listing or facilitation fee is confirmed after urgency, ownership, and pricing are verified.",
   },
   "recycling-scrap": {
     mode: "quote",
@@ -95,7 +83,7 @@ export const SERVICE_PRICING_MAP = {
     mode: "quote",
     label: "Quote required after review",
     detail:
-      "The specialist’s availability and professional fee are confirmed after the service need is reviewed.",
+      "The specialist's availability and professional fee are confirmed after the service need is reviewed.",
   },
   "customer-support": {
     mode: "no-charge",
@@ -117,18 +105,53 @@ export const SERVICE_PRICING_MAP = {
 } satisfies Record<ServiceId, ServicePriceRule>;
 
 const CHOICES: Record<string, QuestionChoice[]> = {
+  agricultureRole: [
+    { value: "farmer", label: "Farmer", description: "I grow crops or raise animals" },
+    { value: "input-supplier", label: "Input Supplier", description: "I supply fertilizers, seeds, equipment, or services" },
+  ],
   serviceType: [
     { value: "farm-registration", label: "Register a farm" },
     { value: "farm-inputs", label: "Find farm inputs" },
-    { value: "buyers", label: "Access buyers or markets" },
     { value: "training", label: "Request training or support" },
     { value: "other", label: "Something else in agriculture" },
   ],
+  cropTypes: [
+    { value: "maize", label: "Maize" },
+    { value: "sesame", label: "Sesame" },
+    { value: "sorghum", label: "Sorghum" },
+    { value: "cocoa", label: "Cocoa" },
+    { value: "cassava", label: "Cassava" },
+    { value: "rice", label: "Rice" },
+    { value: "vegetables", label: "Vegetables" },
+    { value: "other-crop", label: "Other crop" },
+  ],
+  animalTypes: [
+    { value: "goats", label: "Goats" },
+    { value: "cows", label: "Cows / Cattle" },
+    { value: "fish", label: "Fish" },
+    { value: "poultry", label: "Poultry (chickens, turkeys, etc.)" },
+    { value: "pigs", label: "Pigs" },
+    { value: "other-animal", label: "Other animal" },
+  ],
+  inputSupplierType: [
+    { value: "fertilizer", label: "Fertilizer supplier" },
+    { value: "improved-seeds", label: "Improved seed company" },
+    { value: "tractors-equipment", label: "Tractors & farm equipment" },
+    { value: "extension-services", label: "Extension services / advice" },
+    { value: "laborers", label: "Laborers / farm workers" },
+    { value: "chemicals", label: "Chemical / agrochemical supplier" },
+    { value: "other-supplier", label: "Other input or service" },
+  ],
+  propertyRole: [
+    { value: "buyer", label: "Buyer", description: "I want to buy or rent a property" },
+    { value: "developer", label: "Developer", description: "I develop or build properties" },
+    { value: "agent", label: "Agent", description: "I list or broker properties" },
+  ],
   transactionType: [
-    { value: "sell", label: "Sell a property" },
-    { value: "rent", label: "Rent out a property" },
-    { value: "buy", label: "Find a property to buy" },
-    { value: "rent-search", label: "Find a property to rent" },
+    { value: "sell", label: "List a property for sale" },
+    { value: "rent", label: "List a property for rent" },
+    { value: "buy", label: "Buy land or property" },
+    { value: "rent-search", label: "Find a home to rent" },
   ],
   propertyType: [
     { value: "land", label: "Land" },
@@ -147,13 +170,11 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "loan", label: "Loan or working capital" },
     { value: "grant", label: "Grant" },
     { value: "investment", label: "Investor or equity funding" },
-    { value: "not-sure", label: "Not sure yet" },
-  ],
-  partnershipType: [
-    { value: "joint-venture", label: "Joint venture" },
-    { value: "distribution", label: "Distribution or sales" },
+    { value: "joint-venture", label: "Joint venture partnership" },
+    { value: "distribution", label: "Distribution or sales partnership" },
     { value: "strategic", label: "Strategic partnership" },
     { value: "co-founder", label: "Co-founder or collaboration" },
+    { value: "not-sure", label: "Not sure yet" },
   ],
   marketplaceRole: [
     { value: "find-vendor", label: "Find a vendor" },
@@ -227,11 +248,9 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "general-business", label: "General business" },
   ],
   insuranceRequestType: [
-    { value: "new-cover", label: "Get new cover" },
-    { value: "compare-options", label: "Compare cover options" },
-    { value: "claim", label: "Make a claim" },
-    { value: "renew-or-change", label: "Renew or change a policy" },
-    { value: "verify-or-support", label: "Verify a policy or get policy support" },
+    { value: "compare-cover", label: "Compare Cover" },
+    { value: "get-quote", label: "Get a Quote" },
+    { value: "make-claim", label: "Make a Claim" },
   ],
   insuranceCategory: [
     { value: "motor-auto", label: "Motor and auto" },
@@ -252,17 +271,30 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "microinsurance", label: "Microinsurance / lower-cost cover" },
   ],
   mortgageRequestType: [
-    { value: "home-purchase", label: "Buy a completed home" },
-    { value: "land-and-build", label: "Buy land and build" },
-    { value: "construction", label: "Build on land I already have" },
-    { value: "renovation", label: "Renovate or improve a home" },
-    { value: "rent-to-own", label: "Explore rent-to-own or affordable housing" },
-    { value: "nhf-fmbn", label: "Explore NHF / FMBN housing finance" },
-    { value: "diaspora", label: "Diaspora mortgage enquiry" },
-    { value: "refinance", label: "Refinance or transfer an existing mortgage" },
-    { value: "restructure", label: "Discuss repayment support or restructuring" },
-    { value: "developer-finance", label: "Estate development or developer finance" },
-    { value: "mortgage-support", label: "Mortgage readiness, documents or support" },
+    { value: "buy-or-build", label: "Buy a Home / Build" },
+    { value: "renovate", label: "Renovate" },
+    { value: "nhf-fmbn", label: "Explore NHF / FMBN Pathways" },
+  ],
+  mortgageRole: [
+    { value: "developer", label: "Developer", description: "I develop estates or property projects" },
+    { value: "mortgage-bank", label: "Mortgage Bank", description: "I am a mortgage bank or lender" },
+  ],
+  estateFacilities: [
+    { value: "asphalt-road", label: "Asphalt road" },
+    { value: "security-247", label: "24/7 security" },
+    { value: "power-supply", label: "Power supply" },
+    { value: "streetlight", label: "Streetlight" },
+    { value: "water-supply", label: "Water supply" },
+    { value: "drainage", label: "Drainage" },
+    { value: "perimeter-fence", label: "Perimeter fence" },
+    { value: "other", label: "Other facility" },
+  ],
+  bankLicenseType: [
+    { value: "pmb", label: "Primary Mortgage Bank (PMB)" },
+    { value: "commercial", label: "Commercial Bank" },
+    { value: "non-interest", label: "Non-Interest Bank" },
+    { value: "mfb", label: "Microfinance Bank (MFB)" },
+    { value: "other", label: "Other license type" },
   ],
   applicantProfile: [
     { value: "individual", label: "Individual applicant" },
@@ -344,6 +376,25 @@ const FIELD_HELPERS: Record<string, string> = {
     "A broad range helps route your request; exact affordability is assessed by the selected partner.",
   mortgageStatus: "Choose the option closest to your current mortgage position.",
   nhfPreference: "This indicates a routing preference, not confirmation of NHF eligibility.",
+  mortgageRole: "Developer or mortgage bank. Leave blank if you are a home applicant.",
+  estateName: "The name of the estate or development project.",
+  developerState: "The state where the estate or project is located.",
+  developerLga: "The Local Government Area where the estate or project is located.",
+  estateLandmark: "A nearby landmark, bus stop, or reference point.",
+  estateSizeSqm: "Total estate size in square meters.",
+  propertyDescription: "Describe the property, units, and key features.",
+  amountPerSqm: "Your asking price per square meter. This is not a NairaLeap fee.",
+  mortgageBackQualified: "Indicate whether the project qualifies for mortgage-back arrangements.",
+  yearsInService: "Number of years the developer company has been in operation.",
+  monthlyPaymentAmount: "The monthly payment amount you expect or can offer.",
+  estateFacilities: "Select all facilities available in the estate.",
+  developerCompanyKyc: "Company registration, team, past projects, and KYC details.",
+  siteLocation: "The physical site location of the estate or project.",
+  bankName: "The registered name of the mortgage bank.",
+  bankRcNumber: "The bank's RC or registration number.",
+  bankLicenseType: "The type of license the bank operates under.",
+  bankYearsInOperation: "Number of years the bank has been in operation.",
+  bankAob: "Any other business activities or relevant notes.",
 };
 
 function questionTypeForField(type: BlueprintFieldType): Question["type"] {
@@ -361,7 +412,7 @@ function choiceKeyForField(field: BlueprintField, serviceId?: ServiceId): string
 function fallbackChoices(field: BlueprintField, serviceId?: ServiceId): QuestionChoice[] {
   return (
     CHOICES[choiceKeyForField(field, serviceId)] ?? [
-      { value: "not-sure", label: "I’m not sure yet" },
+      { value: "not-sure", label: "I'm not sure yet" },
     ]
   );
 }
@@ -480,3 +531,4 @@ export function buildServiceRundown(serviceId: ServiceId, answers: AnswersState)
     price: SERVICE_PRICING_MAP[serviceId],
   };
 }
+

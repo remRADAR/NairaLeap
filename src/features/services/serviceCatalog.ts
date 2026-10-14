@@ -3,9 +3,7 @@ import {
   Sprout,
   Building2,
   Banknote,
-  Handshake,
   Store,
-  Tag,
   Recycle,
   Newspaper,
   Briefcase,
@@ -18,9 +16,7 @@ export type ServiceId =
   | "agriculture"
   | "property-listings"
   | "business-funding"
-  | "partnerships"
   | "vendor-marketplace"
-  | "distress-sales"
   | "recycling-scrap"
   | "business-briefs"
   | "professional-services"
@@ -40,48 +36,38 @@ export interface ServiceDefinition {
 /**
  * Single source of truth for the service catalog.
  * Consumed by the service grid AND the reusable ServicePreviewSheet.
+ *
+ * Services merged in v2 restructuring:
+ * - Partnerships → merged into Business Funding (investor & partner paths unified)
+ * - Distress Sales → merged into Property Listings (urgency flag within property)
  */
 export const SERVICE_CATALOG: ServiceDefinition[] = [
   {
     id: "agriculture",
     icon: Sprout,
     title: "Agriculture",
-    shortDescription: "Farming inputs, produce and agri opportunities.",
+    shortDescription: "Register your farm or supply inputs to farmers across Nigeria.",
     longDescription:
-      "Helping farmers, investors and agribusinesses connect with the right opportunities across the value chain.",
-    examples: ["Register a Farm", "Find Farm Inputs", "Access Buyers", "Request Training"],
+      "Farmers register their farm and crops. Input suppliers register their company to reach farmers. No metrics forms — just tell us who you are and what you do.",
+    examples: ["Register a Farm", "Find Farm Inputs", "Request Training"],
   },
   {
     id: "property-listings",
     icon: Building2,
-    title: "Property Listings",
-    shortDescription: "Homes, land and commercial spaces across Nigeria.",
+    title: "Property & Distress Sales",
+    shortDescription: "List, rent, buy land, homes and commercial spaces across Nigeria.",
     longDescription:
-      "Discover, list and enquire about residential, commercial and land assets with verified details.",
-    examples: ["List a Property", "Find a Home to Rent", "Buy Land", "Request a Site Visit"],
+      "List a property, find a home to rent, buy land, or browse distressed/urgent sales. Choose your role as Buyer, Developer, or Agent.",
+    examples: ["List a Property", "Find a Home to Rent", "Buy Land", "Browse Distress Sales"],
   },
   {
     id: "business-funding",
     icon: Banknote,
-    title: "Business Funding",
-    shortDescription: "Access working capital and growth financing.",
+    title: "Business Funding & Partnerships",
+    shortDescription: "Loans, grants, investors, joint ventures and strategic partnerships.",
     longDescription:
-      "Match your business with lenders, grants and investors suited to your stage and sector.",
-    examples: ["Apply for a Loan", "Pitch to Investors", "Find a Grant", "Get Funding Advice"],
-  },
-  {
-    id: "partnerships",
-    icon: Handshake,
-    title: "Partnerships",
-    shortDescription: "Connect with vetted partners and collaborators.",
-    longDescription:
-      "Explore strategic partnerships, joint ventures and collaboration opportunities with trusted counterparts.",
-    examples: [
-      "Propose a Partnership",
-      "Find a Co-founder",
-      "Joint Venture Enquiry",
-      "Distribution Partner",
-    ],
+      "Access working capital, pitch to investors, find grants, or propose strategic partnerships and joint ventures — all in one guided flow.",
+    examples: ["Apply for a Loan", "Pitch to Investors", "Propose a Partnership", "Find a Grant"],
   },
   {
     id: "vendor-marketplace",
@@ -91,20 +77,6 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     longDescription:
       "Source products and services from a marketplace of vetted vendors with transparent reviews.",
     examples: ["Register as a Vendor", "Request a Quote", "Compare Vendors", "Bulk Order Enquiry"],
-  },
-  {
-    id: "distress-sales",
-    icon: Tag,
-    title: "Distress Sales",
-    shortDescription: "Time-sensitive listings at reduced prices.",
-    longDescription:
-      "Browse or submit urgent, time-sensitive listings across property, vehicles, equipment and inventory.",
-    examples: [
-      "List a Distress Sale",
-      "Browse Distressed Property",
-      "Distressed Vehicles",
-      "Equipment & Inventory",
-    ],
   },
   {
     id: "recycling-scrap",
@@ -151,23 +123,23 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     id: "insurance",
     icon: ShieldCheck,
     title: "Insurance",
-    shortDescription: "Find cover for life, health, assets and business risks.",
+    shortDescription: "Compare cover, get a quote, or make a claim.",
     longDescription:
-      "Describe the protection you need and NairaLeap will help route you to suitable insurance options and licensed providers for review.",
-    examples: ["Get a Quote", "Compare Cover", "Make a Claim", "Renew or Verify a Policy"],
+      "Three flows: Compare Cover (see indicative starting prices across motor, health, life, home, business, agriculture, travel, liability and microinsurance), Get a Quote, or Make a Claim. NairaLeap routes your request to licensed insurance operators for review.",
+    examples: ["Compare Cover", "Get a Quote", "Make a Claim"],
   },
   {
     id: "mortgage",
     icon: House,
     title: "Mortgage",
-    shortDescription: "Explore home finance and property funding pathways.",
+    shortDescription: "Buy, build, renovate, or explore NHF / FMBN housing finance.",
     longDescription:
-      "Describe your home purchase, construction, renovation, refinancing or housing-finance need and NairaLeap will prepare it for review by a suitable verified finance partner.",
+      "Three pathways: Buy a Home / Build, Renovate, or Explore NHF / FMBN Pathways. Developers and mortgage banks can onboard with a KYC profile. NairaLeap prepares your request for review by a suitable verified finance partner.",
     examples: [
-      "Buy a Home",
-      "Build or Renovate",
+      "Buy a Home / Build",
+      "Renovate",
       "Explore NHF / FMBN Pathways",
-      "Refinance or Get Mortgage Support",
+      "Developer or Mortgage Bank onboarding",
     ],
   },
 ];

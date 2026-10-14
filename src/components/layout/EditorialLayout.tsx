@@ -8,10 +8,11 @@ import {
   Search,
   Send,
   Sun,
+  Twitter,
   X,
   Youtube,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
 
@@ -36,10 +37,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
-      <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
-        Subscribe to our newsletter &amp; never miss our best posts.{" "}
-        <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
-      </div>
+      <SubscribeBanner />
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
@@ -83,51 +81,173 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         </div>
         {menuOpen && <EditorialMenu onNavigate={() => setMenuOpen(false)} />}
       </header>
-      <div className="border-b border-[#ececf3] bg-white py-2.5">
-        <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
-          <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
-            Latest
-          </span>
-          <div className="editorial-ticker flex min-w-0 flex-1 overflow-hidden">
-            <div className="editorial-ticker-track flex min-w-max gap-8 pr-8">
-              {[...Array(2)]
-                .flatMap(() => [
-                  "FRSC commends Dangote Cement on new transport safety policy",
-                  "UAE envoy: First Abu Dhabi Bank, Etihad Airways will begin Nigeria operations soon",
-                  "US-Nigeria air strike kills ‘21 ISWAP fighters’ in Borno",
-                ])
-                .map((item, index) => (
-                  <span key={`${item}-${index}`} className="whitespace-nowrap">
-                    {item}
-                  </span>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <LatestTicker />
       <main key={routeKey} className="page-transition">
         {children}
       </main>
       <footer className="mt-16 border-t border-[#e9e9f0] bg-white px-4 py-10 text-center text-xs text-[#858598]">
         <div className="flex justify-center gap-4">
-          <a href="https://www.facebook.com/" aria-label="Facebook">
+          <a
+            href="https://www.facebook.com/"
+            aria-label="Facebook"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-[#7a2ce2]"
+          >
             <Facebook className="h-4 w-4" />
           </a>
-          <a href="https://twitter.com/" aria-label="Twitter">
+          <a
+            href="https://twitter.com/"
+            aria-label="Twitter"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-[#7a2ce2]"
+          >
+            <Twitter className="h-4 w-4" />
+          </a>
+          <a
+            href="https://t.me/"
+            aria-label="Telegram"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-[#7a2ce2]"
+          >
             <Send className="h-4 w-4" />
           </a>
-          <a href="https://t.me/" aria-label="Telegram">
-            <Send className="h-4 w-4" />
-          </a>
-          <a href="https://www.instagram.com/" aria-label="Instagram">
+          <a
+            href="https://www.instagram.com/"
+            aria-label="Instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-[#7a2ce2]"
+          >
             <Instagram className="h-4 w-4" />
           </a>
-          <a href="https://youtube.com/" aria-label="YouTube">
+          <a
+            href="https://youtube.com/"
+            aria-label="YouTube"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-[#7a2ce2]"
+          >
             <Youtube className="h-4 w-4" />
           </a>
         </div>
         <p className="mt-4">© {new Date().getFullYear()} Nairaleap — Indicator Drivers</p>
       </footer>
+    </div>
+  );
+}
+
+function SubscribeBanner() {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (email.includes("@") && email.includes(".")) {
+      setDone(true);
+    }
+  };
+
+  return (
+    <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
+      {done ? (
+        <span>✓ Thanks for subscribing! Check your inbox to confirm.</span>
+      ) : open ? (
+        <form className="inline-flex items-center gap-2" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="w-48 rounded-full px-3 py-1 text-xs text-[#262638] outline-none placeholder:text-[#9292a4] sm:w-56"
+            autoFocus
+          />
+          <button
+            type="submit"
+            className="rounded-full bg-white px-3 py-1 text-[11px] font-bold text-[#f9007a] transition hover:bg-white/90"
+          >
+            Subscribe
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="text-white/70 transition-colors hover:text-white"
+            aria-label="Close subscribe form"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </form>
+      ) : (
+        <>
+          Subscribe to our newsletter &amp; never miss our best posts.{" "}
+          <button
+            className="ml-1 font-bold underline underline-offset-2 transition hover:text-white/80"
+            onClick={() => setOpen(true)}
+          >
+            Subscribe Now!
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+function LatestTicker() {
+  const [items, setItems] = useState<{ slug: string; title: string }[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      try {
+        const { EDITORIAL_POSTS } = await import("@/data/wordpressEditorial");
+        if (!active) return;
+        setItems(
+          EDITORIAL_POSTS.slice(0, 10).map((post) => ({
+            slug: post.slug,
+            title: post.title,
+          })),
+        );
+      } catch {
+        // Ticker stays hidden if posts can't be loaded
+      }
+    };
+    void load();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="border-b border-[#ececf3] bg-white py-2.5">
+      <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
+        <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
+          Latest
+        </span>
+        <div className="editorial-ticker flex min-w-0 flex-1 overflow-hidden">
+          <div className="editorial-ticker-track flex min-w-max gap-8 pr-8">
+            {[0, 1].flatMap((copy) =>
+              items.map((item) => (
+                <Link
+                  key={`${copy}-${item.slug}`}
+                  to="/articles/$slug"
+                  params={{ slug: item.slug }}
+                  tabIndex={copy === 1 ? -1 : undefined}
+                  aria-hidden={copy === 1}
+                  className="whitespace-nowrap transition-colors hover:text-[#7a2ce2]"
+                >
+                  {item.title}
+                </Link>
+              )),
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -162,13 +282,13 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             >
               Nairaleap services
             </Link>
-            <a
-              href="/admin"
+            <Link
+              to="/admin"
               onClick={onNavigate}
               className="rounded-full border border-[#e5dafa] px-3 py-2 text-[11px] font-bold text-[#6f23dd] hover:bg-[#f8f4ff]"
             >
               Admin Studio
-            </a>
+            </Link>
           </div>
         </div>
         <div className="divide-y divide-[#eeeaf6] overflow-hidden rounded-xl border border-[#eeeaf6]">

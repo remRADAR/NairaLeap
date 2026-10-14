@@ -2,7 +2,7 @@
  * Request Blueprint Engine
  *
  * The master configuration for the final structured output package that every
- * NairaLeap onboarding process must produce. This is a pure data module — no
+ * NairaLeap onboarding process must produce. This is a pure data module â no
  * UI, no business logic, no backend calls, no routes.
  *
  * Consumer layers (review screens, admin dashboards, notifications, PDF
@@ -29,7 +29,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     serviceId: "agriculture",
     outputTitle: "Agriculture Service Request",
     summaryTemplate:
-      "Your Agriculture request has been prepared. NairaLeap will review your farm profile, inputs or buyer needs and match you with verified agribusiness opportunities within 1–2 business days.",
+      "Your Agriculture request has been prepared. NairaLeap will review your farm or input-supplier profile and match you with verified opportunities within 1â2 business days.",
     requiredFields: [
       {
         id: "contact-name",
@@ -53,17 +53,18 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: true,
       },
       {
-        id: "farm-location",
-        key: "farmLocation",
-        label: "Farm location",
-        type: "location",
+        id: "agriculture-role",
+        key: "agricultureRole",
+        label: "I am aâ¦",
+        type: "single-choice",
         required: true,
+        description: "Choose whether you are a farmer or an input supplier.",
       },
       {
-        id: "farm-size",
-        key: "farmSize",
-        label: "Farm size (acres/hectares)",
-        type: "short-text",
+        id: "farm-location",
+        key: "farmLocation",
+        label: "Farm or business location",
+        type: "location",
         required: true,
       },
       {
@@ -74,47 +75,50 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: true,
       },
       {
-        id: "crop-livestock",
-        key: "cropOrLivestock",
-        label: "Crop or livestock type",
-        type: "short-text",
-        required: true,
-      },
-      {
-        id: "quantity",
-        key: "quantity",
-        label: "Estimated quantity or scale",
-        type: "short-text",
-        required: true,
-      },
-      {
         id: "timeline",
         key: "timeline",
         label: "Expected timeline",
-        type: "short-text",
+        type: "single-choice",
         required: true,
       },
     ],
     optionalFields: [
       {
-        id: "budget-range",
-        key: "budgetRange",
-        label: "Budget range",
-        type: "currency",
+        id: "crop-types",
+        key: "cropTypes",
+        label: "Crop types (select all that apply)",
+        type: "multiple-choice",
         required: false,
+        description: "Maize, sesame, sorghum, cocoa, cassava, rice, vegetables, etc.",
+      },
+      {
+        id: "animal-types",
+        key: "animalTypes",
+        label: "Animal types (select all that apply)",
+        type: "multiple-choice",
+        required: false,
+        description: "Goats, cows, poultry, fish, pigs, etc.",
+      },
+      {
+        id: "input-supplier-type",
+        key: "inputSupplierType",
+        label: "Type of input or service you supply",
+        type: "multiple-choice",
+        required: false,
+        description: "Fertilizer, improved seeds, tractors, extension services, laborers, chemicals, etc.",
       },
       {
         id: "inputs-needed",
         key: "inputsNeeded",
-        label: "Specific inputs needed",
+        label: "Specific inputs or resources needed",
         type: "long-text",
         required: false,
       },
       {
-        id: "buyer-preferences",
-        key: "buyerPreferences",
-        label: "Buyer or market preferences",
-        type: "long-text",
+        id: "budget-range",
+        key: "budgetRange",
+        label: "Budget range",
+        type: "currency",
         required: false,
       },
       {
@@ -125,11 +129,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: false,
       },
     ],
-    requiredDocuments: [
-      { documentTypeId: "government-id", required: true },
-      { documentTypeId: "farm-ownership", required: true },
-      { documentTypeId: "farm-plan", required: false },
-    ],
+    requiredDocuments: [],
     adminChecklist: [
       {
         id: "verify-identity",
@@ -138,7 +138,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "confirm-farm-location",
-        label: "Confirm farm location and ownership documents",
+        label: "Confirm farm or business location",
         category: "verification",
       },
       {
@@ -157,9 +157,9 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
   },
   "property-listings": {
     serviceId: "property-listings",
-    outputTitle: "Property Listing Request",
+    outputTitle: "Property & Distress Sales Request",
     summaryTemplate:
-      "Your Property Listing request has been captured. NairaLeap will verify the property details, prepare visibility options and connect you with interested buyers or renters.",
+      "Your Property request has been captured. NairaLeap will verify the property details, prepare visibility options and connect you with interested buyers, renters, or developers.",
     requiredFields: [
       {
         id: "contact-name",
@@ -183,9 +183,17 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: true,
       },
       {
+        id: "property-role",
+        key: "propertyRole",
+        label: "I am aâ¦",
+        type: "single-choice",
+        required: true,
+        description: "Buyer, developer, or agent.",
+      },
+      {
         id: "transaction-type",
         key: "transactionType",
-        label: "Transaction type",
+        label: "What do you want to do?",
         type: "single-choice",
         required: true,
       },
@@ -279,7 +287,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "match-enquiries",
-        label: "Connect with interested buyers or renters",
+        label: "Connect with interested buyers, renters, or developers",
         category: "assignment",
       },
     ],
@@ -288,9 +296,9 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
   },
   "business-funding": {
     serviceId: "business-funding",
-    outputTitle: "Business Funding Request",
+    outputTitle: "Business Funding & Partnerships Request",
     summaryTemplate:
-      "Your Business Funding profile is ready for review. NairaLeap will match your requirements with suitable lenders, investors or grant programmes and respond within 2 business days.",
+      "Your Business Funding & Partnerships profile is ready for review. NairaLeap will match your requirements with suitable lenders, investors, grant programmes or partners and respond within 2 business days.",
     requiredFields: [
       {
         id: "contact-name",
@@ -330,7 +338,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       {
         id: "funding-purpose",
         key: "fundingPurpose",
-        label: "Purpose of funding",
+        label: "Purpose of funding or partnership",
         type: "long-text",
         required: true,
       },
@@ -348,20 +356,20 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         type: "short-text",
         required: true,
       },
-      {
-        id: "revenue-range",
-        key: "revenueRange",
-        label: "Annual revenue range",
-        type: "currency",
-        required: true,
-      },
     ],
     optionalFields: [
       {
         id: "funding-type",
         key: "fundingType",
-        label: "Preferred funding type",
+        label: "Preferred funding or partnership type",
         type: "single-choice",
+        required: false,
+      },
+      {
+        id: "revenue-range",
+        key: "revenueRange",
+        label: "Annual revenue range",
+        type: "currency",
         required: false,
       },
       {
@@ -379,6 +387,13 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: false,
       },
       {
+        id: "partnership-goals",
+        key: "partnershipGoals",
+        label: "What are you looking for in a partner?",
+        type: "long-text",
+        required: false,
+      },
+      {
         id: "additional-notes",
         key: "additionalNotes",
         label: "Additional notes",
@@ -387,169 +402,44 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
     ],
     requiredDocuments: [
-      { documentTypeId: "government-id", required: true },
-      { documentTypeId: "business-registration", required: true },
-      { documentTypeId: "tax-identification", required: true },
-      { documentTypeId: "financial-statements", required: false },
-      { documentTypeId: "bank-statement", required: true },
+      { documentTypeId: "government-id", required: false, description: "May be requested after initial review." },
+      { documentTypeId: "business-registration", required: false, description: "May be requested after initial review." },
+      { documentTypeId: "tax-identification", required: false, description: "May be requested after initial review." },
+      { documentTypeId: "financial-statements", required: false, description: "May be requested after initial review." },
+      { documentTypeId: "bank-statement", required: false, description: "May be requested after initial review." },
+      { documentTypeId: "partnership-agreement", required: false, description: "Relevant for partnership-type requests." },
+      { documentTypeId: "supporting-documents", required: false, description: "Additional context for review." },
     ],
     adminChecklist: [
       {
         id: "verify-business",
-        label: "Verify business registration and tax ID",
+        label: "Verify business registration and tax ID (post-review)",
         category: "verification",
       },
       {
         id: "review-financials",
-        label: "Review financial statements and bank statements",
+        label: "Review financial statements and bank statements if provided",
         category: "compliance",
       },
       {
         id: "assess-eligibility",
-        label: "Assess eligibility against lender/investor criteria",
+        label: "Assess eligibility against lender/investor/partner criteria",
         category: "review",
       },
       {
         id: "match-funding",
-        label: "Match with suitable lenders, investors or grants",
+        label: "Match with suitable lenders, investors, grants or partners",
         category: "assignment",
       },
     ],
     nextWorkflow: "guided-question-engine",
     priority: "high",
   },
-  partnerships: {
-    serviceId: "partnerships",
-    outputTitle: "Partnership Request",
-    summaryTemplate:
-      "Your Partnership request has been structured. NairaLeap will review your proposal and introduce compatible, vetted partners where there is mutual fit.",
-    requiredFields: [
-      {
-        id: "contact-name",
-        key: "contactName",
-        label: "Full name",
-        type: "short-text",
-        required: true,
-      },
-      {
-        id: "contact-phone",
-        key: "contactPhone",
-        label: "Phone number",
-        type: "phone",
-        required: true,
-      },
-      {
-        id: "contact-email",
-        key: "contactEmail",
-        label: "Email address",
-        type: "email",
-        required: true,
-      },
-      {
-        id: "business-name",
-        key: "businessName",
-        label: "Business or organisation name",
-        type: "short-text",
-        required: true,
-      },
-      {
-        id: "partnership-type",
-        key: "partnershipType",
-        label: "Partnership type",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "partnership-goals",
-        key: "partnershipGoals",
-        label: "What are you looking for in a partner?",
-        type: "long-text",
-        required: true,
-      },
-      {
-        id: "industry-sector",
-        key: "industrySector",
-        label: "Industry or sector",
-        type: "short-text",
-        required: true,
-      },
-      {
-        id: "location-preference",
-        key: "locationPreference",
-        label: "Preferred partner location",
-        type: "location",
-        required: true,
-      },
-      {
-        id: "investment-range",
-        key: "investmentRange",
-        label: "Investment or contribution range",
-        type: "currency",
-        required: false,
-      },
-    ],
-    optionalFields: [
-      {
-        id: "partner-criteria",
-        key: "partnerCriteria",
-        label: "Ideal partner criteria",
-        type: "long-text",
-        required: false,
-      },
-      {
-        id: "timeline",
-        key: "timeline",
-        label: "Expected partnership timeline",
-        type: "short-text",
-        required: false,
-      },
-      {
-        id: "existing-agreement",
-        key: "existingAgreement",
-        label: "Existing partnership agreement in place?",
-        type: "yes-no",
-        required: false,
-      },
-      {
-        id: "additional-notes",
-        key: "additionalNotes",
-        label: "Additional notes",
-        type: "long-text",
-        required: false,
-      },
-    ],
-    requiredDocuments: [
-      { documentTypeId: "government-id", required: true },
-      { documentTypeId: "business-registration", required: true },
-      { documentTypeId: "partnership-agreement", required: false },
-      { documentTypeId: "supporting-documents", required: false },
-    ],
-    adminChecklist: [
-      {
-        id: "verify-business",
-        label: "Verify business registration and identity",
-        category: "verification",
-      },
-      { id: "review-proposal", label: "Review partnership goals and criteria", category: "review" },
-      {
-        id: "identify-partners",
-        label: "Identify compatible, vetted partners",
-        category: "assignment",
-      },
-      {
-        id: "introduce-parties",
-        label: "Introduce both parties with mutual fit summary",
-        category: "communication",
-      },
-    ],
-    nextWorkflow: "guided-question-engine",
-    priority: "normal",
-  },
   "vendor-marketplace": {
     serviceId: "vendor-marketplace",
     outputTitle: "Vendor Marketplace Request",
     summaryTemplate:
-      "Your Vendor Marketplace request has been recorded. NairaLeap will match you with verified vendors or evaluate your vendor registration and follow up within 1–2 business days.",
+      "Your Vendor Marketplace request has been recorded. NairaLeap will match you with verified vendors or evaluate your vendor registration and follow up within 1â2 business days.",
     requiredFields: [
       {
         id: "contact-name",
@@ -664,133 +554,6 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     ],
     nextWorkflow: "guided-question-engine",
     priority: "normal",
-  },
-  "distress-sales": {
-    serviceId: "distress-sales",
-    outputTitle: "Distress Sale Request",
-    summaryTemplate:
-      "Your Distress Sale request has been documented. NairaLeap will verify the urgency, pricing and ownership details, then publish the listing to matched buyers.",
-    requiredFields: [
-      {
-        id: "contact-name",
-        key: "contactName",
-        label: "Full name",
-        type: "short-text",
-        required: true,
-      },
-      {
-        id: "contact-phone",
-        key: "contactPhone",
-        label: "Phone number",
-        type: "phone",
-        required: true,
-      },
-      {
-        id: "contact-email",
-        key: "contactEmail",
-        label: "Email address",
-        type: "email",
-        required: true,
-      },
-      {
-        id: "asset-type",
-        key: "assetType",
-        label: "Asset type",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "asset-description",
-        key: "assetDescription",
-        label: "Asset description",
-        type: "long-text",
-        required: true,
-      },
-      {
-        id: "asset-location",
-        key: "assetLocation",
-        label: "Asset location",
-        type: "location",
-        required: true,
-      },
-      {
-        id: "asking-price",
-        key: "askingPrice",
-        label: "Asking price",
-        type: "currency",
-        required: true,
-      },
-      {
-        id: "urgency-reason",
-        key: "urgencyReason",
-        label: "Reason for urgency",
-        type: "long-text",
-        required: true,
-      },
-      {
-        id: "timeline",
-        key: "timeline",
-        label: "Required closing timeline",
-        type: "short-text",
-        required: true,
-      },
-    ],
-    optionalFields: [
-      {
-        id: "original-price",
-        key: "originalPrice",
-        label: "Original or market price",
-        type: "currency",
-        required: false,
-      },
-      {
-        id: "negotiable",
-        key: "negotiable",
-        label: "Price negotiable?",
-        type: "yes-no",
-        required: false,
-      },
-      {
-        id: "inspection-availability",
-        key: "inspectionAvailability",
-        label: "Inspection availability",
-        type: "short-text",
-        required: false,
-      },
-      {
-        id: "additional-notes",
-        key: "additionalNotes",
-        label: "Additional notes",
-        type: "long-text",
-        required: false,
-      },
-    ],
-    requiredDocuments: [
-      { documentTypeId: "government-id", required: true },
-      { documentTypeId: "ownership-proof", required: true },
-      { documentTypeId: "asset-photos", required: true },
-      { documentTypeId: "valuation-report", required: false },
-    ],
-    adminChecklist: [
-      {
-        id: "verify-ownership",
-        label: "Verify ownership proof and identity",
-        category: "verification",
-      },
-      { id: "assess-urgency", label: "Assess urgency and pricing rationale", category: "review" },
-      {
-        id: "review-valuation",
-        label: "Review valuation report if provided",
-        category: "compliance",
-      },
-      {
-        id: "publish-listing",
-        label: "Publish to matched buyers with urgency flag",
-        category: "assignment",
-      },
-    ],
-    nextWorkflow: "guided-question-engine",
-    priority: "urgent",
   },
   "recycling-scrap": {
     serviceId: "recycling-scrap",
@@ -1223,47 +986,13 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         label: "What mortgage help do you need?",
         type: "single-choice",
         required: true,
-      },
-      {
-        id: "applicant-profile",
-        key: "applicantProfile",
-        label: "Which applicant profile best describes you?",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "property-stage",
-        key: "propertyStage",
-        label: "What stage is the property or project at?",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "property-type",
-        key: "propertyType",
-        label: "What type of property or project is involved?",
-        type: "single-choice",
-        required: true,
+        description: "Buy a Home / Build, Renovate, or Explore NHF / FMBN Pathways.",
       },
       {
         id: "mortgage-location",
         key: "mortgageLocation",
         label: "Where is the property or project located?",
         type: "location",
-        required: true,
-      },
-      {
-        id: "income-source",
-        key: "incomeSource",
-        label: "What is your main income source?",
-        type: "single-choice",
-        required: true,
-      },
-      {
-        id: "mortgage-timeline",
-        key: "mortgageTimeline",
-        label: "When would you like to move forward?",
-        type: "single-choice",
         required: true,
       },
       {
@@ -1275,6 +1004,50 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
     ],
     optionalFields: [
+      {
+        id: "mortgage-role",
+        key: "mortgageRole",
+        label: "Choose your role",
+        type: "single-choice",
+        required: false,
+        description:
+          "Developer or mortgage bank. Leave blank if you are a home applicant (buyer, builder, or renovator).",
+      },
+      {
+        id: "applicant-profile",
+        key: "applicantProfile",
+        label: "Which applicant profile best describes you?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "property-stage",
+        key: "propertyStage",
+        label: "What stage is the property or project at?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "property-type",
+        key: "propertyType",
+        label: "What type of property or project is involved?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "income-source",
+        key: "incomeSource",
+        label: "What is your main income source?",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "mortgage-timeline",
+        key: "mortgageTimeline",
+        label: "When would you like to move forward?",
+        type: "single-choice",
+        required: false,
+      },
       {
         id: "income-range",
         key: "incomeRange",
@@ -1325,6 +1098,136 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         required: false,
       },
       {
+        id: "estate-name",
+        key: "estateName",
+        label: "Estate name (Developer KYC)",
+        type: "short-text",
+        required: false,
+        description: "For developers: the name of the estate or project.",
+      },
+      {
+        id: "developer-state",
+        key: "developerState",
+        label: "State (Developer KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "developer-lga",
+        key: "developerLga",
+        label: "LGA (Developer KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "estate-landmark",
+        key: "estateLandmark",
+        label: "Landmark / nearest reference (Developer KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "estate-size-sqm",
+        key: "estateSizeSqm",
+        label: "Estate size in square meters (Developer KYC)",
+        type: "number",
+        required: false,
+      },
+      {
+        id: "property-description",
+        key: "propertyDescription",
+        label: "Property description (Developer KYC)",
+        type: "long-text",
+        required: false,
+      },
+      {
+        id: "amount-per-sqm",
+        key: "amountPerSqm",
+        label: "Amount per square meter (Developer KYC)",
+        type: "currency",
+        required: false,
+      },
+      {
+        id: "mortgage-back-qualified",
+        key: "mortgageBackQualified",
+        label: "Qualified for mortgage-back requirement? (Developer KYC)",
+        type: "yes-no",
+        required: false,
+      },
+      {
+        id: "years-in-service",
+        key: "yearsInService",
+        label: "Number of years in service (Developer KYC)",
+        type: "number",
+        required: false,
+      },
+      {
+        id: "monthly-payment-amount",
+        key: "monthlyPaymentAmount",
+        label: "Amount to pay monthly (Developer KYC)",
+        type: "currency",
+        required: false,
+      },
+      {
+        id: "estate-facilities",
+        key: "estateFacilities",
+        label: "Estate facilities (Developer KYC)",
+        type: "multiple-choice",
+        required: false,
+        description: "Select all facilities available in the estate.",
+      },
+      {
+        id: "developer-company-kyc",
+        key: "developerCompanyKyc",
+        label: "Developer company onboarding / KYC details",
+        type: "long-text",
+        required: false,
+      },
+      {
+        id: "site-location",
+        key: "siteLocation",
+        label: "Site location (Developer KYC)",
+        type: "location",
+        required: false,
+      },
+      {
+        id: "bank-name",
+        key: "bankName",
+        label: "Bank name (Mortgage Bank KYC)",
+        type: "short-text",
+        required: false,
+        description: "For mortgage banks: the registered bank name.",
+      },
+      {
+        id: "bank-rc-number",
+        key: "bankRcNumber",
+        label: "RC / registration number (Mortgage Bank KYC)",
+        type: "short-text",
+        required: false,
+      },
+      {
+        id: "bank-license-type",
+        key: "bankLicenseType",
+        label: "License type (Mortgage Bank KYC)",
+        type: "single-choice",
+        required: false,
+      },
+      {
+        id: "bank-years-in-operation",
+        key: "bankYearsInOperation",
+        label: "Years in operation (Mortgage Bank KYC)",
+        type: "number",
+        required: false,
+      },
+      {
+        id: "bank-aob",
+        key: "bankAob",
+        label: "Any other business — AOB (Mortgage Bank KYC)",
+        type: "long-text",
+        required: false,
+        description: "Describe any other business activities or notes.",
+      },
+      {
         id: "additional-notes",
         key: "additionalNotes",
         label: "Additional notes",
@@ -1366,6 +1269,12 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         description: "A valuation or project document may be requested by the selected partner.",
       },
       {
+        documentTypeId: "business-registration",
+        required: false,
+        description:
+          "Developer company or mortgage bank registration may be requested during partner review.",
+      },
+      {
         documentTypeId: "supporting-documents",
         required: false,
         description:
@@ -1381,6 +1290,16 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       {
         id: "verify-applicant-contact",
         label: "Verify requester identity and contact details before referral",
+        category: "verification",
+      },
+      {
+        id: "review-developer-kyc",
+        label: "Review developer KYC profile (estate, location, facilities, pricing, company) where applicable",
+        category: "verification",
+      },
+      {
+        id: "review-bank-kyc",
+        label: "Review mortgage bank KYC profile (name, RC, license, operations, AOB) where applicable",
         category: "verification",
       },
       {
@@ -1562,3 +1481,4 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
 /** Ordered catalog of all request blueprints. */
 export const REQUEST_BLUEPRINT_CATALOG: RequestBlueprintCatalog =
   Object.values(REQUEST_BLUEPRINT_MAP);
+

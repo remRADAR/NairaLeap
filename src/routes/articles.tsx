@@ -43,8 +43,6 @@ function ArticleArchivePage() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const posts = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-  const pageLink = (nextPage: number) =>
-    `/articles?${new URLSearchParams({ ...(topic ? { topic } : {}), page: String(nextPage) }).toString()}`;
 
   return (
     <EditorialLayout>
@@ -94,8 +92,9 @@ function ArticleArchivePage() {
                 {post.image && (
                   <img
                     src={post.image}
-                    alt=""
+                    alt={post.title}
                     loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                 )}
@@ -118,20 +117,22 @@ function ArticleArchivePage() {
           </span>
           <div className="flex gap-2">
             {currentPage > 1 && (
-              <a
-                href={pageLink(currentPage - 1)}
-                className="inline-flex items-center gap-1 rounded-lg border border-[#e5dafa] px-3 py-2 text-xs font-bold text-[#6f23dd]"
+              <Link
+                to="/articles"
+                search={{ topic, page: currentPage - 1 }}
+                className="inline-flex items-center gap-1 rounded-lg border border-[#e5dafa] px-3 py-2 text-xs font-bold text-[#6f23dd] transition hover:bg-[#f8f4ff]"
               >
                 <ArrowLeft className="h-3.5 w-3.5" /> Previous
-              </a>
+              </Link>
             )}
             {currentPage < totalPages && (
-              <a
-                href={pageLink(currentPage + 1)}
-                className="inline-flex items-center gap-1 rounded-lg bg-[#7a2ce2] px-3 py-2 text-xs font-bold text-white"
+              <Link
+                to="/articles"
+                search={{ topic, page: currentPage + 1 }}
+                className="inline-flex items-center gap-1 rounded-lg bg-[#7a2ce2] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#6620c8]"
               >
                 Next <ArrowRight className="h-3.5 w-3.5" />
-              </a>
+              </Link>
             )}
           </div>
         </div>

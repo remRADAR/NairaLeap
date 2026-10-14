@@ -12,9 +12,7 @@ export type ServiceId =
   | "agriculture"
   | "property-listings"
   | "business-funding"
-  | "partnerships"
   | "vendor-marketplace"
-  | "distress-sales"
   | "recycling-scrap"
   | "business-briefs"
   | "professional-services"
@@ -27,9 +25,7 @@ export type OnboardingCategory =
   | "agriculture"
   | "property"
   | "funding"
-  | "partnerships"
   | "marketplace"
-  | "distressed-sales"
   | "recycling"
   | "information"
   | "professional-services"
@@ -66,7 +62,7 @@ export type QuestionSetId = string;
 
 /** Stages a service request can flow into after the service preview. */
 export type NextWorkflow =
-  "guided-question-engine" | "document-upload" | "admin-review" | "auto-submit" | "support-queue";
+  | "guided-question-engine" | "document-upload" | "admin-review" | "auto-submit" | "support-queue";
 
 /** Icon identifier from the Lucide icon library. UI layers map this to a component. */
 export type IconName = string;
