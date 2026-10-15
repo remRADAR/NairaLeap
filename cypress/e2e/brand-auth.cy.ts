@@ -14,6 +14,43 @@ describe("canonical Nairaleap branding", () => {
     cy.screenshot("branding-home-header");
   });
 
+  it("omits editorial category navigation from the portal on mobile and desktop", () => {
+    const categories = [
+      "HUMAN DEVELOPMENT",
+      "ECONOMIC DEVELOPMENT",
+      "INFRASTRUCTURE & CONNECTIVITY",
+      "TECHNOLOGY & INNOVATION",
+      "CULTURE & CREATIVE ECONOMY",
+      "GOVERNANCE & LEADERSHIP",
+      "SECURITY & STABILITY",
+      "SUSTAINABILITY & DEVELOPMENT",
+      "INTERNATIONAL & REGIONAL AFFAIRS",
+    ];
+
+    cy.viewport(390, 844);
+    cy.visit("/services");
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('button[aria-label="Open menu"]').click();
+    cy.get('nav[aria-label="Mobile"]')
+      .should("be.visible")
+      .within(() => {
+        categories.forEach((category) => cy.contains(category).should("not.exist"));
+        cy.contains("Blog").should("be.visible");
+        cy.contains("Sign in").should("be.visible");
+        cy.contains("Admin").should("be.visible");
+      });
+
+    cy.viewport(1280, 800);
+    cy.visit("/services");
+    cy.get('nav[aria-label="Primary"]')
+      .should("be.visible")
+      .within(() => {
+        categories.forEach((category) => cy.contains(category).should("not.exist"));
+        cy.contains("Sign in").should("be.visible");
+        cy.contains("Admin").should("be.visible");
+      });
+  });
+
   it("serves the favicon and manifest with the canonical icon family", () => {
     cy.request("/favicon.ico?v=20260825-wordmark")
       .its("headers.content-type")
