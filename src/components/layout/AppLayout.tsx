@@ -4,6 +4,7 @@ import { BookOpen, ChevronDown, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NairaLeapBot } from "../ui/NairaLeapBot";
 import { NairaLeapGuideContainer } from "../ui/NairaLeapGuideContainer";
+import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
 import { useAuth } from "@/features/auth";
 import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCatalog";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
@@ -80,6 +81,7 @@ function Header({ compact = false }: { compact?: boolean }) {
               compact ? "lg:hidden" : "lg:flex",
             )}
           >
+            <LanguageAvailabilityControl theme="portal" />
             <nav aria-label="Primary" className="flex min-w-0 items-center gap-1">
               {WORDPRESS_MAIN_NAVIGATION.map((section) => {
                 const isActive = activeSection === section.label;
@@ -208,6 +210,9 @@ function Header({ compact = false }: { compact?: boolean }) {
                 </div>
               );
             })}
+            <div className="border-b border-border/50 px-3 py-3">
+              <LanguageAvailabilityControl theme="portal" />
+            </div>
             <Link
               to="/"
               onClick={closeMenus}

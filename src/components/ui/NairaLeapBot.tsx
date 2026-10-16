@@ -492,6 +492,7 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
                 <button
                   type="button"
                   aria-label="Read the latest LeapBot response aloud"
+                  aria-describedby="leapbot-speech-disclosure"
                   onClick={handleVoiceDemo}
                   className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-surface-elevated hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
@@ -500,6 +501,17 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
               ) : null}
             </div>
           </div>
+          {speechAvailable ? (
+            <p
+              id="leapbot-speech-disclosure"
+              data-testid="leapbot-speech-disclosure"
+              className="mt-2 text-[10px] leading-relaxed text-muted-foreground"
+            >
+              Read aloud uses the speech service provided by your browser or device; availability
+              and behavior vary. This control does not request microphone access or voice
+              enrollment.
+            </p>
+          ) : null}
         </GlassCard>
       ) : null}
 
