@@ -15,7 +15,7 @@ The feature does not add voice commands, microphone capture, recording, enrollme
 
 ## Plugin API and adoption gate
 
-The plugin defines a provider interface and session capabilities. Its built-in `SyntheticTestProvider` emits deterministic placeholder bytes and explicitly is not real speech. It is suitable for tests/demos only, not production playback. A future real provider requires an owner/provider decision, cancellation and concurrency tests, a defined error/timeout/cleanup contract, and an approved privacy assessment.
+The plugin defines a provider interface and session capabilities. Each provider declares placeholder status, and `PlaybackQueue` rejects returned handle metadata that conflicts with that declaration; this consistency check is not a trust boundary against a malicious adapter. Its built-in `SyntheticTestProvider` emits deterministic placeholder bytes and explicitly is not real speech. It is suitable for tests/demos only, not production playback. Queue transitions are serialized; unresolved aborted startup or unconfirmed cancellation blocks later playback instead of claiming stop/quiescence. A future real provider requires an owner/provider decision, cancellation and concurrency tests, a defined error/timeout/cleanup contract, and an approved privacy assessment.
 
 Do not enable `enrollVoice`, audio upload, recording, or voice-command capture without separately approved consent, identity/authorization, retention/deletion, security, and provider terms. Do not claim caller-provided consent IDs prove informed consent.
 

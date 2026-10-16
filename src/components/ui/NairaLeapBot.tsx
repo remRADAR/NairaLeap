@@ -383,7 +383,8 @@ export function NairaLeapBot({ onGuide }: NairaLeapBotProps) {
 
   const handleVoiceDemo = () => {
     setExpression("talking");
-    speak(messages.find((message) => message.role === "bot")?.text ?? OPENING_MESSAGE);
+    const latestBotMessage = [...messages].reverse().find((message) => message.role === "bot");
+    speak(latestBotMessage?.text ?? OPENING_MESSAGE);
     if (speechTimerRef.current) window.clearTimeout(speechTimerRef.current);
     speechTimerRef.current = window.setTimeout(() => setExpression("idle"), 2200);
   };

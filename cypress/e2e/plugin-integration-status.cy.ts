@@ -58,4 +58,25 @@ describe("safe plugin integration status", () => {
         .and("contain.text", "does not request microphone access or voice enrollment");
     });
   });
+
+  it("reads the latest bot reply only after the user clicks the browser speech control", () => {
+    cy.visit("/services", {
+      onBeforeLoad(win) {
+        cy.stub(win.speechSynthesis, "speak").as("speak");
+      },
+    });
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('[aria-label="Open LeapBot chauffeur"]').click({ force: true });
+    cy.get("#leapbot-message").type("What is onboarding?{enter}");
+    cy.get('[data-role="bot"]').should("have.length.at.least", 2);
+    cy.get('[data-role="bot"]')
+      .last()
+      .invoke("text")
+      .then((latestReply) => {
+        cy.get("@speak").should("not.have.been.called");
+        cy.get('[aria-label="Read the latest LeapBot response aloud"]').click();
+        cy.get("@speak").should("have.been.calledOnce");
+        cy.get("@speak").its("lastCall.args.0.text").should("equal", latestReply);
+      });
+  });
 });
