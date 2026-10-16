@@ -115,6 +115,28 @@ function ArticlePage() {
           )}
         </header>
         <div className="article-copy mt-9" dangerouslySetInnerHTML={{ __html: post.content }} />
+        <section
+          aria-labelledby="article-intelligence-status-title"
+          data-testid="article-intelligence-availability"
+          className="mt-10 rounded-2xl border border-[#e8e1f5] bg-[#fbfaff] p-5 sm:p-6"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2
+              id="article-intelligence-status-title"
+              className="text-base font-extrabold text-[#303044] sm:text-lg"
+            >
+              Evidence &amp; discussion
+            </h2>
+            <span className="rounded-full bg-[#f2ebff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#6f23dd]">
+              Not enabled
+            </span>
+          </div>
+          <p className="mt-3 text-sm leading-6 text-[#66667a]">
+            This page shows the migrated article and its original-source link only. Safe source
+            retrieval and authenticated, revision-bound editorial review are not connected, so
+            evidence submissions, comments, and automated verdicts are unavailable.
+          </p>
+        </section>
         <footer className="mt-12 border-t border-[#e9e9f0] pt-6">
           <p className="text-xs text-[#858598]">
             Migrated to Nairaleap from the WordPress editorial archive. Read the original source at{" "}

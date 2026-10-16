@@ -14,6 +14,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
+import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
 
 const slugify = (label: string) =>
   label
@@ -59,6 +60,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
+            <LanguageAvailabilityControl theme="editorial" />
             <button
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
