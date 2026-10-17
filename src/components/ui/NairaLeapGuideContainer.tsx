@@ -25,6 +25,7 @@ import {
   type ServiceDefinition,
   type ServiceId,
 } from "@/features/services/serviceCatalog";
+import { getServiceRoleProfile } from "@/features/services/serviceRoleCatalog";
 import { cn } from "@/lib/utils";
 import {
   savePendingGuideDraft,
@@ -122,7 +123,11 @@ export function NairaLeapGuideContainer({
 
   function handleQuestionsComplete(nextAnswers: AnswersState) {
     if (!selectedService) return;
-    const nextRundown = buildServiceRundown(selectedService.id as ServiceId, nextAnswers);
+    const nextRundown = buildServiceRundown(
+      selectedService.id as ServiceId,
+      nextAnswers,
+      onboardingRole ?? "customer",
+    );
     if (nextRundown.missingRequiredFields.length > 0) {
       setError(`Please complete: ${nextRundown.missingRequiredFields.join(", ")}.`);
       return;
@@ -173,6 +178,9 @@ export function NairaLeapGuideContainer({
 
   const currentStepIndex = stageIndex(stage);
   const Icon = selectedService?.icon;
+  const roleProfile = selectedService
+    ? getServiceRoleProfile(selectedService.id as ServiceId)[onboardingRole ?? "customer"]
+    : null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -238,11 +246,7 @@ export function NairaLeapGuideContainer({
                   {selectedService?.title ?? "Let’s find the right path"}
                 </DialogTitle>
                 {onboardingRole && selectedService ? (
-                  <p className="mt-0.5 text-xs text-primary-glow">
-                    {onboardingRole === "seller"
-                      ? "Seller / provider onboarding"
-                      : "Buyer / customer onboarding"}
-                  </p>
+                  <p className="mt-0.5 text-xs text-primary-glow">{roleProfile?.label}</p>
                 ) : null}
               </div>
             </div>
@@ -327,12 +331,13 @@ export function NairaLeapGuideContainer({
               {stage === "questions" && selectedService ? (
                 <>
                   <AssistantMessage title={`Let’s prepare your ${selectedService.title} request.`}>
-                    {onboardingRole === "seller"
-                      ? "Tell us what you offer. Answer the service questions and review your request before submitting."
-                      : "Tell us what you need. Answer the service questions and review your request before submitting."}
+                    {`${roleProfile?.description ?? "Tell us what you need."} Answer the service questions and review your request before submitting.`}
                   </AssistantMessage>
                   <QuestionEngine
-                    questionSet={getServiceQuestionSet(selectedService.id as ServiceId)}
+                    questionSet={getServiceQuestionSet(
+                      selectedService.id as ServiceId,
+                      onboardingRole ?? "customer",
+                    )}
                     layout="single-page"
                     title={`${selectedService.title} request`}
                     submitLabel="Review answers"

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { SERVICE_INTELLIGENCE_MAP } from "@/features/service-intelligence-catalog";
 import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide";
 import type { ServiceDefinition } from "@/features/services/serviceCatalog";
+import { getServiceRoleProfile } from "@/features/services/serviceRoleCatalog";
 import { Container } from "@/components";
 import { NairaLeapGuideContainer, type OnboardingRole } from "./NairaLeapGuideContainer";
 
@@ -15,6 +16,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
   const [guideOpen, setGuideOpen] = useState(false);
   const [onboardingRole, setOnboardingRole] = useState<OnboardingRole>("customer");
   const intelligence = SERVICE_INTELLIGENCE_MAP[service.id];
+  const roleProfile = getServiceRoleProfile(service.id);
   const Icon = service.icon;
 
   useEffect(() => {
@@ -113,10 +115,10 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                   <span className="flex items-center justify-between gap-4">
                     <span>
                       <span className="block text-base font-semibold text-foreground">
-                        I&apos;m a buyer or customer
+                        {roleProfile.customer.label}
                       </span>
                       <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        I want to find, buy, use, or get help with this service.
+                        {roleProfile.customer.description}
                       </span>
                     </span>
                     <ArrowRight
@@ -134,10 +136,10 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                   <span className="flex items-center justify-between gap-4">
                     <span>
                       <span className="block text-base font-semibold text-foreground">
-                        I&apos;m a seller or provider
+                        {roleProfile.seller.label}
                       </span>
                       <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        I want to list, sell, supply, or offer this service.
+                        {roleProfile.seller.description}
                       </span>
                     </span>
                     <ArrowRight
