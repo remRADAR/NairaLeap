@@ -60,7 +60,6 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
-            <LanguageAvailabilityControl theme="editorial" />
             <button
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -157,6 +156,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
+            <LanguageAvailabilityControl theme="editorial" />
             <Link
               to="/services"
               onClick={onNavigate}

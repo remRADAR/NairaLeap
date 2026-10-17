@@ -2,13 +2,35 @@ describe("safe plugin integration status", () => {
   it("keeps English active and other interface locales disabled in the editorial nav", () => {
     cy.visit("/");
 
-    cy.get('[data-testid="language-availability-select"]')
+    cy.get('button[aria-label="Open menu"]').click({ force: true });
+    cy.get('nav[aria-label="Editorial menu"] [data-testid="language-availability-select"]')
       .should("have.value", "en")
       .and("have.attr", "aria-describedby");
-    cy.get('option[value="hau"]').should("be.disabled");
-    cy.get('option[value="ibo"]').should("be.disabled");
-    cy.get('option[value="yor"]').should("be.disabled");
-    cy.get('option[value="tiv"]').should("be.disabled");
+    cy.get(
+      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="hau"]',
+    ).should("be.disabled");
+    cy.get(
+      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="ibo"]',
+    ).should("be.disabled");
+    cy.get(
+      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="yor"]',
+    ).should("be.disabled");
+    cy.get(
+      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="tiv"]',
+    ).should("be.disabled");
+    cy.get('nav[aria-label="Editorial menu"]').within(() => {
+      cy.contains("Nairaleap services").should("be.visible");
+      cy.contains("Admin Studio").should("be.visible");
+    });
+  });
+
+  it("keeps the article taxonomy out of the portal services shell", () => {
+    cy.visit("/services");
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('a[href^="/?topic="]').should("not.exist");
+    cy.contains("HUMAN DEVELOPMENT").should("not.exist");
+    cy.contains("ECONOMIC DEVELOPMENT").should("not.exist");
+    cy.contains("a", "Services").should("be.visible");
   });
 
   it("keeps the English-only status available from the portal mobile menu", () => {
