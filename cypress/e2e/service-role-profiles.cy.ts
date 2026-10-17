@@ -96,8 +96,13 @@ describe("service-specific role profiles", () => {
       cy.get('[data-testid="nairaleap-guide-dialog"]')
         .should("be.visible")
         .and("contain.text", profile.customer)
+        .and("contain.text", "The whole form is on this one page")
         .and("contain.text", profile.customerField)
         .and("not.contain.text", profile.sellerField);
+      cy.get('[data-testid="single-page-intake-frame"]')
+        .should("exist")
+        .invoke("attr", "aria-label")
+        .should("match", / request$/);
     });
 
     it(`uses tailored ${profile.id} provider intake`, () => {
@@ -109,8 +114,13 @@ describe("service-specific role profiles", () => {
       cy.get('[data-testid="nairaleap-guide-dialog"]')
         .should("be.visible")
         .and("contain.text", profile.seller)
+        .and("contain.text", "The whole form is on this one page")
         .and("contain.text", profile.sellerField)
         .and("not.contain.text", profile.customerField);
+      cy.get('[data-testid="single-page-intake-frame"]')
+        .should("exist")
+        .invoke("attr", "aria-label")
+        .should("match", / request$/);
     });
   }
 });

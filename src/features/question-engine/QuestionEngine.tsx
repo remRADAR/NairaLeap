@@ -176,7 +176,11 @@ function SinglePageForm({
     <form
       aria-label={title ?? "Service intake form"}
       onSubmit={handleSubmit}
-      className={cn("mx-auto flex w-full max-w-2xl flex-col gap-5", className)}
+      data-testid="single-page-intake-frame"
+      className={cn(
+        "mx-auto flex w-full max-w-2xl flex-col gap-5 rounded-[2rem] border border-primary/20 bg-primary/[0.045] p-4 shadow-[0_18px_55px_rgba(91,32,171,0.12)] sm:p-6",
+        className,
+      )}
       noValidate
     >
       {title ? (
@@ -199,13 +203,10 @@ function SinglePageForm({
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           <div>
             <p className="font-semibold">
-              {missingRequired.length} required{" "}
-              {missingRequired.length === 1 ? "field" : "fields"} still{" "}
-              {missingRequired.length === 1 ? "needs" : "need"} an answer:
+              {missingRequired.length} required {missingRequired.length === 1 ? "field" : "fields"}{" "}
+              still {missingRequired.length === 1 ? "needs" : "need"} an answer:
             </p>
-            <p className="mt-1 leading-relaxed">
-              {missingRequired.map((q) => q.title).join(", ")}
-            </p>
+            <p className="mt-1 leading-relaxed">{missingRequired.map((q) => q.title).join(", ")}</p>
           </div>
         </div>
       ) : null}
