@@ -10,6 +10,41 @@ export interface UseQuestionEngineOptions {
 }
 
 /**
+ * Shared answer-presence check. Works for any question so both the guided
+ * (one-per-page) and single-page form layouts validate identically.
+ */
+export function isQuestionAnswered(
+  question: Question,
+  value: AnswerValue | undefined,
+): boolean {
+  if (question.required === false) return true;
+  switch (question.type) {
+    case "short-text":
+    case "long-text":
+    case "email":
+    case "phone":
+    case "location":
+    case "currency":
+      return typeof value === "string" && value.trim().length > 0;
+    case "number":
+      return typeof value === "number" && !Number.isNaN(value);
+    case "date":
+      return typeof value === "string" && value.length > 0;
+    case "yes-no":
+      return typeof value === "boolean";
+    case "single-choice":
+      return typeof value === "string" && value.length > 0;
+    case "multiple-choice": {
+      const arr = Array.isArray(value) ? value : [];
+      const min = question.minSelections ?? 1;
+      return arr.length >= min;
+    }
+    default:
+      return false;
+  }
+}
+
+/**
  * useQuestionEngine — the single reusable state manager for the Question Engine.
  * Purely local; no API calls, no persistence.
  */
@@ -37,32 +72,7 @@ export function useQuestionEngine({
 
   const isAnswered = useMemo(() => {
     if (!current) return false;
-    if (current.required === false) return true;
-    const value = answers[current.id];
-    switch (current.type) {
-      case "short-text":
-      case "long-text":
-      case "email":
-      case "phone":
-      case "location":
-      case "currency":
-        return typeof value === "string" && value.trim().length > 0;
-      case "number":
-        return typeof value === "number" && !Number.isNaN(value);
-      case "date":
-        return typeof value === "string" && value.length > 0;
-      case "yes-no":
-        return typeof value === "boolean";
-      case "single-choice":
-        return typeof value === "string" && value.length > 0;
-      case "multiple-choice": {
-        const arr = Array.isArray(value) ? value : [];
-        const min = current.minSelections ?? 1;
-        return arr.length >= min;
-      }
-      default:
-        return false;
-    }
+    return isQuestionAnswered(current, answers[current.id]);
   }, [answers, current]);
 
   const canGoPrevious = index > 0;

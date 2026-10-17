@@ -333,8 +333,15 @@ export function NairaLeapGuideContainer({
                   </AssistantMessage>
                   <QuestionEngine
                     questionSet={getServiceQuestionSet(selectedService.id as ServiceId)}
+                    layout="single-page"
+                    title={`${selectedService.title} request`}
+                    submitLabel="Review answers"
                     initialAnswers={answers}
                     onComplete={handleQuestionsComplete}
+                    onExit={() => {
+                      if (service) onBack?.(service);
+                      else setStage("service");
+                    }}
                   />
                 </>
               ) : null}
