@@ -1,5 +1,6 @@
 import { ChevronDown, Globe2 } from "lucide-react";
 import { useId } from "react";
+import { useLocale } from "@/features/i18n";
 
 type LanguageAvailabilityControlProps = {
   theme: "portal" | "editorial";
@@ -12,6 +13,7 @@ type LanguageAvailabilityControlProps = {
 export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityControlProps) {
   const helpId = useId();
   const isPortal = theme === "portal";
+  const { locale, locales, setLocale, t } = useLocale();
 
   return (
     <div className="shrink-0">
@@ -23,36 +25,32 @@ export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityContr
         }`}
       >
         <Globe2 className="h-3 w-3 shrink-0 text-primary-glow" aria-hidden="true" />
-        <span className="sr-only">Interface language</span>
+        <span className="sr-only">{t.interfaceLanguage}</span>
         <select
           aria-describedby={helpId}
           aria-label="Interface language"
           data-testid="language-availability-select"
-          value="en"
-          onChange={() => undefined}
+          value={locale}
+          onChange={(event) => setLocale(event.target.value as typeof locale)}
           className={`max-w-[5.75rem] cursor-pointer appearance-none border-0 bg-transparent py-1 pr-0 text-[10px] outline-none ${
             isPortal ? "text-foreground" : "text-[#626277]"
           }`}
         >
-          <option value="en">English</option>
-          <option value="hau" disabled>
-            Hausa (pending)
-          </option>
-          <option value="ibo" disabled>
-            Igbo (pending)
-          </option>
-          <option value="yor" disabled>
-            Yoruba (pending)
-          </option>
-          <option value="tiv" disabled>
-            Tiv (pending)
-          </option>
+          {locales.map((language) => (
+            <option
+              key={language.code}
+              value={language.code}
+              disabled={language.status !== "supported"}
+            >
+              {language.label}
+              {language.status === "unavailable" ? " (not available)" : ""}
+            </option>
+          ))}
         </select>
         <ChevronDown className="h-2.5 w-2.5 shrink-0 text-muted-foreground" aria-hidden="true" />
       </label>
       <span id={helpId} className="sr-only">
-        English is the only enabled interface language. Other languages are disabled until complete,
-        human-reviewed interface translations are available.
+        {t.languageStatus(locales.find((language) => language.code === locale)?.label ?? "English")}
       </span>
     </div>
   );

@@ -45,6 +45,20 @@ describe("safe plugin integration status", () => {
     cy.get('option[value="hau"]').should("be.disabled");
   });
 
+  it("falls back safely when a previously stored locale is not available", () => {
+    cy.visit("/services", {
+      onBeforeLoad(win) {
+        win.localStorage.setItem("nairaleap.locale", "hau");
+      },
+    });
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('[data-testid="language-availability-select"]')
+      .should("have.value", "en")
+      .find('option[value="hau"]')
+      .should("be.disabled");
+    cy.window().its("localStorage").invoke("getItem", "nairaleap.locale").should("eq", "en");
+  });
+
   it("keeps Article Intelligence read-only and visibly unavailable on article details", () => {
     cy.visit("/articles/unbundling-nigerian-railway-corporation-for-rail-sector-reform");
 

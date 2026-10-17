@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Send, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/features/i18n";
 import type { AnswerValue, AnswersState, Question } from "./types";
 import { isQuestionAnswered, useQuestionEngine } from "./useQuestionEngine";
 
@@ -130,6 +131,7 @@ function SinglePageForm({
   submitLabel,
   className,
 }: SinglePageFormProps) {
+  const { t } = useLocale();
   const [answers, setAnswers] = useState<AnswersState>(initialAnswers ?? {});
   const [attempt, setAttempt] = useState(0);
   const errorRef = useRef<HTMLDivElement | null>(null);
@@ -189,7 +191,7 @@ function SinglePageForm({
             {title}
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            The whole form is on this one page. Nothing is submitted until you press {submitLabel}.
+            {t.singlePageFormNotice(submitLabel)}
           </p>
         </header>
       ) : null}

@@ -11,6 +11,7 @@ import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { AuthProvider } from "@/features/auth";
+import { LocaleProvider } from "@/features/i18n";
 import { AppSkeleton, PageTransition } from "@/components";
 
 function NotFoundComponent() {
@@ -141,12 +142,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <PageTransition>
-          <Outlet />
-        </PageTransition>
-      </AuthProvider>
+      <LocaleProvider>
+        <AuthProvider>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
+        </AuthProvider>
+      </LocaleProvider>
     </QueryClientProvider>
   );
 }
