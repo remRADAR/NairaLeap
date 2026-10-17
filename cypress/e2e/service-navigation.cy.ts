@@ -20,7 +20,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
   });
 
   it("adds interactive feedback to navigation, service cards, and intake fields", () => {
-    cy.get('header nav[aria-label="Primary"] a')
+    cy.get("header a.portal-nav-link")
       .first()
       .should("have.class", "portal-nav-link")
       .then(($link) => {
@@ -59,14 +59,12 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
       cy.get("#service-page-title").should("be.visible").and("have.text", title);
       cy.get("#services").should("not.exist");
       cy.get(".service-page-shell").should("have.attr", "data-service-id", id);
-      cy.get('[data-testid="service-start-onboarding"]').should(
-        "contain.text",
-        "buyer or customer",
-      );
-      cy.get('[data-testid="service-seller-onboarding"]').should(
-        "contain.text",
-        "seller or provider",
-      );
+      cy.get('[data-testid="service-start-onboarding"]')
+        .should("be.visible")
+        .and("not.contain.text", "buyer or customer");
+      cy.get('[data-testid="service-seller-onboarding"]')
+        .should("be.visible")
+        .and("not.contain.text", "seller or provider");
       cy.get('[role="dialog"]').should("not.exist");
     });
   });
@@ -93,15 +91,17 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
 
     activate('[data-testid="service-start-onboarding"]');
     cy.contains("NairaLeap Guide · service request").should("be.visible");
-    cy.contains("Buyer / customer onboarding").should("be.visible");
-    cy.contains("Tell us what you need.").should("be.visible");
+    cy.contains("I’m a farmer / grower").should("be.visible");
+    cy.contains("I grow crops, raise livestock, or need support for my farm operation.").should(
+      "be.visible",
+    );
 
     cy.location("pathname").should("eq", "/services/agriculture");
     cy.get('[data-testid="service-start-onboarding"]').should("have.attr", "aria-expanded", "true");
     cy.get('#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]')
       .should("be.visible")
       .and("contain.text", "Agriculture")
-      .and("contain.text", "Question 1 of")
+      .and("contain.text", "The whole form is on this one page")
       .and("contain.text", "Full name");
     cy.get(
       '#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"] input[placeholder="Type your answer"]',
@@ -114,25 +114,17 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
 
     const dialog = '#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]';
     cy.get(dialog).within(() => {
-      cy.contains("Question 1 of").should("be.visible");
-      cy.get("h3").should("contain.text", "Full name");
-      cy.contains("button", "Next")
+      cy.contains("The whole form is on this one page").should("be.visible");
+      cy.contains("button", "Review answers")
         .should("be.disabled")
         .and("have.attr", "aria-disabled", "true")
         .click({ force: true });
-      cy.contains("Question 1 of").should("be.visible");
-      cy.contains("button", "Submit").should("not.exist");
+      cy.contains("button", "Review answers").should("be.disabled");
 
       cy.get('input[placeholder="Type your answer"]')
         .should("be.visible")
         .type("Agriculture Audit User");
-      cy.contains("button", "Next").should("not.be.disabled").click();
-      cy.contains("Question 2 of").should("be.visible");
-      cy.get("h3").should("contain.text", "Phone number");
-
-      cy.contains("button", "Previous").click();
-      cy.get('input[placeholder="Type your answer"]').clear().should("have.value", "");
-      cy.contains("button", "Next").should("be.disabled");
+      cy.contains("button", "Review answers").should("be.disabled");
     });
 
     cy.location("pathname").should("eq", "/services/agriculture");
@@ -156,7 +148,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
     );
     cy.get('#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"]').should(
       "contain.text",
-      "Question 1 of",
+      "The whole form is on this one page",
     );
     cy.get(
       '#nairaleap-guide-dialog[data-testid="nairaleap-guide-dialog"] input[placeholder="Type your answer"]',
@@ -190,15 +182,11 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
       '[data-testid="portal-background-layer"][data-service-id="agriculture"][data-active="true"]',
     ).should("exist");
 
-    cy.intercept(
-      "GET",
-      "**/service-backgrounds/vendor-marketplace-background.webp",
-      (request) => {
-        request.on("response", (response) => {
-          response.setDelay(350);
-        });
-      },
-    ).as("vendorBackground");
+    cy.intercept("GET", "**/service-backgrounds/vendor-marketplace-background.webp", (request) => {
+      request.on("response", (response) => {
+        response.setDelay(350);
+      });
+    }).as("vendorBackground");
     cy.visit("/services/vendor-marketplace");
     cy.location("pathname").should("eq", "/services/vendor-marketplace");
     cy.wait("@vendorBackground");
