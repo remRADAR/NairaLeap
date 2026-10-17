@@ -2,7 +2,7 @@ describe("safe plugin integration status", () => {
   it("keeps English active and other interface locales disabled in the editorial nav", () => {
     cy.visit("/");
 
-    cy.get('button[aria-label="Open menu"]').click({ force: true });
+    cy.get('button[aria-label="Open menu"]').should("be.visible").click();
     cy.get('nav[aria-label="Editorial menu"] [data-testid="language-availability-select"]')
       .should("have.value", "en")
       .and("have.attr", "aria-describedby");
@@ -37,7 +37,7 @@ describe("safe plugin integration status", () => {
     cy.viewport(390, 844);
     cy.visit("/services");
     cy.get('[data-app-hydrated="true"]').should("exist");
-    cy.get('button[aria-label="Open menu"]').click({ force: true });
+    cy.get('button[aria-label="Open menu"]').should("be.visible").click();
 
     cy.get('[data-testid="language-availability-select"]')
       .should("be.visible")

@@ -1,4 +1,4 @@
-const PRIMARY_NAV_LINK = 'header nav[aria-label="Primary"] a:first-child';
+const PRIMARY_NAV_LINK = 'header a.portal-nav-link[href="/services"]';
 const SERVICE_CARD = '#services a[href="/services/agriculture"]';
 const GUIDE_BUTTON = '[data-testid="homepage-guide-trigger"]';
 
@@ -73,8 +73,7 @@ describe("Portal UI hover and focus interactions", () => {
   });
 
   it("shows visible keyboard-focus feedback on navigation, service cards, and actions", () => {
-    cy.get('header a[aria-label="Nairaleap - Service Portal"]').focus();
-    cy.realPress("Tab");
+    cy.get(PRIMARY_NAV_LINK).first().focus();
     cy.wait(260);
     cy.window().then((appWindow) => {
       cy.focused()

@@ -91,9 +91,11 @@ describe("service-specific role profiles", () => {
       cy.visit(`/services/${profile.id}`);
       cy.get('[data-testid="service-start-onboarding"]')
         .should("contain.text", profile.customer)
-        .click({ force: true });
+        .should("be.visible")
+        .click();
       cy.get('[data-testid="nairaleap-guide-dialog"]')
-        .should("contain.text", profile.customer)
+        .should("be.visible")
+        .and("contain.text", profile.customer)
         .and("contain.text", profile.customerField)
         .and("not.contain.text", profile.sellerField);
     });
@@ -102,9 +104,11 @@ describe("service-specific role profiles", () => {
       cy.visit(`/services/${profile.id}`);
       cy.get('[data-testid="service-seller-onboarding"]')
         .should("contain.text", profile.seller)
-        .click({ force: true });
+        .should("be.visible")
+        .click();
       cy.get('[data-testid="nairaleap-guide-dialog"]')
-        .should("contain.text", profile.seller)
+        .should("be.visible")
+        .and("contain.text", profile.seller)
         .and("contain.text", profile.sellerField)
         .and("not.contain.text", profile.customerField);
     });
