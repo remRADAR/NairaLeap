@@ -16,13 +16,13 @@ export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityContr
   return (
     <div className="shrink-0">
       <label
-        className={`inline-flex min-h-10 items-center gap-2 rounded-xl border px-3 text-xs font-semibold focus-within:ring-2 focus-within:ring-ring ${
+        className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg border px-2 text-[11px] font-semibold focus-within:ring-2 focus-within:ring-ring ${
           isPortal
             ? "border-glass-border bg-glass text-foreground"
             : "border-[#e5e5ee] bg-white text-[#626277]"
         }`}
       >
-        <Globe2 className="h-4 w-4 shrink-0 text-primary-glow" aria-hidden="true" />
+        <Globe2 className="h-3.5 w-3.5 shrink-0 text-primary-glow" aria-hidden="true" />
         <span className="sr-only">Interface language</span>
         <select
           aria-describedby={helpId}
@@ -30,7 +30,7 @@ export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityContr
           data-testid="language-availability-select"
           value="en"
           onChange={() => undefined}
-          className={`max-w-[15rem] cursor-pointer appearance-none border-0 bg-transparent py-2 pr-1 outline-none ${
+          className={`max-w-[10rem] cursor-pointer appearance-none border-0 bg-transparent py-1 pr-0.5 text-[11px] outline-none ${
             isPortal ? "text-foreground" : "text-[#626277]"
           }`}
         >
@@ -48,7 +48,7 @@ export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityContr
             Tiv — translation review pending
           </option>
         </select>
-        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <ChevronDown className="h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
       </label>
       <span id={helpId} className="sr-only">
         English is the only enabled interface language. Other languages are disabled until complete,
