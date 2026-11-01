@@ -4,19 +4,22 @@ import {
 } from "../src/features/request-blueprint-engine";
 import { buildServiceRundown, getServiceQuestionSet } from "../src/features/service-intake";
 import { SERVICE_CATALOG } from "../src/features/services/serviceCatalog";
+import { getServiceRoleProfile } from "../src/features/services/serviceRoleCatalog";
 
 const checks: Array<[string, boolean]> = [];
 
 for (const service of SERVICE_CATALOG) {
   const blueprint = REQUEST_BLUEPRINT_MAP[service.id];
   const questions = getServiceQuestionSet(service.id);
+  const roleFields = getServiceRoleProfile(service.id).customer.fields;
   const questionIds = new Set(questions.map((question) => question.id));
   const rundown = buildServiceRundown(service.id, {});
 
   checks.push([`${service.id}: blueprint exists`, Boolean(blueprint)]);
   checks.push([
     `${service.id}: question count matches blueprint`,
-    questions.length === blueprint.requiredFields.length + blueprint.optionalFields.length,
+    questions.length ===
+      blueprint.requiredFields.length + blueprint.optionalFields.length + roleFields.length,
   ]);
   checks.push([`${service.id}: question ids are unique`, questionIds.size === questions.length]);
   checks.push([

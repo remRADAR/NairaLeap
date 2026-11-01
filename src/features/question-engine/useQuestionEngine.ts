@@ -70,10 +70,7 @@ function questionIsAnswered(question: Question, answers: AnswersState): boolean 
  * Shared answer-presence check. Works for any question so both the guided
  * (one-per-page) and single-page form layouts validate identically.
  */
-export function isQuestionAnswered(
-  question: Question,
-  value: AnswerValue | undefined,
-): boolean {
+export function isQuestionAnswered(question: Question, value: AnswerValue | undefined): boolean {
   if (question.required === false) return true;
   switch (question.type) {
     case "short-text":
@@ -128,6 +125,7 @@ export function useQuestionEngine({
       groupQuestions(questions.filter((question) => conditionMatches(question.showWhen, answers))),
     [answers, questions],
   );
+  const visibleQuestions = useMemo(() => visibleGroups.flat(), [visibleGroups]);
   const total = visibleGroups.length;
   const activeIndex = total === 0 ? 0 : Math.min(index, total - 1);
   const currentQuestions = visibleGroups[activeIndex] ?? EMPTY_QUESTION_GROUP;
@@ -182,6 +180,7 @@ export function useQuestionEngine({
     total,
     current,
     currentQuestions,
+    visibleQuestions,
     progress,
     answers,
     setAnswer,

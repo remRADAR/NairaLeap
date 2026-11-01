@@ -25,7 +25,7 @@ import {
   type ServiceDefinition,
   type ServiceId,
 } from "@/features/services/serviceCatalog";
-import { getServiceRoleProfile } from "@/features/services/serviceRoleCatalog";
+import { getServiceRoleProfile, type ServiceRole } from "@/features/services/serviceRoleCatalog";
 import { cn } from "@/lib/utils";
 import {
   savePendingGuideDraft,
@@ -72,6 +72,20 @@ const ROLE_LABELS: Record<OnboardingRole, string> = {
   "get-quote": "Get a quote onboarding",
   "make-claim": "Make a claim onboarding",
 };
+
+function toServiceRole(role: OnboardingRole | undefined): ServiceRole {
+  switch (role) {
+    case "seller":
+    case "input-supplier":
+    case "developer":
+    case "agent":
+    case "investor":
+    case "mortgage-bank":
+      return "seller";
+    default:
+      return "customer";
+  }
+}
 
 type GuideStage = "discovery" | "service" | "questions" | "review" | "success";
 
@@ -161,7 +175,7 @@ export function NairaLeapGuideContainer({
     const nextRundown = buildServiceRundown(
       selectedService.id as ServiceId,
       nextAnswers,
-      onboardingRole ?? "customer",
+      toServiceRole(onboardingRole),
     );
     if (nextRundown.missingRequiredFields.length > 0) {
       setError(`Please complete: ${nextRundown.missingRequiredFields.join(", ")}.`);
@@ -214,7 +228,7 @@ export function NairaLeapGuideContainer({
   const currentStepIndex = stageIndex(stage);
   const Icon = selectedService?.icon;
   const roleProfile = selectedService
-    ? getServiceRoleProfile(selectedService.id as ServiceId)[onboardingRole ?? "customer"]
+    ? getServiceRoleProfile(selectedService.id as ServiceId)[toServiceRole(onboardingRole)]
     : null;
 
   return (
@@ -370,7 +384,9 @@ export function NairaLeapGuideContainer({
                   <AssistantMessage title={`Let’s prepare your ${selectedService.title} request.`}>
                     {selectedService.id === "insurance"
                       ? "This short enquiry collects contact and product-preference details only. It does not collect identity documents, BVN, bank or pension details, beneficiary documents, medical history or uploads. A provider must confirm current terms and any formal-application requirements."
-                      : onboardingRole && onboardingRole !== "customer" && onboardingRole !== "seller"
+                      : onboardingRole &&
+                          onboardingRole !== "customer" &&
+                          onboardingRole !== "seller"
                         ? "Tell us about your needs. Answer the service questions and review your request before submitting."
                         : onboardingRole === "seller"
                           ? "Tell us what you offer. Answer the service questions and review your request before submitting."
@@ -379,7 +395,7 @@ export function NairaLeapGuideContainer({
                   <QuestionEngine
                     questionSet={getServiceQuestionSet(
                       selectedService.id as ServiceId,
-                      onboardingRole ?? "customer",
+                      toServiceRole(onboardingRole),
                     )}
                     layout="single-page"
                     title={`${selectedService.title} request`}
@@ -390,11 +406,6 @@ export function NairaLeapGuideContainer({
                       if (service) onBack?.(service);
                       else setStage("service");
                     }}
-                    layout={
-                      selectedService.id === "agriculture" || selectedService.id === "mortgage"
-                        ? "horizontal"
-                        : "sequential"
-                    }
                   />
                 </>
               ) : null}
@@ -635,7 +646,8 @@ function RundownPanel({
                     Recommended: {document.replaceAll("-", " ")}
                   </li>
                 ))}
-                {rundown.requiredDocuments.length === 0 && rundown.recommendedDocuments.length === 0 ? (
+                {rundown.requiredDocuments.length === 0 &&
+                rundown.recommendedDocuments.length === 0 ? (
                   <li className="text-muted-foreground">No documents required at this stage.</li>
                 ) : null}
               </ul>
@@ -692,4 +704,3 @@ function SummaryMetric({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-

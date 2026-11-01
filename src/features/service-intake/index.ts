@@ -112,7 +112,11 @@ export const SERVICE_PRICING_MAP = {
 const CHOICES: Record<string, QuestionChoice[]> = {
   agricultureRole: [
     { value: "farmer", label: "Farmer", description: "I grow crops or raise animals" },
-    { value: "input-supplier", label: "Input Supplier", description: "I supply fertilizers, seeds, equipment, or services" },
+    {
+      value: "input-supplier",
+      label: "Input Supplier",
+      description: "I supply fertilizers, seeds, equipment, or services",
+    },
   ],
   serviceType: [
     { value: "farm-registration", label: "Register a farm" },
@@ -253,9 +257,9 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "general-business", label: "General business" },
   ],
   insuranceRequestType: [
-    { value: "compare-cover", label: "Compare Cover" },
-    { value: "get-quote", label: "Get a Quote" },
-    { value: "make-claim", label: "Make a Claim" },
+    { value: "compare-options", label: "Compare Cover" },
+    { value: "new-cover", label: "Get a Quote" },
+    { value: "claim", label: "Make a Claim" },
   ],
   insuranceCategory: INSURANCE_CATEGORY_CATALOG.map(({ id, title }) => ({
     value: id,
@@ -372,8 +376,16 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "nhf-fmbn", label: "Explore NHF / FMBN Pathways" },
   ],
   mortgageRole: [
-    { value: "developer", label: "Developer", description: "I develop estates or property projects" },
-    { value: "mortgage-bank", label: "Mortgage Bank", description: "I am a mortgage bank or lender" },
+    {
+      value: "developer",
+      label: "Developer",
+      description: "I develop estates or property projects",
+    },
+    {
+      value: "mortgage-bank",
+      label: "Mortgage Bank",
+      description: "I am a mortgage bank or lender",
+    },
   ],
   estateFacilities: [
     { value: "asphalt-road", label: "Asphalt road" },
@@ -672,4 +684,3 @@ export function buildServiceRundown(
     price: SERVICE_PRICING_MAP[serviceId],
   };
 }
-

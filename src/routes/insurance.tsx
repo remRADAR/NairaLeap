@@ -11,6 +11,7 @@ import {
   House,
   Leaf,
   Plane,
+  Sailboat,
   Scale,
   ShieldCheck,
   Umbrella,
@@ -23,10 +24,7 @@ import {
 } from "@/components/ui/NairaLeapGuideContainer";
 import type { AnswersState } from "@/features/question-engine";
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
-import {
-  INSURANCE_CATEGORY_CATALOG,
-  type InsuranceCategoryId,
-} from "@/features/insurance/catalog";
+import { INSURANCE_CATEGORY_CATALOG, type InsuranceCategoryId } from "@/features/insurance/catalog";
 
 export const Route = createFileRoute("/insurance")({
   head: () => ({
@@ -62,7 +60,7 @@ type InsuranceFlow = {
 
 const INSURANCE_FLOWS: InsuranceFlow[] = [
   {
-    value: "compare-cover",
+    value: "compare-options",
     role: "compare-cover",
     title: "Compare Cover",
     description:
@@ -70,7 +68,7 @@ const INSURANCE_FLOWS: InsuranceFlow[] = [
     icon: Scale,
   },
   {
-    value: "get-quote",
+    value: "new-cover",
     role: "get-quote",
     title: "Get a Quote",
     description:
@@ -78,7 +76,7 @@ const INSURANCE_FLOWS: InsuranceFlow[] = [
     icon: ClipboardList,
   },
   {
-    value: "make-claim",
+    value: "claim",
     role: "make-claim",
     title: "Make a Claim",
     description:
@@ -97,14 +95,34 @@ type InsuranceCompareOffer = {
 const INSURANCE_COMPARE_OFFERS: InsuranceCompareOffer[] = [
   { category: "Motor", cover: "Third-party only", indicativeFrom: "₦5,000", period: "per year" },
   { category: "Motor", cover: "Comprehensive", indicativeFrom: "₦25,000", period: "per year" },
-  { category: "Health", cover: "Individual / family plan", indicativeFrom: "₦60,000", period: "per year" },
+  {
+    category: "Health",
+    cover: "Individual / family plan",
+    indicativeFrom: "₦60,000",
+    period: "per year",
+  },
   { category: "Life", cover: "Term life", indicativeFrom: "₦10,000", period: "per year" },
   { category: "Home", cover: "Home & contents", indicativeFrom: "₦15,000", period: "per year" },
   { category: "Business", cover: "SME package", indicativeFrom: "₦30,000", period: "per year" },
-  { category: "Agriculture", cover: "Crop / livestock", indicativeFrom: "₦8,000", period: "per season" },
+  {
+    category: "Agriculture",
+    cover: "Crop / livestock",
+    indicativeFrom: "₦8,000",
+    period: "per season",
+  },
   { category: "Travel", cover: "Single trip", indicativeFrom: "₦5,500", period: "per trip" },
-  { category: "Liability", cover: "General liability", indicativeFrom: "₦12,000", period: "per year" },
-  { category: "Micro / Takaful", cover: "Microinsurance", indicativeFrom: "₦1,500", period: "per year" },
+  {
+    category: "Liability",
+    cover: "General liability",
+    indicativeFrom: "₦12,000",
+    period: "per year",
+  },
+  {
+    category: "Micro / Takaful",
+    cover: "Microinsurance",
+    indicativeFrom: "₦1,500",
+    period: "per year",
+  },
 ];
 
 type InsuranceCategory = {
@@ -298,7 +316,7 @@ function InsurancePage() {
                 type="button"
                 onClick={() =>
                   openGuide(
-                    { insuranceRequestType: "compare-cover", insuranceCategory: value },
+                    { insuranceRequestType: "compare-options", insuranceCategory: value },
                     "compare-cover",
                   )
                 }
@@ -349,7 +367,7 @@ function InsurancePage() {
               <BrandButton
                 variant="ghost"
                 className="min-h-11"
-                onClick={() => openGuide({ insuranceRequestType: "get-quote" }, "get-quote")}
+                onClick={() => openGuide({ insuranceRequestType: "new-cover" }, "get-quote")}
               >
                 Request a manual product review
               </BrandButton>
@@ -378,7 +396,9 @@ function InsurancePage() {
               <BrandButton
                 variant="ghost"
                 className="min-h-11"
-                onClick={() => openGuide({ insuranceRequestType: "compare-cover" }, "compare-cover")}
+                onClick={() =>
+                  openGuide({ insuranceRequestType: "compare-options" }, "compare-cover")
+                }
               >
                 Get started
               </BrandButton>

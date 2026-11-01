@@ -26,10 +26,12 @@ export interface QuestionEngineProps {
   /**
    * Layout of the intake form:
    * - "one-per-page" (default): guided frames, one question per screen.
+   * - "sequential": legacy alias for "one-per-page".
+   * - "horizontal": all questions on one scrollable page.
    * - "single-page": the WHOLE form on one frame/page, grouped into
    *   Required / Optional sections with a single submit action.
    */
-  layout?: "one-per-page" | "single-page";
+  layout?: "one-per-page" | "sequential" | "horizontal" | "single-page";
   /** Optional pre-filled answers (e.g. resume in-progress flow). */
   initialAnswers?: AnswersState;
   /** Completion callback — invoked with the final answers on submit. */
@@ -70,7 +72,6 @@ export function QuestionEngine({
   onExit,
   title,
   submitLabel = "Submit",
-  layout = "sequential",
   className,
 }: QuestionEngineProps) {
   // Backward-compatible resolution: prefer `questionSet`, fall back to
@@ -110,6 +111,7 @@ export function QuestionEngine({
     <GuidedForm
       questions={resolvedQuestions}
       currentQuestion={currentQuestion}
+      layout={layout}
       initialAnswers={initialAnswers}
       onComplete={onComplete}
       onExit={onExit}
@@ -362,6 +364,7 @@ function FormField({ question, value, invalid, onChange, registerRef }: FormFiel
         onEnter={() => {
           /* Enter moves through native fields; submit is explicit. */
         }}
+        shouldFocus={false}
         labelledBy={titleId}
         describedBy={question.helper ? helperId : undefined}
         autoFocus={false}
@@ -377,6 +380,7 @@ function FormField({ question, value, invalid, onChange, registerRef }: FormFiel
 interface GuidedFormProps {
   questions: Question[];
   currentQuestion?: string;
+  layout: "one-per-page" | "sequential" | "horizontal";
   initialAnswers?: AnswersState;
   onComplete?: (answers: AnswersState) => void;
   onExit?: () => void;
@@ -386,6 +390,7 @@ interface GuidedFormProps {
 function GuidedForm({
   questions,
   currentQuestion,
+  layout,
   initialAnswers,
   onComplete,
   onExit,
@@ -396,6 +401,7 @@ function GuidedForm({
     total,
     current,
     currentQuestions,
+    visibleQuestions,
     progress,
     answers,
     setAnswer,
@@ -448,8 +454,14 @@ function GuidedForm({
 
   // ---- Horizontal layout: all questions on one page ----
   if (layout === "horizontal") {
-    const requiredQuestions = resolvedQuestions.filter((q) => q.required);
-    const allRequiredAnswered = requiredQuestions.every((q) => isAnswered(q.id));
+    const requiredQuestions = visibleQuestions.filter((q) => q.required !== false);
+    const allRequiredAnswered = requiredQuestions.every((q) =>
+      isQuestionAnswered(q, answers[q.id]),
+    );
+    const answeredCount = visibleQuestions.filter((q) => hasDisplayedAnswer(answers[q.id])).length;
+    const horizontalProgress = visibleQuestions.length
+      ? Math.round((answeredCount / visibleQuestions.length) * 100)
+      : 0;
 
     return (
       <section
@@ -459,27 +471,27 @@ function GuidedForm({
         {/* Progress summary */}
         <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
           <span aria-live="polite">
-            {resolvedQuestions.filter((q) => isAnswered(q.id)).length} of {total} answered
+            {answeredCount} of {visibleQuestions.length} answered
           </span>
-          <span aria-hidden="true">{progress}%</span>
+          <span aria-hidden="true">{horizontalProgress}%</span>
         </div>
         <div
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-valuenow={progress}
+          aria-valuenow={horizontalProgress}
           aria-label="Question progress"
           className="h-1.5 w-full overflow-hidden rounded-full bg-glass-border"
         >
           <div
             className="h-full gradient-brand shadow-[var(--shadow-glow)] transition-[width] duration-300 motion-reduce:transition-none"
-            style={{ width: `${progress}%` }}
+            style={{ width: `${horizontalProgress}%` }}
           />
         </div>
 
         {/* All questions */}
         <div className="flex flex-col gap-5">
-          {resolvedQuestions.map((question, qIndex) => (
+          {visibleQuestions.map((question, qIndex) => (
             <div
               key={question.id}
               className="glass-panel rounded-3xl p-5 sm:p-6"
@@ -489,16 +501,17 @@ function GuidedForm({
                 <span className="grid h-5 w-5 place-items-center rounded-full bg-glass text-[10px] font-semibold text-muted-foreground">
                   {qIndex + 1}
                 </span>
-                {question.required ? (
-                  <span className="text-destructive">Required</span>
-                ) : (
+                {question.required === false ? (
                   <span>Optional</span>
+                ) : (
+                  <span className="text-destructive">Required</span>
                 )}
               </div>
               <QuestionBody
                 question={question}
                 value={answers[question.id]}
                 onChange={(v) => setAnswer(question.id, v)}
+                shouldFocus={false}
                 onEnter={() => {
                   // In horizontal mode, Enter just moves focus; no auto-advance
                 }}

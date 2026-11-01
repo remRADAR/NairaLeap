@@ -9,12 +9,43 @@
  */
 
 const ALLOWED_TAGS = new Set([
-  "p", "br", "hr", "strong", "b", "em", "i", "u", "s",
-  "h1", "h2", "h3", "h4", "h5", "h6",
-  "ul", "ol", "li", "blockquote", "pre", "code",
-  "a", "img", "figure", "figcaption",
-  "table", "thead", "tbody", "tr", "th", "td",
-  "div", "span", "small", "mark", "sup", "sub",
+  "p",
+  "br",
+  "hr",
+  "strong",
+  "b",
+  "em",
+  "i",
+  "u",
+  "s",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "ul",
+  "ol",
+  "li",
+  "blockquote",
+  "pre",
+  "code",
+  "a",
+  "img",
+  "figure",
+  "figcaption",
+  "table",
+  "thead",
+  "tbody",
+  "tr",
+  "th",
+  "td",
+  "div",
+  "span",
+  "small",
+  "mark",
+  "sup",
+  "sub",
 ]);
 
 const ALLOWED_ATTRS: Record<string, Set<string>> = {
@@ -23,9 +54,14 @@ const ALLOWED_ATTRS: Record<string, Set<string>> = {
 };
 
 const URL_ATTRS = new Set(["href", "src"]);
+const DANGEROUS_CONTENT_BLOCK =
+  /<(script|style|iframe|object|embed|svg|math|template|noscript|noembed|plaintext|xmp)\b[^>]*>[\s\S]*?(?:<\/\1\s*>|$)/gi;
 
 function isSafeUrl(value: string): boolean {
-  const trimmed = value.trim().toLowerCase().replace(/[\u0000-\u001f]/g, "");
+  const trimmed = value
+    .trim()
+    .toLowerCase()
+    .replace(/\p{Cc}/gu, "");
   if (
     trimmed.startsWith("javascript:") ||
     trimmed.startsWith("data:") ||
@@ -34,9 +70,13 @@ function isSafeUrl(value: string): boolean {
   ) {
     return false;
   }
-  return trimmed.startsWith("http://") || trimmed.startsWith("https://") ||
-    trimmed.startsWith("/") || trimmed.startsWith("#") ||
-    trimmed.startsWith("mailto:");
+  return (
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("#") ||
+    trimmed.startsWith("mailto:")
+  );
 }
 
 function sanitiseAttributes(tag: string, attrHtml: string): string {
@@ -46,7 +86,11 @@ function sanitiseAttributes(tag: string, attrHtml: string): string {
   while ((match = attrPattern.exec(attrHtml)) !== null) {
     const name = match[1].toLowerCase();
     const rawValue = match[3] ?? match[4] ?? match[2] ?? "";
-    const value = rawValue.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const value = rawValue
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
     const allowed = ALLOWED_ATTRS[tag];
     if (!allowed || !allowed.has(name)) continue;
     if (URL_ATTRS.has(name) && !isSafeUrl(rawValue)) continue;
@@ -62,13 +106,18 @@ function sanitiseAttributes(tag: string, attrHtml: string): string {
  */
 export function sanitizeEditorialHtml(input: string): string {
   if (!input) return "";
+  const withoutComments = input.replace(/<!--[\s\S]*?(?:-->|$)/g, "");
+  const withoutDangerousContent = withoutComments.replace(DANGEROUS_CONTENT_BLOCK, "");
   const tagPattern = /<\/?([a-zA-Z][a-zA-Z0-9-]*)((?:[^>"']|"[^"]*"|'[^']*')*)(\/?)>/g;
-  return input.replace(tagPattern, (whole, rawTag: string, rawAttrs: string, selfClose: string) => {
-    const tag = rawTag.toLowerCase();
-    if (!ALLOWED_TAGS.has(tag)) return "";
-    const isClosing = whole.startsWith("</");
-    if (isClosing) return `</${tag}>`;
-    const attrs = sanitiseAttributes(tag, rawAttrs ?? "");
-    return `<${tag}${attrs}${selfClose ? " /" : ""}>`;
-  }).replace(/<!--/g, "<!--").replace(/--!>/g, "--!>");
+  return withoutDangerousContent.replace(
+    tagPattern,
+    (whole, rawTag: string, rawAttrs: string, selfClose: string) => {
+      const tag = rawTag.toLowerCase();
+      if (!ALLOWED_TAGS.has(tag)) return "";
+      const isClosing = whole.startsWith("</");
+      if (isClosing) return `</${tag}>`;
+      const attrs = sanitiseAttributes(tag, rawAttrs ?? "");
+      return `<${tag}${attrs}${selfClose ? " /" : ""}>`;
+    },
+  );
 }

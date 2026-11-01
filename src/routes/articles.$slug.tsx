@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CalendarDays, FileQuestion } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { EditorialLayout } from "@/components";
 import {
   withEditorialImageFallbacks,
@@ -9,6 +9,11 @@ import {
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 import { sanitizeEditorialHtml } from "@/features/editorial/sanitize";
 import { AdSlot } from "@/features/advertising/AdSlot";
+
+type ArticleRouteLoaderData = {
+  post: EditorialPostWithImage | null;
+  allPosts: EditorialPostWithImage[];
+};
 
 export const Route = createFileRoute("/articles/$slug")({
   head: async ({ params }) => {
@@ -24,11 +29,11 @@ export const Route = createFileRoute("/articles/$slug")({
       ],
     };
   },
-  loader: async ({ params }) => {
+  loader: async ({ params }): Promise<ArticleRouteLoaderData> => {
     const { EDITORIAL_POSTS, getEditorialPost } = await import("@/data/wordpressEditorial");
     const post = getEditorialPost(params.slug);
     return {
-      post: post ? withEditorialImageFallbacks([post])[0] : null,
+      post: post ? (withEditorialImageFallbacks([post])[0] ?? null) : null,
       allPosts: withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS)),
     };
   },
@@ -50,9 +55,10 @@ function sanitizeCached(content: string): string {
   return sanitized;
 }
 
-function ArticlePage() {
+function ArticlePage(): ReactElement {
   const { slug } = Route.useParams();
-  const { post: loadedPost, allPosts: loadedPosts } = Route.useLoaderData();
+  const { post: loadedPost, allPosts: loadedPosts } =
+    Route.useLoaderData() as ArticleRouteLoaderData;
   const [post, setPost] = useState<EditorialPostWithImage | null>(loadedPost);
   const [allPosts, setAllPosts] = useState<EditorialPostWithImage[]>(loadedPosts);
   useEffect(() => {

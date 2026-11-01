@@ -21,25 +21,11 @@ const ROLE_PROFILES = [
     sellerField: "What funding or capital do you provide?",
   },
   {
-    id: "partnerships",
-    customer: "partner or collaborator",
-    seller: "partner, collaborator, or opportunity holder",
-    customerField: "What do you want a partner to help achieve?",
-    sellerField: "What partnership opportunity are you offering?",
-  },
-  {
     id: "vendor-marketplace",
     customer: "buyer or procurement customer",
     seller: "vendor, merchant, or service provider",
     customerField: "What do you need to buy?",
     sellerField: "What products or services do you offer?",
-  },
-  {
-    id: "distress-sales",
-    customer: "buyer or distressed-asset investor",
-    seller: "owner, seller, or liquidator",
-    customerField: "What distressed asset are you looking for?",
-    sellerField: "Why is the sale time-sensitive?",
   },
   {
     id: "recycling-scrap",
