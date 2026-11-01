@@ -17,5 +17,11 @@ revoke update (
   created_at,
   updated_at
 ) on table public.service_requests from authenticated;
+drop policy if exists service_requests_update_admin_only_restrictive
+  on public.service_requests;
+create policy service_requests_update_admin_only_restrictive
+  on public.service_requests as restrictive for update to authenticated
+  using (public.is_admin())
+  with check (public.is_admin());
 
 grant update (status) on table public.service_requests to authenticated;

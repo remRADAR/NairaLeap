@@ -458,10 +458,12 @@ select lives_ok(
        '88888888-8888-4888-8888-888888888888', 'portal')$$,
   'participant can create a customer service request'
 );
+create policy pgtap_permissive_service_request_update
+  on public.service_requests for update to authenticated using (true) with check (true);
 select lives_ok(
   $$update public.service_requests set status = 'resolved'
     where id = '77777777-7777-4777-8777-777777777777'$$,
-  'participant cannot change their own request status through row-level security'
+  'participant cannot change request status even with an added permissive policy'
 );
 select throws_ok(
   $$update public.service_requests set submitted_payload = '{"forged":true}'::jsonb
@@ -480,8 +482,9 @@ select results_eq(
   $$select status::text from public.service_requests
     where id = '77777777-7777-4777-8777-777777777777'$$,
   $$values ('submitted'::text)$$,
-  'participant status attempts leave the submitted request unchanged'
+  'restrictive admin-only guard defeats permissive policy OR for participant writes'
 );
+drop policy pgtap_permissive_service_request_update on public.service_requests;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"33333333-3333-4333-8333-333333333333","role":"authenticated","app_metadata":{"role":"admin"}}', true);
 select lives_ok(
