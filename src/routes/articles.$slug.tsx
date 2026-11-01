@@ -7,6 +7,7 @@ import {
   type EditorialPostWithImage,
 } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
+import { sanitizeEditorialHtml } from "@/features/editorial/sanitize";
 
 export const Route = createFileRoute("/articles/$slug")({
   head: async ({ params }) => {
@@ -32,6 +33,21 @@ export const Route = createFileRoute("/articles/$slug")({
   },
   component: ArticlePage,
 });
+
+/**
+ * Editorial content can come from imported archives or the admin studio, so it
+ * must pass the allowlist sanitiser before being injected. Results are cached
+ * per content string to keep re-renders cheap.
+ */
+const sanitizedHtmlCache = new Map<string, string>();
+function sanitizeCached(content: string): string {
+  const cached = sanitizedHtmlCache.get(content);
+  if (cached !== undefined) return cached;
+  const sanitized = sanitizeEditorialHtml(content);
+  if (sanitizedHtmlCache.size > 200) sanitizedHtmlCache.clear();
+  sanitizedHtmlCache.set(content, sanitized);
+  return sanitized;
+}
 
 function ArticlePage() {
   const { slug } = Route.useParams();
@@ -146,7 +162,12 @@ function ArticlePage() {
             </div>
           )}
         </header>
-        <div className="article-copy mt-9" dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div
+          className="article-copy mt-9"
+          // Article HTML can originate from studio submissions or imported
+          // archives, so it is sanitised through an allowlist before rendering.
+          dangerouslySetInnerHTML={{ __html: sanitizeCached(post.content) }}
+        />
         <footer className="mt-12 border-t border-[#e9e9f0] pt-6">
           <p className="text-xs text-[#858598]">
             Migrated to Nairaleap from the WordPress editorial archive. Read the original source at{" "}
