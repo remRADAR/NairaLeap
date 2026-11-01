@@ -164,3 +164,54 @@ Effort estimates below are rough engineering estimates, may overlap, and exclude
 ## 9. Release recommendation
 
 **Do not merge or release yet.** The latest pushed source preview is READY and six direct-route HTTP smoke checks passed. Still complete authorized isolated-staging migration/pgTAP and RLS verification; provision and test the Vault key; run critical Cypress journeys; review the remaining full-lint baseline and two Bun audit advisories; and obtain owner/legal/provider approvals for draft legal content, insurance figures/claims, ad rates, provider operations and external integrations. Production remains untouched.
+
+
+---
+
+# NairaLeap Relaunch — Engineering Handoff Addendum (rev. 4)
+
+**Status: NOT READY for merge or production release.** This addendum records the Phase 2 directive work appended on top of rev. 3. Everything in rev. 3 remains accurate unless amended below. **No build, typecheck, lint, audit, Cypress, migration or database test was executed in this session** — the current environment has no Node/Bun runtime, no Vercel access and no Supabase staging project. All execution verification remains NOT RUN and must be performed by Manus per §E of this addendum.
+
+## A. Commits added on top of rev. 3 (branch `feat/nairaleap-relaunch-implementation`)
+
+| Commit | Change |
+| --- | --- |
+| `01e84fa` | Newsletter truthfulness fix (C5) + `service-landing-top` ad placement mount (C1). |
+| `384bb5e` | Staff assignment + audit trail (B4), booking foundation (B5), pgTAP `rls_assignment_booking_test.sql`. |
+| `ce98165` | Founder Voice Engine architecture (D1) + migration `20261101160000_founder_voice_engine.sql` + `scripts/audit-voice-engine.ts`. |
+| (this commit) | Registers `audit:voice-engine` in package.json; this rev. 4 addendum. |
+
+## B. What was implemented this round
+
+- **C5 Newsletter truthfulness:** `SubscribeBanner` no longer claims an inbox confirmation was completed. Copy now states that subscription delivery is not active and the address was not yet persisted, until a consent-aware provider flow exists. Migration `20261101140000_newsletter_consent_model.sql` adds consent-first `subscribers` (status `pending_opt_in` → `subscribed`/`unsubscribed`, verified email flow) and an immutable `newsletter_consent_events` trail. No email is sent; no provider is configured.
+- **C1 Advertising:** `service-landing-top` is now mounted on service landing pages via the shared `AdSlot`. Mounted placements: 6 of 8 (homepage-top, homepage-bottom, article-end, category-list-top, service-footer, service-landing-top). `article-inline` requires a mid-body article-section decision (owner call), `category-sidebar` is intentionally disabled by design. All rate-card prices remain NULL pending owner approval.
+- **B4 Assignment and audit:** `service_requests.assigned_staff` with trigger-enforced admin/staff-only assignment; immutable `service_request_history` audit trail written by a `SECURITY DEFINER` trigger on every status/assignment change; restrictive write policies. Participants cannot self-assign or grant staff roles (roles remain `auth.users.raw_app_meta_data`-based, admin-provisioned).
+- **B5 Booking foundation:** `provider_availability` + `bookings` tables (requested → confirmed/rescheduled → completed/cancelled). Customers may create and cancel only; confirmation and rescheduling are provider/staff/admin actions. **No cancellation windows, fees or policy promises were invented** — those business rules require owner approval.
+- **D1 Founder Voice Engine:** `src/features/voice-engine/` — `VoiceProvider` abstraction with a server-backed cloned-voice provider contract (credentials server-side only; provider swappable without Bot changes), the temporary synthetic demonstration voice (browser speechSynthesis, explicitly labelled NOT the founder voice), the `FounderVoiceEngine` (dynamic speech from Bot replies, streaming consumption, interruptible playback, replay, provider-failure fallback, always-available text fallback, metadata-only usage logging), and a Nigerian pronunciation lexicon (brand, cities, institutions, currency). `FOUNDER_VOICE_ENROLMENT_ENABLED = false`: `recordFounderEnrolment` throws; no founder recordings are uploaded or processed. Migration adds `voice_profiles` (activation admin-only via trigger), immutable `voice_consent_events`, `voice_usage_log` (metadata only), and a private `voice-samples` bucket with owner-scoped, audio-type, 50 MB, immutable policies plus a secure-deletion workflow. Classification: **ARCHITECTURALLY IMPLEMENTED**.
+
+## C. Verification status (this round)
+
+| Check | Result |
+| --- | --- |
+| Build / tsc / lint / audits / Cypress / pgTAP | **NOT RUN** — no runtime in this environment. Do not treat any rev. 3 result as still valid without re-running. |
+| Source pushes | Confirmed by returned commit SHAs (above). |
+
+## D. Known defects and owner gates carried forward (unchanged from rev. 3 unless noted)
+
+- Insurance comparison amounts/coverage claims: unverified placeholders — owner approval required.
+- Draft legal content (About/Privacy/Disclaimer): owner/legal approval required; Terms/Cookies footer labels still have no destinations.
+- Advertising rates, scrap prices: deliberately NULL — owner approval required.
+- Full-repo lint baseline (97 problems), 2 Bun advisories (zod high, minimatch moderate): re-verify, do not assume unchanged.
+- Founder voice: recordings + explicit cloning/commercial-use authorisation + server provider configuration + testing required before `FOUNDER_VOICE_ENROLMENT_ENABLED` may flip. Never claim the founder voice is live until then.
+- Voice-engine audit script uses top-level `await import` inside a try block — valid under Bun; verify if the runner changes.
+
+## E. Instructions for Manus (Phase E verification, in order)
+
+1. **Dependency reconciliation:** confirm `package.json` on the branch matches main's manifest (all deps/devDeps/versions preserved) plus only the audit scripts; `bun install --frozen-lockfile`; run `bun audit` and re-verify advisory status.
+2. **Static suite:** `tsc --noEmit`; focused ESLint on all files touched since rev. 3; `npm run build`.
+3. **Audits:** run all audit scripts including the new `bun run scripts/audit-voice-engine.ts`.
+4. **Staging (never production):** apply pending migrations to an isolated Supabase staging project, then run `supabase db test` including `supabase/tests/rls_security_test.sql` (58 assertions) and the new `rls_assignment_booking_test.sql` (assignment, booking and self-promotion boundaries). Provision the `nairaleap-kyc-identity-hmac-v1` Vault key there and test fail-closed/duplicate behaviour.
+5. **Cypress:** run the critical journeys (navigation, onboarding/service requests, insurance, QuestionEngine layouts, service-role matrix).
+6. **Vercel:** confirm the latest branch SHA preview builds READY and re-run the six direct-route HTTP checks; reconcile the npm-vs-Bun install-command policy noted in rev. 3 §3.
+7. **Founder voice activation checklist (only with owner authorisation):** founder provides recordings → explicit consent recorded in `voice_consent_events` → server-side provider configured → enrolment + testing → only then flip `FOUNDER_VOICE_ENROLMENT_ENABLED` and activate the profile administratively.
+8. Update this handoff with actual results. **Do not merge to main, deploy, or touch production/DNS/env/secrets.**
