@@ -8,6 +8,7 @@ import {
   type BlueprintFieldType,
 } from "@/features/request-blueprint-engine";
 import { SERVICE_INTELLIGENCE_MAP, type ServiceId } from "@/features/service-intelligence-catalog";
+import { getServiceRoleProfile, type ServiceRole } from "@/features/services/serviceRoleCatalog";
 import { INSURANCE_CATEGORY_CATALOG } from "@/features/insurance/catalog";
 
 export type PriceMode = "fixed" | "estimate" | "quote" | "no-charge";
@@ -540,8 +541,15 @@ export const SERVICE_QUESTION_SETS: Record<ServiceId, Question[]> = Object.fromE
   ]),
 ) as Record<ServiceId, Question[]>;
 
-export function getServiceQuestionSet(serviceId: ServiceId): Question[] {
-  return SERVICE_QUESTION_SETS[serviceId] ?? [];
+export function getServiceQuestionSet(
+  serviceId: ServiceId,
+  role: ServiceRole = "customer",
+): Question[] {
+  const roleFields = getServiceRoleProfile(serviceId)[role].fields;
+  return [
+    ...(SERVICE_QUESTION_SETS[serviceId] ?? []),
+    ...roleFields.map((field) => fieldToQuestion(field, serviceId)),
+  ];
 }
 
 function hasAnswer(value: AnswersState[string] | undefined): boolean {
@@ -570,12 +578,19 @@ function formatAnswer(
   return choice?.label ?? value;
 }
 
-export function buildServiceRundown(serviceId: ServiceId, answers: AnswersState): ServiceRundown {
+export function buildServiceRundown(
+  serviceId: ServiceId,
+  answers: AnswersState,
+  role: ServiceRole = "customer",
+): ServiceRundown {
   const blueprint = REQUEST_BLUEPRINT_MAP[serviceId];
   const intelligence = SERVICE_INTELLIGENCE_MAP[serviceId];
-  const fields = [...blueprint.requiredFields, ...blueprint.optionalFields].filter((field) =>
-    isBlueprintFieldVisible(field, answers),
-  );
+  const fields = [
+    ...[...blueprint.requiredFields, ...blueprint.optionalFields].filter((field) =>
+      isBlueprintFieldVisible(field, answers),
+    ),
+    ...getServiceRoleProfile(serviceId)[role].fields,
+  ];
   const answerRows = fields
     .filter((field) => hasAnswer(answers[field.key]))
     .map((field) => ({
