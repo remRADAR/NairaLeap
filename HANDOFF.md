@@ -1,130 +1,95 @@
-# NairaLeap Relaunch — Engineering Handoff to Manus
+# NairaLeap Relaunch — Engineering Handoff to Manus (rev. 2, post-security-repair)
 
-**Status: development branch ready for independent audit, repair, integration and testing.**
-**No production deployment has been performed or claimed by this work.**
+**Status: development branch with all review-mandated repairs applied; ready for independent audit, execution of the full verification suite, and repair of anything it exposes.**
+**No production deployment has been performed. No migration has been applied to any database.**
 
 ## 1. Repository state
 
 - Repository: `remRADAR/NairaLeap`
 - Base (main) commit at branch creation: **3fa0fcc**
-- Development branch: **`feat/nairaleap-relaunch-implementation`** (created from main, never committed to main)
-- No changes were made to main, production environment variables, DNS, domains, Supabase production data or deployment configuration. No secrets were exposed, printed, committed or modified.
+- Development branch: **`feat/nairaleap-relaunch-implementation`** — the ONLY branch worked on; main was never modified.
+- No DNS, domains, production environment variables or deploy configuration were touched. No secrets were exposed or committed.
 
-## 2. Commits created on the development branch (in order)
+## 2. Original implementation commits (chronological)
 
 | Commit | Content |
 | --- | --- |
-| bc377f6 | Reconciliation of PR #7 (insurance discovery): 15-category INSURANCE_CATEGORY_CATALOG, research/disclosure sections, PR#7 insurance content preserved against current main. |
-| cfe228e | PR #8 core merge: unified UI components, QuestionEngine layout types ("sequential" / "horizontal" / "single-page"), service catalog restructuring. |
-| 44b3945 | PR #8 landing pages, editorial and catalogue work reconciled against main. |
-| 9df593a | PR #8 insurance route (Compare Cover / Get a Quote / Make a Claim + indicative offers table) and 13 remaining PR#8 files, with mojibake (encoding corruption) repaired. |
-| 7f9e386 | Editorial image selection rewritten: explicit category-to-image mapping (deepest-match CATEGORY_IMAGE_OVERRIDES + top-level TOP_LEVEL_CATEGORY_IMAGES incl. Transportation & Infrastructure), all mapped images verified on disk, deterministic hash fallback. |
-| a676209 | About Us / Privacy Policy / Disclaimer pages (clearly marked DRAFT, [to be confirmed] placeholders), footer links in both layouts; repairs AppLayout mobile-dropdown merge defect (duplicate mislabelled Services link + undefined `closeMenu`). |
-| 3893fe7 | Advertising infrastructure: `src/features/advertising/` placements (homepage/article/category/service areas), shared AdSlot component, admin rate-card structure with ALL prices null (PENDING_OWNER_APPROVAL — no invented prices); homepage slots wired to homepage-top/homepage-bottom. |
-| 37a61de | Research as a Professional Services offering: client ("I need research or consulting support") and supply-side ("I'm a researcher, consultant or specialist") roles + landing content update. |
-| 30fe6b8 | Priorities B–F foundations: Supabase migration 20261101090000 (participant model, provider profiles/staff, service rate cards, scrap pricing framework, subscription states, WhatsApp callback queue with consent, KYC workflow + private document bucket, article FAQs/surveys, social distribution queue, language records — all with RLS), editorial HTML sanitizer, audit scripts `audit:ads` and `audit:editorial-sanitizer`. |
-| 10d9b96 | Sanitizer wired into `src/routes/articles.$slug.tsx` (article HTML now passes the allowlist before `dangerouslySetInnerHTML`, cached per content string). |
-| (this commit) | HANDOFF.md — this document. |
+| bc377f6 | PR #7 reconciliation (15-category insurance catalog, research/disclosure sections). |
+| cfe228e | PR #8 core: unified UI, QuestionEngine layouts (sequential/horizontal/single-page), service catalog restructure. |
+| 44b3945 | PR #8 landing/editorial/catalogue work. |
+| 9df593a | PR #8 insurance route (Compare/Quote/Claim + indicative offers) + 13 direct files, mojibake repaired. |
+| 7f9e386 | Editorial category→image mapping rewritten (explicit overrides, verified files, deterministic fallback). |
+| a676209 | About/Privacy/Disclaimer DRAFT pages + footer links; AppLayout mobile-nav merge defect repaired. |
+| 3893fe7 | Advertising: placements (8, all areas), shared AdSlot, rate-card structure (all prices NULL / pending owner approval); homepage wired. |
+| 37a61de | Research as Professional Services offering (demand + supply roles). |
+| 30fe6b8 | Foundations migration 20261101090000 + editorial sanitizer + audit scripts (audit:ads, audit:editorial-sanitizer). |
+| 10d9b96 | Sanitizer wired into articles.$slug render path. |
+| 85c2cc8 | HANDOFF.md rev.1. |
 
-PR #7 and PR #8 originals were left untouched (reconciled via 3-way merges into direct branch commits; nothing was blindly merged). Temporary artifacts from reconciliation: branches `reconcile/pr7-insurance-discovery`, `reconcile/pr8-product-restructuring` and closed PR #10 — safe to delete, kept only as an audit trail.
+## 3. REPAIR commits (this round — ChatGPT-identified mandatory corrections)
 
-## 3. Files created / modified / deleted
-
-**Created**
-- `src/routes/about.tsx`, `src/routes/privacy-policy.tsx`, `src/routes/disclaimer.tsx`
-- `src/features/advertising/placements.ts`, `src/features/advertising/AdSlot.tsx`, `src/features/advertising/rateCard.ts`
-- `src/features/editorial/sanitize.ts`
-- `scripts/audit-advertising.ts`, `scripts/audit-editorial-sanitizer.ts`
-- `supabase/migrations/20261101090000_marketplace_kyc_editorial_social_foundations.sql`
-- `HANDOFF.md`
-
-**Modified**
-- `src/components/layout/AppLayout.tsx` (footer destinations; mobile dropdown repaired)
-- `src/components/layout/EditorialLayout.tsx` (footer legal links; content-driven LatestTicker — the hard-coded news ticker is already replaced)
-- `src/routes/index.tsx` (homepage slots via shared AdSlot)
-- `src/routes/articles.$slug.tsx` (sanitised article HTML)
-- `src/components/ui/ServiceLandingPage.tsx` (professional-services roles)
-- `src/features/services/serviceLandingContent.ts` (professional-services research content)
-- `package.json` (two new audit scripts)
-- Plus the PR #7/#8 reconciliation set: insurance catalog/route files, question engine, service catalog (10 services), editorial images (`src/features/editorial/images.ts`), service landing content, and related components.
-
-**Deleted**: nothing.
+| Commit | Repair |
+| --- | --- |
+| 0be4417 | **(1) package.json restored**: the complete dependency manifest from main (every dependency and version verbatim; nothing upgraded/removed); new audit scripts retained. Repository uses bun; `bun.lock` was never modified and matches the restored manifest exactly, so no lockfile change is required. **(2) Security migration 20261101120000_security_hardening.sql** (details §5). **(3) pgTAP database security tests** `supabase/tests/rls_security_test.sql` (14 cases). |
+| 6918472 | **(6) Advertising integration completed**: article-end slot on article pages, category-list-top above the archive grid, service-landing-footer on service pages (portal tone added to the shared AdSlot). Single ad system, no duplicates; 8 placements preserved; prices still NULL. |
+| (this commit) | HANDOFF.md rev.2 — this document. |
 
 ## 4. Features implemented vs outstanding
 
-Implemented on this branch:
-- PR #7 + PR #8 fully reconciled into a 10-service catalog with a 3-flow insurance route (compare/quote/claim + indicative offers table driven by the 15-category insurance catalog with product-research disclosures).
-- Explicit, maintainable category→image editorial mapping with verified on-disk images and deterministic fallback.
-- Research as a Professional Services offering (demand + supply side).
-- Footer destinations About Us / Privacy Policy / Disclaimer (DRAFT-marked legal content, explicit placeholders, no invented business/legal facts).
-- Content-driven news ticker (already present, verified).
-- Configurable advertising placements across homepage/article/category/service areas + admin rate-card structure (all prices null pending owner approval).
-- Database foundations (schema + RLS) for: unified participants, provider profiles/staff, service rate cards, scrap pricing (source/location/unit/effective/last-verified mandatory), subscription states (free/pending/active/suspended/cancelled — no charging), WhatsApp consent/callback staff queue, KYC verification workflow with private bucket, article FAQs/surveys, social distribution queue, language records with provenance/review.
-- Editorial HTML sanitisation on the article render path.
+Implemented: PR #7 + #8 reconciled (10-service catalog, 3-flow insurance route, indicative table, disclosures); category→image editorial mapping; Research as Professional Services; DRAFT legal pages (About/Privacy/Disclaimer) with explicit placeholders; content-driven news ticker; complete advertising foundation (8 placements + shared AdSlot wired on homepage, article, archive and service pages + admin rate-card structure, all prices pending owner approval); database foundations with RLS (§5); editorial HTML sanitizer on the article render path.
 
-Outstanding (not started or foundation-only, by design):
-- UI for the new tables: provider registration screens, staff assignment UI, rate-card admin screen, scrap price admin, WhatsApp queue workbench, KYC review UI, article FAQ/survey components, social scheduling UI, dictionary/translator UIs, LeapBot TTS controls beyond existing browser speech.
-- Article/category/service page wiring of the remaining AdSlot placements (definitions exist; only homepage slots wired).
-- Booking/scheduling engine design (investigated: needs availability + staff calendar model — deliberately not reduced to a date-picker).
-- Insurance discovery for annuities and savings/investment-linked insurance beyond what PR #7 introduced.
-- Cypress coverage updates for restructured services/insurance UI.
+Outstanding: UI for new tables (provider onboarding, staff assignment, rate-card admin, scrap price admin, WhatsApp workbench, KYC review screen, article FAQ/survey components, social scheduling UI, language tooling UIs); booking/scheduling engine; annuity/savings-linked insurance discovery; Cypress spec updates for the restructured UI; owner approvals for all DRAFT content and prices.
 
-## 5. Database migrations and RLS
+## 5. Database security corrections (migrations 20261101090000 + 20261101120000)
 
-New migration: `supabase/migrations/20261101090000_marketplace_kyc_editorial_social_foundations.sql`
-- Tables: participants, provider_profiles, provider_staff, service_rate_cards, scrap_prices, subscriptions, whatsapp_callbacks, kyc_verifications, article_faqs, article_surveys, article_survey_responses, social_posts, language_entries — all with `enable row level security` and explicit policies.
-- `app_is_admin()` helper (security definer) used by admin policies.
-- Private storage bucket `kyc-documents` (public = false) created via `insert into storage.buckets ... on conflict do nothing`.
-- Updated_at triggers on all tables with `updated_at`.
-- Not applied to any environment — apply via `supabase db push` / `supabase migration up` against a staging project first.
+Both migrations are append-only; the second supersedes the first's policies. NOT applied to any database — staging first, only.
 
-## 6. Verification status — IMPORTANT, READ CAREFULLY
+- **Privilege escalation closed.** `app_is_admin()` / `app_is_staff_or_admin()` now derive privilege from `auth.users.raw_app_meta_data` — settable only via the Supabase Auth admin API (trusted server-side administrative process), unreachable by participants. A trigger forces ordinary participant inserts to `roles = ['customer']` and makes roles immutable on update: self-promotion to admin/staff and granting roles to others are neutralised/rejected at the database level.
+- **Provider verification locked.** Owners freely edit business info; `verification_status` is forced 'unverified' on insert and any change raises 42501 unless the caller is a trusted admin (reviewer path).
+- **KYC hardened.** Raw identity numbers are NEVER stored in participant-readable rows: a trigger consumes `id_number_input`, storing only a SHA-256 reference hash + last 4 characters. Owners can never set verified/rejected states nor touch `reviewer_id`/`review_notes`/`expires_at` (trigger + policy). Documents stay in the PRIVATE `kyc-documents` bucket with explicit `storage.objects` policies: owner-prefixed paths (uid folder), mimetype allowlist (JPEG/PNG/WebP/PDF), 10 MB size cap, owner+admin read, owner delete, no update policy (immutable; re-upload to replace).
+- **Editorial/callback policies corrected.** FAQ inserts forced to `status='pending'` (moderation admin-only); survey responses validated against the referenced active survey's options; callback inserts require participant ownership + explicit consent timestamp + 'queued' state + no staff assignment, and ordinary users have no update policy on callbacks at all; staff-queue policies use the trusted role source.
 
-**No build, TypeScript check, lint, Cypress run or bun audit script was executed in this workspace.** The working environment had no Node/Bun runtime, no `npm`/`bun` install and no local checkout — all work was done through the GitHub API. The previously recorded 58/58 Cypress and 74 language-check results are historical and must not be assumed. Nothing in this handoff claims a passing test.
+**Database-level tests**: `supabase/tests/rls_security_test.sql` (pgTAP, 14 cases) exercises attempted self-promotion, granting roles to others, provider self-verification, KYC input consumption/self-verify/reviewer tampering, callback consent/ownership, FAQ self-approval and survey option validity — via direct authenticated SQL with simulated JWT claims, not the UI. **NOT EXECUTED in this environment**; run with `supabase db test` against staging (needs `create extension pgtap`) and attach output.
 
-Manus must run, in this order, and fix anything that fails:
-1. `npm install` (or `bun install`)
-2. `npx tsc --noEmit` (or the project's typecheck) — note: the QuestionEngine 3-layout merge and the PR#8-reconciled files were reasoned about carefully but never compiled; treat type errors as likely and fix them.
-3. `npm run lint`
-4. `npm run build`
-5. `bun run scripts/audit-service-intake.ts`, `audit:insurance`, `audit:editorial-images`, `audit:leapbot-boundaries`, `audit:leapbot-workflow-boundaries` plus the new `audit:ads` and `audit:editorial-sanitizer`
-6. `npm run e2e` (Cypress). Expect possible failures in insurance-onboarding, service-role-profiles and service-navigation specs against the restructured service/insurance UI; update specs to the new UI rather than reverting UI work.
+## 6. Verification status — HONEST, READ FIRST
 
-## 7. Known defects and unresolved issues
+**This environment has no Node/Bun runtime, no npm/bun install, no database and no Cypress. NOTHING was executed. Every item below is REQUIRED EVIDENCE that Manus must generate:**
 
-- PR #8's indicative insurance prices in the compare-cover flow are UNVERIFIED placeholder figures from the original branch; the owner must verify or replace them before relaunch. They are labelled indicative.
-- A mobile-nav merge defect in AppLayout (duplicate mislabelled Services link, undefined `closeMenu`) was found and repaired in a676209 — re-verify the mobile menu visually in Cypress.
-- Cypress specs referencing the pre-restructure service/insurance flows may fail until updated.
-- Legal pages are DRAFT: registered entity, retention periods, cookie inventory, advertising terms all use [to be confirmed] placeholders requiring owner/legal sign-off.
-- Rate card and scrap prices are intentionally empty (null) — never fill them with invented values.
-- Social publishing and WhatsApp API integrations are schema-only; no OAuth credentials or platform permissions exist. Do not enable external publishing until consent, credentials and tests are verified.
-- `AppLayout` imports `BookOpen` from lucide-react but appears not to use it — harmless, but lint may flag it; remove if so.
+| Command | Status |
+| --- | --- |
+| `bun install` (repo uses bun; bun.lock) | NOT RUN — but lockfile is unchanged from main and matches the restored manifest, so a clean install should succeed; verify. |
+| `npx tsc --noEmit` | NOT RUN — treat type errors as possible; fix in small commits. |
+| `npm run lint` (ESLint) | NOT RUN. |
+| `npm run build` (production build) | NOT RUN. |
+| All audit scripts incl. new `audit:ads`, `audit:editorial-sanitizer` | NOT RUN. |
+| `npm run e2e` (Cypress) | NOT RUN — expect updates needed for insurance-onboarding, service-role-profiles, service-navigation specs and new coverage for ad slots (`[data-ad-placement=...]`), legal pages and mobile nav. |
+| `supabase db test` (pgTAP security tests) | NOT RUN — requires staging database. |
 
-## 8. Environment variables / provider authorisations required (names only, no secret values)
+**Vercel check finding:** no Vercel access exists in this environment. The previously failing Vercel/CI check on the branch is consistent with the now-fixed package.json defect (dependency sections were accidentally dropped in commit 30fe6b8, breaking install/build). With the manifest restored byte-for-byte from main, the build inputs are identical to main's, which is green. Manus MUST confirm by checking the Vercel deployment status for the branch after the repair commits; if it still fails, capture the build log and fix the actual error — do not assume.
 
-- Supabase project URL and anon/service-role keys (existing project pattern — confirm staging vs production values are separated).
-- Future: OAuth credentials for each social platform (Twitter/X, Facebook, Instagram, Telegram, LinkedIn, YouTube) — only when social publishing is being enabled, never before.
-- Future: WhatsApp Business API verification — only when the callback workflow moves beyond the manual staff queue.
-- Vercel: no changes required for this branch's code; existing project `nairaleap` under `remradars-projects`.
+## 7. Known defects / open items
 
-## 9. Manual configuration still required (owner decisions)
+- PR #8's indicative insurance prices are UNVERIFIED placeholders — owner must verify/replace before relaunch.
+- Legal pages are DRAFT with [to be confirmed] placeholders — owner/legal sign-off required.
+- All advertising rates and scrap prices intentionally NULL — never fill with invented values.
+- Social publishing + WhatsApp API are schema-only; no credentials/permissions exist; do not enable.
+- Subscriptions model states only; no charging — do not activate.
+- `service-landing-top`, `article-inline` and `category-sidebar` placements are defined but not yet rendered in page templates (sidebar one is disabled by design); wiring them is trivial via the shared AdSlot.
 
-1. Approve/replace all [to be confirmed] legal content on About, Privacy Policy, Disclaimer.
-2. Set advertising rate prices (or leave slots as labelled placeholders).
-3. Supply real scrap market rates with sources, locations and verification dates.
-4. Verify PR #8 indicative insurance prices.
-5. Decide subscription plan details (prices, entitlements) before any paid state is ever activated.
-6. Decide KYC retention policy and reviewer staffing.
+## 8. Environment variables / provider authorisations needed (names only)
 
-## 10. Exact instructions for Manus
+- Supabase project URL + keys (staging separated from production).
+- Future only: OAuth per social platform; WhatsApp Business API; each only when its feature is being enabled, after owner authorisation.
 
-1. `git clone https://github.com/remRADAR/NairaLeap && cd NairaLeap && git checkout feat/nairaleap-relaunch-implementation` — verify base is main@3fa0fcc lineage via `git log --oneline` and the commit list in section 2.
-2. Audit the branch: `git diff main...feat/nairaleap-relaunch-implementation --stat`, review each commit, especially the PR#7/#8 reconciliations (bc377f6, cfe228e, 44b3945, 9df593a) for semantic correctness against PR #7/#8 originals.
-3. Run the full verification sequence from section 6; repair failures as small, well-described commits on the same branch. Do not force-push and do not commit to main.
-4. Apply the migration to a STAGING Supabase project first (`supabase db push`); verify RLS with `supabase db lint` and per-role select/insert/update probes. Only then consider production application, with owner approval.
-5. Re-run and update Cypress specs for: services navigation (10 services), insurance 3-flow, professional-services research roles, mobile nav, footer legal links, homepage ad slots (`[data-ad-placement="homepage-top"|"homepage-bottom"]`), article sanitiser behaviour.
-6. Confirm no accidental changes to production config: `git diff main...HEAD -- vercel.json .env* supabase/config.toml` should show only the new migration file.
-7. When green: open a PR from `feat/nairaleap-relaunch-implementation` to main, request owner review of all DRAFT/pending-approval content (legal text, prices, insurance figures), and only merge and deploy via the existing Vercel project after explicit owner approval. Delete the reconcile/* temp branches and PR #10 after merge if desired.
-8. Do not enable paid subscriptions, automatic social publishing or the WhatsApp API without the authorisations in section 8.
+## 9. Exact instructions for Manus
 
-**This branch is not deployed. Production remains on main and untouched.**
+1. Clone, checkout `feat/nairaleap-relaunch-implementation`; verify commit inventory matches §2 + §3 (base 3fa0fcc lineage, no commits to main).
+2. `git diff main...HEAD -- package.json` should show ONLY the two added audit scripts; dependencies must match main exactly.
+3. Run the full verification suite (§6) in order; fix failures as small commits on the same branch; no force-push; never commit to main.
+4. Apply BOTH migrations to a STAGING Supabase project (`supabase db push`), run `supabase db test` (pgTAP), and probe RLS with authenticated test accounts for: self-promotion attempts, provider self-verification, KYC reviewer tampering, storage upload of an oversized/wrong-type document. Attach real output to this handoff's successor.
+5. Confirm the Vercel check now passes; if not, capture and fix the actual build error.
+6. Re-run and extend Cypress coverage per §6; also cover the three legal pages and footer links.
+7. When green: open a PR to main, request owner review of all DRAFT/pending content (legal text, insurance figures, rates), and merge/deploy only after explicit owner approval. The reconcile/* temp branches and closed PR #10 may be deleted after merge.
+8. Do not enable paid subscriptions, WhatsApp automation or social publishing without the authorisations in §8.
+
+**This branch is not deployed. Production remains on main, untouched.**
