@@ -215,3 +215,50 @@ Effort estimates below are rough engineering estimates, may overlap, and exclude
 6. **Vercel:** confirm the latest branch SHA preview builds READY and re-run the six direct-route HTTP checks; reconcile the npm-vs-Bun install-command policy noted in rev. 3 §3.
 7. **Founder voice activation checklist (only with owner authorisation):** founder provides recordings → explicit consent recorded in `voice_consent_events` → server-side provider configured → enrolment + testing → only then flip `FOUNDER_VOICE_ENROLMENT_ENABLED` and activate the profile administratively.
 8. Update this handoff with actual results. **Do not merge to main, deploy, or touch production/DNS/env/secrets.**
+
+
+---
+
+# NairaLeap Relaunch — Engineering Handoff Addendum (rev. 5)
+
+**Task: Editorial Featured Image Reconciliation and Implementation.** Base SHA verified before work: `1bdb91b` (rev. 4 tip). **No build, typecheck, lint, audit or test was executed in this session** — this environment has no Node/Bun runtime and works only through the GitHub API. Verification remains for the environment with a real checkout (Manus), per §E below.
+
+## A. Source-of-truth finding (§2 of the directive)
+
+- The original WordPress export JSONs (`nairaleap-wordpress-posts.json`, `-media.json`, `-categories.json`, `-tags.json`) are **not in the repository**; the importer reads them from a migration machine's `~/Downloads` path. GitHub code search (which indexes only the default branch) returned 0 hits and the working tree contains no export files.
+- The WordPress REST API source could not be checked here (`VITE_WORDPRESS_API_URL` is an environment value not available in this session).
+- **Consequence:** the 434 existing explicit image assignments **cannot be independently verified against the source featured_media IDs from here**. Per the directive's §7 fallback, they are preserved unchanged and are NOT claimed as source-verified. Reconciliation requires the original `nairaleap-wordpress-posts.json` + `nairaleap-wordpress-media.json` exports; see §E step 3 for the exact procedure.
+- Repository audit figures carried forward as claims (not re-verified): 3,688 imported articles; 434 with explicit images; 3,254 without; all 434 paths previously resolving under `public/editorial/cms/`.
+
+## B. Changes in this round — commit `fix(editorial): preserve source featured image assignments`
+
+1. **`src/features/editorial/images.ts`** — removed `CATEGORY_IMAGE_OVERRIDES`, `TOP_LEVEL_CATEGORY_IMAGES`, `FALLBACK_IMAGE_PATHS`, the stable-hash function and all substitution logic. `withEditorialImageFallbacks` (name retained for callers) now only preserves each post's source image and returns an empty string when none exists. All observed callers (`index.tsx`, `articles.tsx`, `archive.tsx`, `articles.$slug.tsx`) already render `post.image ? <img/> : <neutral gradient>`, so image-less cards keep the existing neutral treatment. `studio.ts` studio-authored images are unaffected (their own `image` field passes through unchanged).
+2. **`scripts/import-wordpress-migration.py`** — removed `read_old_images()` and the old-image fallback entirely. Each post's `featured_media` is preserved as `featuredMediaId`; the image resolves strictly through the media map keyed by that exact ID. Failed downloads keep the original source URL as a traceable fallback. Reports total posts, posts with source media IDs, resolved images, missing media records (per article), failed download media IDs and affected articles. Generated `EditorialPost` template now declares `featuredMediaId?: number`.
+3. **`src/features/editorial/server.ts`** — `WordPressPost` gains `featured_media`; `_fields` now requests it; normalization preserves it as `featuredMediaId` (typed via a `NormalizedEditorialPost` intersection so it compiles whether or not the generated interface yet declares the field); the embedded `wp:featuredmedia.source_url` remains the actual image; no fallback is manufactured when absent.
+4. **`scripts/audit-editorial-images.ts`** — rewritten: counts articles with/without source featured images, verifies local files exist, cross-checks `featuredMediaId` against the numeric media ID in `/editorial/cms/{ID}.{ext}` when both are available, reports remote source references separately, and fails (exit 1) on missing local files, mismatched media IDs or invented fallback assignments. A genuinely image-less article does **not** fail.
+
+## C. Known limitation — generated dataset interface (needs a real checkout)
+
+`src/data/wordpressEditorial.ts` is 22.7 MB (3,688 articles) and cannot be fetched/re-pushed through the GitHub API tools available here. The one-line interface addition could therefore **not** be applied to the generated file in this session. Required change (surgical, no data reformatting):
+
+- In `src/data/wordpressEditorial.ts`, inside `export interface EditorialPost {`, immediately after the line `  sourceUrl: string;`, insert `  featuredMediaId?: number;`
+
+Until that line is added, everything still compiles (consumers use intersection types and `image?: string` is unchanged), and existing dataset entries carry no `featuredMediaId` (they were generated before this field existed). Do **not** regenerate the dataset without the original exports.
+
+## D. Verification status
+
+| Check | Result |
+| --- | --- |
+| `npm run audit:editorial-images` | **NOT RUN** — no runtime in this environment |
+| Type-check (`tsc --noEmit`) | **NOT RUN** — same reason |
+| `npm run build` | **NOT RUN** — same reason |
+| Source pushes | Confirmed by returned commit SHAs |
+
+## E. Instructions for the next agent (Manus / environment with runtime + checkout)
+
+1. **Add the one-line interface field** (§C) to `src/data/wordpressEditorial.ts` — do not reformat or rewrite the dataset.
+2. **Static suite:** `tsc --noEmit`, focused ESLint on the five touched files, `npm run build`.
+3. **Audit:** `npm run audit:editorial-images`. Expected honest outcomes: articles without source images are reported as valid image-less entries (no failure); the 434 existing local references must all resolve to files; zero invented fallbacks. If any of the 434 paths is missing locally or the audit reports a substitution, fix before proceeding.
+4. **Reconciliation (only if the original export JSONs are available):** match each article's `featured_media` to the media export by exact ID, compare against the assigned image path media ID, and correct **only** proven relationships. Produce the reconciliation report (article ID, title, original featured-media ID, assigned path, result). Without the exports, preserve the 434 and document them as unverified — never shuffle images to make the archive look complete.
+5. **Regression eyes:** homepage hero/cards, `/articles`, `/archive`, article pages — image-less articles should now show the neutral gradient instead of unrelated artwork.
+6. Update this handoff with actual results. **Do not merge to main, deploy, or touch production/DNS/env/secrets/CMS records.**
