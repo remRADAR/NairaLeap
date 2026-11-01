@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, FileQuestion } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import {
@@ -14,10 +14,10 @@ export const Route = createFileRoute("/articles/$slug")({
     const post = getEditorialPost(params.slug);
     return {
       meta: [
-        { title: post ? `${post.title} — Nairaleap` : "Article — Nairaleap" },
+        { title: post ? `${post.title} — Nairaleap` : "Article not found — Nairaleap" },
         {
           name: "description",
-          content: post?.excerpt ?? "Read the latest Nairaleap indicator story.",
+          content: post?.excerpt ?? "This article could not be found on Nairaleap.",
         },
       ],
     };
@@ -33,17 +33,11 @@ export const Route = createFileRoute("/articles/$slug")({
   component: ArticlePage,
 });
 
-type ArticleLoaderData = {
-  post: EditorialPostWithImage | null;
-  allPosts: EditorialPostWithImage[];
-};
-
 function ArticlePage() {
   const { slug } = Route.useParams();
-  const { post: loadedPost, allPosts: loadedPosts } =
-    Route.useLoaderData() as unknown as ArticleLoaderData;
-  const [post, setPost] = useState(loadedPost);
-  const [allPosts, setAllPosts] = useState(loadedPosts);
+  const { post: loadedPost, allPosts: loadedPosts } = Route.useLoaderData();
+  const [post, setPost] = useState<EditorialPostWithImage | null>(loadedPost);
+  const [allPosts, setAllPosts] = useState<EditorialPostWithImage[]>(loadedPosts);
   useEffect(() => {
     let active = true;
     const refresh = async () => {
@@ -60,7 +54,43 @@ function ArticlePage() {
       window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
     };
   }, [slug]);
-  if (!post) return null;
+
+  if (!post) {
+    return (
+      <EditorialLayout>
+        <section className="mx-auto max-w-[820px] px-4 py-16 text-center sm:px-6 sm:py-24">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#f7f2ff]">
+            <FileQuestion className="h-7 w-7 text-[#7a2ce2]" />
+          </div>
+          <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+            404 — Article not found
+          </p>
+          <h1 className="mt-3 text-2xl font-extrabold tracking-[-0.03em] text-[#262638] sm:text-3xl">
+            This story doesn&apos;t exist (or was moved).
+          </h1>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#77778a]">
+            The article you&apos;re looking for may have been renamed, removed, or the link may be
+            incorrect. Browse the full archive to find what you need.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/archive"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#7a2ce2] px-4 py-2.5 text-xs font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#6620c8]"
+            >
+              <ArrowLeft className="h-4 w-4" /> Browse the archive
+            </Link>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-lg border border-[#e5dafa] px-4 py-2.5 text-xs font-bold text-[#6f23dd] transition hover:bg-[#f8f4ff]"
+            >
+              Back to homepage
+            </Link>
+          </div>
+        </section>
+      </EditorialLayout>
+    );
+  }
+
   const postIndex = allPosts.findIndex((item) => item.slug === post.slug);
   const nextPost = allPosts[postIndex + 1];
 
@@ -68,7 +98,7 @@ function ArticlePage() {
     <EditorialLayout>
       <article className="mx-auto max-w-[820px] px-4 py-10 sm:px-6 sm:py-16">
         <Link
-          to="/"
+          to="/archive"
           className="inline-flex items-center gap-2 text-xs font-bold text-[#7a2ce2] hover:underline"
         >
           <ArrowLeft className="h-4 w-4" /> Back to all stories
@@ -91,7 +121,9 @@ function ArticlePage() {
           {post.image && (
             <img
               src={post.image}
-              alt=""
+              alt={post.title}
+              fetchPriority="high"
+              decoding="async"
               className="mt-5 aspect-[16/9] w-full rounded-2xl object-cover shadow-[0_12px_28px_rgba(43,25,79,0.12)]"
             />
           )}
@@ -115,28 +147,6 @@ function ArticlePage() {
           )}
         </header>
         <div className="article-copy mt-9" dangerouslySetInnerHTML={{ __html: post.content }} />
-        <section
-          aria-labelledby="article-intelligence-status-title"
-          data-testid="article-intelligence-availability"
-          className="mt-10 rounded-2xl border border-[#e8e1f5] bg-[#fbfaff] p-5 sm:p-6"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2
-              id="article-intelligence-status-title"
-              className="text-base font-extrabold text-[#303044] sm:text-lg"
-            >
-              Evidence &amp; discussion
-            </h2>
-            <span className="rounded-full bg-[#f2ebff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#6f23dd]">
-              Not enabled
-            </span>
-          </div>
-          <p className="mt-3 text-sm leading-6 text-[#66667a]">
-            This page shows the migrated article and its original-source link only. Safe source
-            retrieval and authenticated, revision-bound editorial review are not connected, so
-            evidence submissions, comments, and automated verdicts are unavailable.
-          </p>
-        </section>
         <footer className="mt-12 border-t border-[#e9e9f0] pt-6">
           <p className="text-xs text-[#858598]">
             Migrated to Nairaleap from the WordPress editorial archive. Read the original source at{" "}
