@@ -32,7 +32,8 @@
 | --- | --- |
 | 0be4417 | **(1) package.json restored**: the complete dependency manifest from main (every dependency and version verbatim; nothing upgraded/removed); new audit scripts retained. Repository uses bun; `bun.lock` was never modified and matches the restored manifest exactly, so no lockfile change is required. **(2) Security migration 20261101120000_security_hardening.sql** (details §5). **(3) pgTAP database security tests** `supabase/tests/rls_security_test.sql` (14 cases). |
 | 6918472 | **(6) Advertising integration completed**: article-end slot on article pages, category-list-top above the archive grid, service-landing-footer on service pages (portal tone added to the shared AdSlot). Single ad system, no duplicates; 8 placements preserved; prices still NULL. |
-| (this commit) | HANDOFF.md rev.2 — this document. |
+| (see below) | HANDOFF.md rev.2 — this document. |
+| (final repair) | **Dependency audit finding fixed**: a verification pass comparing package.json against main byte-for-byte caught one transcription error — `@radix-ui/react-switch` was written as `^2.2.6` instead of main's `^1.2.6` in commit 0be4417. Corrected to match main exactly. With this fix, `dependencies` and `devDependencies` are verified identical to main (every key, version and order), `bun.lock` remains the untouched main lockfile, and no unrelated dependency was upgraded. |
 
 ## 4. Features implemented vs outstanding
 
