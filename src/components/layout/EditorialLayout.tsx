@@ -168,7 +168,11 @@ function SubscribeBanner() {
   return (
     <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
       {done ? (
-        <span>✓ Thanks for subscribing! Check your inbox to confirm.</span>
+        <span>
+          ✓ Thanks! Newsletter delivery is not active yet, so nothing has been sent to your inbox
+          and your email has not been saved. Subscriptions will launch once our email system is
+          connected and approved.
+        </span>
       ) : open ? (
         <form className="inline-flex items-center gap-2" onSubmit={handleSubmit}>
           <input
@@ -197,7 +201,7 @@ function SubscribeBanner() {
         </form>
       ) : (
         <>
-          Subscribe to our newsletter &amp; never miss our best posts.{" "}
+          Newsletter coming soon — be ready when it launches.{" "}
           <button
             className="ml-1 font-bold underline underline-offset-2 transition hover:text-white/80"
             onClick={() => setOpen(true)}

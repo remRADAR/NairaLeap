@@ -56,6 +56,7 @@ function ServiceLandingRoute() {
 
   return (
     <AppLayout serviceId={service.id}>
+      <AdSlot placementId="service-landing-top" tone="portal" />
       <ServiceLandingPage service={service} />
       <AdSlot placementId="service-landing-footer" tone="portal" />
     </AppLayout>
