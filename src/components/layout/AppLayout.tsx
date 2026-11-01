@@ -57,17 +57,18 @@ function Header({ compact = false }: { compact?: boolean }) {
     <header className="sticky top-0 z-40" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
         <div className="glass-panel relative flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Link to="/services" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink-0">
+          <Link to="/services" aria-label="Nairaleap — Service Portal" className="min-w-0 shrink-0">
             <img
               src="/nairaleap-wordmark.png"
-              alt="Nairaleap - Service Portal"
+              alt="Nairaleap — Service Portal"
               className="block h-10 w-[10rem] max-w-full object-contain object-left sm:h-11 sm:w-[13rem]"
             />
           </Link>
 
+          {/* Desktop nav — portal-focused: Services + Blog + Sign in + Admin */}
           <div
             className={cn(
-              "hidden min-w-0 flex-1 items-center justify-end gap-1 text-sm",
+              "hidden min-w-0 flex-1 items-center justify-end gap-2 text-sm",
               compact ? "lg:hidden" : "lg:flex",
             )}
           >
@@ -79,36 +80,27 @@ function Header({ compact = false }: { compact?: boolean }) {
               Services
             </Link>
             <Link
+              to="/"
+              className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-muted-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:text-foreground active:translate-y-0 active:scale-[0.98]"
+            >
+              Blog
+            </Link>
+            <Link
               to={user ? "/dashboard" : "/auth"}
-              className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+              className="portal-nav-link shrink-0 rounded-lg px-4 py-2 font-medium text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
-            <a
-              href="/admin"
-              className="portal-nav-link shrink-0 rounded-lg border border-primary/40 px-3 py-2 text-primary-glow transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
+            <Link
+              to="/admin"
+              className="portal-nav-link shrink-0 rounded-lg border border-primary/40 px-4 py-2 font-medium text-primary-glow transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               Admin
-            </a>
-            <Link
-              to="/"
-              aria-label="Go to Nairaleap blog"
-              title="Go to Nairaleap blog"
-              className="portal-nav-link grid h-9 w-9 shrink-0 place-items-center rounded-lg text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
-            >
-              <BookOpen className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
 
+          {/* Mobile nav — menu toggle only */}
           <div className={cn("flex items-center gap-2", !compact && "lg:hidden")}>
-            <Link
-              to="/"
-              aria-label="Go to Nairaleap blog"
-              title="Go to Nairaleap blog"
-              className="portal-nav-link grid h-10 w-10 place-items-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <BookOpen className="h-5 w-5" aria-hidden="true" />
-            </Link>
             <button
               type="button"
               aria-label={open ? "Close menu" : "Open menu"}
@@ -121,6 +113,7 @@ function Header({ compact = false }: { compact?: boolean }) {
           </div>
         </div>
 
+        {/* Mobile dropdown — portal-focused: Services + Blog + Sign in + Admin */}
         <div
           className={cn(
             "overflow-hidden transition-all duration-300 lg:hidden",
@@ -128,7 +121,7 @@ function Header({ compact = false }: { compact?: boolean }) {
           )}
         >
           <nav
-            aria-label={compact ? "Portal menu" : "Mobile"}
+            aria-label="Portal menu"
             className="glass-panel flex max-h-[70vh] flex-col overflow-y-auto p-2 text-sm"
           >
             <Link
@@ -146,22 +139,29 @@ function Header({ compact = false }: { compact?: boolean }) {
               onClick={closeMenus}
               className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
             >
+              Services
+            </Link>
+            <Link
+              to="/"
+              onClick={closeMenu}
+              className="portal-nav-link rounded-lg px-3 py-3 text-muted-foreground hover:text-foreground"
+            >
               Blog
             </Link>
             <Link
               to={user ? "/dashboard" : "/auth"}
-              onClick={closeMenus}
+              onClick={closeMenu}
               className="portal-nav-link rounded-lg px-3 py-3 text-foreground"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
-            <a
-              href="/admin"
-              onClick={closeMenus}
+            <Link
+              to="/admin"
+              onClick={closeMenu}
               className="portal-nav-link rounded-lg px-3 py-3 text-primary-glow"
             >
               Admin
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
@@ -236,7 +236,7 @@ function Footer() {
         ))}
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-6">
-        <p>© {new Date().getFullYear()} Nairaleap - Service Portal</p>
+        <p>© {new Date().getFullYear()} Nairaleap — Service Portal</p>
         <p>Connected to the main NairaLeap website</p>
       </div>
     </footer>
