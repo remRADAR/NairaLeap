@@ -81,6 +81,21 @@ function getRoleOptions(serviceId: string): RoleOption[] {
           description: "I am a mortgage bank or lender and want to onboard with a KYC profile.",
         },
       ];
+    case "professional-services":
+      return [
+        {
+          role: "customer",
+          title: "I need research or consulting support",
+          description:
+            "I want research, analysis, consulting or specialist advisory support for myself or my organisation.",
+        },
+        {
+          role: "seller",
+          title: "I'm a researcher, consultant or specialist",
+          description:
+            "I provide research, consulting, analysis or specialist professional services and want to onboard.",
+        },
+      ];
     case "insurance":
       return [
         {

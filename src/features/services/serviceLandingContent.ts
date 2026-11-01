@@ -147,20 +147,22 @@ export const SERVICE_LANDING_CONTENT: Record<ServiceId, ServiceLandingContent> =
     relatedServiceIds: ["professional-services", "business-funding", "agriculture"],
   },
   "professional-services": {
-    audience: "Individuals, businesses and institutions seeking specialist support",
+    audience:
+      "Individuals, businesses and institutions seeking specialist support — including research professionals, consultants, analysts and sector specialists acting as supply-side participants",
     purpose:
-      "Describe the legal, financial, tax, strategy, compliance or specialist advisory support you are looking for.",
+      "Describe the research, consulting, legal, financial, tax, strategy, compliance or specialist advisory support you are looking for — or register as a researcher, consultant or specialist able to take client research requests.",
     informationIntro:
-      "The service helps NairaLeap understand the expertise, timing and context relevant to your request.",
+      "The service helps NairaLeap understand the expertise, timing and context relevant to your request — whether you are requesting support or offering it.",
     information: [
-      "Area of professional support",
+      "Your side: client requesting support, or researcher / consultant / specialist offering it",
+      "Area of professional or research support",
       "Your organisation or personal context",
       "Scope, location and timing",
       "Professional or supporting documents where relevant",
     ],
     process: [
-      "Choose the type of specialist support",
-      "Describe the issue or outcome you need",
+      "Choose whether you are requesting or offering support, and the type of specialist or research support",
+      "Describe the issue, research question or outcome you need",
       "Review the professional-services request",
       "Submit for review and possible specialist matching",
     ],
