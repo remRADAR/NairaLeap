@@ -135,6 +135,19 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
           </a>
         </div>
         <p className="mt-4">© {new Date().getFullYear()} Nairaleap — Indicator Drivers</p>
+        <p className="mt-1">
+          <Link to="/about" className="transition-colors hover:text-[#7a2ce2]">
+            About Us
+          </Link>
+          <span className="mx-2 text-[#c9c9d6]">·</span>
+          <Link to="/privacy-policy" className="transition-colors hover:text-[#7a2ce2]">
+            Privacy Policy
+          </Link>
+          <span className="mx-2 text-[#c9c9d6]">·</span>
+          <Link to="/disclaimer" className="transition-colors hover:text-[#7a2ce2]">
+            Disclaimer
+          </Link>
+        </p>
       </footer>
     </div>
   );

@@ -137,31 +137,24 @@ function Header({ compact = false }: { compact?: boolean }) {
             <Link
               to="/"
               onClick={closeMenus}
-              className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
-            >
-              Services
-            </Link>
-            <Link
-              to="/"
-              onClick={closeMenu}
               className="portal-nav-link rounded-lg px-3 py-3 text-muted-foreground hover:text-foreground"
             >
               Blog
             </Link>
             <Link
               to={user ? "/dashboard" : "/auth"}
-              onClick={closeMenu}
+              onClick={closeMenus}
               className="portal-nav-link rounded-lg px-3 py-3 text-foreground"
             >
               {user ? "Dashboard" : "Sign in"}
             </Link>
-            <Link
-              to="/admin"
-              onClick={closeMenu}
+            <a
+              href="/admin"
+              onClick={closeMenus}
               className="portal-nav-link rounded-lg px-3 py-3 text-primary-glow"
             >
               Admin
-            </Link>
+            </a>
           </nav>
         </div>
       </div>
@@ -179,7 +172,11 @@ function Footer() {
   const cols: { title: string; items: FooterItem[] }[] = [
     {
       title: "Company",
-      items: [{ label: "About", href: "/#about" }, { label: "Careers" }, { label: "Press" }],
+      items: [
+        { label: "About Us", href: "/about" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Disclaimer", href: "/disclaimer" },
+      ],
     },
     {
       title: "Services",
@@ -190,7 +187,12 @@ function Footer() {
     },
     {
       title: "Legal",
-      items: [{ label: "Privacy" }, { label: "Terms" }, { label: "Cookies" }],
+      items: [
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Disclaimer", href: "/disclaimer" },
+        { label: "Terms" },
+        { label: "Cookies" },
+      ],
     },
     {
       title: "Contact",
