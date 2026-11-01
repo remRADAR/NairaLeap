@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
+import { AdSlot } from "@/features/advertising/AdSlot";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import {
@@ -196,7 +197,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot label="Advertisement" />
+      <AdSlot placementId="homepage-top" />
 
       <section aria-label="Taxonomy ticker" className="border-b border-[#eceaf2] bg-[#fbfaff] py-3">
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
@@ -330,7 +331,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot label="Advertisement" />
+      <AdSlot placementId="homepage-bottom" />
 
       <section className="mx-auto w-full max-w-[1180px] px-4 pb-12 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between border-t border-[#e9e9f0] pt-5">
@@ -347,17 +348,3 @@ function EditorialHomePage() {
   );
 }
 
-function AdSlot({ label }: { label: string }) {
-  return (
-    <section
-      aria-label={label}
-      className="editorial-ad-slot mx-auto max-w-[1180px] px-4 py-3 sm:px-6"
-    >
-      <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
-          {label}
-        </span>
-      </div>
-    </section>
-  );
-}
