@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components";
 import { ServiceLandingPage } from "@/components/ui/ServiceLandingPage";
 import { getServiceBySlug } from "@/features/services/serviceLandingContent";
+import { AdSlot } from "@/features/advertising/AdSlot";
 
 export const Route = createFileRoute("/services/$service")({
   head: ({ params }) => {
@@ -56,6 +57,7 @@ function ServiceLandingRoute() {
   return (
     <AppLayout serviceId={service.id}>
       <ServiceLandingPage service={service} />
+      <AdSlot placementId="service-landing-footer" tone="portal" />
     </AppLayout>
   );
 }

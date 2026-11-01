@@ -8,6 +8,7 @@ import {
 } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 import { sanitizeEditorialHtml } from "@/features/editorial/sanitize";
+import { AdSlot } from "@/features/advertising/AdSlot";
 
 export const Route = createFileRoute("/articles/$slug")({
   head: async ({ params }) => {
@@ -193,6 +194,7 @@ function ArticlePage() {
           )}
         </footer>
       </article>
+      <AdSlot placementId="article-end" />
     </EditorialLayout>
   );
 }

@@ -5,6 +5,7 @@ import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
+import { AdSlot } from "@/features/advertising/AdSlot";
 
 const slugify = (value: string) =>
   value
@@ -74,6 +75,8 @@ function ArticleArchivePage() {
             </Link>
           </div>
         )}
+
+        <AdSlot placementId="category-list-top" />
 
         {filteredPosts.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
