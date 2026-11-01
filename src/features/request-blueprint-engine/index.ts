@@ -10,11 +10,17 @@
  * their own needs.
  */
 
-import type { RequestBlueprint, RequestBlueprintCatalog } from "./types";
+import type {
+  BlueprintCondition,
+  BlueprintField,
+  RequestBlueprint,
+  RequestBlueprintCatalog,
+} from "./types";
 
 export type {
   BlueprintField,
   BlueprintFieldType,
+  BlueprintCondition,
   BlueprintDocument,
   AdminChecklistItem,
   AdminChecklistCategory,
@@ -22,6 +28,50 @@ export type {
   RequestBlueprint,
   RequestBlueprintCatalog,
 } from "./types";
+
+export function matchesBlueprintCondition(
+  condition: BlueprintCondition | undefined,
+  answers: Record<string, unknown>,
+): boolean {
+  if (!condition) return true;
+  const actual = answers[condition.key];
+  if (Array.isArray(actual))
+    return actual.some((value) => condition.values.includes(value as string));
+  return condition.values.some((value) => value === actual);
+}
+
+export function isBlueprintFieldVisible(
+  field: BlueprintField,
+  answers: Record<string, unknown>,
+): boolean {
+  return matchesBlueprintCondition(field.showWhen, answers);
+}
+
+export function isBlueprintFieldRequired(
+  field: BlueprintField,
+  answers: Record<string, unknown>,
+): boolean {
+  return (
+    field.required ||
+    (field.requiredWhen ? matchesBlueprintCondition(field.requiredWhen, answers) : false)
+  );
+}
+
+export function getMissingRequiredBlueprintFields(
+  blueprint: RequestBlueprint,
+  answers: Record<string, unknown>,
+): BlueprintField[] {
+  return [...blueprint.requiredFields, ...blueprint.optionalFields].filter((field) => {
+    if (!isBlueprintFieldVisible(field, answers) || !isBlueprintFieldRequired(field, answers)) {
+      return false;
+    }
+    const value = answers[field.key];
+    if (Array.isArray(value)) return value.length === 0;
+    if (typeof value === "boolean") return false;
+    if (typeof value === "number") return !Number.isFinite(value);
+    return typeof value !== "string" || value.trim().length === 0;
+  });
+}
 
 /** Map of request blueprints by service id for O(1) lookup. */
 export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
@@ -1416,6 +1466,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     requiredFields: [
       {
         id: "contact-name",
+        pageGroup: "insurance-contact",
         key: "contactName",
         label: "Full name",
         type: "short-text",
@@ -1423,6 +1474,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "contact-phone",
+        pageGroup: "insurance-contact",
         key: "contactPhone",
         label: "Phone number",
         type: "phone",
@@ -1430,13 +1482,33 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "contact-email",
+        pageGroup: "insurance-contact",
         key: "contactEmail",
         label: "Email address",
         type: "email",
         required: true,
       },
       {
+        id: "insurance-applicant-type",
+        pageGroup: "insurance-applicant",
+        key: "applicantType",
+        label: "Are you enquiring as an individual or organization?",
+        type: "single-choice",
+        required: true,
+      },
+      {
+        id: "insurance-company-name",
+        pageGroup: "insurance-applicant",
+        key: "companyName",
+        label: "Registered or legal organization name",
+        type: "short-text",
+        required: false,
+        requiredWhen: { key: "applicantType", values: ["organization"] },
+        showWhen: { key: "applicantType", values: ["organization"] },
+      },
+      {
         id: "insurance-request-type",
+        pageGroup: "insurance-cover-type",
         key: "insuranceRequestType",
         label: "What do you need help with?",
         type: "single-choice",
@@ -1444,6 +1516,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "insurance-category",
+        pageGroup: "insurance-cover-type",
         key: "insuranceCategory",
         label: "What would you like to protect?",
         type: "single-choice",
@@ -1451,6 +1524,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "insurance-location",
+        pageGroup: "insurance-risk",
         key: "insuranceLocation",
         label: "Where is the person, asset or activity located?",
         type: "location",
@@ -1458,6 +1532,7 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
       },
       {
         id: "insurance-need",
+        pageGroup: "insurance-risk",
         key: "insuranceNeed",
         label: "Tell us about the protection need",
         type: "long-text",
@@ -1466,49 +1541,520 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
     ],
     optionalFields: [
       {
+        id: "insurance-company-registration",
+        pageGroup: "insurance-applicant",
+        key: "companyRegistrationNumber",
+        label: "Company or association registration details, if available",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "applicantType", values: ["organization"] },
+      },
+      {
+        id: "insurance-representative-role",
+        pageGroup: "insurance-applicant",
+        key: "authorizedRepresentativeRole",
+        label: "Your role in the organization",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "applicantType", values: ["organization"] },
+      },
+      {
         id: "asset-or-person",
+        pageGroup: "insurance-action-details",
         key: "assetOrPerson",
         label: "Person, asset or business to be covered",
         type: "short-text",
         required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: [
+            "motor-auto",
+            "health-medical",
+            "home-building",
+            "household-contents",
+            "agricultural",
+            "life-protection",
+            "business-commercial",
+            "group-association",
+          ],
+        },
       },
       {
         id: "coverage-amount",
+        pageGroup: "insurance-action-details",
         key: "coverageAmount",
         label: "Desired coverage amount, if known",
         type: "currency",
         required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: [
+            "motor-auto",
+            "life-protection",
+            "home-building",
+            "household-contents",
+            "agricultural",
+            "business-commercial",
+            "marine-cargo-aviation",
+            "liability-compulsory",
+          ],
+        },
       },
       {
         id: "cover-start-date",
+        pageGroup: "insurance-action-details",
         key: "coverStartDate",
         label: "Preferred cover start date",
         type: "date",
         required: false,
+        showWhen: {
+          key: "insuranceRequestType",
+          values: ["new-cover", "compare-options", "renew-or-change"],
+        },
       },
       {
         id: "existing-policy-number",
+        pageGroup: "insurance-action-details",
         key: "existingPolicyNumber",
         label: "Existing policy number, if applicable",
         type: "short-text",
         required: false,
+        showWhen: {
+          key: "insuranceRequestType",
+          values: ["claim", "renew-or-change", "verify-or-support"],
+        },
       },
       {
         id: "incident-date",
+        pageGroup: "insurance-action-details",
         key: "incidentDate",
         label: "Incident date, if this is a claim",
         type: "date",
         required: false,
+        showWhen: { key: "insuranceRequestType", values: ["claim"] },
       },
       {
         id: "provider-preference",
+        pageGroup: "insurance-provider-preference",
         key: "providerPreference",
         label: "Provider or cover preference",
         type: "single-choice",
         required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "personal-annuity", "education-endowment"],
+        },
+      },
+      {
+        id: "insurance-provider-selection",
+        pageGroup: "insurance-provider-preference",
+        key: "insuranceProviderPreference",
+        label: "Provider you would like to explore, if any",
+        type: "single-choice",
+        required: false,
+        description:
+          "This records your preference only. It does not confirm that the provider is available through NairaLeap or that its products fit your needs.",
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "personal-annuity", "education-endowment"],
+        },
+      },
+      {
+        id: "savings-product-preference",
+        pageGroup: "insurance-provider-preference",
+        key: "savingsProductPreference",
+        label: "Savings or investment-linked product you want to ask about",
+        type: "single-choice",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["savings-investment"] },
+      },
+      {
+        id: "annuity-product-preference",
+        pageGroup: "insurance-provider-preference",
+        key: "annuityProductPreference",
+        label: "Annuity provider or product you want to ask about",
+        type: "single-choice",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "savings-goal",
+        pageGroup: "insurance-savings-details",
+        key: "savingsGoal",
+        label: "What is the main goal for this plan?",
+        type: "single-choice",
+        required: false,
+        requiredWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+      },
+      {
+        id: "savings-contribution-structure",
+        pageGroup: "insurance-savings-details",
+        key: "contributionStructure",
+        label: "Would you prefer a lump sum or recurring contribution?",
+        type: "single-choice",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+      },
+      {
+        id: "savings-contribution-amount",
+        pageGroup: "insurance-savings-details",
+        key: "savingsContributionAmount",
+        label: "Approximate amount you could contribute, if known",
+        type: "currency",
+        required: false,
+        description:
+          "Optional discovery information only. Minimums, accepted frequencies and terms are subject to provider confirmation.",
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+      },
+      {
+        id: "savings-contribution-frequency",
+        pageGroup: "insurance-savings-details",
+        key: "contributionFrequency",
+        label: "Preferred contribution frequency, if recurring contributions are available",
+        type: "single-choice",
+        required: false,
+        showWhen: { key: "contributionStructure", values: ["recurring"] },
+      },
+      {
+        id: "savings-target-date",
+        pageGroup: "insurance-savings-details",
+        key: "savingsTargetDate",
+        label: "Target date or maturity period, if known",
+        type: "date",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+      },
+      {
+        id: "savings-access-needs",
+        pageGroup: "insurance-savings-details",
+        key: "earlyAccessNeed",
+        label: "Would access to funds before maturity be important?",
+        type: "single-choice",
+        required: false,
+        description:
+          "Access, withdrawal, surrender and loan features vary by product and must be confirmed by the provider.",
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+      },
+      {
+        id: "savings-life-cover-interest",
+        pageGroup: "insurance-savings-details",
+        key: "lifeCoverInterest",
+        label: "Would you like to ask whether life cover is included?",
+        type: "yes-no",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["savings-investment", "education-endowment"],
+        },
+      },
+      {
+        id: "annuity-commencement-age",
+        pageGroup: "insurance-annuity-core",
+        key: "annuityCommencementAgeBand",
+        label: "Expected or current age when annuity income would begin",
+        type: "single-choice",
+        required: false,
+        requiredWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-type",
+        pageGroup: "insurance-annuity-core",
+        key: "annuityType",
+        label: "Which annuity structure are you enquiring about?",
+        type: "single-choice",
+        required: false,
+        requiredWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-purchase-amount",
+        pageGroup: "insurance-annuity-core",
+        key: "annuityPurchaseAmount",
+        label: "Approximate purchase amount or retirement fund available, if known",
+        type: "currency",
+        required: false,
+        description:
+          "Optional amount for routing a quote request. Never provide bank passwords, card PINs or online-banking credentials.",
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-funding-source",
+        pageGroup: "insurance-annuity-core",
+        key: "annuityFundingSource",
+        label: "Likely funding source, if known",
+        type: "single-choice",
+        required: false,
+        description:
+          "This is a high-level routing question. Detailed RSA or financial information is not requested here.",
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-payment-frequency",
+        pageGroup: "insurance-annuity-options",
+        key: "annuityPaymentFrequency",
+        label: "Preferred income-payment frequency, if available",
+        type: "single-choice",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-increasing-income",
+        pageGroup: "insurance-annuity-options",
+        key: "annuityIncreasingIncomeInterest",
+        label: "Would you like to ask about increasing-income options?",
+        type: "yes-no",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-guaranteed-period",
+        pageGroup: "insurance-annuity-options",
+        key: "annuityGuaranteedPeriodInterest",
+        label: "Would you like to ask about a guaranteed payment period?",
+        type: "yes-no",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-joint-life",
+        pageGroup: "insurance-annuity-options",
+        key: "annuityJointLifeInterest",
+        label: "Would you like to ask about a joint-life or spousal option?",
+        type: "yes-no",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "annuity-beneficiary-context",
+        pageGroup: "insurance-annuity-options",
+        key: "annuityBeneficiaryContext",
+        label:
+          "Any beneficiary or dependent arrangement to discuss? (Do not enter full identity details here.)",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["personal-annuity"] },
+      },
+      {
+        id: "health-cover-type",
+        pageGroup: "insurance-health-details",
+        key: "healthCoverType",
+        label: "Who would the health-cover enquiry include?",
+        type: "single-choice",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["health-medical", "group-association"] },
+      },
+      {
+        id: "group-size",
+        pageGroup: "insurance-health-details",
+        key: "groupSize",
+        label: "Approximate number of people to cover",
+        type: "number",
+        required: false,
+        showWhen: { key: "healthCoverType", values: ["group"] },
+      },
+      {
+        id: "health-location-network",
+        pageGroup: "insurance-health-details",
+        key: "healthNetworkPreference",
+        label: "Preferred hospital, clinic or geographic network needs",
+        type: "long-text",
+        required: false,
+        description:
+          "Tell us about locations or facilities you would like a provider to check. Do not provide detailed medical history during discovery.",
+        showWhen: { key: "insuranceCategory", values: ["health-medical", "group-association"] },
+      },
+      {
+        id: "health-benefit-interest",
+        pageGroup: "insurance-health-details",
+        key: "healthBenefitInterests",
+        label:
+          "Which benefits should a provider explain? (for example consultations, medicines or emergency care)",
+        type: "long-text",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["health-medical", "group-association"] },
+      },
+      {
+        id: "property-cover-type",
+        pageGroup: "insurance-property-profile",
+        key: "propertyCoverType",
+        label: "What property cover would you like to ask about?",
+        type: "single-choice",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["home-building", "household-contents", "business-commercial"],
+        },
+      },
+      {
+        id: "property-relationship",
+        pageGroup: "insurance-property-profile",
+        key: "propertyRelationship",
+        label: "What is your relationship to the property?",
+        type: "single-choice",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["home-building", "household-contents", "business-commercial"],
+        },
+      },
+      {
+        id: "property-use",
+        pageGroup: "insurance-property-profile",
+        key: "propertyUse",
+        label: "How is the property used or occupied?",
+        type: "short-text",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["home-building", "household-contents", "business-commercial"],
+        },
+      },
+      {
+        id: "construction-and-condition",
+        pageGroup: "insurance-property-profile",
+        key: "propertyConstructionCondition",
+        label: "Construction type and current condition, if known",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["home-building", "business-commercial"] },
+      },
+      {
+        id: "building-replacement-value",
+        pageGroup: "insurance-property-values",
+        key: "buildingReplacementValue",
+        label: "Approximate building replacement or reconstruction value, if known",
+        type: "currency",
+        required: false,
+        description: "Building reconstruction value is different from land value and market value.",
+        showWhen: { key: "insuranceCategory", values: ["home-building", "business-commercial"] },
+      },
+      {
+        id: "contents-value",
+        pageGroup: "insurance-property-values",
+        key: "contentsValue",
+        label: "Approximate household contents value, if known",
+        type: "currency",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["household-contents", "home-building"] },
+      },
+      {
+        id: "warehouse-stock-value",
+        pageGroup: "insurance-property-values",
+        key: "warehouseStockValue",
+        label: "Approximate warehouse stock or equipment value, if known",
+        type: "currency",
+        required: false,
+        showWhen: { key: "propertyCoverType", values: ["warehouse-stock"] },
+      },
+      {
+        id: "property-floor-area",
+        pageGroup: "insurance-property-values",
+        key: "propertyFloorArea",
+        label: "Approximate floor area, if known",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["home-building", "business-commercial"] },
+      },
+      {
+        id: "motor-vehicle-details",
+        pageGroup: "insurance-motor-details",
+        key: "motorVehicleDetails",
+        label: "Vehicle make, model and year, if known",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["motor-auto"] },
+      },
+      {
+        id: "motor-use",
+        pageGroup: "insurance-motor-details",
+        key: "motorUse",
+        label: "How is the vehicle used?",
+        type: "single-choice",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["motor-auto"] },
+      },
+      {
+        id: "motor-registration",
+        pageGroup: "insurance-motor-details",
+        key: "motorRegistrationState",
+        label: "Registration state or general registration context, if useful",
+        type: "location",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["motor-auto"] },
+      },
+      {
+        id: "motor-declared-value",
+        pageGroup: "insurance-motor-details",
+        key: "motorDeclaredValue",
+        label: "Approximate vehicle value, if known",
+        type: "currency",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["motor-auto"] },
+      },
+      {
+        id: "agriculture-farm-details",
+        pageGroup: "insurance-agriculture-details",
+        key: "insuranceFarmDetails",
+        label: "Farm location, crop or livestock and production stage",
+        type: "long-text",
+        required: false,
+        description:
+          "Share only summary details needed for routing. The current portal does not yet link saved farm profiles to insurance enquiries.",
+        showWhen: { key: "insuranceCategory", values: ["agricultural"] },
+      },
+      {
+        id: "agriculture-area-season",
+        pageGroup: "insurance-agriculture-details",
+        key: "insuranceFarmAreaSeason",
+        label: "Approximate farm area and season, if known",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "insuranceCategory", values: ["agricultural"] },
+      },
+      {
+        id: "commercial-business-activity",
+        pageGroup: "insurance-commercial-details",
+        key: "commercialBusinessActivity",
+        label: "Business activity and assets to discuss with the insurer",
+        type: "long-text",
+        required: false,
+        showWhen: {
+          key: "insuranceCategory",
+          values: ["business-commercial", "group-association"],
+        },
+      },
+      {
+        id: "insurance-other-provider",
+        pageGroup: "insurance-notes",
+        key: "otherProviderPreference",
+        label: "Other provider or product preference, if any",
+        type: "short-text",
+        required: false,
+        showWhen: { key: "insuranceProviderPreference", values: ["other"] },
       },
       {
         id: "additional-notes",
+        pageGroup: "insurance-notes",
         key: "additionalNotes",
         label: "Additional notes",
         type: "long-text",
@@ -1552,6 +2098,17 @@ export const REQUEST_BLUEPRINT_MAP: Record<string, RequestBlueprint> = {
         id: "request-follow-up",
         label: "Send next steps and any document or quote requirements",
         category: "communication",
+      },
+      {
+        id: "confirm-product-terms",
+        label:
+          "For savings or annuity enquiries, obtain current provider terms and an individualized quote before making comparisons",
+        category: "compliance",
+      },
+      {
+        id: "track-provider-response",
+        label: "Keep the request status distinct from provider quote, application or policy status",
+        category: "review",
       },
     ],
     nextWorkflow: "guided-question-engine",

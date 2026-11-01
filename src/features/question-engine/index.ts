@@ -7,6 +7,7 @@ export type { UseQuestionEngineOptions } from "./useQuestionEngine";
 export { DEMO_QUESTIONS } from "./demoQuestions";
 export type {
   Question,
+  QuestionCondition,
   QuestionType,
   QuestionChoice,
   ShortTextQuestion,

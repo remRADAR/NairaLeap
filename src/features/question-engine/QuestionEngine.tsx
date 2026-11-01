@@ -43,6 +43,13 @@ export interface QuestionEngineProps {
   className?: string;
 }
 
+function hasDisplayedAnswer(value: AnswerValue | undefined): boolean {
+  if (Array.isArray(value)) return value.length > 0;
+  if (typeof value === "string") return value.trim().length > 0;
+  if (typeof value === "number") return Number.isFinite(value);
+  return typeof value === "boolean";
+}
+
 /**
  * QuestionEngine — ONE reusable, service-agnostic question interface.
  *
@@ -50,6 +57,7 @@ export interface QuestionEngineProps {
  * no backend, no AI, no persistence, and no dependency on demo data.
  * Default layout is the guided one-question-per-frame flow. Set
  * `layout="single-page"` to render the whole intake form on one frame.
+ * Questions may be grouped or shown singly.
  */
 export function QuestionEngine({
   questionSet,
@@ -385,6 +393,7 @@ function GuidedForm({
     index,
     total,
     current,
+    currentQuestions,
     progress,
     answers,
     setAnswer,
@@ -431,6 +440,9 @@ function GuidedForm({
     }
     goPrevious();
   };
+  const focusQuestionId =
+    currentQuestions.find((question) => !hasDisplayedAnswer(answers[question.id]))?.id ??
+    currentQuestions[0]?.id;
 
   return (
     <section
@@ -467,14 +479,22 @@ function GuidedForm({
         )}
         aria-live="polite"
       >
-        <QuestionBody
-          question={current}
-          value={answers[current.id]}
-          onChange={(v) => setAnswer(current.id, v)}
-          onEnter={() => {
-            if (canGoNext) goNext();
-          }}
-        />
+        {currentQuestions.map((question, questionIndex) => (
+          <div
+            key={question.id}
+            className={cn(questionIndex > 0 && "mt-6 border-t border-border/60 pt-5")}
+          >
+            <QuestionBody
+              question={question}
+              value={answers[question.id]}
+              onChange={(value) => setAnswer(question.id, value)}
+              onEnter={() => {
+                if (canGoNext) goNext();
+              }}
+              shouldFocus={question.id === focusQuestionId}
+            />
+          </div>
+        ))}
       </div>
 
       {/* Actions */}
@@ -521,9 +541,10 @@ interface QuestionBodyProps {
   value: AnswerValue | undefined;
   onChange: (value: AnswerValue) => void;
   onEnter: () => void;
+  shouldFocus: boolean;
 }
 
-function QuestionBody({ question, value, onChange, onEnter }: QuestionBodyProps) {
+function QuestionBody({ question, value, onChange, onEnter, shouldFocus }: QuestionBodyProps) {
   const titleId = useId();
   const helperId = useId();
 
@@ -548,6 +569,7 @@ function QuestionBody({ question, value, onChange, onEnter }: QuestionBodyProps)
         value={value}
         onChange={onChange}
         onEnter={onEnter}
+        shouldFocus={shouldFocus}
         labelledBy={titleId}
         describedBy={question.helper ? helperId : undefined}
       />
@@ -566,6 +588,7 @@ function AnswerField({
   value,
   onChange,
   onEnter,
+  shouldFocus,
   labelledBy,
   describedBy,
   autoFocus = true,
@@ -573,9 +596,9 @@ function AnswerField({
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    if (!autoFocus) return;
+    if (!autoFocus || !shouldFocus) return;
     inputRef.current?.focus({ preventScroll: true });
-  }, [question.id, autoFocus]);
+  }, [question.id, autoFocus, shouldFocus]);
 
   switch (question.type) {
     case "short-text":

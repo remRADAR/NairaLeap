@@ -1,4 +1,7 @@
-import { REQUEST_BLUEPRINT_MAP } from "../src/features/request-blueprint-engine";
+import {
+  getMissingRequiredBlueprintFields,
+  REQUEST_BLUEPRINT_MAP,
+} from "../src/features/request-blueprint-engine";
 import { buildServiceRundown, getServiceQuestionSet } from "../src/features/service-intake";
 import { SERVICE_CATALOG } from "../src/features/services/serviceCatalog";
 
@@ -18,7 +21,8 @@ for (const service of SERVICE_CATALOG) {
   checks.push([`${service.id}: question ids are unique`, questionIds.size === questions.length]);
   checks.push([
     `${service.id}: rundown required count matches blueprint`,
-    rundown.missingRequiredFields.length === blueprint.requiredFields.length,
+    rundown.missingRequiredFields.length ===
+      getMissingRequiredBlueprintFields(blueprint, {}).length,
   ]);
 }
 
