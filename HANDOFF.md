@@ -1,96 +1,166 @@
-# NairaLeap Relaunch — Engineering Handoff to Manus (rev. 2, post-security-repair)
+# NairaLeap Relaunch — Independent Engineering & Release-Readiness Handoff (rev. 3)
 
-**Status: development branch with all review-mandated repairs applied; ready for independent audit, execution of the full verification suite, and repair of anything it exposes.**
-**No production deployment has been performed. No migration has been applied to any database.**
+**Status: NOT READY for merge or production release.** The QuestionEngine build failure and service-request participant UPDATE gap have been repaired in feature-branch code. The latest source commit, `8fd76cd`, reached Vercel **READY**; its homepage, insurance, legal and services routes all returned HTTP 200. Local build/typecheck and all seven configured audit scripts pass. Database migrations and pgTAP have not been applied or executed because no isolated staging project/toolchain is available. The full repository lint, Cypress E2E, remaining dependency advisories, owner approvals and database-backed runtime checks remain open.
 
-## 1. Repository state
+**No production deployment or database migration was performed.** No production DNS, environment variables, secrets, billing, or account configuration was changed.
+
+## 1. Repository, branch, and commit state
 
 - Repository: `remRADAR/NairaLeap`
-- Base (main) commit at branch creation: **3fa0fcc**
-- Development branch: **`feat/nairaleap-relaunch-implementation`** — the ONLY branch worked on; main was never modified.
-- No DNS, domains, production environment variables or deploy configuration were touched. No secrets were exposed or committed.
+- Working branch: `feat/nairaleap-relaunch-implementation`
+- Starting branch SHA independently checked against GitHub: `a3c3624e665fa0d3a45f387f3eeb1e7aeaadc0be`
+- Source repair commit: [`cf215a717382f20213c9ddfc1f37aefcd62f96de`](https://github.com/remRADAR/NairaLeap/commit/cf215a717382f20213c9ddfc1f37aefcd62f96de) (`fix: secure service requests and repair relaunch flows`).
+- Security follow-up commit pushed to the same branch: [`8fd76cd7e262ab261ef76dd0745ef2120c458c1d`](https://github.com/remRADAR/NairaLeap/commit/8fd76cd7e262ab261ef76dd0745ef2120c458c1d) (`fix(db): enforce admin-only service request updates`). The remote branch SHA matched this commit after push.
+- No merge, reset, force-push, or main-branch change occurred. No pull request was created. This handoff is a documentation-only follow-up to source commit `8fd76cd`; it changes no application code or database migration.
+- Source commits change application code, tests, `bun.lock` and additive migrations; `package.json` and environment files were not changed.
 
-## 2. Original implementation commits (chronological)
+### Relevant commit history
 
-| Commit | Content |
+| Commit | Change |
 | --- | --- |
-| bc377f6 | PR #7 reconciliation (15-category insurance catalog, research/disclosure sections). |
-| cfe228e | PR #8 core: unified UI, QuestionEngine layouts (sequential/horizontal/single-page), service catalog restructure. |
-| 44b3945 | PR #8 landing/editorial/catalogue work. |
-| 9df593a | PR #8 insurance route (Compare/Quote/Claim + indicative offers) + 13 direct files, mojibake repaired. |
-| 7f9e386 | Editorial category→image mapping rewritten (explicit overrides, verified files, deterministic fallback). |
-| a676209 | About/Privacy/Disclaimer DRAFT pages + footer links; AppLayout mobile-nav merge defect repaired. |
-| 3893fe7 | Advertising: placements (8, all areas), shared AdSlot, rate-card structure (all prices NULL / pending owner approval); homepage wired. |
-| 37a61de | Research as Professional Services offering (demand + supply roles). |
-| 30fe6b8 | Foundations migration 20261101090000 + editorial sanitizer + audit scripts (audit:ads, audit:editorial-sanitizer). |
-| 10d9b96 | Sanitizer wired into articles.$slug render path. |
-| 85c2cc8 | HANDOFF.md rev.1. |
+| `bc377f6` | PR #7 reconciliation: insurance catalogue and disclosures. |
+| `cfe228e`, `44b3945` | PR #8 core UI, QuestionEngine, service catalogue, landing and editorial work. |
+| `9df593a` | Insurance route and three visitor-facing action flows. |
+| `7f9e386`, `a676209` | Editorial image mapping; draft About, Privacy and Disclaimer pages and footer work. |
+| `3893fe7`, `37a61de` | Advertising foundation and Research under Professional Services. |
+| `30fe6b8`, `10d9b96`, `85c2cc8` | Marketplace/security foundations, sanitizer wiring and earlier handoff. |
+| `0be4417`, `6918472` | Package manifest/security-test repairs and additional AdSlot wiring. |
+| `a3c3624` | Latest pre-task branch tip; Vercel failed on the duplicate `layout` declaration. |
+| `cf215a7` | This round’s build, QuestionEngine, insurance-contract, sanitizer, dependency-lock and service-request authorization repairs. |
+| `8fd76cd` | Adds a restrictive admin-only service-request UPDATE guard and a regression that injects a temporary permissive policy. |
 
-## 3. REPAIR commits (this round — ChatGPT-identified mandatory corrections)
+## 2. Changes in this round
 
-| Commit | Repair |
-| --- | --- |
-| 0be4417 | **(1) package.json restored**: the complete dependency manifest from main (every dependency and version verbatim; nothing upgraded/removed); new audit scripts retained. Repository uses bun; `bun.lock` was never modified and matches the restored manifest exactly, so no lockfile change is required. **(2) Security migration 20261101120000_security_hardening.sql** (details §5). **(3) pgTAP database security tests** `supabase/tests/rls_security_test.sql` (14 cases). |
-| 6918472 | **(6) Advertising integration completed**: article-end slot on article pages, category-list-top above the archive grid, service-landing-footer on service pages (portal tone added to the shared AdSlot). Single ad system, no duplicates; 8 placements preserved; prices still NULL. |
-| (see below) | HANDOFF.md rev.2 — this document. |
-| (final repair) | **Dependency audit finding fixed**: a verification pass comparing package.json against main byte-for-byte caught one transcription error — `@radix-ui/react-switch` was written as `^2.2.6` instead of main's `^1.2.6` in commit 0be4417. Corrected to match main exactly. With this fix, `dependencies` and `devDependencies` are verified identical to main (every key, version and order), `bun.lock` remains the untouched main lockfile, and no unrelated dependency was upgraded. |
+- Repaired `src/features/question-engine/QuestionEngine.tsx` layout prop/declaration conflicts while retaining guided, horizontal and single-page rendering. The shared hook now provides visible questions to the horizontal form; the existing single-page UX and role-specific page layout are preserved. Related role/catalogue/route typing issues and the missing `Sailboat` import were also corrected. TanStack’s generated route tree now includes `/about`, `/disclaimer` and `/privacy-policy` after the production build.
+- Fixed the insurance form/server contract: the visible Compare Cover, Get a Quote and Make a Claim labels now submit the schema’s canonical values (`compare-options`, `new-cover`, `claim`). Claim-only incident-date visibility now matches the canonical `claim` value. `scripts/audit-insurance.ts` asserts both choice/schema agreement and the conditional field.
+- Hardened the existing editorial sanitizer’s handling of comments and dangerous embedded blocks and added regression cases. The sanitizer audit passes, but this is not a browser XSS assessment or proof against all malformed HTML.
+- Repaired service-role/catalogue mismatches and updated the existing service-role Cypress matrix to the current catalogue. Added an explicit article-loader return contract to resolve type inference. These changes preserve existing systems rather than adding parallel implementations.
+- Updated `bun.lock` with compatible-range vulnerability fixes using Bun’s audit workflow. No dependency manifest was changed. Two advisories remain; see §4.
+- Improved the KYC identity reference in `supabase/migrations/20261101120000_security_hardening.sql`: keyed HMAC-SHA-256 uses a Vault secret behind a `SECURITY DEFINER` trigger; raw identity input is transient, only last four and versioned HMAC remain; missing/short keys fail closed; duplicate detection checks non-retired key versions and private legacy SHA references. Key-rotation comments and compatibility state are present. Secret provisioning and live data-history reconciliation remain prerequisites.
+- Added [`supabase/migrations/20261101130000_service_request_write_hardening.sql`](https://github.com/remRADAR/NairaLeap/blob/8fd76cd7e262ab261ef76dd0745ef2120c458c1d/supabase/migrations/20261101130000_service_request_write_hardening.sql). It drops the customer-owned UPDATE policy, revokes broad UPDATE (including prior column grants), grants authenticated users UPDATE on `status` only, and applies a restrictive `public.is_admin()` policy so a future permissive policy cannot reopen participant updates. Participants retain select/insert capabilities.
+- Repaired and expanded [`supabase/tests/rls_security_test.sql`](https://github.com/remRADAR/NairaLeap/blob/8fd76cd7e262ab261ef76dd0745ef2120c458c1d/supabase/tests/rls_security_test.sql): deterministic participant/second-participant/admin fixtures fail safely on conflicting identities; FAQ self-approval matches the trigger contract; permissive-policy OR interactions are tested for KYC, callback, FAQ, storage and service requests. The callback assertions cover explicit consent, ownership, initial status, participant status/assignment denial and staff assignment/queue access. The service-request test temporarily adds a permissive UPDATE policy and verifies its restrictive admin-only guard. The test plan is 58 and the assertion count matches. These are authored tests only; pgTAP was not executed.
 
-## 4. Features implemented vs outstanding
+## 3. Verification evidence
 
-Implemented: PR #7 + #8 reconciled (10-service catalog, 3-flow insurance route, indicative table, disclosures); category→image editorial mapping; Research as Professional Services; DRAFT legal pages (About/Privacy/Disclaimer) with explicit placeholders; content-driven news ticker; complete advertising foundation (8 placements + shared AdSlot wired on homepage, article, archive and service pages + admin rate-card structure, all prices pending owner approval); database foundations with RLS (§5); editorial HTML sanitizer on the article render path.
+| Check | Result | Evidence and limitation |
+| --- | --- | --- |
+| Frozen dependency install | PASS | `CYPRESS_INSTALL_BINARY=0 npm exec --yes --package=bun -- bun install --frozen-lockfile`; Cypress binary download was intentionally disabled for installation. |
+| TypeScript | PASS | `./node_modules/.bin/tsc --noEmit` after the repairs. |
+| Focused lint | PASS | `./node_modules/.bin/eslint` over all edited TS/TSX source, audit and Cypress-spec files. |
+| Production build | PASS | `npm run build` locally on the pushed source. This proves build completion only, not runtime integrations. |
+| Vercel preview and HTTP smoke | PASS, HTTP-only | Latest source commit `8fd76cd` deployment `dpl_1rcGWDQvyR5HHuUrdDR2m9bGEJQs` is READY; its log says `Build Completed in /vercel/output [1m]` and `Deployment completed`. `/`, `/insurance`, `/about`, `/privacy-policy`, `/disclaimer` and `/services` each returned HTTP 200. No forms were submitted and no data was written. |
+| Repository-wide lint | FAIL | `npm run lint`: 97 problems (88 errors, 9 warnings), all remaining findings reported in files outside this patch. The focused lint over every edited TS/TSX file passes. |
+| Configured audit scripts | PASS | All seven passed: `audit-service-intake.ts`, `audit-insurance.ts`, `audit-editorial-images.ts`, `audit-leapbot-boundaries.ts`, `audit-leapbot-workflow-boundaries.ts`, `audit-advertising.ts`, and `audit-editorial-sanitizer.ts`, each run with `npm exec --yes --package=bun -- bun run scripts/<name>.ts`. |
+| SQL grammar and pgTAP plan | PASS, static only | Python `pglast.parse_sql` accepted both security migrations and `rls_security_test.sql` after the restrictive guard was added; the test plan is 58 and 58 assertion calls were counted. This is not database execution. |
+| `git diff --check` | PASS | No whitespace errors before commit. |
+| Bun dependency audit | FINDINGS | `npm exec --yes --package=bun -- bun audit` reports 2 residual advisories: high Zod constrained-collection memory exhaustion and moderate `minimatch` glob-parts amplification. The available semver-bounded update did not remove these; resolving may require a major upgrade and compatibility work. |
+| Cypress | NOT RUN | `npm run e2e -- --spec cypress/e2e/service-role-profiles.cy.ts` cannot execute because the Cypress binary is unavailable. `./node_modules/.bin/cypress install` was attempted but remained at 1% with a multi-hour estimate and was stopped; this is an infrastructure/download limitation, not a test failure/pass. |
+| Supabase/pgTAP | NOT RUN | `supabase`, `docker`, and `psql` are unavailable locally, and no separate staging Supabase project/branch is connected. The connected Supabase project was not used to apply migrations or run tests. |
 
-Outstanding: UI for new tables (provider onboarding, staff assignment, rate-card admin, scrap price admin, WhatsApp workbench, KYC review screen, article FAQ/survey components, social scheduling UI, language tooling UIs); booking/scheduling engine; annuity/savings-linked insurance discovery; Cypress spec updates for the restructured UI; owner approvals for all DRAFT content and prices.
+Vercel’s install log for the pre-repair deployment used `npm install` and reported 18 npm advisories (16 moderate, 2 high). Vercel is not using the Bun lockfile in that log; this should be reconciled with the project’s package-manager/install-command policy rather than silently treated as covered by the local Bun audit.
 
-## 5. Database security corrections (migrations 20261101090000 + 20261101120000)
+## 4. Vercel and environment verification
 
-Both migrations are append-only; the second supersedes the first's policies. NOT applied to any database — staging first, only.
+The pre-repair deployment, `dpl_DpNkosZf5seuicr5vM8fARfYz3Kd`, targeted branch `feat/nairaleap-relaunch-implementation` at SHA `a3c3624e665fa0d3a45f387f3eeb1e7aeaadc0be` and finished **ERROR**. Its logs show that `npm install` completed, then `npm run build` failed with `[PARSE_ERROR] Identifier 'layout' has already been declared` at `src/features/question-engine/QuestionEngine.tsx:23:75`. The duplicate declaration is repaired.
 
-- **Privilege escalation closed.** `app_is_admin()` / `app_is_staff_or_admin()` now derive privilege from `auth.users.raw_app_meta_data` — settable only via the Supabase Auth admin API (trusted server-side administrative process), unreachable by participants. A trigger forces ordinary participant inserts to `roles = ['customer']` and makes roles immutable on update: self-promotion to admin/staff and granting roles to others are neutralised/rejected at the database level.
-- **Provider verification locked.** Owners freely edit business info; `verification_status` is forced 'unverified' on insert and any change raises 42501 unless the caller is a trusted admin (reviewer path).
-- **KYC hardened.** Raw identity numbers are NEVER stored in participant-readable rows: a trigger consumes `id_number_input`, storing only a SHA-256 reference hash + last 4 characters. Owners can never set verified/rejected states nor touch `reviewer_id`/`review_notes`/`expires_at` (trigger + policy). Documents stay in the PRIVATE `kyc-documents` bucket with explicit `storage.objects` policies: owner-prefixed paths (uid folder), mimetype allowlist (JPEG/PNG/WebP/PDF), 10 MB size cap, owner+admin read, owner delete, no update policy (immutable; re-upload to replace).
-- **Editorial/callback policies corrected.** FAQ inserts forced to `status='pending'` (moderation admin-only); survey responses validated against the referenced active survey's options; callback inserts require participant ownership + explicit consent timestamp + 'queued' state + no staff assignment, and ordinary users have no update policy on callbacks at all; staff-queue policies use the trusted role source.
+The preview for source commit `cf215a717382f20213c9ddfc1f37aefcd62f96de` is deployment `dpl_7BZhbYKXH22PZxfnzns8BBcH4Qjr`, URL `https://nairaleap-e09p42nee-remradars-projects.vercel.app`, state **READY**. The Vercel log records `npm install` (54 seconds), 2,108 modules transformed, `Build Completed in /vercel/output [1m]` and `Deployment completed`. The HTTP smoke command was `curl -sS -L --max-time 30` for each route; `/`, `/insurance`, `/about`, `/privacy-policy`, `/disclaimer` and `/services` all returned **HTTP 200** (no form submissions or data writes). This verifies those page responses for commit `cf215a7`, not database-backed journeys.
 
-**Database-level tests**: `supabase/tests/rls_security_test.sql` (pgTAP, 14 cases) exercises attempted self-promotion, granting roles to others, provider self-verification, KYC input consumption/self-verify/reviewer tampering, callback consent/ownership, FAQ self-approval and survey option validity — via direct authenticated SQL with simulated JWT claims, not the UI. **NOT EXECUTED in this environment**; run with `supabase db test` against staging (needs `create extension pgtap`) and attach output.
+The latest source commit `8fd76cd7e262ab261ef76dd0745ef2120c458c1d` triggered deployment [`dpl_1rcGWDQvyR5HHuUrdDR2m9bGEJQs`](https://vercel.com/remradars-projects/nairaleap/1rcGWDQvyR5HHuUrdDR2m9bGEJQs), URL [`https://nairaleap-5e4mw2y81-remradars-projects.vercel.app`](https://nairaleap-5e4mw2y81-remradars-projects.vercel.app), state **READY**. Vercel’s build-event tail records `Build Completed in /vercel/output [1m]` and `Deployment completed`. The command `curl -sS -L --max-time 30` returned HTTP 200 for `/`, `/insurance`, `/about`, `/privacy-policy`, `/disclaimer` and `/services` (HTML bodies 13,142–61,175 bytes). These are page-response smoke checks only; authenticated submissions, mobile behavior and database-backed paths remain untested.
 
-## 6. Verification status — HONEST, READ FIRST
+The Vercel project is linked to `remRADAR/NairaLeap` and the expected feature branch. A branch-scoped environment-variable name query returned no preview variables. Source documents `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` as required for Supabase-backed paths; those names are not configured for this preview. `VITE_WORDPRESS_API_URL` and `VITE_KEYPAY_PUBLIC_KEY` are optional public settings. No secret values were requested or displayed. A public build may complete without these variables, but authentication, persistence and other connected flows cannot be runtime-verified without the appropriate preview configuration.
 
-**This environment has no Node/Bun runtime, no npm/bun install, no database and no Cypress. NOTHING was executed. Every item below is REQUIRED EVIDENCE that Manus must generate:**
+## 5. Database and security status
 
-| Command | Status |
-| --- | --- |
-| `bun install` (repo uses bun; bun.lock) | NOT RUN — but lockfile is unchanged from main and matches the restored manifest, so a clean install should succeed; verify. |
-| `npx tsc --noEmit` | NOT RUN — treat type errors as possible; fix in small commits. |
-| `npm run lint` (ESLint) | NOT RUN. |
-| `npm run build` (production build) | NOT RUN. |
-| All audit scripts incl. new `audit:ads`, `audit:editorial-sanitizer` | NOT RUN. |
-| `npm run e2e` (Cypress) | NOT RUN — expect updates needed for insurance-onboarding, service-role-profiles, service-navigation specs and new coverage for ad slots (`[data-ad-placement=...]`), legal pages and mobile nav. |
-| `supabase db test` (pgTAP security tests) | NOT RUN — requires staging database. |
+Migrations have **not** been applied to staging or production. Read-only schema/policy/migration metadata inspection found no separate staging branch in the connected project list; no records or decrypted secret values were read. No production database write was performed.
 
-**Vercel check finding:** no Vercel access exists in this environment. The previously failing Vercel/CI check on the branch is consistent with the now-fixed package.json defect (dependency sections were accidentally dropped in commit 30fe6b8, breaking install/build). With the manifest restored byte-for-byte from main, the build inputs are identical to main's, which is green. Manus MUST confirm by checking the Vercel deployment status for the branch after the repair commits; if it still fails, capture the build log and fix the actual error — do not assume.
+The HMAC migration references the Vault secret name `nairaleap-kyc-identity-hmac-v1`; the corresponding secret value has not been provisioned by this task and must never be committed or exposed. The trigger requires exactly one active key of at least 32 bytes and fails KYC writes shut if it is missing or invalid. For rotation, add a versioned Vault key, keep previous versions non-retired while records reference them, and do not retire a key until duplicates remain detectable under retained versions. Legacy SHA references are moved into a private table for duplicate checks; actual deployed records, backups, logs and historical plaintext copies have not been inventoried. That reconciliation needs explicit owner/security authorization and privacy-safe staging access.
 
-## 7. Known defects / open items
+The service-request migration is additive and idempotent. Its authored pgTAP cases verify that a participant cannot change their own status or payload, another participant cannot change status, an admin can change status, and even admin status access does not grant submitted-payload writes. Until these cases execute on isolated staging, the authorization repair is implemented in code but not runtime-verified.
 
-- PR #8's indicative insurance prices are UNVERIFIED placeholders — owner must verify/replace before relaunch.
-- Legal pages are DRAFT with [to be confirmed] placeholders — owner/legal sign-off required.
-- All advertising rates and scrap prices intentionally NULL — never fill with invented values.
-- Social publishing + WhatsApp API are schema-only; no credentials/permissions exist; do not enable.
-- Subscriptions model states only; no charging — do not activate.
-- `service-landing-top`, `article-inline` and `category-sidebar` placements are defined but not yet rendered in page templates (sidebar one is disabled by design); wiring them is trivial via the shared AdSlot.
+## 6. Independent implementation audit
 
-## 8. Environment variables / provider authorisations needed (names only)
+Classification describes source and available local test evidence, not production or end-to-end operation. No broad feature qualifies as fully end-to-end **IMPLEMENTED AND VERIFIED** in this pass because Cypress and isolated database tests could not run.
 
-- Supabase project URL + keys (staging separated from production).
-- Future only: OAuth per social platform; WhatsApp Business API; each only when its feature is being enabled, after owner authorisation.
+| Requirement | Classification | Repository evidence / remaining limitation |
+| --- | --- | --- |
+| Participant accounts and role model | IMPLEMENTED BUT NOT VERIFIED | Foundations and hardening migrations enforce trusted roles; 58 pgTAP assertions are authored but not run against a database. |
+| Customer service-request journey | PARTIALLY IMPLEMENTED | Catalogue, validation, idempotent submission and customer list exist; local type/build/audits pass, but persistence and authenticated journey were not exercised in E2E/staging. |
+| Service-request participant UPDATE boundary | PARTIALLY IMPLEMENTED | Additive migration now removes customer UPDATE and permits admin status-only writes; pgTAP cases added but not executed. This remains a P0 staging verification gate. |
+| Provider/seller onboarding, profiles and verification | PARTIALLY IMPLEMENTED | Public role choices and schema/verification guards exist; typed profile intake, provider onboarding, review UI and verified-provider discovery are missing. |
+| Staff assignment and service-request audit trail | NOT IMPLEMENTED | Admin status update exists; assignee field, assignment workflow and audit history were not found. |
+| Catalogue and category mapping | IMPLEMENTED BUT NOT VERIFIED | Current ten-service mapping, role normalization and intake audits pass locally; no browser-level discovery test ran. |
+| QuestionEngine layouts and conditional questions | IMPLEMENTED BUT NOT VERIFIED | Build/typecheck pass; sequential, horizontal and single-page code paths remain. Validation/layout parity and mobile behavior still need Cypress coverage. |
+| Booking and scheduling | NOT IMPLEMENTED | No booking lifecycle, availability, appointment, cancellation or scheduling workflow was found. |
+| Callback consent and staff queue | PARTIALLY IMPLEMENTED | Consent/ownership/state/RLS schema and tests exist; no callback workbench or runtime RLS proof. No WhatsApp sending integration is active. |
+| Research / Professional Services trust claims | OWNER APPROVAL REQUIRED | The service exists, but “vetted/verified specialist” and response-time promises need current operational evidence or qualification and owner approval. |
+| Insurance Compare Cover / Get a Quote / Make a Claim action contract | IMPLEMENTED BUT NOT VERIFIED | Canonical values now agree across UI choices, schema and claim conditional; insurance audit and local build pass. No E2E persistence/handler test ran. |
+| Insurance quotations, claims and provider handoff | PARTIALLY IMPLEMENTED | Manual service-request intake only; no insurer filing, quote API, claim decision or guaranteed outcome. |
+| Insurance comparison amounts and coverage claims | OWNER APPROVAL REQUIRED | Amounts remain unverified indicative placeholders; no live premium or provider confirmation was established. Remove or substantiate before public relaunch. |
+| Insurance legal disclosures and advice boundary | OWNER APPROVAL REQUIRED | Disclaimer and related legal copy remain draft; owner/legal review must distinguish general information, licensed quotations and regulated advice. |
+| Scrap rates, sources, location and dates | PARTIALLY IMPLEMENTED | Data model accommodates rates/source/location/effective and verification dates, but prices remain NULL/pending and no customer/admin price-book UI exists. Do not invent rates. |
+| KYC identity reference | PARTIALLY IMPLEMENTED | Vault-backed versioned HMAC, last-four handling, fail-closed behavior and legacy hash compatibility are coded; Vault provisioning, data-history review and staging tests remain. |
+| KYC document ownership/storage controls | IMPLEMENTED BUT NOT VERIFIED | Private-bucket and owner/MIME/size/admin policies are in migrations/tests; no storage API integration test or staging RLS run. |
+| KYC onboarding and review workflow | NOT IMPLEMENTED | End-to-end document upload and reviewer UI are absent. |
+| Advertising placement definitions | IMPLEMENTED BUT NOT VERIFIED | Eight IDs are defined; local advertising audit passes. |
+| Advertising page wiring | PARTIALLY IMPLEMENTED | Homepage top/bottom, article end, category-list top and service footer are mounted. `article-inline`, `service-landing-top` and `category-sidebar` are not mounted (sidebar is currently disabled by design). |
+| Shared AdSlot fallback/responsiveness | IMPLEMENTED BUT NOT VERIFIED | Shared component exists; no browser/responsive smoke test ran. |
+| Advertising rates and administration | PARTIALLY IMPLEMENTED | Rate-card source entries remain pending/NULL and audit passes; admin persistence/management UI is absent. Owner approval required before rates are published or sold. |
+| About, Privacy and Disclaimer route/content | OWNER APPROVAL REQUIRED | Draft pages are registered in the generated route tree and footer links exist; substantive legal/business placeholders need owner/legal approval and direct-route browser tests. Footer also contains Terms/Cookies labels without destinations. |
+| Article HTML sanitization | PARTIALLY IMPLEMENTED | Allowlist and dangerous-block/comment handling were improved and the local sanitizer regression audit passes; parser-based/browsing XSS assurance is still absent. |
+| FAQ moderation and survey validation | PARTIALLY IMPLEMENTED | Database schema/trigger/policies and pgTAP assertions exist; migrations/tests are unapplied/unexecuted, and identity/abuse behavior needs staging checks. |
+| Public article FAQ/survey UI and moderator queue | NOT IMPLEMENTED | No public FAQ submission/display, survey participation or protected moderation queue was found. |
+| Editorial draft/review workflow | PARTIALLY IMPLEMENTED | Studio has browser-local editing, but publication is immediate/local rather than a shared draft-review-approval workflow. |
+| Newsletter backend | NOT IMPLEMENTED | Current submit handler changes local state only while saying “check your inbox to confirm”; no persistence or email delivery exists. Remove misleading confirmation until a consent-aware provider flow is implemented. |
+| Hausa, Igbo, Yoruba, Nigerian Pidgin and Tiv | NOT IMPLEMENTED | All five locale choices are explicitly unavailable; no reviewed dictionaries/content are served. |
+| Dictionary/translator data quality | PARTIALLY IMPLEMENTED | Schema supports reviewed/provenance fields, but no usable reviewed language dataset or serving workflow was found. |
+| NairaLeapBot text-to-speech | IMPLEMENTED BUT NOT VERIFIED | Browser `speechSynthesis` is used; authored Cypress assertions were not run, and unsupported-device/cancel/fallback behavior remains unverified. This is not a server/provider TTS integration. |
+| Social distribution queue | PARTIALLY IMPLEMENTED; live publishing BLOCKED BY EXTERNAL AUTHORIZATION | Queue states/policies exist, but no scheduler, publisher worker, provider adapter, idempotent retries or social credentials are active. |
+| WhatsApp | PARTIALLY IMPLEMENTED; live automation BLOCKED BY EXTERNAL AUTHORIZATION | Manual consent-first callback schema and staff-queue rules only; no workbench or WhatsApp API integration. |
+| Subscriptions and payments | PARTIALLY IMPLEMENTED; billing BLOCKED BY EXTERNAL AUTHORIZATION | Status schema exists; no subscription management UI, checkout, charge, webhook reconciliation or paid entitlement proof. Do not activate or claim payment operation. |
+| Product walkthrough | PARTIALLY IMPLEMENTED | Services page includes static numbered steps, not a route-aware interactive tour with progress/completion tests. |
+| Product walkthrough video | NOT IMPLEMENTED | No approved video asset, accessible player or playback test was found. |
 
-## 9. Exact instructions for Manus
+## 7. Prioritized follow-up backlog
 
-1. Clone, checkout `feat/nairaleap-relaunch-implementation`; verify commit inventory matches §2 + §3 (base 3fa0fcc lineage, no commits to main).
-2. `git diff main...HEAD -- package.json` should show ONLY the two added audit scripts; dependencies must match main exactly.
-3. Run the full verification suite (§6) in order; fix failures as small commits on the same branch; no force-push; never commit to main.
-4. Apply BOTH migrations to a STAGING Supabase project (`supabase db push`), run `supabase db test` (pgTAP), and probe RLS with authenticated test accounts for: self-promotion attempts, provider self-verification, KYC reviewer tampering, storage upload of an oversized/wrong-type document. Attach real output to this handoff's successor.
-5. Confirm the Vercel check now passes; if not, capture and fix the actual build error.
-6. Re-run and extend Cypress coverage per §6; also cover the three legal pages and footer links.
-7. When green: open a PR to main, request owner review of all DRAFT/pending content (legal text, insurance figures, rates), and merge/deploy only after explicit owner approval. The reconcile/* temp branches and closed PR #10 may be deleted after merge.
-8. Do not enable paid subscriptions, WhatsApp automation or social publishing without the authorisations in §8.
+Effort estimates below are rough engineering estimates, may overlap, and exclude approval lead time, provider onboarding and data collection unless stated. Do not begin unrelated P2 integrations while P0 verification gates remain open.
 
-**This branch is not deployed. Production remains on main, untouched.**
+### P0 — Release blockers
+
+1. **Run critical Cypress E2E journeys on an available runner.** Current state: no Cypress binary is installed; `npm run e2e -- --spec cypress/e2e/service-role-profiles.cy.ts` could not execute, and the attempted `./node_modules/.bin/cypress install` stalled at 1% with a multi-hour estimate and was stopped. Evidence: latest preview is READY and six direct HTTP route checks passed, which is not interaction/E2E proof. Missing: execute mobile/desktop navigation, customer onboarding/request, insurance, QuestionEngine and provider journeys; use authorized preview credentials where needed. Dependencies: a working Cypress/browser runner and Supabase preview configuration/test accounts for persistence paths. Estimate: under 1 day once available. Recommended: CI/QA engineer; no owner approval for non-destructive preview tests.
+2. **Execute service-request and security authorization tests on isolated staging.** Current state: broad participant UPDATE is removed in an additive migration; admin status-only and negative cases are authored. Evidence: migration grammar and 58-count pgTAP plan pass static validation only. Missing: authorized isolated Supabase staging, migration application, pgTAP output and targeted RLS probes. Dependencies/approval: explicit staging access, migration approval and owner/security approval of operator roles; never production. Estimate: 1–4 days depending on findings. Recommended: Supabase security engineer plus QA.
+3. **Provision and verify the KYC Vault key before any real KYC writes.** Current state: code requires `nairaleap-kyc-identity-hmac-v1` and fails closed. Missing: create/provision a strong Vault secret (minimum 32 bytes) in authorized staging, test missing-key and duplicate cases, document rotation, and privacy-safely reconcile existing records/backups/logs. Dependencies/approval: owner/security/data-protection approval and staging access. Estimate: 2–4 days for setup/review, excluding legacy-user re-verification. Recommended: security/backend and data-protection owner.
+
+### P1 — Required relaunch functionality and integrity
+
+1. **Verify the customer request journey and insurer action flows.** Current state: local validation/audits/build pass; insurer action values were fixed. Missing: authenticated browser and handler tests for submit, retries, persistence, Compare/Quote/Claim actions and conditional claim fields. Dependencies: Supabase preview settings and test accounts. Estimate: 1–3 days. Recommended: frontend/backend QA.
+2. **Complete provider profiles, KYC onboarding/review, assignment and booking.** Current state: role/schema foundations, but no complete provider profile/reviewer journey; no assignment field/audit workflow or booking lifecycle. Missing: approved provider/staff roles, onboarding/review UI, assignment model, booking/availability/cancellation rules and negative permission tests. Dependencies: owner/operations workflow and staging. Estimate: provider/KYC 1–2 weeks; assignment 1–2 weeks; booking more than 2 weeks. Recommended: product/operations, frontend/backend and security engineer.
+3. **Remove or substantiate insurance prices and service trust/SLA claims; approve disclosures.** Current state: insurance figures are unverified placeholders; provider vetting and response promises lack verified operational evidence; legal disclaimer remains draft. Missing: dated provider-confirmed sources or removal/qualification, plus legal/owner review. Dependencies/approval: owner, licensed providers and legal reviewer. Estimate: 1–3 engineering/content days plus evidence/approval lead time. Recommended: product/content owner, legal and provider operations.
+4. **Establish scrap-rate source/freshness and a controlled price-book.** Current state: rates deliberately NULL/pending; schema fields exist. Missing: approved source, location/unit, effective and last-verified dates, stale policy, customer/admin UI and tests. Dependencies/approval: owner/data steward and authorized database access. Estimate: 1–3 days for rules/tests; sourcing and curation separate. Recommended: data steward plus backend engineer.
+5. **Wire intended ad inventory and add authorized rate administration.** Current state: five of eight placement IDs mounted; three are not (sidebar currently disabled); rate-card prices pending/NULL. Missing: owner decision about sidebar/inventory, route wiring, browser fallback/responsive checks and an admin persistence/audit flow. Dependencies/approval: owner-approved placement/rates and persistence roles. Estimate: 2–5 days wiring/tests; 1–2 weeks admin UI/persistence. Recommended: frontend and admin/backend engineer.
+6. **Complete legal route/footer checks and approve draft content.** Current state: About/Privacy/Disclaimer pages exist and route tree is generated, but draft placeholders remain; Terms/Cookies footer labels have no destinations. Missing: legal/data-protection review, final content decisions, direct-route/footer browser checks and link policy. Dependencies/approval: owner and legal reviewer. Estimate: 1–3 engineering days plus review. Recommended: content/legal and frontend.
+7. **Build FAQ/survey participation and moderation UI.** Current state: schema and SQL safeguards exist, but public and moderator UI is absent. Missing: article-level question/approved-answer flows, survey UI, moderation queue, abuse/identity controls and staging verification. Dependencies/approval: privacy/moderation policy and staging access. Estimate: 1–3 weeks. Recommended: product, frontend/backend and security QA.
+8. **Make newsletter messaging truthful, then implement opt-in persistence/delivery.** Current state: front-end-only success falsely says inbox confirmation. Missing: remove/qualify that claim; implement consent, persistence, unsubscribe/retention and actual delivery/confirmation. Dependencies/approval: owner-approved consent copy and an authorized email provider. Estimate: 2–5 days plus provider onboarding. Recommended: product/content and backend engineer.
+9. **Complete callback workbench; retain manual-only messaging boundary.** Current state: consent-first schema/policies, no staff workbench or runtime proof. Missing: UI, provenance/audit trail and staging role tests. Do not activate WhatsApp sending without separate provider authorization. Dependencies/approval: operations/compliance owner and staging; provider credentials/permissions for future automation. Estimate: 2–4 days plus 0.5–1.5 days staging verification. Recommended: operations, backend and security QA.
+10. **Harden sanitizer assurance and QuestionEngine parity.** Current state: sanitizer audit passes and compile repairs pass; no browser XSS test or E2E layout parity. Missing: parser-based sanitizer or further adversarial review, browser rendering tests, and shared validation parity for conditional requiredness/email/numeric bounds across layouts. Dependencies: working Cypress/browser runner. Estimate: 2–5 days for sanitizer; 1–3 days for validation parity. Recommended: frontend/security engineer and QA.
+
+### P2 — Operational maturity (defer until P0 gates are green)
+
+1. **Social publishing integration:** schema/queue exists; scheduler, approval audit, provider adapters, idempotent retries and OAuth are missing. Live provider use is **BLOCKED BY EXTERNAL AUTHORIZATION**; keep publishing disabled. Dependencies/approval: owner and platform permissions. Estimate: 3–6 engineering days plus 1–3 days per provider, excluding approval. Recommended: backend/worker engineer.
+2. **Subscription billing:** schema only; define plans/pricing, checkout, webhooks, idempotent reconciliation and entitlement tests before any charge. Activation is **BLOCKED BY EXTERNAL AUTHORIZATION** and commercial approval. Estimate: 2–4 days UI/lifecycle plus 3–6 days integration. Recommended: payments/backend engineer.
+3. **Language data:** all five Nigerian locales unavailable; produce complete, human-reviewed dictionaries and consent/legal/financial terminology coverage before enabling. Dependencies/approval: owner terminology policy and qualified language reviewers; Pidgin variety/spelling decision. Estimate: 3–7 engineering days per locale plus 2–4 weeks initial content/review. Recommended: localization lead and native reviewers.
+4. **Dictionary/translator serving and quality:** schema exists but no reviewed dataset or quality gates. Define provenance, review and coverage standards before serving. Dependencies: content and language owners. Estimate: 1–2 weeks including workflow/data.
+5. **Interactive walkthrough/video and TTS maturity:** static service steps exist; no dedicated tour/video; browser TTS needs unsupported-device and cancellation tests. Dependencies/approval: owner-approved script/claims/branding and accessible video asset. Estimate: tour 1–3 days, video 2–5 days after asset, TTS verification 0.5–1.5 days. Recommended: frontend/content and QA.
+6. **Taxonomy normalization and editorial review:** reconcile catalogue/category identifiers only after owner confirms canonical taxonomy; add draft/review/publish states only if editorial policy requires shared approval. Dependencies/approval: owner taxonomy/editorial decisions. Estimate: 3–5 days taxonomy; 3–7 days editorial workflow. Recommended: product and content-platform engineer.
+7. **Product snapshot freshness and monitoring:** refresh source-checked insurance references with provider-confirmed facts and clear dates; add operational monitoring only after owners define supported service levels. Dependencies/approval: owner and provider source confirmation. Estimate: 1–2 days display/tests plus refresh work. Recommended: content/data owner.
+8. **Analytics and operational monitoring:** no end-to-end production instrumentation or operator SLO was verified. Define privacy-safe success/error/latency signals, ownership, alert thresholds and incident response before adding analytics providers. Dependencies/approval: owner/privacy review and approved telemetry provider/configuration. Estimate: 2–5 days for event design and basic instrumentation, plus 1–3 days for alerting/runbooks. Recommended: observability/backend engineer and privacy owner.
+
+## 8. Environment, authorization and production impact
+
+- Preview has no branch-scoped environment variables returned by Vercel. Supabase-backed runtime paths require `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`; provide only in the authorized preview environment. No secret values were exposed.
+- Optional names from `.env.example`: `VITE_WORDPRESS_API_URL` and `VITE_KEYPAY_PUBLIC_KEY`. No live WordPress, KeyPay, email, WhatsApp or social credentials were configured or used.
+- Supabase CLI, Docker, local PostgreSQL and Cypress executable are unavailable in this sandbox. No isolated staging project was available. These are infrastructure/access constraints, not passing test results.
+- No production deploy, production DNS/configuration change, production migration, real KYC write, real subscription charge, social post, WhatsApp message, or customer contact occurred.
+
+## 9. Release recommendation
+
+**Do not merge or release yet.** The latest pushed source preview is READY and six direct-route HTTP smoke checks passed. Still complete authorized isolated-staging migration/pgTAP and RLS verification; provision and test the Vault key; run critical Cypress journeys; review the remaining full-lint baseline and two Bun audit advisories; and obtain owner/legal/provider approvals for draft legal content, insurance figures/claims, ad rates, provider operations and external integrations. Production remains untouched.
