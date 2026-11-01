@@ -145,44 +145,6 @@ export const SERVICE_ROLE_PROFILES: Record<ServiceId, ServiceRoleProfile> = {
       ],
     },
   },
-  partnerships: {
-    customer: {
-      label: "I’m seeking a partner or collaborator",
-      description: "I have a partnership, joint-venture, co-founder, or distribution need.",
-      fields: [
-        textField(
-          "partnership-customer-goal",
-          "partnershipGoal",
-          "What do you want a partner to help achieve?",
-          "Describe the outcome, market, project, or capability you want to build together.",
-        ),
-        textField(
-          "partnership-customer-contribution",
-          "partnershipContribution",
-          "What will you bring to the partnership?",
-          "Share your assets, audience, capital, expertise, distribution, or other contribution.",
-        ),
-      ],
-    },
-    seller: {
-      label: "I’m a partner, collaborator, or opportunity holder",
-      description: "I offer a partnership opportunity, capability, channel, or joint venture.",
-      fields: [
-        textField(
-          "partnership-seller-offer",
-          "partnershipOffer",
-          "What partnership opportunity are you offering?",
-          "Describe the opportunity, target counterpart, commercial model, and expected contribution.",
-        ),
-        textField(
-          "partnership-seller-fit",
-          "preferredPartner",
-          "Who would be a good fit?",
-          "Describe the organisation, sector, capability, or market you want to work with.",
-        ),
-      ],
-    },
-  },
   "vendor-marketplace": {
     customer: {
       label: "I’m a buyer or procurement customer",
@@ -217,46 +179,6 @@ export const SERVICE_ROLE_PROFILES: Record<ServiceId, ServiceRoleProfile> = {
           "vendorCredentials",
           "What makes your business ready for the marketplace?",
           "Share registration, certifications, references, fulfilment process, or other proof.",
-        ),
-      ],
-    },
-  },
-  "distress-sales": {
-    customer: {
-      label: "I’m a buyer or distressed-asset investor",
-      description:
-        "I’m looking for an urgent purchase of property, vehicles, equipment, or inventory.",
-      fields: [
-        textField(
-          "distress-customer-target",
-          "targetAsset",
-          "What distressed asset are you looking for?",
-          "Describe the asset, preferred location, condition, and the urgency of your purchase.",
-        ),
-        textField(
-          "distress-customer-readiness",
-          "purchaseReadiness",
-          "How quickly can you inspect or close?",
-          "Tell us your funds, inspection availability, and any conditions before purchase.",
-        ),
-      ],
-    },
-    seller: {
-      label: "I’m an owner, seller, or liquidator",
-      description:
-        "I need to sell an asset quickly because of urgency, liquidation, or a time-sensitive situation.",
-      fields: [
-        textField(
-          "distress-seller-reason",
-          "saleReason",
-          "Why is the sale time-sensitive?",
-          "Explain the urgency, deadline, liquidation context, or event driving the sale.",
-        ),
-        textField(
-          "distress-seller-condition",
-          "assetCondition",
-          "What condition and documentation does the asset have?",
-          "Describe condition, ownership, valuation, access, and available proof.",
         ),
       ],
     },
