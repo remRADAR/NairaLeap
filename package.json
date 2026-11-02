@@ -19,7 +19,8 @@
     "audit:ads": "bun run scripts/audit-advertising.ts",
     "audit:editorial-sanitizer": "bun run scripts/audit-editorial-sanitizer.ts",
     "format": "prettier --write .",
-    "audit:voice-engine": "bun run scripts/audit-voice-engine.ts"
+    "audit:voice-engine": "bun run scripts/audit-voice-engine.ts",
+    "reconcile:editorial-images": "bun run scripts/reconcile-editorial-images.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
