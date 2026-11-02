@@ -313,3 +313,75 @@ Searched: the repository (GitHub code search + branch tree) and the local author
 3. Visual regression across homepage/articles/archive/article pages (image-less = neutral gradient).
 4. Locate the original export JSONs (migration machine's `~/Downloads` or any backup) and run `bun run reconcile:editorial-images <posts.json> <media.json>`; review `editorial-image-proposed-corrections.json` and apply only human-approved, source-proven corrections.
 5. Proceed through Phase E gates (§D). Update this handoff with actual results. **Do not merge to main, deploy, or touch production/DNS/env/secrets.**
+
+
+# NairaLeap Relaunch — Engineering Handoff Addendum (rev. 7)
+
+**Task:** rev. 5 continuation — generated editorial-image interface repair, visual regression, source reconciliation preparation, and Phase E gates. This addendum supersedes rev. 6 status statements for this execution; prior ledger entries remain unchanged.
+
+## A. Current status
+
+**Not ready for merge or production release.** The generated dataset interface repair is complete, the image-less article-detail presentation now uses a neutral gradient, the focused build passes, the editorial-image audit passes its local-file/no-invention checks, and the latest Vercel preview for this commit is READY. However, none of the 434 image assignments has been reconciled against the original WordPress exports: those files were not found and the audit had zero featured-media ID/path cross-checks. Full typecheck, focused lint on the legacy five-file surface, Cypress, isolated-staging Supabase tests, Vault verification, and owner approvals remain open.
+
+No production deployment, migration, database test, record rewrite, DNS/environment change, external publishing, WhatsApp, billing, founder-voice activation, pull request, or merge was performed.
+
+## B. Repository, branch, and change record
+
+- Repository: `remRADAR/NairaLeap`; branch: `feat/nairaleap-relaunch-implementation`.
+- Starting HEAD: `9be3c7cf19a7b907d4275849ea09e83a77dd3891`; the working tree was clean before this task.
+- Commit pushed: [`287caf39422f57d7b89c01ef118c97f652879545`](https://github.com/remRADAR/NairaLeap/commit/287caf39422f57d7b89c01ef118c97f652879545), `fix: preserve neutral editorial image fallbacks`.
+- The remote feature branch tip matched that SHA after push; no force-push, reset, merge, or `main` change occurred.
+- Changed files: (1) `src/data/wordpressEditorial.ts` adds exactly `featuredMediaId?: number;` to the `EditorialPost` interface after `sourceUrl`; (2) `src/routes/articles.$slug.tsx` renders a neutral 16:9 gradient when an article has no source image, instead of substituting unrelated art or leaving an inconsistent blank; (3) `cypress/e2e/editorial-homepage.cy.ts` checks source-backed images and image-less gradients on the homepage and article detail.
+- Byte comparison against starting HEAD proves the 22,763,679-byte generated file changed only by the 28-byte interface line. The generated-record payload SHA-256 is unchanged: `27fd98cc31b771db47c2074e7a765f270e8c6e6d6276c9a201305155997efd6f`. No editorial records or image assignments were modified.
+
+## C. Verification evidence
+
+| Check | Result | Evidence and limitation |
+| --- | --- | --- |
+| Generated dataset isolation | PASS | Exact byte comparison: only the optional interface line was inserted; all generated record bytes/hash are unchanged. |
+| Focused dataset typecheck | PASS | `./node_modules/.bin/tsc --noEmit --skipLibCheck --target ES2022 --module ESNext --moduleResolution Bundler src/data/wordpressEditorial.ts`. This checks the generated dataset file only. |
+| Full TypeScript | FAIL, unrelated to these edits | `tsc --noEmit` reports one pre-existing `TS1117` duplicate `naira` property at `src/features/voice-engine/pronunciation.ts:41`. No errors point to the three changed files. |
+| Focused lint: new route and Cypress spec | PASS | `./node_modules/.bin/eslint 'src/routes/articles.$slug.tsx' cypress/e2e/editorial-homepage.cy.ts`; Prettier and `git diff --check` also pass for these changes. |
+| Focused lint: five original editorial-image files | FAIL on existing audit formatting | ESLint reports 3 `prettier/prettier` errors in `scripts/audit-editorial-images.ts` lines 86, 88 and 104. It warns that the generated dataset is ignored and that `scripts/import-wordpress-migration.py` has no ESLint configuration; `src/features/editorial/images.ts` and `src/features/editorial/server.ts` report no errors. No formatter-only rewrite of unrelated audit code was made. |
+| Production build | PASS | `npm run build` after the detail-page change; Vite/Nitro completed. |
+| `npm run audit:editorial-images` | BLOCKED as invoked | Exit 127: `bun: not found` in this environment. |
+| Editorial-image audit via temporary Bun | PASS, source IDs unverified | `npm exec --yes --package=bun -- bun run scripts/audit-editorial-images.ts`: 3,688 articles; 434 with source featured images; 3,254 valid image-less; 0 featured-media ID/path cross-checks; 0 remote fallbacks; 0 invented fallbacks; 0 missing local files; 0 mismatched IDs. Zero mismatches is not source verification because the generated records contain no `featuredMediaId` values yet. |
+| Reconciliation script preflight | EXPECTED BLOCK | `bun run scripts/reconcile-editorial-images.ts` exits 1 with the expected `~/Downloads` JSON paths missing; it states the 434 assignments remain unverified and creates no report/correction files. |
+| Both pgTAP files | STATIC PARSE PASS; NOT EXECUTED | Located `supabase/tests/rls_security_test.sql` and `supabase/tests/rls_assignment_booking_test.sql`. `pglast.parse_sql` parsed 148 and 14 statements respectively. This is grammar validation, not pgTAP/database execution. |
+| Supabase staging | BLOCKED | Only the NairaLeap project was connected. Branch metadata showed only a nonpersistent, default `main` branch (`with_data: false`), not an explicitly authorized staging environment. No migration, SQL test, record query, or Vault secret check was run. |
+| Cypress | NOT RUN | `npm run e2e -- --spec cypress/e2e/editorial-homepage.cy.ts --browser chromium` exits 1: Cypress 15.21 package exists, but its Linux ARM64 Cypress binary is absent. A prior binary download attempt stalled at 1% with a multi-hour estimate; system Chromium screenshots were used for read-only visual checks instead. |
+| Founder Voice audit | FAIL, activation remains disabled | `npm exec --yes --package=bun -- bun run scripts/audit-voice-engine.ts` reports `pronunciation hints not applied`. The enrolment-disabled, no-frontend-credential, synthetic-fallback-label and engine-path assertions did not report failures. Do not activate cloned voice; lexicon and founder approval/recordings remain prerequisites. |
+| Vercel preview | PASS | Deployment [`dpl_GJeZQro85xQvaHsfqZZxmcxLG1iM`](https://vercel.com/remradars-projects/nairaleap/GJeZQro85xQvaHsfqZZxmcxLG1iM) for exact source SHA `287caf39422f57d7b89c01ef118c97f652879545` is READY. Build event: `Build Completed in /vercel/output [1m]`; deployment event: `Deployment completed`. Preview: [nairaleap-3znezl8i5-remradars-projects.vercel.app](https://nairaleap-3znezl8i5-remradars-projects.vercel.app). No production deployment. |
+| Browser smoke and visual regression | PASS for rendered routes; no form/data journeys | Read-only HTTP checks returned 200 for `/`, `/articles`, `/archive`, a source-image article, and an image-less article. Real Chromium viewport screenshots were captured from the READY preview at 390×844 and 1280×900. The source-image article displayed its assigned local media; image-less homepage, listing, archive and detail render gradients without unrelated artwork. Responsive visual review was limited to these representative viewport captures. |
+| Local preview server | NOT USED for final visuals | `vite preview` could not start because Nitro attempted Wrangler and timed out waiting for a port; the local dev screenshot attempt was also terminated. Final visuals came from the READY Vercel preview, not HTTP-200-only inference. |
+
+Visual files captured in the execution environment: `home-mobile.png`, `home-desktop.png`, `articles-mobile.png`, `articles-desktop.png`, `archive-mobile.png`, `archive-desktop.png`, `image-detail-mobile.png`, `image-detail-desktop.png`, `image-less-detail-mobile.png`, and `image-less-detail-desktop.png` under `/home/ubuntu/nairaleap-visual-evidence/`.
+
+## D. Original-export search and reconciliation method
+
+The two required files, `nairaleap-wordpress-posts.json` and `nairaleap-wordpress-media.json`, were not found in the repository, `/home/ubuntu` (including Downloads and upload), or the checked safe scratch/workspace directories. A broad scan of `/mnt` could not be completed because it is a protected FUSE mount. The last known location remains the migration machine's `~/Downloads`; obtain the originals or an authorized backup before reconciliation.
+
+The prepared command is `bun run scripts/reconcile-editorial-images.ts <posts.json> <media.json>`; default paths are `~/Downloads/nairaleap-wordpress-posts.json` and `~/Downloads/nairaleap-wordpress-media.json`. Inputs are top-level JSON arrays: posts use numeric `id` and exact numeric `featured_media`; media uses numeric `id` and, when available, `source_url`. The only accepted relationship is `post.featured_media === media.id`. The script compares each current image to `public/editorial/cms/{mediaID}.{ext}` when present, otherwise to that media record's traceable `source_url`; it does not infer from title, ordering, filename similarity, category, or visual resemblance. It writes `editorial-image-reconciliation-report.json` and a review-only `editorial-image-proposed-corrections.json`; it never edits the dataset or applies corrections. The 434 assignments remain **UNVERIFIED** until exact source exports are reconciled and any proposed correction is reviewed.
+
+## E. Phase E and approval inventory
+
+- **Critical path — source reconciliation:** recover both export JSONs; run the command above; review every proposed correction and apply only exact, approved source relationships.
+- **Critical path — staging/security:** provision an explicitly isolated and authorized Supabase staging project/branch; review/apply migrations only there; execute both pgTAP suites; verify KYC fail-closed and duplicate behavior with a staging Vault key. The connected `main` branch is not a substitute.
+- **Critical path — browser E2E:** install a compatible Cypress runner or use CI, then run onboarding/request, insurance, QuestionEngine, editorial navigation, source-image and image-less fallback journeys. Current Cypress assertions were updated but not executed.
+- **Quality blocker:** resolve the duplicate `naira` key and pronunciation-hint audit defect with appropriate review; do not enable cloned voice while doing so.
+- **Owner approval remains pending:** insurance figures and coverage claims; advertising rates; scrap prices and sources; About/Privacy/Disclaimer legal drafts; and founder voice recordings/cloning activation. Founder voice requires explicit founder authorization and suitable recordings; browser TTS is not the founder voice.
+- Live social publishing, WhatsApp automation and billing remain externally authorization-blocked; none were activated.
+
+## F. Classification, impact and final state
+
+- **Editorial image display:** **Implemented but unverified against source exports**. Local assets resolve and representative desktop/mobile rendering is verified; exact provenance for all 434 assignments is not.
+- **Export reconciliation:** **Partially implemented**. Script and format/method are prepared; inputs absent, no reconciliation report or correction file produced.
+- **Founder Voice Engine:** **Architecturally implemented but not verified**; audit has a pronunciation-hints failure; enrollment/clone activation remains disabled and approval-gated.
+- **Supabase security suites:** **Implemented but unverified at runtime**; static SQL parsing only, no isolated staging execution.
+
+Production impact: none observed. No production data, database, deployment, credentials, secrets, environment variables, DNS, or external integrations were changed. Working branch after push: `feat/nairaleap-relaunch-implementation`, commit `287caf39422f57d7b89c01ef118c97f652879545`; final clean working-tree state must be rechecked after this documentation update. No PR was created and no merge was performed.
+
+
+## G. Post-addendum repository verification
+
+After pushing this rev. 7 handoff, recheck `git status --short --branch` and the remote feature-branch tip. The intended final state is a clean working tree on `feat/nairaleap-relaunch-implementation`, with no production merge or pull request; record the observed result in the completion message.
