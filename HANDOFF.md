@@ -262,3 +262,54 @@ Until that line is added, everything still compiles (consumers use intersection 
 4. **Reconciliation (only if the original export JSONs are available):** match each article's `featured_media` to the media export by exact ID, compare against the assigned image path media ID, and correct **only** proven relationships. Produce the reconciliation report (article ID, title, original featured-media ID, assigned path, result). Without the exports, preserve the 434 and document them as unverified — never shuffle images to make the archive look complete.
 5. **Regression eyes:** homepage hero/cards, `/articles`, `/archive`, article pages — image-less articles should now show the neutral gradient instead of unrelated artwork.
 6. Update this handoff with actual results. **Do not merge to main, deploy, or touch production/DNS/env/secrets/CMS records.**
+
+
+---
+
+# NairaLeap Relaunch — Engineering Handoff Addendum (rev. 6)
+
+**Task: rev. 5 continuation — editorial image unblocking, reconciliation preparation, Phase E gate preservation.** Verified branch tip before work: `11188f5` (rev. 5 docs commit), matching rev. 5. Environment: GitHub API access only — **no repository checkout, no Node/Bun runtime, no browser.** Tasks 1–3 of the directive (interface repair in the 22.7 MB generated file, tsc/lint/build/audit execution, visual regression) are **environment-blocked here**, not skipped: the generated `src/data/wordpressEditorial.ts` cannot be fetched or re-pushed through the GitHub API tooling (22.7 MB payload), and no execution environment exists. Task 4 (reconciliation preparation) is complete.
+
+## A. Source export search result
+
+Searched: the repository (GitHub code search + branch tree) and the local authorized workspace. `nairaleap-wordpress-posts.json` and `nairaleap-wordpress-media.json` were **not found**. Their last known location remains the migration machine's `~/Downloads` (outside the repo, per the importer's constants). **Consequence: the 434 existing image assignments remain UNVERIFIED** — preserved unchanged, never claimed as source-checked.
+
+## B. Changes in this round
+
+| Commit | Change |
+| --- | --- |
+| `ddf51aab67afde670607c9543ec6c09c5886f7e1` | `scripts/reconcile-editorial-images.ts` + `reconcile:editorial-images` package.json script. |
+| (this commit) | This rev. 6 addendum. |
+
+### Reconciliation script methodology (`bun run reconcile:editorial-images <posts.json> <media.json>`)
+
+1. Loads both original export JSONs (explicit paths, or `~/Downloads` defaults; exits with guidance when absent — the 434 assignments stay unverified until supplied).
+2. Authoritative relationship ONLY: `post.featured_media -> media.id`. No filename similarity, order, category, hash or visual inference.
+3. Expected asset = `public/editorial/cms/{mediaID}.{ext}` when the file exists locally, else the media record's `source_url` (matching the importer's failed-download traceability).
+4. Compares against every dataset article's current image; classifies: `exact_match`, `mismatch`, `missing_media_record` (media ID absent from media export), `missing_dataset_image` (source-proven asset, dataset has none), `ambiguous_duplicate` (one CMS asset shared by several articles — each checked against its own featured_media), `no_source_post`, `unassigned_in_dataset` (correct image-less), `unverified` (image present but source post has no featured_media → REMOVE candidate, human review).
+5. Writes `editorial-image-reconciliation-report.json` (machine-readable, full per-article detail) and `editorial-image-proposed-corrections.json` (only source-proven changes, human review required).
+6. **Never modifies the dataset, never overwrites assignments, never substitutes unrelated images.** Corrections are applied manually only after review.
+
+## C. Blocked items and why (do not re-attempt in a GitHub-API-only environment)
+
+- **Interface repair (rev. 5 §C):** insert `  featuredMediaId?: number;` after `  sourceUrl: string;` in `export interface EditorialPost` inside `src/data/wordpressEditorial.ts`. Requires a real checkout (one-line `sed`-style edit; the 22.7 MB file cannot round-trip the API). The diff must show ONLY that line.
+- **Verification:** `tsc --noEmit`; focused ESLint on the five rev. 5 files; `npm run build`; `npm run audit:editorial-images` (expected outcomes documented in rev. 5 §E — NOT claimed as achieved here).
+- **Visual regression:** homepage, `/articles`, `/archive`, article pages — needs a running build + browser.
+- **Reconciliation execution:** blocked on locating the two export JSONs.
+
+## D. Phase E release gates (preserved, unchanged)
+
+1. Both pgTAP suites (`rls_security_test.sql`, `rls_assignment_booking_test.sql`) on authorized isolated staging — never production.
+2. KYC Vault key (`nairaleap-kyc-identity-hmac-v1`) provisioning + fail-closed/duplicate security verification.
+3. Cypress critical journeys.
+4. Vercel preview verification of the latest branch SHA.
+5. Owner approvals: insurance figures, advertising rates, scrap prices, legal drafts.
+6. Founder Voice Engine activation ONLY with explicit founder authorisation + recordings + server provider config + testing. **Never treat browser TTS as the founder voice.**
+
+## E. Ordered next actions
+
+1. In an environment with a checkout + runtime: apply the §C one-line interface repair (diff must show ONLY that line).
+2. Run tsc, focused ESLint, build, and `npm run audit:editorial-images`; record actual results.
+3. Visual regression across homepage/articles/archive/article pages (image-less = neutral gradient).
+4. Locate the original export JSONs (migration machine's `~/Downloads` or any backup) and run `bun run reconcile:editorial-images <posts.json> <media.json>`; review `editorial-image-proposed-corrections.json` and apply only human-approved, source-proven corrections.
+5. Proceed through Phase E gates (§D). Update this handoff with actual results. **Do not merge to main, deploy, or touch production/DNS/env/secrets.**
