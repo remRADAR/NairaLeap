@@ -141,13 +141,19 @@ function ArticlePage(): ReactElement {
               </span>
             ))}
           </div>
-          {post.image && (
+          {post.image ? (
             <img
               src={post.image}
               alt={post.title}
               fetchPriority="high"
               decoding="async"
               className="mt-5 aspect-[16/9] w-full rounded-2xl object-cover shadow-[0_12px_28px_rgba(43,25,79,0.12)]"
+            />
+          ) : (
+            <div
+              aria-hidden="true"
+              data-testid="editorial-image-placeholder"
+              className="mt-5 aspect-[16/9] w-full rounded-2xl bg-gradient-to-br from-[#e7d6ff] to-[#78609f]"
             />
           )}
           <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-[-0.04em] text-[#232336] sm:text-5xl">

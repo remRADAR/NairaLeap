@@ -6,9 +6,15 @@ describe("Editorial homepage restoration", () => {
 
   it("keeps ten story previews, restores both ad spaces, and links to the full archive", () => {
     cy.contains("h2", "Top Stories").should("be.visible");
-    cy.get('section[aria-label="Featured story"] img[src]').should("exist");
+    cy.get('section[aria-label="Featured story"] img[src]').should("not.exist");
+    cy.get('section[aria-label="Featured story"] > div.relative')
+      .should("have.css", "background-image")
+      .and("include", "linear-gradient");
     cy.get("article.editorial-story-card").should("have.length", 9);
-    cy.get("article.editorial-story-card img[src]").should("have.length", 9);
+    cy.get("article.editorial-story-card img[src]").should("not.exist");
+    cy.get("article.editorial-story-card > div.relative").each(($media) => {
+      cy.wrap($media).should("have.css", "background-image").and("include", "linear-gradient");
+    });
     cy.get('section[aria-label="Advertisement"]').should("have.length", 2);
     cy.get('section[aria-label="Desk ticker"]').should("not.exist");
     cy.get('section[aria-label="Taxonomy ticker"]').should("be.visible");
@@ -47,6 +53,16 @@ describe("Editorial homepage restoration", () => {
   it("keeps article detail imagery present after a direct route load", () => {
     cy.visit("/articles/police-nab-three-cops-after-alleged-extortion-of-abia-travellers");
     cy.contains("h1", "police", { matchCase: false }).should("be.visible");
-    cy.get("article > header img[src]").should("be.visible");
+    cy.get('article > header img[src="/editorial/cms/4031.jpg"]').should("be.visible");
+  });
+
+  it("shows a neutral gradient when an article has no source featured image", () => {
+    cy.visit("/articles/frsc-commends-dangote-cement-on-new-transport-safety-policy");
+    cy.contains("h1", "FRSC commends Dangote Cement").should("be.visible");
+    cy.get("[data-testid=editorial-image-placeholder]")
+      .should("be.visible")
+      .and("have.css", "background-image")
+      .and("include", "linear-gradient");
+    cy.get("article > header img[src]").should("not.exist");
   });
 });
