@@ -18,8 +18,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Set up Bun
+        id: setup
+        continue-on-error: true
         uses: oven-sh/setup-bun@v2
       - name: Install dependencies
+        id: install
+        continue-on-error: true
         run: bun install --frozen-lockfile
       - name: Type-check
         id: typecheck
@@ -71,6 +75,8 @@ jobs:
           {
             "ranAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "commit": "${{ github.sha }}",
+            "setup": "${{ steps.setup.outcome }}",
+            "install": "${{ steps.install.outcome }}",
             "typecheck": "${{ steps.typecheck.outcome }}",
             "selftest": "${{ steps.selftest.outcome }}",
             "discover": "${{ steps.discover.outcome }}",
@@ -83,15 +89,20 @@ jobs:
           EOF
       - name: Commit verification artifacts
         if: always() && github.ref == 'refs/heads/feat/editorial-media-recovery'
+        continue-on-error: true
         run: |
+          set +e
           git config user.name "nairaleap-verification-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/editorial-media src/data/editorialMediaApproved.ts public/editorial/media
-          git add scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts
-          git add scripts/reconcile-editorial-images.ts scripts/discover-editorial-images.ts
-          git add scripts/approve-editorial-media.ts scripts/test-editorial-image-resolution.ts
-          git add src/features/editorial/images.ts src/features/editorial/media-storage.ts
-          git add src/features/editorial/media-types.ts
+          mkdir -p public/editorial/media
+          git add -A docs/editorial-media
+          git add -A src/data/editorialMediaApproved.ts
+          git add -A scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts
+          git add -A scripts/reconcile-editorial-images.ts scripts/discover-editorial-images.ts
+          git add -A scripts/approve-editorial-media.ts scripts/test-editorial-image-resolution.ts
+          git add -A src/features/editorial/images.ts src/features/editorial/media-storage.ts
+          git add -A src/features/editorial/media-types.ts
+          git add -A public/editorial/media
           if git diff --staged --quiet; then
             echo "No verification artifacts to commit"
           else
@@ -101,6 +112,8 @@ jobs:
       - name: Fail on step failures
         if: always()
         run: |
+          if [ "${{ steps.setup.outcome }}" = "failure" ]; then echo "setup failed"; exit 1; fi
+          if [ "${{ steps.install.outcome }}" = "failure" ]; then echo "install failed"; exit 1; fi
           if [ "${{ steps.typecheck.outcome }}" = "failure" ]; then echo "typecheck failed"; exit 1; fi
           if [ "${{ steps.selftest.outcome }}" = "failure" ]; then echo "selftest failed"; exit 1; fi
           if [ "${{ steps.discover.outcome }}" = "failure" ]; then echo "discover failed"; exit 1; fi

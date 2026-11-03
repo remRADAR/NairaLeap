@@ -1,66 +1,86 @@
-# HANDOFF — NairaLeap (remRADAR/NairaLeap)
+# NairaLeap — Editorial Media Recovery Handoff Ledger
 
-## CURRENT STATE
-- Last updated: 2026-11-03T09:10:00Z — Vibe (GLM 5.3, Mistral) via github_app connector
-- Phase: build — editorial media recovery + intelligent image sourcing, pushed to feature branch, CI verification pending
-- Uncommitted changes: none in this session — all work committed to `feat/editorial-media-recovery` (branch from main @ 3fa0fcc)
-- Branch: feat/editorial-media-recovery
-- Note: repo also has DEVELOPMENT_HANDOFF.md (Manus checkpoint, last meaningful update 2026-10-07). HANDOFF.md is the new cross-agent ledger per agent-continuation protocol.
+Cross-agent continuity ledger for the editorial media recovery and intelligent
+image sourcing work. Keep this file updated at every handoff point. The repo also
+contains a legacy DEVELOPMENT_HANDOFF.md; that file documents earlier work and
+should not be rewritten by this effort.
 
-## VERIFIED FACTS
-- main head: 3fa0fcc "add persisted translation foundation" (2026-10-17).
-- src/data/wordpressEditorial.ts is 22,763,679 bytes, last touched by commit 2ee121e "feat: migrate full WordPress editorial archive" (2026-10-04). No commit since 2ee121e modified it (verified via list_commits on the path).
-- DEVELOPMENT_HANDOFF.md (checkpoint at 2ee121e, verified by the prior agent) claims: 3,688 posts, 385 media files in public/editorial/cms, 434 featured assignments, 3,254 posts without featured media, all 434 mappings verified locally. Treated as prior-agent claims — exact current counts to be re-verified by the CI reconciliation on this branch.
-- public/editorial/cms contains 385 files (384 jpg, 1 gif) — verified via GitHub directory listing on main.
-- public/editorial also contains 72 imported/source-*.jpg, 8 featured-*.jpg, 3 inline-*.jpg.
-- src/features/editorial/images.ts on main = six-image slug-hash fallback (FALLBACK_IMAGE_PATHS), confirmed unrelated-imagery problem described in the task.
-- Editorial image consumers: src/routes/index.tsx, archive.tsx, articles.tsx, articles.$slug.tsx, src/features/editorial/server.ts, src/features/editorial/studio.ts. All call withEditorialImageFallbacks.
-- cypress/e2e/editorial-homepage.cy.ts asserts img[src] exists on hero, all 9 story cards, and article detail header image — placeholder tier keeps these green.
-- Repo is private (GitHub code search returns nothing; raw URLs unauthenticated).
-- No .github/workflows existed on main. Stack: bun, TanStack Start, Vite, Cloudflare-compatible Nitro.
-- Historical figures in the task (3,688 / 385 / 434 / 3,254) match the 2026-10-04 checkpoint exactly; they are historical, re-verification is part of this work.
+## Objective
 
-## IN PROGRESS
-- Implementation of the 9-phase editorial media task on branch feat/editorial-media-recovery:
-  - resolution hierarchy (original → recovered → approved → neutral placeholder) replacing the six-image hash fallback
-  - editorial media manifest with provenance + approval statuses (docs/editorial-media/manifest.json)
-  - reconciliation script (reconcile), Openverse discovery script (discover), approval CLI (approve), resolution self-test, updated audit
-  - CI workflow .github/workflows/editorial-media-audit.yml runs tsc, self-test, reconcile, audit, eslint, build; commits verification artifacts (reports/manifest/subset) back to the branch [skip ci]
-- Files are being authored and pushed via github_app.push_files (the sandbox file-system worker was unavailable during this session; if it recovers, prefer tools.file_system for authoring).
+Repair the editorial image system for remRADAR/NairaLeap: recover surviving
+original image associations, replace the six-image slug-hash fallback with a
+provenance-aware resolution hierarchy, add Openverse-based intelligent image
+sourcing with an editorial approval gate, and keep full licensing provenance in
+a structured media manifest.
 
-## NOT VERIFIED / UNTESTED
-- Exact current article count and featured-assignment counts on main (22MB data file cannot be parsed in this session; CI reconciliation will verify and commit docs/editorial-media/recovery-report.json).
-- Whether GitHub Actions is enabled for the repo (no prior workflow existed). If the workflow does not trigger, CI verification is blocked and must be run by the owner or a CI-capable agent.
-- Openverse API reachability and rate limits from CI runners (pilot is continue-on-error).
-- Production build in CI for this branch (expected to pass; not yet run).
-- Cypress suite NOT run in CI on this branch (browser install too heavy for this iteration; owner can run locally).
+## Working rules (inherited)
 
-## KNOWN DEFECTS & PROPOSED FIXES
-- Slug-hash fallback assigns unrelated imagery to ~3,254 articles — root cause addressed by this branch (replaced with provenance-aware hierarchy + neutral placeholder).
-- 434 original assignments vs 385 local media files implies shared media across articles (duplicates are original editorial choices, preserved; reported by reconcile).
+- All work happens on the feature branch `feat/editorial-media-recovery` (draft PR #12).
+- Never push to main; merging requires explicit owner approval.
+- The 22MB snapshot `src/data/wordpressEditorial.ts` is immutable; recovered and
+  approved relationships live in `docs/editorial-media/manifest.json` (provenance)
+  and the generated `src/data/editorialMediaApproved.ts` (runtime subset).
+- Only approved replacement images may be publicly assigned.
+- Never automatically assign unrelated imagery.
+- No production deploys, DNS changes, or secret configuration from this work.
 
-## DECISIONS & CONVENTIONS
-- Never regenerate or edit src/data/wordpressEditorial.ts from tooling that cannot verify it (22MB); recovered/approved relationships are overlays in the manifest + generated subset instead. The big data file stays immutable.
-- Manifest source of truth: docs/editorial-media/manifest.json (full provenance). Runtime subset: src/data/editorial-media subset file src/data/editorialMediaApproved.ts, generated by scripts/editorial-media-lib.ts, added to eslint ignores (generated file), kept fresh by media:reconcile and audited for drift by audit:editorial-images.
-- Only approved records can surface as featured images; candidates are never published.
-- License default allowlist: cc0, pdm, by (BY-SA excluded by default: cropping/WebP re-encode can count as adaptation under share-alike).
-- Storage: local deployment paths today; VITE_EDITORIAL_MEDIA_BASE_URL is the R2/CDN seam (media-storage.ts). No storage provisioning, DNS, or secrets done.
-- Branch strategy: feature branch + draft PR; main not touched; production deployment requires owner approval (per operating principles).
+## Current state (2026-11-03)
 
-## DO NOT TOUCH
-- src/data/wordpressEditorial.ts (immutable migration snapshot; eslint-ignored).
-- Existing original artwork in public/editorial/cms, public/editorial/imported, public/editorial/featured-*.jpg, inline-*.jpg.
-- Portal routes and Supabase integrations outside the editorial feature.
-- DEVELOPMENT_HANDOFF.md history (append-only legacy checkpoint log; HANDOFF.md is the new ledger).
+Implemented on the branch:
 
-## USER AWAITING / PENDING APPROVALS
-- Review and merge of the PR for feat/editorial-media-recovery (owner gate).
-- Editorial approval of discovered Openverse candidates (via media:approve CLI) — only then do replacements appear publicly.
-- Any production deployment of this work.
+- Provenance-aware resolution hierarchy in `src/features/editorial/images.ts`:
+  valid original -> approved replacement -> neutral placeholder
+  (`public/editorial/placeholder-editorial.svg`). All consumers keep using
+  `withEditorialImageFallbacks`, so no route-level changes were needed.
+- R2-ready storage seam in `src/features/editorial/media-storage.ts`
+  (`VITE_EDITORIAL_MEDIA_BASE_URL`).
+- Manifest schema in `src/features/editorial/media-types.ts` (EditorialMediaRecord
+  with full provenance fields and statuses original/candidate/approved/rejected).
+- Scripts: `editorial-media-lib.ts` (manifest/report/subset helpers),
+  `reconcile-editorial-images.ts` (Phase 2 reconciliation), `audit-editorial-images.ts`
+  (rewritten audit), `discover-editorial-images.ts` (Openverse discovery),
+  `approve-editorial-media.ts` (approval CLI with rights gate), and
+  `test-editorial-image-resolution.ts` (self-test).
+- CI workflow `.github/workflows/editorial-media-audit.yml` runs type-check,
+  self-test, Openverse pilot, reconciliation, audit, formatting, lint, and
+  production build, then commits verification artifacts back to this branch.
+- Docs: `docs/editorial-media/README.md` (provenance guide) and
+  `docs/editorial-media/STORAGE-ARCHITECTURE.md` (R2-ready architecture).
 
-## NEXT STEPS (ordered)
-1. Push implementation commits (runtime core, tooling scripts, docs + workflow + manifest) to feat/editorial-media-recovery.
-2. Open draft PR for CI visibility; watch the editorial-media-audit workflow; read committed verification artifacts (recovery-report.json, discovery-log.json).
-3. If Actions is disabled or the workflow fails, diagnose from check runs / artifacts and iterate.
-4. Owner: approve/merge PR; then run discovery batches (bun run media:discover --limit N) and approve candidates via bun run media:approve approve --slug ... --record-id ...
-5. Future: R2 storage migration per docs/editorial-media/STORAGE-ARCHITECTURE.md; cypress in CI; per-article FAQ/discussion plugin.
+## CI status
+
+- Run 1 (commit 86c54cb): audit job FAILED. No artifacts were committed (the
+  workflow failed before the artifacts step in that version).
+- Run 2 (commit 3f28cee): audit job FAILED in ~56s with no artifacts committed.
+  Diagnosis (no Actions-log access): the artifacts commit step ran
+  `git add public/editorial/media` on a directory that does not exist yet
+  (no approved downloads so far), which fails git and the job. Also hardened:
+  every step now continue-on-error with outcomes recorded to
+  `docs/editorial-media/ci-status.json`; the artifacts commit is best-effort
+  (set +e) so diagnostics always land on the branch; the job fails at an
+  explicit gate step if any verification outcome is failure.
+- Fixed defect found by review: repaired broken originals are now marked
+  invalid in the generated subset, so the hierarchy serves the repaired path
+  (tier 2) instead of the broken original path (tier 1).
+- Vercel preview builds for both commits succeeded (the app itself builds).
+
+## Next steps
+
+1. Poll PR #12 checks; once the workflow completes, read
+   `docs/editorial-media/ci-status.json` for per-step outcomes and fix any
+   failing step.
+2. Read committed `recovery-report.json`, `discovery-log.json`, and regenerated
+   `src/data/editorialMediaApproved.ts` for VERIFIED counts.
+3. Iterate until the gate passes.
+4. Update this ledger with verified counts and the Phase 9 engineering report.
+5. Owner decisions still pending: batching strategy for full-scale discovery
+   over articles without images, approval of candidates, and merge of PR #12.
+
+## Verification commands
+
+- `bun run media:reconcile` - rebuild recovery report + subset
+- `bun run media:discover [--limit N]` - Openverse discovery for unimaged articles
+- `bun run media:approve list|show|approve|reject` - editorial approval CLI
+- `bun run audit:editorial-images` - audit resolved images, manifest, subset drift
+- `bun run test:editorial-images` - resolution hierarchy self-test
+- `bunx tsc --noEmit`, `bun run build`
