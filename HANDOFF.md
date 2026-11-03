@@ -31,12 +31,13 @@ Two rounds of verification:
 1. First correction round (commits 3a6e67d, 178f2a2) — external metric rename +
    bounded reachability, approval/audit hardening, hardened downloads. CI green
    on 3a6e67d (bot prettier commit bd17bd9 recorded ci-status.json).
-2. Second correction round (commits 2627fe0, b5aa7f5) — discovery eligibility
-   fix, Nigeria-aware query expansion, validation test suite, hardened
-   workflow isolation, README rewrite. See `docs/editorial-media/ci-status.json`
-   for the per-step outcomes of the run on b5aa7f5 (workflow
-   "Verify editorial media pipeline"); step diagnostics land in
-   `docs/editorial-media/ci-*.txt` when a step fails.
+2. Second correction round (commits 2627fe0, b5aa7f5, 90c73f1) — discovery eligibility
+   fix, Nigeria-aware query expansion, validation test suite, hardened workflow
+   isolation, README rewrite, publish-job fix. The workflow run on 90c73f1
+   ("Verify editorial media pipeline") is GREEN on every step: setup, install,
+   typecheck, selftest, validation, reconcile, discover, audit, format, lint,
+   build — see `docs/editorial-media/ci-status.json` (committed by the publish
+   job). Step diagnostics, when a step fails, land in `docs/editorial-media/ci-*.txt`.
 
 Vercel preview deployments for every branch push also succeeded.
 
@@ -93,23 +94,29 @@ Vercel preview deployments for every branch push also succeeded.
 - Recovered from content embeds: 0 (no article embeds local media)
 - Repaired originals: 0 (nothing needed repair)
 - Images shared by multiple articles: 36 (original WordPress assignments, preserved)
-- External content image references inside article bodies: 137 across 12 hosts
+- External content image references inside article bodies: 140 across 13 hosts
   (cdn.punchng.com 79, nairametrics.com 25, cdn.vanguardngr.com 13, ...).
-  See `externalReachability` in the recovery report for the verified
-  availability breakdown. These are in-body images, not featured images;
-  rewriting them touches article content and needs owner sign-off.
+  Bounded reachability check (62 probed, concurrency 6, 5s timeout):
+  32 reachable, 26 unavailable, 4 forbidden, 78 unchecked over the probe cap —
+  see `externalReachability` / `externalHosts` in the recovery report. These
+  are in-body images, not featured images; rewriting them touches article
+  content and needs owner sign-off.
 
 The historical migration figures (3,688 / 385 / 434 / 3,254) are confirmed,
 except media: 469 local files exist, not 385.
 
 ## Openverse discovery pilots (docs/editorial-media/discovery-log.json)
 
-- Pilot 1 (original queries): 3 articles, 9 queries, 0 candidates, 0 errors —
-  the relevance gate (>= 2 term overlap) rejected everything returned.
-- Pilot 2 (improved Nigeria-aware queries): see discovery-log.json for the
-  latest run on the branch head. Relevance and licensing gates were NOT
-  weakened to raise counts; conservative behaviour is intended for Nigerian
-  finance coverage on Openverse. Batches should stay small and editorial.
+- Pilot 1 (original queries, run on 178f2a2): 3 articles, 5 queries issued,
+  0 candidates, 4 timeouts — the relevance gate (>= 2 term overlap) rejected
+  everything returned.
+- Pilot 2 (improved Nigeria-aware queries, run on 90c73f1): 3 articles,
+  9 queries issued (entities, entities+" Nigeria", keywords, category context,
+  industry concepts), 0 candidates, 7 of 9 queries timed out — Openverse
+  rate-limits anonymous GitHub Actions runner IPs. The improved query
+  construction is verified by the validation suite; Openverse connectivity
+  needs to be re-tested locally or from an allowlisted environment.
+  Relevance and licensing gates were NOT weakened to raise counts.
 
 ## Implementation summary
 
@@ -150,6 +157,13 @@ except media: 469 local files exist, not 385.
    present: 0 broken originals) while the old filter also skipped them from
    candidate sourcing entirely. Now explicit: valid/recovered skip, broken
    eligible.
+5. The first hardened CI run failed: a validation-test helper leaked a
+   `body: Uint8Array` field into Response headers, throwing inside one
+   download test. Fixed by passing the body override explicitly.
+6. The publish job's artifact push failed silently: `ref: ${{ github.sha }}`
+   produced a detached HEAD, so `git push` refused. Fixed by checking out the
+   feature branch and pushing to an explicit ref
+   (`origin HEAD:refs/heads/feat/editorial-media-recovery`).
 
 ## Owner decisions pending
 
