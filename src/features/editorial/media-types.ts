@@ -24,6 +24,8 @@ export type EditorialMediaRecord = {
   replacementImage: string | null;
   /** Discovery provider, for example "openverse". Null for recovered originals. */
   sourceProvider: string | null;
+  /** Stable identifier of the source record at the provider. */
+  sourceRecordId: string | null;
   /** Provider landing/detail URL for the source image. */
   sourceUrl: string | null;
   /** Direct image file URL, used when downloading approved replacements. */
