@@ -122,8 +122,7 @@ export const validateCandidateImageUrl = (rawUrl: string): URL => {
 export const detectImageSignature = (
   bytes: Uint8Array,
 ): { extension: "jpg" | "png" | "webp" | "gif"; mime: string } | null => {
-  const startsWith = (...prefix: number[]) =>
-    prefix.every((byte, index) => bytes[index] === byte);
+  const startsWith = (...prefix: number[]) => prefix.every((byte, index) => bytes[index] === byte);
   if (startsWith(0xff, 0xd8, 0xff)) return { extension: "jpg", mime: "image/jpeg" };
   if (startsWith(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)) {
     return { extension: "png", mime: "image/png" };
@@ -316,7 +315,9 @@ export const evaluateApproval = (
     );
   }
   if (!options.confirmEditorialRelevance) {
-    errors.push("Editorial relevance confirmation is required: pass --confirm-editorial-relevance.");
+    errors.push(
+      "Editorial relevance confirmation is required: pass --confirm-editorial-relevance.",
+    );
   }
   if (!record.imageUrl) errors.push("Candidate has no downloadable image URL.");
   return { ok: errors.length === 0, errors, attributionText };
@@ -450,16 +451,11 @@ const run = async (): Promise<void> => {
     const target = resolve(MEDIA_DIR, fileName);
     if (!existsSync(target)) writeFileSync(target, download.bytes);
     const now = new Date().toISOString();
-    const nextRecords = applyApproval(
-      manifest.records,
-      record,
-      options,
-      download,
-      localPath,
-      now,
-    );
+    const nextRecords = applyApproval(manifest.records, record, options, download, localPath, now);
     persist({ schemaVersion: 1, records: nextRecords });
-    console.log("APPROVED " + slug + " -> " + localPath + " (reviewed by " + options.reviewer + ")");
+    console.log(
+      "APPROVED " + slug + " -> " + localPath + " (reviewed by " + options.reviewer + ")",
+    );
   } else if (command === "reject") {
     if (!slug) fail("--slug is required for reject.");
     const reviewerId = (reviewer ?? "").trim();
