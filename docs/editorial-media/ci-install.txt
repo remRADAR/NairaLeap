@@ -73,4 +73,4 @@ bun install v1.4.4 (38afee6c8)
 + vaul@1.1.2
 + zod@3.25.76
 
-583 packages installed [12.61s]
+583 packages installed [11.78s]

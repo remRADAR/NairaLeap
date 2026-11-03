@@ -52,5 +52,11 @@ PASS blocks redirect chains with an unsafe intermediate destination
 PASS revalidates the destination after the response arrives
 PASS probes report unsafe without fetching prohibited destinations
 PASS probes classify reachable public URLs
+PASS blocks Teredo and 2001::/23 protocol-assignment destinations
+PASS blocks ORCHID and ORCHIDv2 destinations
+PASS blocks IPv6 benchmarking destinations
+PASS blocks non-global and special-purpose IPv6 assignments
+PASS allows public global-unicast IPv6 destinations
+PASS blocks AS112 and other IANA special-purpose IPv4 ranges
 
-53 checks passed, 0 failed.
+59 checks passed, 0 failed.

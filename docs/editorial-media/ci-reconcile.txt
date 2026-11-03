@@ -18,9 +18,9 @@ $ bun run scripts/reconcile-editorial-images.ts
   "externalReachability": {
     "checked": 62,
     "ok": 32,
-    "unavailable": 26,
+    "unavailable": 14,
     "forbidden": 4,
-    "timeout": 0,
+    "timeout": 12,
     "unknown": 0,
     "unsafe": 0,
     "unchecked": 78

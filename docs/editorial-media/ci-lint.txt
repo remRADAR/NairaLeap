@@ -1,6 +1,6 @@
 
 /home/runner/work/NairaLeap/NairaLeap/scripts/editorial-network-guard.ts
-  78:24  error  Replace `⏎··side:·string,⏎` with `side:·string`  prettier/prettier
+  93:24  error  Replace `⏎··side:·string,⏎` with `side:·string`  prettier/prettier
 
 ✖ 1 problem (1 error, 0 warnings)
   1 error and 0 warnings potentially fixable with the `--fix` option.
