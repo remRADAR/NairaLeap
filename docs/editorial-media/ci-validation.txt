@@ -39,7 +39,7 @@ PASS blocks IPv4 loopback destinations
 PASS blocks IPv4 link-local and cloud metadata destinations
 PASS blocks RFC1918 private IPv4 destinations
 PASS blocks multicast, reserved, and special-purpose IPv4 destinations
-FAIL blocks IPv6 loopback, link-local, unique-local, and multicast destinations
+PASS blocks IPv6 loopback, link-local, unique-local, and multicast destinations
 PASS blocks IPv4-mapped IPv6 destinations
 PASS blocks NAT64 and 6to4 destinations embedding prohibited IPv4
 PASS allows public IPv4 and IPv6 literals
@@ -53,6 +53,4 @@ PASS revalidates the destination after the response arrives
 PASS probes report unsafe without fetching prohibited destinations
 PASS probes classify reachable public URLs
 
-52 checks passed, 1 failed.
-FAILED: blocks IPv6 loopback, link-local, unique-local, and multicast destinations — false == true
-error: script "test:editorial-media" exited with code 1
+53 checks passed, 0 failed.

@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-11-03T14:46:26.134Z",
+  "ranAt": "2026-11-03T14:50:07.577Z",
   "endpoint": "https://api.openverse.org/v1/images/",
   "licenses": [
     "cc0",
@@ -8,12 +8,10 @@
   ],
   "minScore": 2,
   "articlesProcessed": 3,
-  "queriesIssued": 12,
-  "candidatesRecorded": 0,
+  "queriesIssued": 14,
+  "candidatesRecorded": 2,
   "errors": [
     "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate Nigeria: The operation timed out.",
-    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate: The operation timed out.",
-    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / banknotes Nigeria: The operation timed out.",
-    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / banknotes: The operation timed out."
+    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate: The operation timed out."
   ]
 }
