@@ -72,7 +72,7 @@ Vercel preview deployments for every branch push also succeeded.
    signature detection with signature/MIME agreement, 10MB cap (declared and
    streamed), HTML/SVG/unknown formats rejected, extension never assumed;
    SHA-256 content-addressed storage preserved. Covered by
-   `scripts/test-editorial-media-validation.ts` (54 checks, including the
+   `scripts/test-editorial-media-validation.ts` (53 checks, including the
    SSRF destination guard suite).
 5. **Discovery eligibility** — `discover-editorial-images.ts` now skips articles
    with valid OR recovered originals, allows broken (invalid) originals to
@@ -135,7 +135,7 @@ except media: 469 local files exist, not 385.
   audit-editorial-images, discover-editorial-images, approve-editorial-media
   (approval CLI with reviewer/attribution/rights/visual/relevance gates),
   test-editorial-image-resolution (resolution self-test, 14 assertions),
-  test-editorial-media-validation (54 checks: signatures, SSRF-guarded
+  test-editorial-media-validation (53 checks: signatures, SSRF-guarded
   downloads, approvals, eligibility, queries).
 - CI: `.github/workflows/editorial-media-audit.yml` — read-only verify job
   (typecheck, both test suites, reconcile, discovery pilot, audit, format
@@ -186,7 +186,17 @@ editorial media pipeline now goes through `scripts/editorial-network-guard.ts`:
 - Documented limitation: the runtime fetch API cannot pin the connection to
   the validated address, so complete connection-time DNS-rebinding
   protection is not possible; post-response revalidation narrows the window.
-  The validation suite covers the guard with 17 new checks (54 total).
+  The validation suite covers the guard with 17 new checks (53 total).
+
+The first CI run of this round caught one defect in the guard itself: the
+100::/64 discard-only range base sat 48 bits too low, so `100::1` slipped
+through. Fixed in a7c0c262; the suite passes (53 checks, 0 failed) and CI is
+green on a7c0c262 across all 11 steps.
+
+The CI discovery pilot in this round partially reached Openverse (2 of 14
+queries timed out) and recorded 2 candidate records — both CC BY,
+rights-review flagged, unapproved — for one article. Candidates are not
+approvals; the approval gate stays manual.
 
 No article content, featured-image assignments, approvals, merges, or
 production changes were made in this round.
