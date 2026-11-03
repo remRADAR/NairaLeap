@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-03T08:53:41.205Z",
+  "generatedAt": "2026-11-03T12:46:14.639Z",
   "totals": {
     "articles": 3688,
     "localMediaFiles": 469,
@@ -14,7 +14,16 @@
     "approvedReplacementsInUse": 0,
     "placeholderArticles": 3254,
     "imagesSharedByMultipleArticles": 36,
-    "deadExternalContentImages": 137
+    "externalContentImageReferences": 140
+  },
+  "externalReachability": {
+    "checked": 62,
+    "ok": 32,
+    "unavailable": 26,
+    "forbidden": 4,
+    "timeout": 0,
+    "unknown": 0,
+    "unchecked": 78
   },
   "broken": [],
   "recovered": [],
@@ -540,54 +549,149 @@
       ]
     }
   ],
-  "deadHosts": [
+  "externalHosts": [
     {
       "host": "cdn.punchng.com",
-      "count": 79
+      "references": 79,
+      "checked": 35,
+      "ok": 21,
+      "unavailable": 14,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 44
     },
     {
       "host": "nairametrics.com",
-      "count": 25
+      "references": 25,
+      "checked": 12,
+      "ok": 0,
+      "unavailable": 12,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 13
     },
     {
       "host": "cdn.vanguardngr.com",
-      "count": 13
+      "references": 13,
+      "checked": 1,
+      "ok": 1,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 12
     },
     {
       "host": "leadership.ng",
-      "count": 5
+      "references": 5,
+      "checked": 5,
+      "ok": 5,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 0
     },
     {
       "host": "images.outbrainimg.com",
-      "count": 4
+      "references": 4,
+      "checked": 4,
+      "ok": 4,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 0
     },
     {
       "host": "cdn.thenationonlineng.net",
-      "count": 4
+      "references": 4,
+      "checked": 4,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 4,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 0
+    },
+    {
+      "host": "www.channelstv.com",
+      "references": 3,
+      "checked": 0,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 3
     },
     {
       "host": "media.licdn.com",
-      "count": 2
+      "references": 2,
+      "checked": 0,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 2
     },
     {
       "host": "cdn.businessday.ng",
-      "count": 1
+      "references": 1,
+      "checked": 1,
+      "ok": 1,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 0
     },
     {
       "host": "i.ytimg.com",
-      "count": 1
+      "references": 1,
+      "checked": 0,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 1
     },
     {
       "host": "www.teezab.com",
-      "count": 1
+      "references": 1,
+      "checked": 0,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 1
     },
     {
       "host": "pbs.twimg.com",
-      "count": 1
+      "references": 1,
+      "checked": 0,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 1
     },
     {
       "host": "nairaleap.ct.ws",
-      "count": 1
+      "references": 1,
+      "checked": 0,
+      "ok": 0,
+      "unavailable": 0,
+      "forbidden": 0,
+      "timeout": 0,
+      "unknown": 0,
+      "unchecked": 1
     }
   ]
 }
