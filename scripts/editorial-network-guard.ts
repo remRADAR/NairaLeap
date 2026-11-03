@@ -118,7 +118,7 @@ const parseIPv6ToBigInt = (host: string): bigint | null => {
 };
 
 const IPV6_BLOCKED: Array<[bigint, number]> = [
-  [0x0100n << 64n, 64], // 100::/64 discard-only
+  [0x0100n << 112n, 64], // 100::/64 discard-only
   [0x20010db8n << 96n, 32], // 2001:db8::/32 documentation
   [0x64ff9b0001n << 80n, 48], // 64:ff9b:1::/48 local-use NAT64
   [0xfc00n << 112n, 7], // fc00::/7 unique local
