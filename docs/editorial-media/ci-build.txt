@@ -57,8 +57,8 @@ computing gzip size...
 .output/public/assets/wordpressEditorial-CbtwG1tH.js           22,499.30 kB │ gzip: 6,577.68 kB
 
 [33m[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
-  - tanstack-start-core:import-protection (79%)
-  - tanstack-start-core:import-protection-transform-cache (20%)
+  - tanstack-start-core:import-protection-transform-cache (78%)
+  - tanstack-start-core:import-protection (21%)
 See https://rolldown.rs/options/checks#plugintimings for more details.
 [39m
 [33m[plugin builtin:vite-reporter] 
@@ -66,7 +66,7 @@ See https://rolldown.rs/options/checks#plugintimings for more details.
 - Using dynamic import() to code-split the application
 - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
-[32m✓ built in 3.90s[39m
+[32m✓ built in 3.82s[39m
 [36mvite v8.0.16 [32mbuilding ssr environment for production...[36m[39m
 [2Ktransforming...Found 1 warning while optimizing generated CSS:
 
@@ -139,15 +139,7 @@ node_modules/.nitro/vite/services/ssr/assets/server-CfRORw3O.js                 
 node_modules/.nitro/vite/services/ssr/assets/AppLayout-D8__yJK-.js                                 146.45 kB │ gzip:    34.77 kB
 node_modules/.nitro/vite/services/ssr/assets/wordpressEditorial-3bUfmF5v.js                     23,054.96 kB │ gzip: 6,615.76 kB
 
-[33m[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
-  - tanstack-start-core:import-protection (33%)
-  - tanstack-start-core:import-protection-transform-cache (26%)
-  - tanstack-start-core::server-fn:ssr (8%)
-  - vite:css-post (6%)
-  - fullstack:assets (5%)
-See https://rolldown.rs/options/checks#plugintimings for more details.
-[39m
-[32m✓ built in 3.06s[39m
+[32m✓ built in 2.93s[39m
 [start] [nitro] Building [[35mNitro[39m] [2m(preset: `cloudflare-module`, compatibility: `2026-11-03`)[22m
 [success] [nitro] Generated public [36m.output/public[39m
 [36mvite v8.0.16 [32mbuilding nitro environment for production...[36m[39m
@@ -174,7 +166,7 @@ computing gzip size...
 .output/server/_libs/tanstack__react-query.mjs                          0.79 kB │ gzip:     0.39 kB
 .output/server/_ssr/articles-iTwfLZcy.mjs                               0.83 kB │ gzip:     0.48 kB
 .output/server/_ssr/services._service-X1MASEzI.mjs                      0.85 kB │ gzip:     0.48 kB
-.output/server/_ssr/server-D9wD_b-w.mjs                                 1.06 kB │ gzip:     0.53 kB
+.output/server/_ssr/server-D9wD_b-w.mjs                                 1.04 kB │ gzip:     0.53 kB
 .output/server/_ssr/server-CV-SrBhb.mjs                                 1.09 kB │ gzip:     0.56 kB
 .output/server/_runtime.mjs                                             1.14 kB │ gzip:     0.57 kB
 .output/server/_libs/hookable.mjs                                       1.16 kB │ gzip:     0.51 kB
@@ -212,7 +204,7 @@ computing gzip size...
 .output/server/_ssr/serviceLandingContent-DtBYBzAQ.mjs                 13.78 kB │ gzip:     3.97 kB
 .output/server/_libs/h3+rou3+srvx.mjs                                  14.21 kB │ gzip:     4.23 kB
 .output/server/_ssr/auth-ZewO-EDq.mjs                                  16.26 kB │ gzip:     3.99 kB
-.output/server/_libs/@radix-ui/react-compose-refs+[...].mjs            16.55 kB │ gzip:     4.59 kB
+.output/server/_libs/@radix-ui/react-compose-refs+[...].mjs            16.53 kB │ gzip:     4.59 kB
 .output/server/_ssr/routes-994tFApW.mjs                                17.46 kB │ gzip:     4.13 kB
 .output/server/_libs/h3-v2+srvx.mjs                                    19.34 kB │ gzip:     5.64 kB
 .output/server/_ssr/EditorialLayout-CmLLF1XD.mjs                       21.53 kB │ gzip:     6.42 kB
@@ -222,7 +214,7 @@ computing gzip size...
 .output/server/_libs/lucide-react.mjs                                  39.41 kB │ gzip:     8.24 kB
 .output/server/_libs/tanstack__query-core.mjs                          47.92 kB │ gzip:    10.65 kB
 .output/server/_libs/supabase__phoenix.mjs                             50.54 kB │ gzip:    12.76 kB
-.output/server/_ssr/server-CfRORw3O.mjs                                59.00 kB │ gzip:    15.36 kB
+.output/server/_ssr/server-CfRORw3O.mjs                                58.98 kB │ gzip:    15.35 kB
 .output/server/_ssr/studio-C50mo4HC.mjs                                59.09 kB │ gzip:    10.41 kB
 .output/server/_ssr/admin-DeVW-kFa.mjs                                 65.59 kB │ gzip:    12.68 kB
 .output/server/_libs/@radix-ui/react-dialog+[...].mjs                  80.48 kB │ gzip:    19.66 kB
@@ -230,14 +222,14 @@ computing gzip size...
 .output/server/_libs/tailwind-merge.mjs                                85.65 kB │ gzip:    15.21 kB
 .output/server/_libs/zod.mjs                                           99.97 kB │ gzip:    17.29 kB
 .output/server/_libs/supabase__postgrest-js.mjs                       105.54 kB │ gzip:    21.68 kB
-.output/server/index.mjs                                              124.47 kB │ gzip:    25.43 kB
+.output/server/index.mjs                                              124.47 kB │ gzip:    25.42 kB
 .output/server/_ssr/AppLayout-D8__yJK-.mjs                            153.94 kB │ gzip:    35.08 kB
-.output/server/_libs/@supabase/ssr+[...].mjs                          188.99 kB │ gzip:    41.66 kB
+.output/server/_libs/@supabase/ssr+[...].mjs                          188.96 kB │ gzip:    41.65 kB
 .output/server/_libs/supabase__auth-js.mjs                            312.46 kB │ gzip:    63.69 kB
 .output/server/_libs/@tanstack/react-router+[...].mjs                 752.73 kB │ gzip:   159.47 kB
 .output/server/_ssr/wordpressEditorial-3bUfmF5v.mjs                23,055.01 kB │ gzip: 6,615.78 kB
 
-[32m✓ built in 1.80s[39m
+[32m✓ built in 1.68s[39m
 [info] [nitro] Using auto generated worker name: `remradar-nairaleap`
 [info] Generated [36m.output/server/wrangler.json[39m
 [info] Generated [36m.wrangler/deploy/config.json[39m
