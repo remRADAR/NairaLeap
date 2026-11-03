@@ -13,7 +13,7 @@ export const NIGERIAN_PRONUNCIATION_LEXICON: Record<string, string> = {
   // Brand
   nairaleap: "NY-ra LEEP",
   naira: "NY-ra",
-  "₦": "Naira",
+  "₦": "NY-ra",
   // Cities / states
   lagos: "LAH-gos",
   abuja: "ah-BOO-ja",
@@ -38,7 +38,6 @@ export const NIGERIAN_PRONUNCIATION_LEXICON: Record<string, string> = {
   pencom: "PEN-com",
   lga: "L G A",
   // Common words
-  naira: "NY-ra",
   kobo: "KOH-bo",
   danfo: "DAHN-fo",
   okada: "oh-KAH-dah",
@@ -49,18 +48,20 @@ export const NIGERIAN_PRONUNCIATION_LEXICON: Record<string, string> = {
 };
 
 const TERM_PATTERN = new RegExp(
-  `(₦|\b${Object.keys(NIGERIAN_PRONUNCIATION_LEXICON)
+  `(?:₦|\\b${Object.keys(NIGERIAN_PRONUNCIATION_LEXICON)
     .filter((k) => k !== "₦")
     .sort((a, b) => b.length - a.length)
-    .join("|")}\b)`,
+    .join("|")}\\b)`,
   "gi",
 );
 
 /** Rewrites text with pronunciation hints for consistent Nigerian pronunciation. */
 export function applyPronunciationHints(text: string): string {
-  return text.replace(TERM_PATTERN, (match) => {
+  return text.replace(TERM_PATTERN, (match, offset: number, input: string) => {
     const key = match.toLowerCase();
     const hint = NIGERIAN_PRONUNCIATION_LEXICON[key];
-    return hint ?? match;
+    if (!hint) return match;
+    const followsNumber = /\d/.test(input[offset + match.length] ?? "");
+    return key === "₦" && followsNumber ? `${hint} ` : hint;
   });
 }
