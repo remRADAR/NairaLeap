@@ -10,6 +10,9 @@ whether editorial review has approved it for publication.
 - `recovery-report.json` — structured output of the reconciliation audit.
 - `RECOVERY_REPORT.md` — human-readable reconciliation summary.
 - `discovery-log.json` — output of the last Openverse discovery run.
+- `ci-status.json` — per-step outcome of the last CI verification run.
+- `ci-*.txt` — captured output of each CI verification step, committed as
+  diagnostics when a step fails.
 - `../..` runtime subset — `src/data/editorialMediaApproved.ts` is generated
   from the manifest and report by `scripts/editorial-media-lib.ts`. Never edit
   it by hand; it is eslint-ignored and audited for drift.
@@ -33,6 +36,11 @@ Each manifest record (`EditorialMediaRecord` in
 | retrievedAt / reviewedAt / reviewedBy | Retrieval and review timestamps plus reviewer identity. |
 | rejectionReason | Recorded when a candidate is rejected. |
 | recoveryMethod | `path-repair` or `content-embedded` for recovered originals. |
+| rightsClearedBy / rightsClearedAt | Who cleared depiction or trademark rights, and when. |
+| visualInspectionConfirmedBy / visualInspectionConfirmedAt | Documented visual inspection sign-off. |
+| editorialRelevanceConfirmedBy / editorialRelevanceConfirmedAt | Editorial relevance sign-off. |
+| downloadVerified / downloadedSha256 | Whether the hardened download pipeline verified the bytes, and their full SHA-256. |
+| statusHistory | Append-only audit trail of every status transition. |
 | status | Lifecycle state, see below. |
 
 ## Statuses
@@ -41,17 +49,22 @@ Each manifest record (`EditorialMediaRecord` in
   embedded in the article's own migrated content). Not a replacement.
 - **candidate** — discovered by tooling, awaiting editorial review. Never
   published.
-- **approved** — cleared by editorial review; the only status that can become
-  a publicly assigned featured image.
+- **approved** — cleared by editorial review with every sign-off recorded;
+  the only status that can become a publicly assigned featured image.
 - **rejected** — declined by editorial review, with a recorded reason.
+  Rejection is **terminal**: a rejected candidate can never be approved. Run
+  discovery again (with `--refresh`) to surface a fresh candidate. Approval
+  and rejection history is preserved on every record via `statusHistory`.
 
 Only **approved** records are surfaced to the website (via the generated
 runtime subset). The audit fails CI if an approved record lacks provenance, a
-local file, rights sign-off, or if more than one record is approved per article.
+local file, matching SHA-256, attribution for CC BY, rights sign-off, visual
+inspection and relevance sign-offs, history entries, or if more than one
+record is approved per article.
 
 ## Workflows
 
-### 1. Reconcile originals (no network required)
+### 1. Reconcile originals (bounded network checks)
 
 ```bash
 bun run media:reconcile
@@ -59,7 +72,13 @@ bun run audit:editorial-images
 ```
 
 Verifies every original assignment against local media, repairs broken paths,
-recovers content-embedded artwork, and writes the recovery report.
+recovers content-embedded artwork, and writes the recovery report. External
+image references found inside article content are counted as
+`externalContentImageReferences` and probed with a bounded reachability check
+(limited URL count, limited concurrency, request timeouts). Each reference is
+classified as reachable, unavailable, forbidden, timed out, unknown, or
+unchecked; results are summarized per host in `externalHosts`. Article
+content is never rewritten.
 
 ### 2. Discover replacement candidates (Openverse)
 
@@ -69,13 +88,28 @@ bun run media:discover --slugs article-slug-one,article-slug-two
 bun run media:discover --licenses cc0,pdm,by --min-score 2 --refresh
 ```
 
-For each article without original artwork the pipeline analyses title
-entities, tags, and category context; builds focused queries; retrieves
-Openverse results limited to commercial-safe licenses (default: CC0, Public
-Domain Mark, CC BY); scores genuine relevance against the article's own
-vocabulary; and records up to three candidates per article with full
-provenance. Relevance is not title-similarity: a candidate only records when
-its own tags/title overlap the article's terms.
+Eligibility rules:
+
+- articles with a **valid** original image are skipped;
+- articles with a **recovered** original are skipped;
+- articles whose original image is **broken** (marked invalid by
+  reconciliation) can receive replacement candidates;
+- articles with **no** original image are eligible;
+- articles that already have an **approved** replacement are never
+  re-discovered;
+- `--refresh` re-runs discovery but never discards approved or rejected
+  records — only stale candidates for the refreshed articles are replaced.
+
+The pipeline analyses title entities, tags, and category context; builds
+bounded, deduplicated queries that include Nigerian geographic context and
+industry-specific visual concepts (banking, crypto, markets, energy,
+agriculture, and so on); retrieves Openverse results limited to
+commercial-safe licenses (default: CC0, Public Domain Mark, CC BY); scores
+genuine relevance against the article's own vocabulary; and records up to
+three candidates per article with full provenance and a `discovered` history
+entry. Relevance is not title-similarity: a candidate only records when its
+own tags/title overlap the article's terms, and the relevance threshold is
+never weakened to increase counts.
 
 Note on licenses: CC BY-SA is excluded from the default allowlist because
 cropping or re-encoding to WebP can count as an adaptation under share-alike
@@ -86,28 +120,57 @@ terms. Override with `--licenses` only after review.
 ```bash
 bun run media:approve list
 bun run media:approve show --slug article-slug
-bun run media:approve approve --slug article-slug --record-id <openverse-id> --reviewer "CZA OF REM"
-bun run media:approve reject --slug article-slug --record-id <openverse-id> --reason "wrong subject"
+bun run media:approve approve --slug article-slug --record-id <openverse-id> --reviewer "CZA OF REM" --confirm-visual-inspection --confirm-editorial-relevance [--confirm-rights] [--attribution "..."]
+bun run media:approve reject --slug article-slug --record-id <openverse-id> --reviewer "CZA OF REM" --reason "wrong subject"
 ```
 
-Approval downloads the image once and stores it content-addressed under
-`public/editorial/media/` (identical files are stored once), then regenerates
-the runtime subset. If the candidate was flagged for rights reasons,
-`--confirm-rights` is required after verifying depiction rights.
+Approval requirements (all enforced, none bypassable):
+
+- an explicit reviewer identity (`--reviewer`), recorded on the record;
+- CC BY and other attribution licenses must carry creator information and a
+  ready-to-use attribution line (recorded, or passed via `--attribution`);
+- rights-flagged candidates require `--confirm-rights`, and the clearance is
+  recorded on the record (`rightsClearedBy` / `rightsClearedAt`);
+- documented visual inspection (`--confirm-visual-inspection`) and editorial
+  relevance confirmation (`--confirm-editorial-relevance`) are recorded with
+  reviewer and timestamp;
+- rejected candidates can never be approved (terminal status).
+
+Before storing, the candidate download is validated end to end: absolute
+http(s) URLs only, bounded manual redirects restricted to http(s), a MIME
+allowlist (JPEG, PNG, WebP, GIF), image file-signature detection, agreement
+between the declared MIME and the detected signature, and a hard download
+size cap. HTML, SVG, and unrecognized formats are rejected, and an unknown
+extension never implies JPEG. Bytes are stored content-addressed by full
+SHA-256 under `public/editorial/media/` (identical files are stored once),
+then the runtime subset is regenerated.
 
 ### 4. Verify
 
 ```bash
 bun run test:editorial-images
+bun run test:editorial-media
 bun run audit:editorial-images
 bunx tsc --noEmit && bun run build
 ```
+
+CI (`.github/workflows/editorial-media-audit.yml`) runs the same verification
+read-only on every push to the feature branch: type-check, both self-test
+suites, reconciliation, an Openverse discovery pilot, the image audit,
+formatting **checks** (never writes), lint, and the production build. Each
+step's output is captured to the `ci-*.txt` diagnostics files, and per-step
+outcomes land in `ci-status.json`. A separate, feature-branch-only publish
+job commits the permitted generated artifacts (reports, diagnostics, the
+manifest, the runtime subset, and approved media assets) with a `[skip ci]`
+marker and bot-actor guards so the workflow can never recurse. Application
+source files are never modified or committed by CI.
 
 ## Rights guidance
 
 - CC0 / Public Domain Mark: no attribution required; attribution recorded
   anyway as good practice.
-- CC BY: attribution required — the manifest stores a ready-to-use line.
+- CC BY: attribution required — the manifest stores a ready-to-use line and
+  the creator must be known before approval.
 - Identifiable people: commercial use of photographs of identifiable people
   can require model releases even when the photo license is permissive. The
   discovery pipeline flags likely-people candidates; approval is blocked

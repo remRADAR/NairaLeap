@@ -296,7 +296,7 @@ const articleKeywords = (post: EditorialPost): Set<string> =>
  * re-discovered.
  */
 export const isEligibleForDiscovery = (
-  post: { slug: string; image: string | null },
+  post: { slug: string; image?: string | null },
   invalidOriginals: Record<string, true>,
   recoveredOriginals: Record<string, string>,
   approvedSlugs: Set<string>,
