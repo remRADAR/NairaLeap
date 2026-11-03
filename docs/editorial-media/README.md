@@ -138,10 +138,15 @@ Approval requirements (all enforced, none bypassable):
 
 Before storing, the candidate download is validated end to end: an SSRF
 destination guard requires public network destinations (literal and resolved
-IPv4/IPv6 addresses; loopback, private, link-local, multicast, reserved, and
-IPv4-mapped forms are rejected), every redirect hop is revalidated before the
-connection is opened, and the destination is rechecked after the response
-arrives; plus bounded manual redirects restricted to http(s), a MIME
+IPv4 addresses are checked against the IANA special-purpose registry, and IPv6
+destinations must belong to 2000::/3 global unicast space, with the
+special-purpose carve-outs inside it — 2001::/23 IETF protocol assignments
+such as Teredo, ORCHID, and benchmarking; 2001:db8::/32 documentation;
+3ffe::/16 6bone — rejected along with everything outside it; IPv4-mapped,
+NAT64, and 6to4 forms are unwrapped and their embedded IPv4 address
+validated), every redirect hop is revalidated before the connection is opened,
+and the destination is rechecked after the response arrives; plus bounded
+manual redirects restricted to http(s), a MIME
 allowlist (JPEG, PNG, WebP, GIF), image file-signature detection, agreement
 between the declared MIME and the detected signature, and a hard download
 size cap. HTML, SVG, and unrecognized formats are rejected, and an unknown
@@ -152,9 +157,12 @@ then the runtime subset is regenerated.
 Network safety limitation: the runtime fetch implementation cannot pin a
 connection to the address that was validated, so a DNS rebinding attack that
 flips a hostname to a prohibited address between validation and connection
-cannot be fully prevented; the pipeline revalidates after the response arrives
-and aborts before reading the body. Complete connection-time SSRF protection
-is not claimed.
+cannot be fully prevented. Coverage: the approved-image download path
+revalidates after the response arrives and aborts before reading the body;
+the discovery fetch and the reconciliation probe validate before every
+connection (per hop) but do not revalidate after the response, and the probe
+never consumes a body (HEAD, or a cancelled 256-byte range request).
+Complete connection-time SSRF protection is not claimed.
 
 ### 4. Verify
 

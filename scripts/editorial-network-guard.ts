@@ -7,10 +7,19 @@ import { lookup as nodeLookup } from "node:dns/promises";
  * downloads).
  *
  * Only public http(s) destinations are allowed:
- *   - literal IPv4 and IPv6 addresses are parsed and checked against every
- *     loopback, private, shared, link-local, multicast, and reserved range,
- *     including IPv4-mapped IPv6, NAT64 (64:ff9b::/96), and 6to4 (2002::/16)
- *     representations that embed an IPv4 address;
+ *   - IPv4 literals are checked against every IANA special-purpose range
+ *     (loopback, private, shared/CGNAT, link-local including cloud metadata,
+ *     multicast, reserved, benchmarking, documentation, AS112, and the rest);
+ *   - IPv6 literals follow a conservative public-address policy: the
+ *     destination must sit inside 2000::/3 (globally routable unicast
+ *     space) and every other IPv6 address fails closed; inside 2000::/3 the
+ *     IANA special-purpose carve-outs are rejected explicitly (2001::/23
+ *     IETF protocol assignments such as Teredo, benchmarking, AMT, TURN,
+ *     ORCHID and ORCHIDv2; 2001:db8::/32 documentation; 3ffe::/16 deprecated
+ *     6bone);
+ *   - IPv4-mapped IPv6, NAT64 (64:ff9b::/96), and 6to4 (2002::/16)
+ *     representations that embed an IPv4 address are unwrapped and the
+ *     embedded IPv4 address is validated;
  *   - hostnames are resolved and EVERY resolved address must be public — a
  *     hostname with any prohibited address (of either family) is rejected;
  *   - manual, bounded redirect handling revalidates every hop before the
@@ -20,11 +29,14 @@ import { lookup as nodeLookup } from "node:dns/promises";
  * way to pin the connection to a validated address or to supply a custom
  * resolver at connection time. A DNS rebinding attack that returns a public
  * address during validation and a prohibited address at connection time
- * therefore cannot be made impossible with this runtime alone. To narrow
- * that window, callers revalidate the destination immediately after the
- * response arrives (before the body is read) and abort if the DNS answer
- * changed. That is detection, not prevention: complete connection-time SSRF
- * protection is NOT claimed.
+ * therefore cannot be made impossible with this runtime alone. Coverage
+ * today: the approved-image download path revalidates the destination
+ * immediately after the response arrives and aborts before any body byte is
+ * read; the Openverse discovery fetch and the reconciliation probe validate
+ * before every connection (per hop) but do not revalidate after the
+ * response, and the probe never consumes a body (HEAD, or a 256-byte range
+ * request that is cancelled). That is detection where it exists, not
+ * prevention: complete connection-time SSRF protection is NOT claimed.
  */
 
 export type FetchLike = (url: string, init: RequestInit) => Promise<Response>;
@@ -60,8 +72,11 @@ const IPV4_BLOCKED: Array<[bigint, number]> = [
   [0xac100000n, 12], // 172.16.0.0/12 private
   [0xc0000000n, 24], // 192.0.0.0/24 IETF protocol assignments
   [0xc0000200n, 24], // 192.0.2.0/24 TEST-NET-1
+  [0xc01fc400n, 24], // 192.31.196.0/24 AS112 (IANA special-purpose)
+  [0xc034c100n, 24], // 192.52.193.0/24 AS112 (IANA special-purpose)
   [0xc0586300n, 24], // 192.88.99.0/24 6to4 relay (retired)
   [0xc0a80000n, 16], // 192.168.0.0/16 private
+  [0xc0af3000n, 24], // 192.175.48.0/24 AS112 (IANA special-purpose)
   [0xc6120000n, 15], // 198.18.0.0/15 benchmarking
   [0xc6336400n, 24], // 198.51.100.0/24 TEST-NET-2
   [0xcb007100n, 24], // 203.0.113.0/24 TEST-NET-3
@@ -117,14 +132,18 @@ const parseIPv6ToBigInt = (host: string): bigint | null => {
   return value;
 };
 
+// IANA special-purpose ranges carved out of 2000::/3 global unicast space.
+// Every IPv6 address outside 2000::/3 — loopback, unspecified, v4-compatible,
+// local-use NAT64, discard, ULA, site-local, link-local, multicast, 5f00::/16
+// SRv6, and all space from 4000:: upward — fails closed at the gate in
+// isDisallowedIPv6Value below.
 const IPV6_BLOCKED: Array<[bigint, number]> = [
-  [0x0100n << 112n, 64], // 100::/64 discard-only
+  // 2001::/23 IETF protocol assignments, including 2001::/32 Teredo,
+  // 2001:2::/48 benchmarking, 2001:3::/32 AMT, 2001:4:112::/48 TURN,
+  // 2001:10::/28 ORCHID, and 2001:20::/21 ORCHIDv2.
+  [0x20010000n << 96n, 23],
   [0x20010db8n << 96n, 32], // 2001:db8::/32 documentation
-  [0x64ff9b0001n << 80n, 48], // 64:ff9b:1::/48 local-use NAT64
-  [0xfc00n << 112n, 7], // fc00::/7 unique local
-  [0xfec0n << 112n, 10], // fec0::/10 site-local (deprecated)
-  [0xfe80n << 112n, 10], // fe80::/10 link-local
-  [0xff00n << 112n, 8], // ff00::/8 multicast
+  [0x3ffen << 112n, 16], // 3ffe::/16 deprecated 6bone
 ];
 
 const inIPv6Range = (value: bigint, base: bigint, bits: number): boolean =>
@@ -144,6 +163,11 @@ const isDisallowedIPv6Value = (value: bigint): boolean => {
     // 6to4: validate the embedded IPv4 address.
     return isDisallowedIPv4Value((value >> 80n) & 0xffffffffn);
   }
+  // Conservative public-address policy: an IPv6 destination is public only
+  // if it belongs to 2000::/3, globally routable unicast space. Every other
+  // IPv6 address fails closed here.
+  if (value < 0x2000n << 112n || value >= 0x4000n << 112n) return true;
+  // Reject the IANA special-purpose assignments carved out of 2000::/3.
   return IPV6_BLOCKED.some(([base, bits]) => inIPv6Range(value, base, bits));
 };
 

@@ -72,7 +72,7 @@ Vercel preview deployments for every branch push also succeeded.
    signature detection with signature/MIME agreement, 10MB cap (declared and
    streamed), HTML/SVG/unknown formats rejected, extension never assumed;
    SHA-256 content-addressed storage preserved. Covered by
-   `scripts/test-editorial-media-validation.ts` (53 checks, including the
+   `scripts/test-editorial-media-validation.ts` (59 checks, including the
    SSRF destination guard suite).
 5. **Discovery eligibility** — `discover-editorial-images.ts` now skips articles
    with valid OR recovered originals, allows broken (invalid) originals to
@@ -135,7 +135,7 @@ except media: 469 local files exist, not 385.
   audit-editorial-images, discover-editorial-images, approve-editorial-media
   (approval CLI with reviewer/attribution/rights/visual/relevance gates),
   test-editorial-image-resolution (resolution self-test, 14 assertions),
-  test-editorial-media-validation (53 checks: signatures, SSRF-guarded
+  test-editorial-media-validation (59 checks: signatures, SSRF-guarded
   downloads, approvals, eligibility, queries).
 - CI: `.github/workflows/editorial-media-audit.yml` — read-only verify job
   (typecheck, both test suites, reconcile, discovery pilot, audit, format
@@ -172,9 +172,15 @@ Following the pre-merge acceptance audit, every network-fetching path in the
 editorial media pipeline now goes through `scripts/editorial-network-guard.ts`:
 
 - Literal IPv4/IPv6 destinations are parsed and rejected unless public
-  (loopback, RFC1918, CGNAT, link-local incl. 169.254.169.254, multicast,
-  reserved, documentation, discard, ULA, site-local; IPv4-mapped IPv6, NAT64
-  64:ff9b::/96, and 6to4 2002::/16 embeds are unwrapped and validated).
+  (IPv4: the full IANA special-purpose registry incl. loopback, RFC1918,
+  CGNAT, link-local 169.254.169.254, multicast, reserved, benchmarking,
+  TEST-NETs, and AS112; IPv6: conservative public-address policy —
+  destinations must sit inside 2000::/3 global unicast space, the
+  special-purpose carve-outs inside it (2001::/23 IETF protocol assignments:
+  Teredo, benchmarking, AMT, TURN, ORCHID, ORCHIDv2; 2001:db8::/32
+  documentation; 3ffe::/16 6bone) are rejected, and everything else fails
+  closed; IPv4-mapped IPv6, NAT64 64:ff9b::/96, and 6to4 2002::/16 embeds
+  are unwrapped and validated).
 - Hostnames are resolved and EVERY resolved address must be public.
 - Redirects are handled manually with a bounded hop count and revalidated at
   every hop; a redirect can never bypass validation.
@@ -186,7 +192,8 @@ editorial media pipeline now goes through `scripts/editorial-network-guard.ts`:
 - Documented limitation: the runtime fetch API cannot pin the connection to
   the validated address, so complete connection-time DNS-rebinding
   protection is not possible; post-response revalidation narrows the window.
-  The validation suite covers the guard with 17 new checks (53 total).
+  The validation suite covers the guard with 17 new checks, extended by the
+  conservative IPv6 policy round below (59 total).
 
 The first CI run of this round caught one defect in the guard itself: the
 100::/64 discard-only range base sat 48 bits too low, so `100::1` slipped
@@ -197,6 +204,43 @@ The CI discovery pilot in this round partially reached Openverse (2 of 14
 queries timed out) and recorded 2 candidate records — both CC BY,
 rights-review flagged, unapproved — for one article. Candidates are not
 approvals; the approval gate stays manual.
+
+No article content, featured-image assignments, approvals, merges, or
+production changes were made in this round.
+
+## Conservative IPv6 policy round (2026-11-03)
+
+Final review found a remaining IPv6 classification gap: `2001::1` (Teredo
+pool) and its neighbors inside 2001::/23 were classified as public. The guard
+now uses a conservative public-address policy:
+
+- IPv6 destinations must belong to 2000::/3 (globally routable unicast
+  space); everything else fails closed (incl. 5f00::/16 SRv6 and 4000::+).
+- Inside 2000::/3, the IANA special-purpose carve-outs are rejected
+  explicitly: 2001::/23 IETF protocol assignments (Teredo 2001::/32,
+  benchmarking 2001:2::/48, AMT 2001:3::/32, TURN 2001:4:112::/48, ORCHID
+  2001:10::/28, ORCHIDv2 2001:20::/21), 2001:db8::/32 documentation, and
+  3ffe::/16 deprecated 6bone.
+- IPv4-mapped IPv6, NAT64, and 6to4 embedded-IPv4 validation is preserved.
+- The IPv4 table was reviewed against the IANA special-purpose registry and
+  completed with the AS112 ranges (192.31.196.0/24, 192.52.193.0/24,
+  192.175.48.0/24).
+- Malformed, ambiguous, or unclassifiable destinations fail closed.
+
+Six regression checks were added (59 total), covering 2001::1 and a Teredo
+address, ORCHID/ORCHIDv2, IPv6 benchmarking ranges, non-global assignments
+(3ffe::, 4000::/6000:: boundaries, 5f00::), public IPv6 that must remain
+permitted (2001:4860:4860::8888, 2606:4700:4700::1111, a public 6to4 embed),
+and IPv4 special-purpose ranges. No existing test was weakened; relevance
+and licensing gates are untouched.
+
+Post-response revalidation coverage, documented precisely: the
+approved-image download path revalidates the destination after the response
+arrives and aborts before reading the body; the discovery fetch and the
+reconciliation probe validate before every connection (per hop) but do not
+revalidate after the response (the probe never consumes a body). DNS
+rebinding between validation and connection remains possible on the latter
+paths; complete connection-time SSRF protection is NOT claimed.
 
 No article content, featured-image assignments, approvals, merges, or
 production changes were made in this round.

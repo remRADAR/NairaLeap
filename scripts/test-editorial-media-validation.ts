@@ -649,6 +649,53 @@ await check("probes classify reachable public URLs", async () => {
   assert.equal(outcome, "ok");
 });
 
+await check("blocks Teredo and 2001::/23 protocol-assignment destinations", async () => {
+  assert.ok(isDisallowedIp("2001::1"));
+  assert.ok(isDisallowedIp("2001:0:4136:e378:8000:83bf:427d:26d1"));
+  assert.ok(isDisallowedIp("2001:1::1"));
+  assert.ok(isDisallowedIp("2001:3::1"));
+  assert.ok(isDisallowedIp("2001:4:112::1"));
+  await assert.rejects(
+    () => downloadCandidateImage("http://[2001::1]/a.png", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+});
+
+await check("blocks ORCHID and ORCHIDv2 destinations", () => {
+  assert.ok(isDisallowedIp("2001:10::1"));
+  assert.ok(isDisallowedIp("2001:20::1"));
+  assert.ok(isDisallowedIp("2001:2f::1"));
+});
+
+await check("blocks IPv6 benchmarking destinations", () => {
+  assert.ok(isDisallowedIp("2001:2::1"));
+  assert.ok(isDisallowedIp("2001:2::99"));
+});
+
+await check("blocks non-global and special-purpose IPv6 assignments", () => {
+  assert.ok(isDisallowedIp("3ffe::1"));
+  assert.ok(isDisallowedIp("5f00::1"));
+  assert.ok(isDisallowedIp("1fff::1"));
+  assert.ok(isDisallowedIp("4000::1"));
+  assert.ok(isDisallowedIp("6000::1"));
+});
+
+await check("allows public global-unicast IPv6 destinations", () => {
+  assert.equal(isDisallowedIp("2001:4860:4860::8888"), false);
+  assert.equal(isDisallowedIp("2606:4700:4700::1111"), false);
+  assert.equal(isDisallowedIp("2a00:1450::1"), false);
+  assert.equal(isDisallowedIp("2600:1f18::1"), false);
+  assert.equal(isDisallowedIp("2002:808:808::"), false);
+});
+
+await check("blocks AS112 and other IANA special-purpose IPv4 ranges", () => {
+  assert.ok(isDisallowedIp("192.0.0.8"));
+  assert.ok(isDisallowedIp("192.88.99.1"));
+  assert.ok(isDisallowedIp("192.31.196.1"));
+  assert.ok(isDisallowedIp("192.52.193.1"));
+  assert.ok(isDisallowedIp("192.175.48.1"));
+});
+
 console.log("");
 console.log(passed + " checks passed, " + failures.length + " failed.");
 if (failures.length > 0) {
