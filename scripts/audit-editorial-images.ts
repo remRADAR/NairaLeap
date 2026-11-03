@@ -10,12 +10,7 @@ import {
   NEUTRAL_EDITORIAL_PLACEHOLDER,
   withEditorialImageFallbacks,
 } from "../src/features/editorial/images";
-import {
-  SUBSET_PATH,
-  generateSubsetContent,
-  readManifest,
-  readReport,
-} from "./editorial-media-lib";
+import { SUBSET_PATH, generateSubsetContent, readManifest, readReport } from "./editorial-media-lib";
 
 /**
  * Editorial image audit: verifies that every article resolves to artwork that
@@ -34,18 +29,18 @@ const missingOnDisk = resolvedPosts.filter((post) => {
   return !existsSync(resolve(PUBLIC_DIR, post.image.slice(1)));
 });
 
-const originalCount = EDITORIAL_POSTS.filter(
-  (post) => post.image && INVALID_ORIGINAL_IMAGES[post.slug] !== true,
-).length;
-const recoveredCount = EDITORIAL_POSTS.filter(
-  (post) => !post.image && RECOVERED_ORIGINAL_IMAGES[post.slug],
-).length;
-const approvedInUse = EDITORIAL_POSTS.filter(
-  (post) =>
-    !post.image &&
-    !RECOVERED_ORIGINAL_IMAGES[post.slug] &&
-    APPROVED_REPLACEMENT_IMAGES[post.slug],
-).length;
+const usesOriginal = (post: (typeof EDITORIAL_POSTS)[number]) =>
+  Boolean(post.image) && INVALID_ORIGINAL_IMAGES[post.slug] !== true;
+const usesRecovered = (post: (typeof EDITORIAL_POSTS)[number]) =>
+  !usesOriginal(post) && Boolean(RECOVERED_ORIGINAL_IMAGES[post.slug]);
+const usesApproved = (post: (typeof EDITORIAL_POSTS)[number]) =>
+  !usesOriginal(post) &&
+  !RECOVERED_ORIGINAL_IMAGES[post.slug] &&
+  Boolean(APPROVED_REPLACEMENT_IMAGES[post.slug]);
+
+const originalCount = EDITORIAL_POSTS.filter(usesOriginal).length;
+const recoveredCount = EDITORIAL_POSTS.filter(usesRecovered).length;
+const approvedInUse = EDITORIAL_POSTS.filter(usesApproved).length;
 const placeholderCount = resolvedPosts.length - originalCount - recoveredCount - approvedInUse;
 
 if (!existsSync(resolve(PUBLIC_DIR, NEUTRAL_EDITORIAL_PLACEHOLDER.slice(1)))) {

@@ -73,6 +73,11 @@ export const writeText = (path: string, value: string): void => {
  * Build the content of the generated runtime subset. The subset is deliberately
  * tiny: only slug-keyed maps the browser needs. Full provenance stays in the
  * manifest, which the app never imports.
+ *
+ * Every broken original reference (repaired or not) is marked invalid so the
+ * resolution hierarchy never serves the broken path: repaired originals come
+ * back through the recovered map, unrepaired ones fall through to the
+ * placeholder.
  */
 export const generateSubsetContent = (
   report: EditorialRecoveryReport | null,
@@ -85,7 +90,7 @@ export const generateSubsetContent = (
     recovered[entry.slug] = entry.path;
   }
   for (const entry of report?.broken ?? []) {
-    if (entry.repairedTo === null) invalid[entry.slug] = true;
+    invalid[entry.slug] = true;
   }
   for (const record of manifest.records) {
     if (record.status === "approved" && record.replacementImage) {

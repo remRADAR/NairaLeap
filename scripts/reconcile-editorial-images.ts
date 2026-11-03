@@ -188,12 +188,14 @@ for (const entry of recovered) {
 }
 const nextManifest: EditorialMediaManifest = { schemaVersion: 1, records: nextRecords };
 
+const recoveredSlugs = new Set(recovered.map((entry) => entry.slug));
 const approvedReplacementsInUse = nextManifest.records.filter(
   (record) =>
     record.status === "approved" &&
     record.replacementImage &&
     postsBySlug.has(record.articleSlug) &&
-    !postsBySlug.get(record.articleSlug)?.image,
+    !postsBySlug.get(record.articleSlug)?.image &&
+    !recoveredSlugs.has(record.articleSlug),
 ).length;
 
 const articlesWithoutOriginalImage = EDITORIAL_POSTS.length - articlesWithOriginalImage;
@@ -274,10 +276,7 @@ const md = [
     ? "None."
     : duplicates
         .slice(0, 30)
-        .map(
-          (entry) =>
-            "- " + entry.image + " is used by " + entry.articles.length + " articles",
-        )
+        .map((entry) => "- " + entry.image + " is used by " + entry.articles.length + " articles")
         .join("\n"),
   "",
   "## Dead external content image hosts",
