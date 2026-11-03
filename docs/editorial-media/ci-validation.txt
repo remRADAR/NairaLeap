@@ -1,0 +1,39 @@
+$ bun run scripts/test-editorial-media-validation.ts
+PASS detects the PNG signature
+PASS detects the JPEG signature
+PASS detects the GIF signature
+PASS detects the WebP signature
+PASS rejects HTML bytes as an image signature
+PASS rejects SVG bytes as an image signature
+PASS downloads a valid PNG and records its full SHA-256
+PASS follows bounded http(s) redirects
+PASS rejects non-http image URLs
+PASS rejects redirects to non-http targets
+PASS rejects too many redirects
+PASS rejects non-200 final responses
+PASS rejects HTML responses
+PASS rejects SVG responses
+PASS rejects content type and signature mismatches
+PASS rejects unrecognized image bytes
+PASS rejects oversized declared downloads
+PASS rejects oversized streamed bodies without content-length
+PASS enforces the streaming cap in readBodyWithLimit
+PASS requires an explicit reviewer identity
+PASS requires creator information for CC BY
+PASS requires an attribution line for CC BY
+PASS accepts an attribution override for CC BY
+PASS requires explicit rights clearance for flagged candidates
+PASS requires documented visual inspection
+PASS requires editorial relevance confirmation
+PASS refuses rejected candidates permanently
+PASS only candidate records can be approved
+PASS approves a fully validated candidate
+PASS records sign-offs and supersession history on approval
+PASS skips articles with valid original images
+PASS skips articles with recovered originals
+PASS allows broken originals to receive replacement candidates
+PASS allows articles without any original image
+PASS skips articles that already have an approved replacement
+PASS builds bounded, deduplicated, Nigeria-aware queries
+
+36 checks passed, 0 failed.

@@ -1,0 +1,8 @@
+$ bun run scripts/audit-editorial-images.ts
+Articles checked: 3688
+Original featured images preserved: 434
+Recovered original images: 0
+Approved replacements in use: 0
+Neutral placeholder articles: 3254
+Manifest records: 0
+Editorial media audit passed.

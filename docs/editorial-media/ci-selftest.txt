@@ -1,0 +1,2 @@
+$ bun run scripts/test-editorial-image-resolution.ts
+Editorial image resolution self-test passed (14 assertions).

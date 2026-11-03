@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-11-03T12:49:16.731Z",
+  "ranAt": "2026-11-03T13:03:21.815Z",
   "endpoint": "https://api.openverse.org/v1/images/",
   "licenses": [
     "cc0",
@@ -8,12 +8,15 @@
   ],
   "minScore": 2,
   "articlesProcessed": 3,
-  "queriesIssued": 5,
+  "queriesIssued": 9,
   "candidatesRecorded": 0,
   "errors": [
-    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / uae envoy first abu: The operation timed out.",
-    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / Aviation Abu Dhabi Bank Etihad Airways operations: The operation timed out.",
-    "us-nigeria-air-strike-kills-21-iswap-fighters-in-borno / ISWAP Borno: The operation timed out.",
-    "us-nigeria-air-strike-kills-21-iswap-fighters-in-borno / nigeria air strike kills: The operation timed out."
+    "frsc-commends-dangote-cement-on-new-transport-safety-policy / FRSC Dangote Cement Nigeria: The operation timed out.",
+    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate Nigeria: The operation timed out.",
+    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate: The operation timed out.",
+    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / UAE First Abu Dhabi Bank Etihad Airways Nigeria: The operation timed out.",
+    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / banknotes Nigeria: The operation timed out.",
+    "uae-envoy-first-abu-dhabi-bank-etihad-airways-will-begin-nigeria-operations-soon / banknotes: The operation timed out.",
+    "us-nigeria-air-strike-kills-21-iswap-fighters-in-borno / ISWAP Borno Nigeria: The operation timed out."
   ]
 }
