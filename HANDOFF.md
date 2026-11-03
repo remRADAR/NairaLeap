@@ -24,16 +24,65 @@ a structured media manifest.
 - Never automatically assign unrelated imagery.
 - No production deploys, DNS changes, or secret configuration from this work.
 
-## Status: CI fully green (2026-11-03)
+## Status: review corrections complete (2026-11-03)
 
-Workflow run on commit 821f5e5 — every step passed:
+Two rounds of verification:
 
-setup success, install success, typecheck success, selftest success,
-discover success, reconcile success, audit success, format success,
-lint success, build success. (See `docs/editorial-media/ci-status.json`,
-committed by the workflow itself on each run.)
+1. First correction round (commits 3a6e67d, 178f2a2) — external metric rename +
+   bounded reachability, approval/audit hardening, hardened downloads. CI green
+   on 3a6e67d (bot prettier commit bd17bd9 recorded ci-status.json).
+2. Second correction round (commits 2627fe0, b5aa7f5) — discovery eligibility
+   fix, Nigeria-aware query expansion, validation test suite, hardened
+   workflow isolation, README rewrite. See `docs/editorial-media/ci-status.json`
+   for the per-step outcomes of the run on b5aa7f5 (workflow
+   "Verify editorial media pipeline"); step diagnostics land in
+   `docs/editorial-media/ci-*.txt` when a step fails.
 
 Vercel preview deployments for every branch push also succeeded.
+
+## Technical review corrections applied (PR #12 review)
+
+1. **External image reporting** — `reconcile-editorial-images.ts` now reports
+   `externalContentImageReferences` and probes each unique host URL with a
+   bounded, rate-conscious reachability check (HEAD, Range-GET fallback on
+   405/501; concurrency 6; 5s timeout; max 60 unique URLs; 100ms spacing).
+   Outcomes recorded separately: ok / unavailable / forbidden / timeout /
+   unknown / unchecked, summarized per host in `externalHosts`. Article content
+   is never rewritten.
+2. **GitHub Actions hardening** — `.github/workflows/editorial-media-audit.yml`:
+   main push trigger removed (feature branch + workflow_dispatch only);
+   `permissions: {}` at the top with a read-only `verify` job (`contents: read`)
+   and an isolated `publish-artifacts` job (`contents: write`, feature-branch
+   push events only, `[skip ci]` and bot-actor guards); formatting is now
+   `prettier --check` (never writes); only permitted artifacts are committed
+   (docs/editorial-media reports+diagnostics, generated subset, approved media
+   assets); concurrency group per ref; recursion impossible via [skip ci] +
+   actor guards + GITHUB_TOKEN semantics; failures still reported by an explicit
+   gate step plus committed ci-status.json and ci-*.txt diagnostics.
+3. **Approval hardening** — `approve-editorial-media.ts` + audit + media-types:
+   explicit reviewer identity required and recorded; CC BY requires creator
+   and attribution (recorded or --attribution override); rights clearance
+   sign-off recorded (rightsClearedBy/At); documented visual inspection
+   (--confirm-visual-inspection) and editorial relevance
+   (--confirm-editorial-relevance) recorded; rejected is terminal; full
+   approval/rejection history preserved in `statusHistory`.
+4. **Download hardening** — http(s)-only URLs, bounded manual redirects
+   (http(s) targets only, max 5), MIME allowlist (JPEG/PNG/WebP/GIF), file
+   signature detection with signature/MIME agreement, 10MB cap (declared and
+   streamed), HTML/SVG/unknown formats rejected, extension never assumed;
+   SHA-256 content-addressed storage preserved. Covered by
+   `scripts/test-editorial-media-validation.ts` (37 checks).
+5. **Discovery eligibility** — `discover-editorial-images.ts` now skips articles
+   with valid OR recovered originals, allows broken (invalid) originals to
+   receive candidates, keeps approved articles locked, and --refresh never
+   discards approved records.
+6. **Improved queries** — up to 6 deduplicated queries per article from named
+   entities (+ " Nigeria" variants), article vocabulary, category/tag context,
+   and industry-specific visual concepts (banking, crypto, markets, economy,
+   oil, telecom, agric, aviation, real estate, trade, sport, entertainment,
+   health, education, power, transport). Relevance (>= 2 term overlap) and
+   licensing (cc0/pdm/by) requirements unchanged. Openverse stays the only
+   provider; no paid services. Nothing approved or published automatically.
 
 ## Verified reconciliation results (docs/editorial-media/recovery-report.json)
 
@@ -44,22 +93,23 @@ Vercel preview deployments for every branch push also succeeded.
 - Recovered from content embeds: 0 (no article embeds local media)
 - Repaired originals: 0 (nothing needed repair)
 - Images shared by multiple articles: 36 (original WordPress assignments, preserved)
-- Dead external content images inside article bodies: 137 across 12 hosts
+- External content image references inside article bodies: 137 across 12 hosts
   (cdn.punchng.com 79, nairametrics.com 25, cdn.vanguardngr.com 13, ...).
-  These are in-body images, not featured images; a future fix could rewrite
-  or remove them, but that touches article content and needs owner sign-off.
+  See `externalReachability` in the recovery report for the verified
+  availability breakdown. These are in-body images, not featured images;
+  rewriting them touches article content and needs owner sign-off.
 
 The historical migration figures (3,688 / 385 / 434 / 3,254) are confirmed,
 except media: 469 local files exist, not 385.
 
-## Openverse discovery pilot (docs/editorial-media/discovery-log.json)
+## Openverse discovery pilots (docs/editorial-media/discovery-log.json)
 
-- 3 articles processed, 9 queries issued, 0 candidates recorded, 0 errors.
-- The relevance gate (>= 2 term overlap between candidate and article entities)
-  rejected everything the pilot returned. This is the intended conservative
-  behaviour: Nigerian finance articles rarely have genuinely representative
-  CC-licensed imagery on Openverse. Expect low candidate yield at full scale;
-  batches should be small and editorially reviewed.
+- Pilot 1 (original queries): 3 articles, 9 queries, 0 candidates, 0 errors —
+  the relevance gate (>= 2 term overlap) rejected everything returned.
+- Pilot 2 (improved Nigeria-aware queries): see discovery-log.json for the
+  latest run on the branch head. Relevance and licensing gates were NOT
+  weakened to raise counts; conservative behaviour is intended for Nigerian
+  finance coverage on Openverse. Batches should stay small and editorial.
 
 ## Implementation summary
 
@@ -71,14 +121,18 @@ except media: 469 local files exist, not 385.
   `VITE_EDITORIAL_MEDIA_BASE_URL` joins local media paths onto a future bucket
   origin; absolute and data URLs pass through.
 - Manifest schema in `src/features/editorial/media-types.ts` with statuses
-  original/candidate/approved/rejected and full provenance fields.
+  original/candidate/approved/rejected, full provenance fields, sign-off
+  fields, download verification fields, and append-only `statusHistory`.
 - Scripts: editorial-media-lib, reconcile-editorial-images,
   audit-editorial-images, discover-editorial-images, approve-editorial-media
-  (approval CLI with rights-clearance gate), test-editorial-image-resolution
-  (self-test, 14 assertions).
-- CI: `.github/workflows/editorial-media-audit.yml` — every step records its
-  outcome to ci-status.json, artifacts are committed back to this branch
-  best-effort, and an explicit gate fails the job on any step failure.
+  (approval CLI with reviewer/attribution/rights/visual/relevance gates),
+  test-editorial-image-resolution (resolution self-test, 14 assertions),
+  test-editorial-media-validation (37 checks: signatures, downloads,
+  approvals, eligibility, queries).
+- CI: `.github/workflows/editorial-media-audit.yml` — read-only verify job
+  (typecheck, both test suites, reconcile, discovery pilot, audit, format
+  check, lint, build) + isolated feature-branch publish job for permitted
+  artifacts. Diagnostics in ci-*.txt, outcomes in ci-status.json.
 - Docs: docs/editorial-media/README.md and STORAGE-ARCHITECTURE.md.
 
 ## Defects found and fixed during verification
@@ -89,18 +143,24 @@ except media: 469 local files exist, not 385.
    media base URL was never joined — the R2 seam would not work. Fixed; the
    self-test now asserts the join.
 3. CI artifacts step ran `git add public/editorial/media` on a nonexistent
-   directory and failed the job silently. Now best-effort (set +e) with
-   per-step outcomes recorded.
+   directory and failed the job silently. Now isolated in the publish job with
+   mkdir -p and permitted-path-only commits.
+4. Discovery eligibility ignored reconciliation results: broken originals were
+   treated as "has image" and never received replacement candidates (moot at
+   present: 0 broken originals) while the old filter also skipped them from
+   candidate sourcing entirely. Now explicit: valid/recovered skip, broken
+   eligible.
 
 ## Owner decisions pending
 
 1. Batch strategy for discovery over the 3,254 placeholder articles
    (recommended: batches of 25-50 with editorial review, not bulk approval).
 2. Approval of any candidates (manual gate:
-   `bun run media:approve approve --slug X --record-id Y [--confirm-rights]`).
+   `bun run media:approve approve --slug X --record-id Y --reviewer "..." \
+   --confirm-visual-inspection --confirm-editorial-relevance [--confirm-rights]`).
 3. Merge of draft PR #12 (never merge without owner approval).
-4. Optional follow-up: handle the 137 dead in-body content images (touches
-   article content, needs explicit authorization).
+4. Optional follow-up: handle the 137 external in-body content images
+   (touches article content, needs explicit authorization).
 5. Cypress suite was NOT run in CI (no browser on the runner); the affected
    spec asserts img[src] presence which the placeholder tier satisfies, but
    run it locally before merge if in doubt.
@@ -108,8 +168,9 @@ except media: 469 local files exist, not 385.
 ## Verification commands
 
 - `bun run media:reconcile` - rebuild recovery report + subset
-- `bun run media:discover [--limit N]` - Openverse discovery for unimaged articles
+- `bun run media:discover [--limit N]` - Openverse discovery for eligible articles
 - `bun run media:approve list|show|approve|reject` - editorial approval CLI
 - `bun run audit:editorial-images` - audit resolved images, manifest, subset drift
 - `bun run test:editorial-images` - resolution hierarchy self-test
+- `bun run test:editorial-media` - approval/download/eligibility validation suite
 - `bunx tsc --noEmit`, `bun run build`

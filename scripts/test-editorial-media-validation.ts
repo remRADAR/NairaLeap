@@ -109,9 +109,9 @@ const fakeFetch = (specs: FakeResponseSpec[]): FetchLike => {
   return handler as FetchLike;
 };
 
-const pngSpec = (overrides: Record<string, string> = {}): FakeResponseSpec => ({
-  headers: { "content-type": "image/png", ...overrides },
-  body: PNG_BYTES,
+const pngSpec = (body: Uint8Array = PNG_BYTES): FakeResponseSpec => ({
+  headers: { "content-type": "image/png" },
+  body,
 });
 
 await check("detects the PNG signature", () => {
@@ -255,7 +255,7 @@ await check("rejects oversized streamed bodies without content-length", async ()
   await assert.rejects(
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
-        fetchImpl: fakeFetch([pngSpec({ body: new Uint8Array(64) })]),
+        fetchImpl: fakeFetch([pngSpec(new Uint8Array(64))]),
         maxBytes: 16,
       }),
     /maximum download size/,

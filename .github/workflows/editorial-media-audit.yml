@@ -201,7 +201,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: feat/editorial-media-recovery
       - name: Download verification artifacts
         continue-on-error: true
         uses: actions/download-artifact@v4
@@ -229,5 +229,5 @@ jobs:
             echo "No verification artifacts to commit"
           else
             git commit -m "chore: editorial media verification artifacts [skip ci]"
-            git push
+            git push origin HEAD:refs/heads/feat/editorial-media-recovery
           fi
