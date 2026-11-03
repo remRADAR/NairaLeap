@@ -24,57 +24,86 @@ a structured media manifest.
 - Never automatically assign unrelated imagery.
 - No production deploys, DNS changes, or secret configuration from this work.
 
-## Current state (2026-11-03)
+## Status: CI fully green (2026-11-03)
 
-Implemented on the branch:
+Workflow run on commit 821f5e5 — every step passed:
 
-- Provenance-aware resolution hierarchy in `src/features/editorial/images.ts`:
-  valid original -> approved replacement -> neutral placeholder
-  (`public/editorial/placeholder-editorial.svg`). All consumers keep using
-  `withEditorialImageFallbacks`, so no route-level changes were needed.
-- R2-ready storage seam in `src/features/editorial/media-storage.ts`
-  (`VITE_EDITORIAL_MEDIA_BASE_URL`).
-- Manifest schema in `src/features/editorial/media-types.ts` (EditorialMediaRecord
-  with full provenance fields and statuses original/candidate/approved/rejected).
-- Scripts: `editorial-media-lib.ts` (manifest/report/subset helpers),
-  `reconcile-editorial-images.ts` (Phase 2 reconciliation), `audit-editorial-images.ts`
-  (rewritten audit), `discover-editorial-images.ts` (Openverse discovery),
-  `approve-editorial-media.ts` (approval CLI with rights gate), and
-  `test-editorial-image-resolution.ts` (self-test).
-- CI workflow `.github/workflows/editorial-media-audit.yml` runs type-check,
-  self-test, Openverse pilot, reconciliation, audit, formatting, lint, and
-  production build, then commits verification artifacts back to this branch.
-- Docs: `docs/editorial-media/README.md` (provenance guide) and
-  `docs/editorial-media/STORAGE-ARCHITECTURE.md` (R2-ready architecture).
+setup success, install success, typecheck success, selftest success,
+discover success, reconcile success, audit success, format success,
+lint success, build success. (See `docs/editorial-media/ci-status.json`,
+committed by the workflow itself on each run.)
 
-## CI status
+Vercel preview deployments for every branch push also succeeded.
 
-- Run 1 (commit 86c54cb): audit job FAILED. No artifacts were committed (the
-  workflow failed before the artifacts step in that version).
-- Run 2 (commit 3f28cee): audit job FAILED in ~56s with no artifacts committed.
-  Diagnosis (no Actions-log access): the artifacts commit step ran
-  `git add public/editorial/media` on a directory that does not exist yet
-  (no approved downloads so far), which fails git and the job. Also hardened:
-  every step now continue-on-error with outcomes recorded to
-  `docs/editorial-media/ci-status.json`; the artifacts commit is best-effort
-  (set +e) so diagnostics always land on the branch; the job fails at an
-  explicit gate step if any verification outcome is failure.
-- Fixed defect found by review: repaired broken originals are now marked
-  invalid in the generated subset, so the hierarchy serves the repaired path
-  (tier 2) instead of the broken original path (tier 1).
-- Vercel preview builds for both commits succeeded (the app itself builds).
+## Verified reconciliation results (docs/editorial-media/recovery-report.json)
 
-## Next steps
+- Articles: 3,688
+- Local media files under public/editorial: 469
+- Articles with original featured image: 434 — ALL 434 valid on disk (0 broken)
+- Articles without original featured image: 3,254 (currently neutral placeholder)
+- Recovered from content embeds: 0 (no article embeds local media)
+- Repaired originals: 0 (nothing needed repair)
+- Images shared by multiple articles: 36 (original WordPress assignments, preserved)
+- Dead external content images inside article bodies: 137 across 12 hosts
+  (cdn.punchng.com 79, nairametrics.com 25, cdn.vanguardngr.com 13, ...).
+  These are in-body images, not featured images; a future fix could rewrite
+  or remove them, but that touches article content and needs owner sign-off.
 
-1. Poll PR #12 checks; once the workflow completes, read
-   `docs/editorial-media/ci-status.json` for per-step outcomes and fix any
-   failing step.
-2. Read committed `recovery-report.json`, `discovery-log.json`, and regenerated
-   `src/data/editorialMediaApproved.ts` for VERIFIED counts.
-3. Iterate until the gate passes.
-4. Update this ledger with verified counts and the Phase 9 engineering report.
-5. Owner decisions still pending: batching strategy for full-scale discovery
-   over articles without images, approval of candidates, and merge of PR #12.
+The historical migration figures (3,688 / 385 / 434 / 3,254) are confirmed,
+except media: 469 local files exist, not 385.
+
+## Openverse discovery pilot (docs/editorial-media/discovery-log.json)
+
+- 3 articles processed, 9 queries issued, 0 candidates recorded, 0 errors.
+- The relevance gate (>= 2 term overlap between candidate and article entities)
+  rejected everything the pilot returned. This is the intended conservative
+  behaviour: Nigerian finance articles rarely have genuinely representative
+  CC-licensed imagery on Openverse. Expect low candidate yield at full scale;
+  batches should be small and editorially reviewed.
+
+## Implementation summary
+
+- Resolution hierarchy in `src/features/editorial/images.ts`: valid original ->
+  recovered original -> approved replacement -> neutral placeholder
+  (`public/editorial/placeholder-editorial.svg`). Consumers keep calling
+  `withEditorialImageFallbacks`; no route-level changes were needed.
+- R2-ready storage seam in `src/features/editorial/media-storage.ts`:
+  `VITE_EDITORIAL_MEDIA_BASE_URL` joins local media paths onto a future bucket
+  origin; absolute and data URLs pass through.
+- Manifest schema in `src/features/editorial/media-types.ts` with statuses
+  original/candidate/approved/rejected and full provenance fields.
+- Scripts: editorial-media-lib, reconcile-editorial-images,
+  audit-editorial-images, discover-editorial-images, approve-editorial-media
+  (approval CLI with rights-clearance gate), test-editorial-image-resolution
+  (self-test, 14 assertions).
+- CI: `.github/workflows/editorial-media-audit.yml` — every step records its
+  outcome to ci-status.json, artifacts are committed back to this branch
+  best-effort, and an explicit gate fails the job on any step failure.
+- Docs: docs/editorial-media/README.md and STORAGE-ARCHITECTURE.md.
+
+## Defects found and fixed during verification
+
+1. Repaired broken originals were not marked invalid, so tier 1 could serve the
+   broken path (moot in practice: 0 broken originals exist).
+2. `joinMediaBaseUrl` treated every root-relative path as absolute, so the
+   media base URL was never joined — the R2 seam would not work. Fixed; the
+   self-test now asserts the join.
+3. CI artifacts step ran `git add public/editorial/media` on a nonexistent
+   directory and failed the job silently. Now best-effort (set +e) with
+   per-step outcomes recorded.
+
+## Owner decisions pending
+
+1. Batch strategy for discovery over the 3,254 placeholder articles
+   (recommended: batches of 25-50 with editorial review, not bulk approval).
+2. Approval of any candidates (manual gate:
+   `bun run media:approve approve --slug X --record-id Y [--confirm-rights]`).
+3. Merge of draft PR #12 (never merge without owner approval).
+4. Optional follow-up: handle the 137 dead in-body content images (touches
+   article content, needs explicit authorization).
+5. Cypress suite was NOT run in CI (no browser on the runner); the affected
+   spec asserts img[src] presence which the placeholder tier satisfies, but
+   run it locally before merge if in doubt.
 
 ## Verification commands
 
