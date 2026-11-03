@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-11-03T14:50:07.577Z",
+  "ranAt": "2026-11-03T14:55:37.179Z",
   "endpoint": "https://api.openverse.org/v1/images/",
   "licenses": [
     "cc0",
@@ -8,10 +8,16 @@
   ],
   "minScore": 2,
   "articlesProcessed": 3,
-  "queriesIssued": 14,
-  "candidatesRecorded": 2,
+  "queriesIssued": 8,
+  "candidatesRecorded": 0,
   "errors": [
+    "frsc-commends-dangote-cement-on-new-transport-safety-policy / FRSC Dangote Cement Nigeria: The operation timed out.",
     "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate Nigeria: The operation timed out.",
-    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate: The operation timed out."
+    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate: The operation timed out.",
+    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / Oyo: The operation timed out.",
+    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / Oyo Nigeria: The operation timed out.",
+    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / tinubu mourns beheaded oyo: The operation timed out.",
+    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / Sustainable Development: The operation timed out.",
+    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / classroom Nigeria: The operation timed out."
   ]
 }
