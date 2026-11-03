@@ -73,10 +73,7 @@ const recoveredOverApproved: EditorialImageOverrides = {
   invalid: {},
   approved: { b: "/editorial/media/y.jpg" },
 };
-assert.equal(
-  resolveEditorialImageWith(post("b"), recoveredOverApproved),
-  "/editorial/cms/9.jpg",
-);
+assert.equal(resolveEditorialImageWith(post("b"), recoveredOverApproved), "/editorial/cms/9.jpg");
 
 // Tier 3: an approved replacement applies when nothing original survives.
 const approvedOnly: EditorialImageOverrides = {

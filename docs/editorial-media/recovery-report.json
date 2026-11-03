@@ -1,0 +1,593 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-03T08:50:16.062Z",
+  "totals": {
+    "articles": 3688,
+    "localMediaFiles": 469,
+    "articlesWithOriginalImage": 434,
+    "validOriginalImages": 434,
+    "brokenOriginalImages": 0,
+    "repairedOriginalImages": 0,
+    "unrepairedOriginalImages": 0,
+    "articlesWithoutOriginalImage": 3254,
+    "recoveredFromContent": 0,
+    "approvedReplacementsInUse": 0,
+    "placeholderArticles": 3254,
+    "imagesSharedByMultipleArticles": 36,
+    "deadExternalContentImages": 137
+  },
+  "broken": [],
+  "recovered": [],
+  "duplicates": [
+    {
+      "image": "/editorial/cms/4151.jpg",
+      "articles": [
+        {
+          "slug": "pencom-begins-disbursement-of-n758-billion-pension-bond-to-retirees",
+          "id": 3621
+        },
+        {
+          "slug": "efc-to-pencom-n20bn-capital-requirements-may-stifle-long-term-pfa-investment",
+          "id": 2967
+        },
+        {
+          "slug": "pfas-staked-n134trn-on-undervalued-stocks-long-term-fgn-securities-in-2023",
+          "id": 159
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4034.jpg",
+      "articles": [
+        {
+          "slug": "crude-for-loans-nnpcl-battles-n807tn-outstanding-debt",
+          "id": 3479
+        },
+        {
+          "slug": "nnpcl-privatises-pipelines-rehabilitation-builds-ph-refinery-storage",
+          "id": 105
+        },
+        {
+          "slug": "nnpcl-to-pay-royalties-taxes-from-33bn-afrexim-loan",
+          "id": 57
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4145.jpg",
+      "articles": [
+        {
+          "slug": "nrc-to-reactivate-osogbo-dagbolu-erunmu-idogo-rail-lines-for-freight",
+          "id": 3472
+        },
+        {
+          "slug": "nrc-announces-return-of-kanolagos-train-service",
+          "id": 146
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4039.jpg",
+      "articles": [
+        {
+          "slug": "world-bank-urges-fg-to-cut-import-tariffs-to-curb-inflation",
+          "id": 3471
+        },
+        {
+          "slug": "wbank-plans-250m-health-loan-for-nigeria-next-month",
+          "id": 2168
+        },
+        {
+          "slug": "wbank-projects-37-growth-for-nigerian-economy-2025",
+          "id": 113
+        },
+        {
+          "slug": "internet-access-reduced-poverty-in-nigeria-tanzania-by-7-wbank",
+          "id": 61
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4104.jpg",
+      "articles": [
+        {
+          "slug": "ngx-lifts-eight-year-suspension-on-aso-savings-loans-shares-trading-resumes",
+          "id": 3122
+        },
+        {
+          "slug": "tock-market-index-hits-100000-record-index",
+          "id": 100
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4116.jpg",
+      "articles": [
+        {
+          "slug": "dele-alake-plans-gold-for-naira-programme-to-boost-foreign-reserves",
+          "id": 2974
+        },
+        {
+          "slug": "dele-alake-some-mining-operators-are-threatening-international-arbitration-over-revoked-licences",
+          "id": 2903
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4043.jpg",
+      "articles": [
+        {
+          "slug": "ncc-lists-9-ways-nigerians-can-save-data-amidst-complaints-over-data-depletion",
+          "id": 2432
+        },
+        {
+          "slug": "ncc-directs-telcos-to-resolve-debt-dispute",
+          "id": 78
+        },
+        {
+          "slug": "telcos-spending-on-diesel-rises-by-35-hits-n429bn",
+          "id": 51
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4452.jpg",
+      "articles": [
+        {
+          "slug": "real-sector-dominates-87626m-cbn-dutch-auction",
+          "id": 603
+        },
+        {
+          "slug": "list-of-banks-disqualified-from-cbn-inaugural-dutch-auction",
+          "id": 568
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4427.jpg",
+      "articles": [
+        {
+          "slug": "top-10-banks-that-got-highest-fx-from-cbns-latest-retail-dutch-auction",
+          "id": 592
+        },
+        {
+          "slug": "naira-rises-to-n1590-in-parallel-market",
+          "id": 539
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4455.jpg",
+      "articles": [
+        {
+          "slug": "oil-theft-hindering-nigeria-from-meeting-opec-quota-elumelu",
+          "id": 585
+        },
+        {
+          "slug": "govt-should-tell-us-those-stealing-crude-with-vessels-elumelu",
+          "id": 571
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4391.jpg",
+      "articles": [
+        {
+          "slug": "nigeria-ranked-ninth-african-investment-destination",
+          "id": 552
+        },
+        {
+          "slug": "172-million-nigerians-cant-afford-healthy-diet-report",
+          "id": 505
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4346.jpg",
+      "articles": [
+        {
+          "slug": "endbadgovernanceinnigeria-rivers-protesters-block-major-road",
+          "id": 507
+        },
+        {
+          "slug": "hunger-protest-banks-woo-customers-to-digital-channels",
+          "id": 455
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4315.jpg",
+      "articles": [
+        {
+          "slug": "fg-hasnt-fulfilled-cng-buses-conversion-promise-nurtw",
+          "id": 483
+        },
+        {
+          "slug": "breaking-nigeria-secures-125-billion-electricity-loans-from-world-bank-afdb-under-tinubu",
+          "id": 474
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/302.jpg",
+      "articles": [
+        {
+          "slug": "domestic-airfare-rises-14-to-n89886-in-june",
+          "id": 404
+        },
+        {
+          "slug": "top-10-longest-flights-in-the-world-in-2024",
+          "id": 368
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4250.jpg",
+      "articles": [
+        {
+          "slug": "nigeria-may-get-up-to-03-of-2024-gdp-as-revenue-from-windfall-tax-on-banks-fx-gains",
+          "id": 397
+        },
+        {
+          "slug": "debt-service-costs-gulp-74-of-fgs-revenue-in-q1-2024",
+          "id": 357
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4278.jpg",
+      "articles": [
+        {
+          "slug": "planned-protests-sgf-meets-tinubus-cabinet-as-apc-holds-emergency-meeting",
+          "id": 389
+        },
+        {
+          "slug": "president-tinubu-signs-development-bills-for-north-west-and-south-east-commissions",
+          "id": 384
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/273.jpg",
+      "articles": [
+        {
+          "slug": "cbn-sells-one-year-treasury-bills-at-221-in-july-auction",
+          "id": 387
+        },
+        {
+          "slug": "naccima-others-kick-as-cbn-hikes-interest-rate-to-2675",
+          "id": 375
+        },
+        {
+          "slug": "cbn-targets-1trn-economy-by-2030",
+          "id": 352
+        },
+        {
+          "slug": "breaking-cbn-to-sell-20000-to-each-bdc-at-n14501",
+          "id": 332
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4197.jpg",
+      "articles": [
+        {
+          "slug": "fg-to-boost-agric-mechanization-programme-with-1bn-minister",
+          "id": 383
+        },
+        {
+          "slug": "just-in-food-prices-to-crash-in-180-days-agric-minister",
+          "id": 241
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/210.jpg",
+      "articles": [
+        {
+          "slug": "naira-down-to-n1585-in-parallel-market",
+          "id": 364
+        },
+        {
+          "slug": "exchange-rate-for-customs-duties-collection-rises-above-official-market-rate-again",
+          "id": 330
+        },
+        {
+          "slug": "naira-appreciates-to-n1545-in-parallel-market",
+          "id": 283
+        },
+        {
+          "slug": "naira-depreciation-5-strategies-to-protect-your-finances",
+          "id": 252
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4185.jpg",
+      "articles": [
+        {
+          "slug": "after-sourcing-from-us-and-brazil-dangote-refinery-to-seek-crude-from-libya-and-angola-amid-supply-hurdles-in-nigeria",
+          "id": 360
+        },
+        {
+          "slug": "dangote-refinery-capable-of-solving-nigerias-fx-problems-catalysing-economic-stability-says-sp-global",
+          "id": 217
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4246.jpg",
+      "articles": [
+        {
+          "slug": "fg-to-introduce-new-curriculum-for-secondary-schools",
+          "id": 335
+        },
+        {
+          "slug": "breaking-stakeholders-protest-at-jamb-policy-meeting-as-minister-pegs-admission-age-at-18",
+          "id": 329
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4215.jpg",
+      "articles": [
+        {
+          "slug": "dangote-backs-nuprc-on-domestic-crude-supply-guidelines",
+          "id": 328
+        },
+        {
+          "slug": "dangote-group-targets-30-billion-in-revenue-by-2025-to-become-nigerias-largest-forex-supplier",
+          "id": 275
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4193.jpg",
+      "articles": [
+        {
+          "slug": "fuel-price-rises-to-n75017-per-litre-nbs",
+          "id": 323
+        },
+        {
+          "slug": "real-price-of-petrol-between-n1500-n1950-but-nigerians-cant-afford-it-retailers",
+          "id": 232
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4167.jpg",
+      "articles": [
+        {
+          "slug": "breaking-crypto-exchange-okx-to-discontinue-service-in-nigeria",
+          "id": 320
+        },
+        {
+          "slug": "bitcoin-whales-takes-full-advantage-of-price-dip-acquires-71000-btc-in-one-week",
+          "id": 277
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4210.jpg",
+      "articles": [
+        {
+          "slug": "fg-awards-contract-for-metering-187-crude-oil-flow-station-in-niger-delta",
+          "id": 268
+        },
+        {
+          "slug": "faac-lgas-get-n142-trillion-in-five-months-in-2024",
+          "id": 263
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4179.jpg",
+      "articles": [
+        {
+          "slug": "montreal-university-scholarships-2024-25-in-canada-funded",
+          "id": 231
+        },
+        {
+          "slug": "top-10-american-scholarships-without-ielts-2024-funded",
+          "id": 209
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/137.jpg",
+      "articles": [
+        {
+          "slug": "naira-depreciates-to-n1535-in-parallel-market",
+          "id": 193
+        },
+        {
+          "slug": "naira-depreciation-iocs-pension-managers-increase-offshore-investments",
+          "id": 186
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4157.jpg",
+      "articles": [
+        {
+          "slug": "dangote-refinery-declare-crude-supply-emergency-oil-producers-tell-tinubu",
+          "id": 173
+        },
+        {
+          "slug": "dangote-fuel-marketers-fear-high-priced-petrol-ahead-of-supply",
+          "id": 171
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4135.jpg",
+      "articles": [
+        {
+          "slug": "minimum-wage-half-agbado-better-than-none-shehu-sani-on-nlc-strike",
+          "id": 163
+        },
+        {
+          "slug": "goni-aji-to-head-national-minimum-wage-committee",
+          "id": 149
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4121.jpg",
+      "articles": [
+        {
+          "slug": "neca-urges-fg-to-re-invest-subsidy-savings-in-infrastructure",
+          "id": 162
+        },
+        {
+          "slug": "real-estate-firm-allocates-property-to-over-300-subscribers",
+          "id": 124
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4015.jpg",
+      "articles": [
+        {
+          "slug": "fg-mobilising-mdas-to-stabilise-naira-says-minister",
+          "id": 161
+        },
+        {
+          "slug": "naira-manufacturers-plan-general-price-hike",
+          "id": 135
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4124.jpg",
+      "articles": [
+        {
+          "slug": "multinationals-leaving-nigeria-not-genuine-investors-uzodinma",
+          "id": 126
+        },
+        {
+          "slug": "residents-pos-operators-decry-incessant-robbery-attacks-in-owerri",
+          "id": 140
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4111.jpg",
+      "articles": [
+        {
+          "slug": "proposed-fourth-mainland-bridge-will-boost-lagos-economy",
+          "id": 119
+        },
+        {
+          "slug": "stakeholders-excited-as-lagos-plans-commercial-airline",
+          "id": 115
+        },
+        {
+          "slug": "breaking-lagos-to-unveil-red-line-rail-february",
+          "id": 98
+        },
+        {
+          "slug": "eaking-fourth-mainland-bridge-construction-begins-first-quarter-2024-sanwo-olu",
+          "id": 97
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4146.jpg",
+      "articles": [
+        {
+          "slug": "nnpc-cash-for-oil-deal-mortgages-30-of-output",
+          "id": 152
+        },
+        {
+          "slug": "compared-to-its-peers-nnpcs-n25trn-profit-leaves-little-to-cheer",
+          "id": 148
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4056.jpg",
+      "articles": [
+        {
+          "slug": "fg-projects-n194tn-revenue-in-2024",
+          "id": 85
+        },
+        {
+          "slug": "piano-bistro-restaurant-opens-in-lagos",
+          "id": 70
+        }
+      ]
+    },
+    {
+      "image": "/editorial/cms/4031.jpg",
+      "articles": [
+        {
+          "slug": "suspect-arrested-with-toy-gun-in-ogun",
+          "id": 65
+        },
+        {
+          "slug": "ogun-woman-arrested-for-throwing-five-month-old-daughter-into-river",
+          "id": 64
+        },
+        {
+          "slug": "lagos-police-arrest-mechanic-for-stealing-customers-car",
+          "id": 56
+        },
+        {
+          "slug": "police-nab-three-cops-after-alleged-extortion-of-abia-travellers",
+          "id": 50
+        }
+      ]
+    }
+  ],
+  "deadHosts": [
+    {
+      "host": "cdn.punchng.com",
+      "count": 79
+    },
+    {
+      "host": "nairametrics.com",
+      "count": 25
+    },
+    {
+      "host": "cdn.vanguardngr.com",
+      "count": 13
+    },
+    {
+      "host": "leadership.ng",
+      "count": 5
+    },
+    {
+      "host": "images.outbrainimg.com",
+      "count": 4
+    },
+    {
+      "host": "cdn.thenationonlineng.net",
+      "count": 4
+    },
+    {
+      "host": "media.licdn.com",
+      "count": 2
+    },
+    {
+      "host": "cdn.businessday.ng",
+      "count": 1
+    },
+    {
+      "host": "i.ytimg.com",
+      "count": 1
+    },
+    {
+      "host": "www.teezab.com",
+      "count": 1
+    },
+    {
+      "host": "pbs.twimg.com",
+      "count": 1
+    },
+    {
+      "host": "nairaleap.ct.ws",
+      "count": 1
+    }
+  ]
+}

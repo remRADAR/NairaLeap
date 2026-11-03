@@ -29,5 +29,4 @@ export const joinMediaBaseUrl = (baseUrl: string, path: string): string => {
  * Resolve an editorial media path to the URL the browser should request.
  * With no configured base URL, local paths are served from the deployment.
  */
-export const editorialMediaUrl = (path: string): string =>
-  joinMediaBaseUrl(MEDIA_BASE_URL, path);
+export const editorialMediaUrl = (path: string): string => joinMediaBaseUrl(MEDIA_BASE_URL, path);

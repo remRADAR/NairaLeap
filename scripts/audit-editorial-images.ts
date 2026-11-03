@@ -10,7 +10,12 @@ import {
   NEUTRAL_EDITORIAL_PLACEHOLDER,
   withEditorialImageFallbacks,
 } from "../src/features/editorial/images";
-import { SUBSET_PATH, generateSubsetContent, readManifest, readReport } from "./editorial-media-lib";
+import {
+  SUBSET_PATH,
+  generateSubsetContent,
+  readManifest,
+  readReport,
+} from "./editorial-media-lib";
 
 /**
  * Editorial image audit: verifies that every article resolves to artwork that

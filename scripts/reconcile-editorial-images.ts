@@ -250,14 +250,15 @@ const md = [
     ? "None. Every original featured image resolves to a local file."
     : broken
         .slice(0, 50)
-        .map((entry) =>
-          "- " +
-          entry.slug +
-          " (" +
-          entry.id +
-          "): " +
-          entry.image +
-          (entry.repairedTo ? " -> repaired to " + entry.repairedTo : " -> NOT REPAIRED"),
+        .map(
+          (entry) =>
+            "- " +
+            entry.slug +
+            " (" +
+            entry.id +
+            "): " +
+            entry.image +
+            (entry.repairedTo ? " -> repaired to " + entry.repairedTo : " -> NOT REPAIRED"),
         )
         .join("\n"),
   "",

@@ -35,25 +35,147 @@ const LICENSE_RANK: Record<string, number> = { cc0: 0, pdm: 1, by: 2 };
 const MAX_CANDIDATES_PER_ARTICLE = 3;
 
 const STOPWORDS = new Set([
-  "the", "a", "an", "and", "or", "of", "in", "on", "for", "to", "as", "at", "by", "is", "are",
-  "was", "were", "be", "been", "being", "with", "after", "before", "from", "over", "into",
-  "amid", "among", "between", "their", "his", "her", "its", "this", "that", "these", "those",
-  "not", "no", "nor", "but", "if", "then", "than", "so", "such", "can", "could", "may", "might",
-  "will", "would", "should", "must", "have", "has", "had", "having", "do", "does", "did",
-  "about", "against", "off", "per", "vs", "via", "up", "out", "down", "more", "most", "how",
-  "why", "what", "when", "where", "who", "whom", "which", "says", "said", "say", "new", "top",
-  "best", "worst", "full", "video", "photos", "photo", "watch", "read", "amidst",
+  "the",
+  "a",
+  "an",
+  "and",
+  "or",
+  "of",
+  "in",
+  "on",
+  "for",
+  "to",
+  "as",
+  "at",
+  "by",
+  "is",
+  "are",
+  "was",
+  "were",
+  "be",
+  "been",
+  "being",
+  "with",
+  "after",
+  "before",
+  "from",
+  "over",
+  "into",
+  "amid",
+  "among",
+  "between",
+  "their",
+  "his",
+  "her",
+  "its",
+  "this",
+  "that",
+  "these",
+  "those",
+  "not",
+  "no",
+  "nor",
+  "but",
+  "if",
+  "then",
+  "than",
+  "so",
+  "such",
+  "can",
+  "could",
+  "may",
+  "might",
+  "will",
+  "would",
+  "should",
+  "must",
+  "have",
+  "has",
+  "had",
+  "having",
+  "do",
+  "does",
+  "did",
+  "about",
+  "against",
+  "off",
+  "per",
+  "vs",
+  "via",
+  "up",
+  "out",
+  "down",
+  "more",
+  "most",
+  "how",
+  "why",
+  "what",
+  "when",
+  "where",
+  "who",
+  "whom",
+  "which",
+  "says",
+  "said",
+  "say",
+  "new",
+  "top",
+  "best",
+  "worst",
+  "full",
+  "video",
+  "photos",
+  "photo",
+  "watch",
+  "read",
+  "amidst",
 ]);
 
 const PEOPLE_HINTS = [
-  "portrait", "man", "woman", "person", "people", "face", "crowd", "child", "children",
-  "student", "worker", "farmer", "police", "soldier", "president", "governor", "minister",
-  "senator", "celebrity", "footballer", "artist", "singer", "musician", "fan", "players",
+  "portrait",
+  "man",
+  "woman",
+  "person",
+  "people",
+  "face",
+  "crowd",
+  "child",
+  "children",
+  "student",
+  "worker",
+  "farmer",
+  "police",
+  "soldier",
+  "president",
+  "governor",
+  "minister",
+  "senator",
+  "celebrity",
+  "footballer",
+  "artist",
+  "singer",
+  "musician",
+  "fan",
+  "players",
 ];
 
 const IP_HINTS = [
-  "logo", "brand", "trademark", "product", "shopfront", "billboard", "advertisement", "poster",
-  "album", "cover", "screenshot", "currency", "banknote", "coin", "stamp", "merchandise",
+  "logo",
+  "brand",
+  "trademark",
+  "product",
+  "shopfront",
+  "billboard",
+  "advertisement",
+  "poster",
+  "album",
+  "cover",
+  "screenshot",
+  "currency",
+  "banknote",
+  "coin",
+  "stamp",
+  "merchandise",
 ];
 
 type OpenverseTag = { name?: string | null };
@@ -156,13 +278,9 @@ const searchOpenverse = async (query: string, licenses: string[]): Promise<Openv
   return payload.results ?? [];
 };
 
-const rightsNotesFor = (
-  image: OpenverseImage,
-): { required: boolean; notes: string | null } => {
+const rightsNotesFor = (image: OpenverseImage): { required: boolean; notes: string | null } => {
   const haystack =
-    (image.title ?? "") +
-    " " +
-    (image.tags ?? []).map((tag) => tag.name ?? "").join(" ");
+    (image.title ?? "") + " " + (image.tags ?? []).map((tag) => tag.name ?? "").join(" ");
   const lower = haystack.toLowerCase();
   const peopleHits = PEOPLE_HINTS.filter((hint) => lower.includes(hint));
   const ipHits = IP_HINTS.filter((hint) => lower.includes(hint));
@@ -223,9 +341,7 @@ const pending = EDITORIAL_POSTS.filter((post) => !post.image)
     if (refresh) return true;
     const statuses = statusBySlug.get(post.slug);
     if (!statuses) return true;
-    return (
-      !statuses.has("candidate") && !statuses.has("approved") && !statuses.has("rejected")
-    );
+    return !statuses.has("candidate") && !statuses.has("approved") && !statuses.has("rejected");
   })
   .slice(0, limit);
 
@@ -278,10 +394,8 @@ for (const post of pending) {
     .filter((entry) => entry.score >= minScore)
     .sort(
       (a, b) =>
-        b.score -
-        a.score ||
-        (LICENSE_RANK[a.image.license ?? ""] ?? 3) -
-          (LICENSE_RANK[b.image.license ?? ""] ?? 3),
+        b.score - a.score ||
+        (LICENSE_RANK[a.image.license ?? ""] ?? 3) - (LICENSE_RANK[b.image.license ?? ""] ?? 3),
     )
     .slice(0, MAX_CANDIDATES_PER_ARTICLE);
 
@@ -310,11 +424,7 @@ for (const post of pending) {
       rightsNotes: rights.notes,
       relevanceScore: entry.score,
       relevanceNotes:
-        "Matched article terms: " +
-        entry.matched.join(", ") +
-        " (query: " +
-        entry.query +
-        ").",
+        "Matched article terms: " + entry.matched.join(", ") + " (query: " + entry.query + ").",
       queryUsed: entry.query,
       retrievedAt: new Date().toISOString(),
       reviewedAt: null,

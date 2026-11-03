@@ -140,11 +140,7 @@ if (command === "list") {
         reviewedBy: reviewer,
       };
     }
-    if (
-      existing.articleSlug === slug &&
-      existing.status === "approved" &&
-      existing !== record
-    ) {
+    if (existing.articleSlug === slug && existing.status === "approved" && existing !== record) {
       return {
         ...existing,
         status: "rejected" as const,

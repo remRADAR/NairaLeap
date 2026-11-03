@@ -3,10 +3,7 @@ import { dirname, resolve } from "node:path";
 import type { EditorialMediaRecord } from "../src/features/editorial/media-types";
 
 export const MANIFEST_PATH = resolve(process.cwd(), "docs/editorial-media/manifest.json");
-export const DISCOVERY_LOG_PATH = resolve(
-  process.cwd(),
-  "docs/editorial-media/discovery-log.json",
-);
+export const DISCOVERY_LOG_PATH = resolve(process.cwd(), "docs/editorial-media/discovery-log.json");
 export const REPORT_PATH = resolve(process.cwd(), "docs/editorial-media/recovery-report.json");
 export const REPORT_MD_PATH = resolve(process.cwd(), "docs/editorial-media/RECOVERY_REPORT.md");
 export const SUBSET_PATH = resolve(process.cwd(), "src/data/editorialMediaApproved.ts");

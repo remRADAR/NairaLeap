@@ -1,0 +1,14 @@
+{
+  "ranAt": "2026-11-03T08:50:15.418Z",
+  "endpoint": "https://api.openverse.org/v1/images/",
+  "licenses": [
+    "cc0",
+    "pdm",
+    "by"
+  ],
+  "minScore": 2,
+  "articlesProcessed": 3,
+  "queriesIssued": 9,
+  "candidatesRecorded": 0,
+  "errors": []
+}
