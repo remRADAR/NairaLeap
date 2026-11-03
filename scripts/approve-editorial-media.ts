@@ -10,6 +10,7 @@ import {
   type EditorialMediaManifest,
   type EditorialMediaRecord,
 } from "./editorial-media-lib";
+import { assertPublicDestination, type LookupLike } from "./editorial-network-guard";
 
 /**
  * Editorial approval workflow for replacement imagery.
@@ -35,6 +36,10 @@ import {
  *     redirects, MIME allowlist, file signature check, and a size cap. Bytes
  *     are stored content-addressed by full SHA-256. HTML and SVG are never
  *     accepted, and an unknown extension never implies JPEG.
+ *   - Network destinations are SSRF-guarded: literal and resolved addresses
+ *     must be public (loopback, private, link-local, multicast, reserved, and
+ *     IPv4-mapped forms are all rejected), and every redirect hop is
+ *     revalidated before the connection is opened.
  *   - Rejected records are terminal: a rejected candidate can never be
  *     approved. Approval and rejection history is preserved on every record.
  *
@@ -171,8 +176,10 @@ export const readBodyWithLimit = async (
 };
 
 /**
- * Hardened download pipeline for approved candidates: manual redirects
- * bounded by count and restricted to http(s), MIME allowlist, content-length
+ * Hardened download pipeline for approved candidates: SSRF-guarded public
+ * destinations (revalidated on every redirect hop and again after the
+ * response arrives), manual redirects bounded by count and restricted to
+ * http(s), MIME allowlist, content-length
  * pre-check, streaming size cap, and a file-signature check that must agree
  * with the declared MIME. Returns the bytes, their full SHA-256, and the
  * extension derived from the detected signature (never from the URL).
@@ -181,6 +188,7 @@ export const downloadCandidateImage = async (
   rawUrl: string,
   options: {
     fetchImpl?: FetchLike;
+    lookup?: LookupLike;
     maxBytes?: number;
     timeoutMs?: number;
     maxRedirects?: number;
@@ -193,6 +201,7 @@ export const downloadCandidateImage = async (
   let current = validateCandidateImageUrl(rawUrl);
   let response: Response | null = null;
   for (let hop = 0; hop <= maxRedirects; hop += 1) {
+    await assertPublicDestination(current, options.lookup);
     response = await fetchImpl(current.toString(), {
       method: "GET",
       redirect: "manual",
@@ -221,6 +230,12 @@ export const downloadCandidateImage = async (
   if (response.status !== 200) {
     throw new Error("Image download failed (HTTP " + response.status + ").");
   }
+  // Rebinding re-check: the fetch runtime cannot pin the connection IP, so
+  // the destination is revalidated immediately after the response arrives
+  // and before the body is read. This detects DNS answers that changed
+  // between validation and connection; the network guard documents the
+  // limits of this mitigation.
+  await assertPublicDestination(current, options.lookup);
   const contentTypeHeader = response.headers.get("content-type") ?? "";
   const mime = (contentTypeHeader.split(";")[0] ?? "").trim().toLowerCase();
   if (!ALLOWED_IMAGE_MIMES.has(mime)) {

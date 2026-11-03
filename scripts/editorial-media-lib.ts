@@ -23,6 +23,7 @@ export type ExternalHostReachability = {
   forbidden: number;
   timeout: number;
   unknown: number;
+  unsafe: number;
   unchecked: number;
 };
 
@@ -51,6 +52,7 @@ export type EditorialRecoveryReport = {
     forbidden: number;
     timeout: number;
     unknown: number;
+    unsafe: number;
     unchecked: number;
   };
   broken: Array<{ slug: string; id: number; image: string; repairedTo: string | null }>;

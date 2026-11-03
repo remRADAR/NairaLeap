@@ -14,6 +14,7 @@ import {
   type EditorialRecoveryReport,
   type ExternalHostReachability,
 } from "./editorial-media-lib";
+import { probeExternalUrl, type ProbeOutcome } from "./editorial-network-guard";
 
 /**
  * Reconciliation of the editorial catalog against surviving local media.
@@ -27,10 +28,12 @@ import {
  * External content images are reported with a bounded, rate-conscious
  * reachability check: a capped set of unique URLs is probed with HEAD requests
  * (a byte-range GET when HEAD is unsupported), limited concurrency, and short
- * timeouts. Outcomes are recorded per host as reachable, unavailable,
- * forbidden, timeout, or unknown; URLs beyond the cap are counted as
- * unchecked. Reachability is reporting only — article content is never
- * rewritten.
+ * timeouts. Every probe goes through the SSRF destination guard (public
+ * addresses only, per-hop redirect revalidation); prohibited destinations
+ * are recorded as unsafe. Outcomes are recorded per host as reachable,
+ * unavailable, forbidden, timeout, unknown, or unsafe; URLs beyond the cap
+ * are counted as unchecked. Reachability is reporting only — article content
+ * is never rewritten.
  *
  * The migration snapshot src/data/wordpressEditorial.ts is never modified.
  * Recovered relationships are recorded in the media manifest and the generated
@@ -48,8 +51,6 @@ const REACHABILITY = {
   timeoutMs: 5000,
   delayMs: 100,
 } as const;
-
-type ReachabilityOutcome = "ok" | "unavailable" | "forbidden" | "timeout" | "unknown";
 
 const walkFiles = (dir: string): string[] => {
   const entries = readdirSync(dir, { withFileTypes: true });
@@ -104,40 +105,13 @@ const hostOf = (source: string): string => {
   }
 };
 
-const classifyStatus = (status: number): ReachabilityOutcome | null => {
-  if (status >= 200 && status < 300) return "ok";
-  if (status === 401 || status === 403) return "forbidden";
-  if (status >= 400) return "unavailable";
-  return null;
-};
+const checkExternalUrl = (url: string): Promise<ProbeOutcome> =>
+  probeExternalUrl(url, {
+    userAgent: USER_AGENT,
+    timeoutMs: REACHABILITY.timeoutMs,
+  });
 
-const checkExternalUrl = async (url: string): Promise<ReachabilityOutcome> => {
-  try {
-    const head = await fetch(url, {
-      method: "HEAD",
-      redirect: "follow",
-      headers: { "User-Agent": USER_AGENT },
-      signal: AbortSignal.timeout(REACHABILITY.timeoutMs),
-    });
-    const headOutcome = classifyStatus(head.status);
-    if (headOutcome && head.status !== 405 && head.status !== 501) return headOutcome;
-    const get = await fetch(url, {
-      method: "GET",
-      redirect: "follow",
-      headers: { "User-Agent": USER_AGENT, Range: "bytes=0-255" },
-      signal: AbortSignal.timeout(REACHABILITY.timeoutMs),
-    });
-    await get.body?.cancel();
-    const getOutcome = classifyStatus(get.status);
-    return getOutcome ?? "unavailable";
-  } catch (error) {
-    const name = (error as Error)?.name ?? "";
-    if (name === "TimeoutError" || name === "AbortError") return "timeout";
-    return "unknown";
-  }
-};
-
-const checkExternalUrls = async (urls: string[]): Promise<Map<string, ReachabilityOutcome>> => {
+const checkExternalUrls = async (urls: string[]): Promise<Map<string, ProbeOutcome>> => {
   const outcomes = new Map<string, ReachabilityOutcome>();
   const queue = [...urls];
   const workerCount = Math.min(REACHABILITY.concurrency, queue.length);
@@ -286,6 +260,7 @@ const hostBucket = (host: string): ExternalHostReachability => {
     forbidden: 0,
     timeout: 0,
     unknown: 0,
+    unsafe: 0,
     unchecked: 0,
   };
   hostStats.set(host, created);
@@ -299,6 +274,7 @@ const externalReachability = {
   forbidden: 0,
   timeout: 0,
   unknown: 0,
+  unsafe: 0,
   unchecked: 0,
 };
 
@@ -402,6 +378,7 @@ const reachabilityLines = [
   `- Forbidden (401/403): ${externalReachability.forbidden}`,
   `- Timed out: ${externalReachability.timeout}`,
   `- Unknown errors: ${externalReachability.unknown}`,
+  `- Unsafe (blocked by the SSRF destination guard): ${externalReachability.unsafe}`,
   `- Not checked this run (capped at ${REACHABILITY.maxChecks} unique URLs): ${externalReachability.unchecked}`,
 ];
 
@@ -414,6 +391,7 @@ const hostRows = report.externalHosts.slice(0, 15).map((host) => {
     host.forbidden,
     host.timeout,
     host.unknown,
+    host.unsafe,
     host.unchecked + " |",
   ].join(" | ");
 });
@@ -449,8 +427,8 @@ const md = [
   "",
   "### Top external hosts by reference count",
   "",
-  "| Host | Refs | Reachable | Unavailable | Forbidden | Timeout | Unknown | Unchecked |",
-  "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+  "| Host | Refs | Reachable | Unavailable | Forbidden | Timeout | Unknown | Unsafe | Unchecked |",
+  "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
   ...hostRows,
   "",
   "## Next steps",

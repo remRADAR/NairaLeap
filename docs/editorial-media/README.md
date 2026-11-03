@@ -76,9 +76,9 @@ recovers content-embedded artwork, and writes the recovery report. External
 image references found inside article content are counted as
 `externalContentImageReferences` and probed with a bounded reachability check
 (limited URL count, limited concurrency, request timeouts). Each reference is
-classified as reachable, unavailable, forbidden, timed out, unknown, or
-unchecked; results are summarized per host in `externalHosts`. Article
-content is never rewritten.
+classified as reachable, unavailable, forbidden, timed out, unknown, unsafe
+(blocked by the SSRF destination guard), or unchecked; results are summarized
+per host in `externalHosts`. Article content is never rewritten.
 
 ### 2. Discover replacement candidates (Openverse)
 
@@ -136,14 +136,25 @@ Approval requirements (all enforced, none bypassable):
   reviewer and timestamp;
 - rejected candidates can never be approved (terminal status).
 
-Before storing, the candidate download is validated end to end: absolute
-http(s) URLs only, bounded manual redirects restricted to http(s), a MIME
+Before storing, the candidate download is validated end to end: an SSRF
+destination guard requires public network destinations (literal and resolved
+IPv4/IPv6 addresses; loopback, private, link-local, multicast, reserved, and
+IPv4-mapped forms are rejected), every redirect hop is revalidated before the
+connection is opened, and the destination is rechecked after the response
+arrives; plus bounded manual redirects restricted to http(s), a MIME
 allowlist (JPEG, PNG, WebP, GIF), image file-signature detection, agreement
 between the declared MIME and the detected signature, and a hard download
 size cap. HTML, SVG, and unrecognized formats are rejected, and an unknown
 extension never implies JPEG. Bytes are stored content-addressed by full
 SHA-256 under `public/editorial/media/` (identical files are stored once),
 then the runtime subset is regenerated.
+
+Network safety limitation: the runtime fetch implementation cannot pin a
+connection to the address that was validated, so a DNS rebinding attack that
+flips a hostname to a prohibited address between validation and connection
+cannot be fully prevented; the pipeline revalidates after the response arrives
+and aborts before reading the body. Complete connection-time SSRF protection
+is not claimed.
 
 ### 4. Verify
 

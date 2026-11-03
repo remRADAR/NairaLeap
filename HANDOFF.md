@@ -72,7 +72,8 @@ Vercel preview deployments for every branch push also succeeded.
    signature detection with signature/MIME agreement, 10MB cap (declared and
    streamed), HTML/SVG/unknown formats rejected, extension never assumed;
    SHA-256 content-addressed storage preserved. Covered by
-   `scripts/test-editorial-media-validation.ts` (37 checks).
+   `scripts/test-editorial-media-validation.ts` (54 checks, including the
+   SSRF destination guard suite).
 5. **Discovery eligibility** — `discover-editorial-images.ts` now skips articles
    with valid OR recovered originals, allows broken (invalid) originals to
    receive candidates, keeps approved articles locked, and --refresh never
@@ -134,8 +135,8 @@ except media: 469 local files exist, not 385.
   audit-editorial-images, discover-editorial-images, approve-editorial-media
   (approval CLI with reviewer/attribution/rights/visual/relevance gates),
   test-editorial-image-resolution (resolution self-test, 14 assertions),
-  test-editorial-media-validation (37 checks: signatures, downloads,
-  approvals, eligibility, queries).
+  test-editorial-media-validation (54 checks: signatures, SSRF-guarded
+  downloads, approvals, eligibility, queries).
 - CI: `.github/workflows/editorial-media-audit.yml` — read-only verify job
   (typecheck, both test suites, reconcile, discovery pilot, audit, format
   check, lint, build) + isolated feature-branch publish job for permitted
@@ -164,6 +165,31 @@ except media: 469 local files exist, not 385.
    produced a detached HEAD, so `git push` refused. Fixed by checking out the
    feature branch and pushing to an explicit ref
    (`origin HEAD:refs/heads/feat/editorial-media-recovery`).
+
+## SSRF hardening round (2026-11-03)
+
+Following the pre-merge acceptance audit, every network-fetching path in the
+editorial media pipeline now goes through `scripts/editorial-network-guard.ts`:
+
+- Literal IPv4/IPv6 destinations are parsed and rejected unless public
+  (loopback, RFC1918, CGNAT, link-local incl. 169.254.169.254, multicast,
+  reserved, documentation, discard, ULA, site-local; IPv4-mapped IPv6, NAT64
+  64:ff9b::/96, and 6to4 2002::/16 embeds are unwrapped and validated).
+- Hostnames are resolved and EVERY resolved address must be public.
+- Redirects are handled manually with a bounded hop count and revalidated at
+  every hop; a redirect can never bypass validation.
+- The approved-image download revalidates the destination again after the
+  response arrives (rebinding detection; see the limitation below).
+- The reconciliation probe (reporting-only) and the Openverse discovery
+  fetch use the same guard; blocked probe destinations are recorded as
+  `unsafe` in the recovery report.
+- Documented limitation: the runtime fetch API cannot pin the connection to
+  the validated address, so complete connection-time DNS-rebinding
+  protection is not possible; post-response revalidation narrows the window.
+  The validation suite covers the guard with 17 new checks (54 total).
+
+No article content, featured-image assignments, approvals, merges, or
+production changes were made in this round.
 
 ## Owner decisions pending
 

@@ -99,7 +99,7 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          bunx prettier --check scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts > docs/editorial-media/ci-format.txt 2>&1
+          bunx prettier --check scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts scripts/editorial-network-guard.ts > docs/editorial-media/ci-format.txt 2>&1
           bunx prettier --check scripts/reconcile-editorial-images.ts scripts/discover-editorial-images.ts >> docs/editorial-media/ci-format.txt 2>&1
           bunx prettier --check scripts/approve-editorial-media.ts scripts/test-editorial-image-resolution.ts >> docs/editorial-media/ci-format.txt 2>&1
           bunx prettier --check scripts/test-editorial-media-validation.ts >> docs/editorial-media/ci-format.txt 2>&1
@@ -113,7 +113,7 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          bunx eslint scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts > docs/editorial-media/ci-lint.txt 2>&1
+          bunx eslint scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts scripts/editorial-network-guard.ts > docs/editorial-media/ci-lint.txt 2>&1
           bunx eslint scripts/reconcile-editorial-images.ts scripts/discover-editorial-images.ts >> docs/editorial-media/ci-lint.txt 2>&1
           bunx eslint scripts/approve-editorial-media.ts scripts/test-editorial-image-resolution.ts >> docs/editorial-media/ci-lint.txt 2>&1
           bunx eslint scripts/test-editorial-media-validation.ts >> docs/editorial-media/ci-lint.txt 2>&1

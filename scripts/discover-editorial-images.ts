@@ -13,6 +13,7 @@ import {
   writeJson,
   type EditorialMediaManifest,
 } from "./editorial-media-lib";
+import { fetchWithPublicGuard } from "./editorial-network-guard";
 
 /**
  * Intelligent replacement-imagery discovery via Openverse.
@@ -351,12 +352,13 @@ const searchOpenverse = async (query: string, licenses: string[]): Promise<Openv
     page_size: "20",
     mature: "false",
   });
-  const response = await fetch(OPENVERSE_ENDPOINT + "?" + params.toString(), {
+  const { response } = await fetchWithPublicGuard(OPENVERSE_ENDPOINT + "?" + params.toString(), {
     headers: {
       Accept: "application/json",
       "User-Agent": "NairaLeap editorial media discovery/1.0",
     },
-    signal: AbortSignal.timeout(QUERY_TIMEOUT_MS),
+    timeoutMs: QUERY_TIMEOUT_MS,
+    maxRedirects: 3,
   });
   if (response.status === 429 || response.status === 403) {
     throw new Error("Openverse rate limit reached (HTTP " + response.status + ")");

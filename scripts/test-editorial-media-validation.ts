@@ -12,9 +12,13 @@ import {
   type ApprovalOptions,
   type FetchLike,
 } from "./approve-editorial-media";
+import { isDisallowedIp, probeExternalUrl, type LookupLike } from "./editorial-network-guard";
 
 /**
  * Validation tests for the hardened editorial media pipeline:
+ *   - SSRF destination guard (non-public IPv4/IPv6 literals, hostnames that
+ *     resolve to prohibited addresses, redirect hops, rebinding
+ *     revalidation, and probe safety);
  *   - image signature detection (HTML and SVG are never accepted);
  *   - hardened downloads (URL validation, bounded http(s) redirects, MIME
  *     allowlist, size caps, signature/MIME agreement, SHA-256 content
@@ -114,6 +118,11 @@ const pngSpec = (body: Uint8Array = PNG_BYTES): FakeResponseSpec => ({
   body,
 });
 
+const PUBLIC_LOOKUP: LookupLike = async () => [{ address: "93.184.216.34", family: 4 }];
+
+const neverFetch = (): FetchLike => () =>
+  Promise.reject(new Error("fetch must not be called"));
+
 await check("detects the PNG signature", () => {
   assert.equal(detectImageSignature(PNG_BYTES)?.extension, "png");
 });
@@ -141,6 +150,7 @@ await check("rejects SVG bytes as an image signature", () => {
 await check("downloads a valid PNG and records its full SHA-256", async () => {
   const result = await downloadCandidateImage("https://images.example.com/a.png", {
     fetchImpl: fakeFetch([pngSpec()]),
+    lookup: PUBLIC_LOOKUP,
   });
   const expected = createHash("sha256").update(PNG_BYTES).digest("hex");
   assert.equal(result.sha256, expected);
@@ -155,6 +165,7 @@ await check("follows bounded http(s) redirects", async () => {
       { status: 302, headers: { location: "https://cdn.example.com/c.png" } },
       pngSpec(),
     ]),
+    lookup: PUBLIC_LOOKUP,
   });
   assert.equal(result.finalUrl, "https://cdn.example.com/c.png");
 });
@@ -173,6 +184,7 @@ await check("rejects redirects to non-http targets", async () => {
         fetchImpl: fakeFetch([
           { status: 302, headers: { location: "data:image/png;base64,AAAA" } },
         ]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /Redirect target must use http or https/,
   );
@@ -183,6 +195,7 @@ await check("rejects too many redirects", async () => {
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
         fetchImpl: fakeFetch([{ status: 302, headers: { location: "https://r.example.com/x" } }]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /Exceeded the maximum/,
   );
@@ -193,6 +206,7 @@ await check("rejects non-200 final responses", async () => {
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
         fetchImpl: fakeFetch([{ status: 404, headers: {} }]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /HTTP 404/,
   );
@@ -203,6 +217,7 @@ await check("rejects HTML responses", async () => {
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
         fetchImpl: fakeFetch([{ headers: { "content-type": "text/html" }, body: HTML_BYTES }]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /Unsupported content type/,
   );
@@ -213,6 +228,7 @@ await check("rejects SVG responses", async () => {
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
         fetchImpl: fakeFetch([{ headers: { "content-type": "image/svg+xml" }, body: SVG_BYTES }]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /Unsupported content type/,
   );
@@ -223,6 +239,7 @@ await check("rejects content type and signature mismatches", async () => {
     () =>
       downloadCandidateImage("https://images.example.com/a.jpg", {
         fetchImpl: fakeFetch([{ headers: { "content-type": "image/jpeg" }, body: PNG_BYTES }]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /does not match the detected image format/,
   );
@@ -233,6 +250,7 @@ await check("rejects unrecognized image bytes", async () => {
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
         fetchImpl: fakeFetch([{ headers: { "content-type": "image/png" }, body: UNKNOWN_BYTES }]),
+        lookup: PUBLIC_LOOKUP,
       }),
     /not a recognized image format/,
   );
@@ -245,6 +263,7 @@ await check("rejects oversized declared downloads", async () => {
         fetchImpl: fakeFetch([
           { headers: { "content-type": "image/png", "content-length": "999999" }, body: PNG_BYTES },
         ]),
+        lookup: PUBLIC_LOOKUP,
         maxBytes: 16,
       }),
     /maximum download size/,
@@ -256,6 +275,7 @@ await check("rejects oversized streamed bodies without content-length", async ()
     () =>
       downloadCandidateImage("https://images.example.com/a.png", {
         fetchImpl: fakeFetch([pngSpec(new Uint8Array(64))]),
+        lookup: PUBLIC_LOOKUP,
         maxBytes: 16,
       }),
     /maximum download size/,
@@ -429,6 +449,204 @@ await check("builds bounded, deduplicated, Nigeria-aware queries", () => {
   assert.equal(new Set(queries).size, queries.length);
   assert.ok(queries.some((query) => query.toLowerCase().includes("nigeria")));
   assert.ok(queries.every((query) => query.trim().length > 0));
+});
+
+await check("blocks IPv4 loopback destinations", () => {
+  assert.ok(isDisallowedIp("127.0.0.1"));
+  assert.ok(isDisallowedIp("127.255.255.254"));
+});
+
+await check("blocks IPv4 link-local and cloud metadata destinations", () => {
+  assert.ok(isDisallowedIp("169.254.169.254"));
+  assert.ok(isDisallowedIp("169.254.0.1"));
+});
+
+await check("blocks RFC1918 private IPv4 destinations", () => {
+  assert.ok(isDisallowedIp("10.0.0.1"));
+  assert.ok(isDisallowedIp("10.255.255.255"));
+  assert.ok(isDisallowedIp("172.16.0.1"));
+  assert.ok(isDisallowedIp("172.31.255.254"));
+  assert.ok(isDisallowedIp("192.168.0.1"));
+});
+
+await check("blocks multicast, reserved, and special-purpose IPv4 destinations", () => {
+  assert.ok(isDisallowedIp("0.0.0.0"));
+  assert.ok(isDisallowedIp("100.64.0.1"));
+  assert.ok(isDisallowedIp("192.0.2.9"));
+  assert.ok(isDisallowedIp("198.18.0.1"));
+  assert.ok(isDisallowedIp("198.51.100.7"));
+  assert.ok(isDisallowedIp("203.0.113.7"));
+  assert.ok(isDisallowedIp("224.0.0.1"));
+  assert.ok(isDisallowedIp("240.0.0.1"));
+  assert.ok(isDisallowedIp("255.255.255.255"));
+});
+
+await check("blocks IPv6 loopback, link-local, unique-local, and multicast destinations", () => {
+  assert.ok(isDisallowedIp("::"));
+  assert.ok(isDisallowedIp("::1"));
+  assert.ok(isDisallowedIp("fe80::1"));
+  assert.ok(isDisallowedIp("fec0::1"));
+  assert.ok(isDisallowedIp("fd12:3456:789a::1"));
+  assert.ok(isDisallowedIp("ff02::1"));
+  assert.ok(isDisallowedIp("2001:db8::1"));
+  assert.ok(isDisallowedIp("100::1"));
+});
+
+await check("blocks IPv4-mapped IPv6 destinations", () => {
+  assert.ok(isDisallowedIp("::ffff:127.0.0.1"));
+  assert.ok(isDisallowedIp("::ffff:169.254.169.254"));
+  assert.ok(isDisallowedIp("::ffff:192.168.0.1"));
+  assert.ok(isDisallowedIp("::ffff:7f00:1"));
+  assert.equal(isDisallowedIp("::ffff:8.8.8.8"), false);
+});
+
+await check("blocks NAT64 and 6to4 destinations embedding prohibited IPv4", () => {
+  assert.ok(isDisallowedIp("64:ff9b::7f00:1"));
+  assert.ok(isDisallowedIp("64:ff9b:1::1"));
+  assert.ok(isDisallowedIp("2002:0a00:0001::"));
+  assert.equal(isDisallowedIp("64:ff9b::808:808"), false);
+});
+
+await check("allows public IPv4 and IPv6 literals", () => {
+  assert.equal(isDisallowedIp("93.184.216.34"), false);
+  assert.equal(isDisallowedIp("8.8.8.8"), false);
+  assert.equal(isDisallowedIp("2606:2800:220:1:248:1893:25c8:1946"), false);
+});
+
+await check("blocks downloads to literal loopback and metadata destinations", async () => {
+  await assert.rejects(
+    () => downloadCandidateImage("http://127.0.0.1/a.png", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+  await assert.rejects(
+    () => downloadCandidateImage("http://169.254.169.254/m", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+});
+
+await check("blocks downloads to IPv6 loopback, link-local, and mapped destinations", async () => {
+  await assert.rejects(
+    () => downloadCandidateImage("http://[::1]/a.png", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+  await assert.rejects(
+    () => downloadCandidateImage("http://[fe80::1]/a.png", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+  await assert.rejects(
+    () => downloadCandidateImage("http://[fd00::1]/a.png", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+  await assert.rejects(
+    () =>
+      downloadCandidateImage("http://[::ffff:192.168.0.1]/a.png", { fetchImpl: neverFetch() }),
+    /non-public/,
+  );
+});
+
+await check("blocks hostnames that resolve to prohibited addresses", async () => {
+  const lookup: LookupLike = async () => [{ address: "10.0.0.5", family: 4 }];
+  await assert.rejects(
+    () => downloadCandidateImage("https://internal.example.com/a.png", { lookup }),
+    /non-public/,
+  );
+});
+
+await check("blocks hostnames with any unsafe resolved address", async () => {
+  const lookup: LookupLike = async () => [
+    { address: "93.184.216.34", family: 4 },
+    { address: "192.168.0.7", family: 4 },
+  ];
+  await assert.rejects(
+    () => downloadCandidateImage("https://mixed.example.com/a.png", { lookup }),
+    /non-public/,
+  );
+});
+
+await check("blocks redirects to prohibited destinations", async () => {
+  const fetched: string[] = [];
+  const fetchImpl: FetchLike = async (url) => {
+    fetched.push(url);
+    return new Response(null, {
+      status: 302,
+      headers: { location: "http://169.254.169.254/latest/meta-data" },
+    });
+  };
+  await assert.rejects(
+    () => downloadCandidateImage("https://a.example.com/x", { fetchImpl, lookup: PUBLIC_LOOKUP }),
+    /non-public/,
+  );
+  assert.equal(fetched.length, 1);
+});
+
+await check("blocks redirect chains with an unsafe intermediate destination", async () => {
+  const fetched: string[] = [];
+  const chainLookup: LookupLike = async (host) =>
+    host === "internal.example.com"
+      ? [{ address: "10.0.0.9", family: 4 }]
+      : [{ address: "93.184.216.34", family: 4 }];
+  const fetchImpl: FetchLike = async (url) => {
+    fetched.push(url);
+    if (url === "https://a.example.com/x") {
+      return new Response(null, {
+        status: 302,
+        headers: { location: "https://internal.example.com/x" },
+      });
+    }
+    return new Response(null, {
+      status: 302,
+      headers: { location: "https://b.example.com/final.png" },
+    });
+  };
+  await assert.rejects(
+    () => downloadCandidateImage("https://a.example.com/x", { fetchImpl, lookup: chainLookup }),
+    /non-public/,
+  );
+  assert.equal(fetched.length, 1);
+});
+
+await check("revalidates the destination after the response arrives", async () => {
+  let calls = 0;
+  const rebindingLookup: LookupLike = async () => {
+    calls += 1;
+    return calls === 1
+      ? [{ address: "93.184.216.34", family: 4 }]
+      : [{ address: "10.0.0.66", family: 4 }];
+  };
+  const options = { fetchImpl: fakeFetch([pngSpec()]), lookup: rebindingLookup };
+  await assert.rejects(
+    () => downloadCandidateImage("https://a.example.com/x", options),
+    /non-public/,
+  );
+});
+
+await check("probes report unsafe without fetching prohibited destinations", async () => {
+  const fetched: string[] = [];
+  const fetchImpl: FetchLike = async (url) => {
+    fetched.push(url);
+    return new Response(null, {
+      status: 302,
+      headers: { location: "http://169.254.169.254/latest/meta-data" },
+    });
+  };
+  const outcome = await probeExternalUrl("https://cdn.example.com/a.jpg", {
+    userAgent: "test",
+    timeoutMs: 5000,
+    fetchImpl,
+    lookup: PUBLIC_LOOKUP,
+  });
+  assert.equal(outcome, "unsafe");
+  assert.equal(fetched.length, 1);
+});
+
+await check("probes classify reachable public URLs", async () => {
+  const outcome = await probeExternalUrl("https://cdn.example.com/a.jpg", {
+    userAgent: "test",
+    timeoutMs: 5000,
+    fetchImpl: fakeFetch([{ status: 200, headers: {} }]),
+    lookup: PUBLIC_LOOKUP,
+  });
+  assert.equal(outcome, "ok");
 });
 
 console.log("");
