@@ -3,7 +3,10 @@ import { dirname, resolve } from "node:path";
 import type { EditorialMediaRecord } from "../src/features/editorial/media-types";
 
 export const MANIFEST_PATH = resolve(process.cwd(), "docs/editorial-media/manifest.json");
-export const DISCOVERY_LOG_PATH = resolve(process.cwd(), "docs/editorial-media/discovery-log.json");
+export const DISCOVERY_LOG_PATH = resolve(
+  process.cwd(),
+  "docs/editorial-media/discovery-log.json",
+);
 export const REPORT_PATH = resolve(process.cwd(), "docs/editorial-media/recovery-report.json");
 export const REPORT_MD_PATH = resolve(process.cwd(), "docs/editorial-media/RECOVERY_REPORT.md");
 export const SUBSET_PATH = resolve(process.cwd(), "src/data/editorialMediaApproved.ts");
@@ -11,6 +14,19 @@ export const SUBSET_PATH = resolve(process.cwd(), "src/data/editorialMediaApprov
 export type EditorialMediaManifest = {
   schemaVersion: 1;
   records: EditorialMediaRecord[];
+};
+
+/** Per-host reachability summary for external content image references. */
+export type ExternalHostReachability = {
+  host: string;
+  references: number;
+  checked: number;
+  ok: number;
+  unavailable: number;
+  forbidden: number;
+  timeout: number;
+  unknown: number;
+  unchecked: number;
 };
 
 export type EditorialRecoveryReport = {
@@ -29,13 +45,36 @@ export type EditorialRecoveryReport = {
     approvedReplacementsInUse: number;
     placeholderArticles: number;
     imagesSharedByMultipleArticles: number;
-    deadExternalContentImages: number;
+    externalContentImageReferences: number;
+  };
+  externalReachability: {
+    checked: number;
+    ok: number;
+    unavailable: number;
+    forbidden: number;
+    timeout: number;
+    unknown: number;
+    unchecked: number;
   };
   broken: Array<{ slug: string; id: number; image: string; repairedTo: string | null }>;
   recovered: Array<{ slug: string; id: number; path: string; method: string }>;
   duplicates: Array<{ image: string; articles: Array<{ slug: string; id: number }> }>;
-  deadHosts: Array<{ host: string; count: number }>;
+  externalHosts: ExternalHostReachability[];
 };
+
+/** Fill in hardening fields missing from records written by older tooling. */
+export const normalizeMediaRecord = (record: EditorialMediaRecord): EditorialMediaRecord => ({
+  ...record,
+  rightsClearedBy: record.rightsClearedBy ?? null,
+  rightsClearedAt: record.rightsClearedAt ?? null,
+  visualInspectionConfirmedBy: record.visualInspectionConfirmedBy ?? null,
+  visualInspectionConfirmedAt: record.visualInspectionConfirmedAt ?? null,
+  editorialRelevanceConfirmedBy: record.editorialRelevanceConfirmedBy ?? null,
+  editorialRelevanceConfirmedAt: record.editorialRelevanceConfirmedAt ?? null,
+  downloadVerified: record.downloadVerified ?? false,
+  downloadedSha256: record.downloadedSha256 ?? null,
+  statusHistory: Array.isArray(record.statusHistory) ? record.statusHistory : [],
+});
 
 export const readManifest = (): EditorialMediaManifest => {
   if (!existsSync(MANIFEST_PATH)) {
@@ -45,7 +84,7 @@ export const readManifest = (): EditorialMediaManifest => {
   if (parsed.schemaVersion !== 1 || !Array.isArray(parsed.records)) {
     throw new Error("Editorial media manifest has an unsupported schema.");
   }
-  return parsed;
+  return { schemaVersion: 1, records: parsed.records.map(normalizeMediaRecord) };
 };
 
 export const readReport = (): EditorialRecoveryReport | null => {

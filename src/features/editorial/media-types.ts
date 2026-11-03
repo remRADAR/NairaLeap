@@ -11,6 +11,18 @@
  */
 export type EditorialMediaStatus = "original" | "candidate" | "approved" | "rejected";
 
+/** Append-only audit trail entry for a manifest record. */
+export type EditorialMediaHistoryEntry = {
+  /** ISO timestamp of the recorded action. */
+  at: string;
+  /** Identity of the person or process that recorded the action. */
+  by: string;
+  /** What happened to the record. */
+  action: "discovered" | "recovered" | "downloaded" | "approved" | "rejected";
+  /** Optional context recorded with the action. */
+  notes: string | null;
+};
+
 export type EditorialMediaRecord = {
   /** WordPress post id of the article this record belongs to. */
   articleId: number;
@@ -64,4 +76,22 @@ export type EditorialMediaRecord = {
   recoveryMethod: string | null;
   /** Lifecycle status of this record. */
   status: EditorialMediaStatus;
+  /** Reviewer who explicitly cleared depiction or trademark rights, if required. */
+  rightsClearedBy: string | null;
+  /** When rights clearance was recorded. */
+  rightsClearedAt: string | null;
+  /** Reviewer who confirmed documented visual inspection of the source image. */
+  visualInspectionConfirmedBy: string | null;
+  /** When visual inspection was confirmed. */
+  visualInspectionConfirmedAt: string | null;
+  /** Reviewer who confirmed the image is editorially relevant to the article. */
+  editorialRelevanceConfirmedBy: string | null;
+  /** When editorial relevance was confirmed. */
+  editorialRelevanceConfirmedAt: string | null;
+  /** Whether the hardened download pipeline verified MIME, signature, and size. */
+  downloadVerified: boolean;
+  /** Full SHA-256 of the stored bytes (content-addressed storage). */
+  downloadedSha256: string | null;
+  /** Append-only audit trail of status transitions. */
+  statusHistory: EditorialMediaHistoryEntry[];
 };

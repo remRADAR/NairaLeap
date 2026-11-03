@@ -12,6 +12,7 @@ import {
   writeText,
   type EditorialMediaManifest,
   type EditorialRecoveryReport,
+  type ExternalHostReachability,
 } from "./editorial-media-lib";
 
 /**
@@ -21,7 +22,15 @@ import {
  *   1. Verify every original featured image assignment (nothing is overwritten).
  *   2. Repair broken references where an unambiguous local file exists.
  *   3. Recover original artwork embedded in an article's own migrated content.
- *   4. Report duplicates, dead external references, and remaining gaps.
+ *   4. Report duplicate assignments and external content image references.
+ *
+ * External content images are reported with a bounded, rate-conscious
+ * reachability check: a capped set of unique URLs is probed with HEAD requests
+ * (a byte-range GET when HEAD is unsupported), limited concurrency, and short
+ * timeouts. Outcomes are recorded per host as reachable, unavailable,
+ * forbidden, timeout, or unknown; URLs beyond the cap are counted as
+ * unchecked. Reachability is reporting only — article content is never
+ * rewritten.
  *
  * The migration snapshot src/data/wordpressEditorial.ts is never modified.
  * Recovered relationships are recorded in the media manifest and the generated
@@ -31,6 +40,16 @@ import {
 
 const PUBLIC_DIR = resolve(process.cwd(), "public");
 const EDITORIAL_DIR = resolve(PUBLIC_DIR, "editorial");
+const USER_AGENT = "NairaLeap editorial media audit/1.0";
+
+const REACHABILITY = {
+  maxChecks: 60,
+  concurrency: 6,
+  timeoutMs: 5000,
+  delayMs: 100,
+} as const;
+
+type ReachabilityOutcome = "ok" | "unavailable" | "forbidden" | "timeout" | "unknown";
 
 const walkFiles = (dir: string): string[] => {
   const entries = readdirSync(dir, { withFileTypes: true });
@@ -77,6 +96,63 @@ const localContentImage = (sources: string[]): string | null => {
 
 const postsBySlug = new Map(EDITORIAL_POSTS.map((post) => [post.slug, post]));
 
+const hostOf = (source: string): string => {
+  try {
+    return new URL(source).host.toLowerCase();
+  } catch {
+    return "(invalid-url)";
+  }
+};
+
+const classifyStatus = (status: number): ReachabilityOutcome | null => {
+  if (status >= 200 && status < 300) return "ok";
+  if (status === 401 || status === 403) return "forbidden";
+  if (status >= 400) return "unavailable";
+  return null;
+};
+
+const checkExternalUrl = async (url: string): Promise<ReachabilityOutcome> => {
+  try {
+    const head = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+      headers: { "User-Agent": USER_AGENT },
+      signal: AbortSignal.timeout(REACHABILITY.timeoutMs),
+    });
+    const headOutcome = classifyStatus(head.status);
+    if (headOutcome && head.status !== 405 && head.status !== 501) return headOutcome;
+    const get = await fetch(url, {
+      method: "GET",
+      redirect: "follow",
+      headers: { "User-Agent": USER_AGENT, Range: "bytes=0-255" },
+      signal: AbortSignal.timeout(REACHABILITY.timeoutMs),
+    });
+    await get.body?.cancel();
+    const getOutcome = classifyStatus(get.status);
+    return getOutcome ?? "unavailable";
+  } catch (error) {
+    const name = (error as Error)?.name ?? "";
+    if (name === "TimeoutError" || name === "AbortError") return "timeout";
+    return "unknown";
+  }
+};
+
+const checkExternalUrls = async (urls: string[]): Promise<Map<string, ReachabilityOutcome>> => {
+  const outcomes = new Map<string, ReachabilityOutcome>();
+  const queue = [...urls];
+  const workerCount = Math.min(REACHABILITY.concurrency, queue.length);
+  const workers = Array.from({ length: workerCount }, async () => {
+    for (;;) {
+      const url = queue.shift();
+      if (!url) return;
+      await new Promise((done) => setTimeout(done, REACHABILITY.delayMs));
+      outcomes.set(url, await checkExternalUrl(url));
+    }
+  });
+  await Promise.all(workers);
+  return outcomes;
+};
+
 const makeRecoveredRecord = (
   post: EditorialPost,
   path: string,
@@ -108,6 +184,22 @@ const makeRecoveredRecord = (
   rejectionReason: null,
   recoveryMethod: method,
   status: "original",
+  rightsClearedBy: null,
+  rightsClearedAt: null,
+  visualInspectionConfirmedBy: null,
+  visualInspectionConfirmedAt: null,
+  editorialRelevanceConfirmedBy: null,
+  editorialRelevanceConfirmedAt: null,
+  downloadVerified: false,
+  downloadedSha256: null,
+  statusHistory: [
+    {
+      at: new Date().toISOString(),
+      by: "reconciliation",
+      action: "recovered",
+      notes: method,
+    },
+  ],
 });
 
 const manifest = readManifest();
@@ -118,19 +210,18 @@ let repairedOriginalImages = 0;
 let recoveredFromContent = 0;
 const broken: EditorialRecoveryReport["broken"] = [];
 const recovered: EditorialRecoveryReport["recovered"] = [];
-const deadExternalCounts = new Map<string, number>();
 const assignmentCounts = new Map<string, Array<{ slug: string; id: number }>>();
+const externalReferences = new Map<string, number>();
+const urlHosts = new Map<string, string>();
 
 for (const post of EDITORIAL_POSTS) {
   const sources = contentImageSources(post.content);
   for (const source of sources) {
-    if (!/^https?:\/\//i.test(source)) continue;
-    try {
-      const host = new URL(source).host.toLowerCase();
-      deadExternalCounts.set(host, (deadExternalCounts.get(host) ?? 0) + 1);
-    } catch {
-      deadExternalCounts.set("(invalid-url)", (deadExternalCounts.get("(invalid-url)") ?? 0) + 1);
-    }
+    const isExternal = /^(?:https?:)?\/\//i.test(source);
+    if (!isExternal) continue;
+    externalReferences.set(source, (externalReferences.get(source) ?? 0) + 1);
+    const absolute = source.startsWith("//") ? "https:" + source : source;
+    if (!urlHosts.has(source)) urlHosts.set(source, hostOf(absolute));
   }
 
   const image = post.image?.trim();
@@ -175,6 +266,58 @@ const duplicates = [...assignmentCounts.entries()]
   .filter(([, articles]) => articles.length > 1)
   .map(([image, articles]) => ({ image, articles }));
 
+const externalUrls = [...externalReferences.keys()];
+const totalExternalReferences = [...externalReferences.values()].reduce(
+  (total, count) => total + count,
+  0,
+);
+const outcomes = await checkExternalUrls(externalUrls.slice(0, REACHABILITY.maxChecks));
+
+const hostStats = new Map<string, ExternalHostReachability>();
+const hostBucket = (host: string): ExternalHostReachability => {
+  const existing = hostStats.get(host);
+  if (existing) return existing;
+  const created: ExternalHostReachability = {
+    host,
+    references: 0,
+    checked: 0,
+    ok: 0,
+    unavailable: 0,
+    forbidden: 0,
+    timeout: 0,
+    unknown: 0,
+    unchecked: 0,
+  };
+  hostStats.set(host, created);
+  return created;
+};
+
+const externalReachability = {
+  checked: 0,
+  ok: 0,
+  unavailable: 0,
+  forbidden: 0,
+  timeout: 0,
+  unknown: 0,
+  unchecked: 0,
+};
+
+for (const url of externalUrls) {
+  const refs = externalReferences.get(url) ?? 0;
+  const bucket = hostBucket(urlHosts.get(url) ?? "(invalid-url)");
+  bucket.references += refs;
+  const outcome = outcomes.get(url);
+  if (!outcome) {
+    bucket.unchecked += refs;
+    externalReachability.unchecked += refs;
+    continue;
+  }
+  bucket.checked += refs;
+  externalReachability.checked += refs;
+  bucket[outcome] += refs;
+  externalReachability[outcome] += refs;
+}
+
 const nextRecords: EditorialMediaRecord[] = [...manifest.records];
 for (const entry of recovered) {
   const post = postsBySlug.get(entry.slug);
@@ -218,76 +361,97 @@ const report: EditorialRecoveryReport = {
     approvedReplacementsInUse,
     placeholderArticles,
     imagesSharedByMultipleArticles: duplicates.length,
-    deadExternalContentImages: [...deadExternalCounts.values()].reduce(
-      (total, count) => total + count,
-      0,
-    ),
+    externalContentImageReferences: totalExternalReferences,
   },
+  externalReachability,
   broken,
   recovered,
   duplicates,
-  deadHosts: [...deadExternalCounts.entries()]
-    .map(([host, count]) => ({ host, count }))
-    .sort((a, b) => b.count - a.count),
+  externalHosts: [...hostStats.values()].sort((a, b) => b.references - a.references),
 };
 
 writeJson(REPORT_PATH, report);
 writeJson(MANIFEST_PATH, nextManifest);
 regenerateSubset(report, nextManifest);
 
+const brokenLines = broken.slice(0, 50).map((entry) => {
+  const outcome = entry.repairedTo ? "repaired to " + entry.repairedTo : "NOT REPAIRED";
+  return `- ${entry.slug} (${entry.id}): ${entry.image} -> ${outcome}`;
+});
+const brokenSection =
+  broken.length === 0
+    ? "None. Every original featured image resolves to a local file."
+    : brokenLines.join("\n");
+
+const recoveredLines = recovered.slice(0, 50).map((entry) => {
+  return `- ${entry.slug} (${entry.method}): ${entry.path}`;
+});
+const recoveredSection =
+  recovered.length === 0
+    ? "No additional original relationships could be recovered."
+    : recoveredLines.join("\n");
+
+const duplicateLines = duplicates.slice(0, 30).map((entry) => {
+  return `- ${entry.image} is used by ${entry.articles.length} articles`;
+});
+const duplicatesSection = duplicates.length === 0 ? "None." : duplicateLines.join("\n");
+
+const reachabilityLines = [
+  `- Reachable (2xx): ${externalReachability.ok}`,
+  `- Unavailable (4xx/5xx): ${externalReachability.unavailable}`,
+  `- Forbidden (401/403): ${externalReachability.forbidden}`,
+  `- Timed out: ${externalReachability.timeout}`,
+  `- Unknown errors: ${externalReachability.unknown}`,
+  `- Not checked this run (capped at ${REACHABILITY.maxChecks} unique URLs): ${externalReachability.unchecked}`,
+];
+
+const hostRows = report.externalHosts.slice(0, 15).map((host) => {
+  return [
+    "| " + host.host,
+    host.references,
+    host.ok,
+    host.unavailable,
+    host.forbidden,
+    host.timeout,
+    host.unknown,
+    host.unchecked + " |",
+  ].join(" | ");
+});
+
 const md = [
   "# Editorial image recovery report",
   "",
-  "Generated by scripts/reconcile-editorial-images.ts at " + report.generatedAt + ".",
+  `Generated by scripts/reconcile-editorial-images.ts at ${report.generatedAt}.`,
   "",
   "| Measure | Count |",
   "| --- | ---: |",
-  ...Object.entries(report.totals).map(([key, value]) => "| " + key + " | " + value + " |"),
+  ...Object.entries(report.totals).map(([key, value]) => `| ${key} | ${value} |`),
   "",
-  "## Broken original references (" + broken.length + ")",
+  `## Broken original references (${broken.length})`,
   "",
-  broken.length === 0
-    ? "None. Every original featured image resolves to a local file."
-    : broken
-        .slice(0, 50)
-        .map(
-          (entry) =>
-            "- " +
-            entry.slug +
-            " (" +
-            entry.id +
-            "): " +
-            entry.image +
-            (entry.repairedTo ? " -> repaired to " + entry.repairedTo : " -> NOT REPAIRED"),
-        )
-        .join("\n"),
+  brokenSection,
   "",
-  "## Recovered original relationships (" + recovered.length + ")",
+  `## Recovered original relationships (${recovered.length})`,
   "",
-  recovered.length === 0
-    ? "No additional original relationships could be recovered."
-    : recovered
-        .slice(0, 50)
-        .map((entry) => "- " + entry.slug + " (" + entry.method + "): " + entry.path)
-        .join("\n"),
+  recoveredSection,
   "",
-  "## Media shared by multiple articles (" + duplicates.length + ")",
+  `## Media shared by multiple articles (${duplicates.length})`,
   "",
-  duplicates.length === 0
-    ? "None."
-    : duplicates
-        .slice(0, 30)
-        .map((entry) => "- " + entry.image + " is used by " + entry.articles.length + " articles")
-        .join("\n"),
+  duplicatesSection,
   "",
-  "## Dead external content image hosts",
+  `## External content image references (${totalExternalReferences})`,
   "",
-  report.deadHosts.length === 0
-    ? "None."
-    : report.deadHosts
-        .slice(0, 20)
-        .map((entry) => "- " + entry.host + ": " + entry.count + " references")
-        .join("\n"),
+  "External images inside article bodies, checked with bounded HEAD probes",
+  "(limited concurrency, short timeouts, capped URL set). This is reporting",
+  "only; article content is never rewritten.",
+  "",
+  ...reachabilityLines,
+  "",
+  "### Top external hosts by reference count",
+  "",
+  "| Host | Refs | Reachable | Unavailable | Forbidden | Timeout | Unknown | Unchecked |",
+  "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+  ...hostRows,
   "",
   "## Next steps",
   "",
@@ -300,4 +464,10 @@ const md = [
 
 writeText(REPORT_MD_PATH, md);
 
-console.log(JSON.stringify({ report: report.totals, recovered: recovered.length }, null, 2));
+console.log(
+  JSON.stringify(
+    { report: report.totals, externalReachability, recovered: recovered.length },
+    null,
+    2,
+  ),
+);
