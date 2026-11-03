@@ -18,6 +18,7 @@
     "media:discover": "bun run scripts/discover-editorial-images.ts",
     "media:approve": "bun run scripts/approve-editorial-media.ts",
     "test:editorial-images": "bun run scripts/test-editorial-image-resolution.ts",
+    "test:editorial-media": "bun run scripts/test-editorial-media-validation.ts",
     "audit:leapbot-boundaries": "bun run scripts/audit-leapbot-boundaries.ts",
     "audit:leapbot-workflow-boundaries": "bun run scripts/audit-leapbot-workflow-boundaries.ts",
     "format": "prettier --write ."

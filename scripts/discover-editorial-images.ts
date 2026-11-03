@@ -1,4 +1,8 @@
-import { EDITORIAL_POSTS, type EditorialPost } from "../src/data/wordpressEditorial";
+import type { EditorialPost } from "../src/data/wordpressEditorial";
+import {
+  INVALID_ORIGINAL_IMAGES,
+  RECOVERED_ORIGINAL_IMAGES,
+} from "../src/data/editorialMediaApproved";
 import type { EditorialMediaRecord } from "../src/features/editorial/media-types";
 import {
   DISCOVERY_LOG_PATH,
@@ -13,16 +17,29 @@ import {
 /**
  * Intelligent replacement-imagery discovery via Openverse.
  *
- * For each article without original artwork:
+ * Eligibility (corrected): articles with a valid original featured image are
+ * skipped, as are articles whose original was recovered by reconciliation and
+ * articles that already have an approved replacement. Articles whose original
+ * image is broken (marked invalid by reconciliation) ARE eligible for
+ * replacement candidates, as are articles that never had an original image.
+ * Rejected records keep their existing workflow rules: a rejected article can
+ * receive fresh candidates on an explicit --refresh run, and refresh never
+ * silently discards approved records.
+ *
+ * For each eligible article:
  *   1. analyse the title (named entities), tags, and category context;
- *   2. build focused search queries from that analysis;
- *   3. retrieve candidates from Openverse, filtered to commercial-safe licenses;
+ *   2. build focused queries, including Nigerian geographic context and
+ *      industry-specific visual concepts;
+ *   3. retrieve candidates from Openverse, filtered to commercial-safe
+ *      licenses;
  *   4. score genuine relevance against the article's own vocabulary;
  *   5. record candidates — with full source and licensing provenance — in the
  *      media manifest as "candidate" records for editorial approval.
  *
- * Candidates are never published. Only records approved through
- * scripts/approve-editorial-media.ts can become featured images.
+ * Relevance and licensing requirements are never weakened to increase counts.
+ * Candidates are never published and never auto-approved. Only records
+ * approved through scripts/approve-editorial-media.ts can become featured
+ * images.
  *
  * Usage:
  *   bun run media:discover [--limit 3] [--slugs a,b] [--licenses cc0,pdm,by]
@@ -33,6 +50,9 @@ const OPENVERSE_ENDPOINT = "https://api.openverse.org/v1/images/";
 const DEFAULT_LICENSES = ["cc0", "pdm", "by"];
 const LICENSE_RANK: Record<string, number> = { cc0: 0, pdm: 1, by: 2 };
 const MAX_CANDIDATES_PER_ARTICLE = 3;
+const MAX_QUERIES_PER_ARTICLE = 6;
+const QUERY_DELAY_MS = 300;
+const QUERY_TIMEOUT_MS = 15000;
 
 const STOPWORDS = new Set([
   "the",
@@ -178,6 +198,31 @@ const IP_HINTS = [
   "merchandise",
 ];
 
+const CATEGORY_CONCEPTS: Array<{ match: RegExp; concepts: string[] }> = [
+  { match: /bank|cbn|mortgage|loan|lending|deposit/i, concepts: ["banknotes", "bank building"] },
+  {
+    match: /cryptocurrenc|bitcoin|blockchain|crypto|web3|defi|stablecoin/i,
+    concepts: ["bitcoin", "cryptocurrency"],
+  },
+  { match: /stock|equit|shares|investor|nasd|nse|bourse|dividend/i, concepts: ["stock market"] },
+  {
+    match: /econom|gdp|inflation|recession|fiscal|budget|treasury|debt|naira/i,
+    concepts: ["economy", "financial charts"],
+  },
+  { match: /oil|gas|petrol|energy|refiner|opec/i, concepts: ["oil industry", "refinery"] },
+  { match: /telecom|internet|broadband|5g|technolog|fintech/i, concepts: ["telecommunications"] },
+  { match: /agric|farm|crop|cocoa|rice|food|harvest/i, concepts: ["agriculture", "farmland"] },
+  { match: /aviation|airline|airport|flight/i, concepts: ["airplanes", "airport"] },
+  { match: /real estate|property|housing|construction|cement/i, concepts: ["real estate"] },
+  { match: /trade|export|import|port|shipping|custom|maritime/i, concepts: ["cargo port"] },
+  { match: /sport|football|caf|fifa|league/i, concepts: ["football stadium"] },
+  { match: /entertainment|music|film|nollywood|cinema/i, concepts: ["concert", "cinema"] },
+  { match: /health|hospital|medic|doctor|disease|malaria/i, concepts: ["hospital", "medicine"] },
+  { match: /education|school|university|student|jamb/i, concepts: ["classroom"] },
+  { match: /power|electricity|grid|solar|renewable/i, concepts: ["power lines", "solar panels"] },
+  { match: /transport|rail|road|traffic|logistics/i, concepts: ["railway", "highway"] },
+];
+
 type OpenverseTag = { name?: string | null };
 
 type OpenverseImage = {
@@ -243,15 +288,60 @@ const articleKeywords = (post: EditorialPost): Set<string> =>
     ...post.categoryPath.flatMap((segment) => tokenize(segment)),
   ]);
 
-const buildQueries = (post: EditorialPost): string[] => {
+/**
+ * Discovery eligibility. Articles with a valid original image are skipped;
+ * articles with a recovered original are skipped; articles whose original is
+ * broken (invalid) CAN receive replacement candidates; articles without an
+ * original are eligible; articles with an approved replacement are never
+ * re-discovered.
+ */
+export const isEligibleForDiscovery = (
+  post: { slug: string; image: string | null },
+  invalidOriginals: Record<string, true>,
+  recoveredOriginals: Record<string, string>,
+  approvedSlugs: Set<string>,
+): boolean => {
+  if (approvedSlugs.has(post.slug)) return false;
+  if (recoveredOriginals[post.slug]) return false;
+  if (post.image) return invalidOriginals[post.slug] === true;
+  return true;
+};
+
+/**
+ * Build focused queries from named entities, article vocabulary, category
+ * context, industry-specific visual concepts, and Nigerian geographic
+ * context. Bounded to MAX_QUERIES_PER_ARTICLE and deduplicated.
+ */
+export const buildQueries = (post: EditorialPost): string[] => {
   const queries: string[] = [];
   const entities = extractEntities(post.title);
-  if (entities.length > 0) queries.push(entities.slice(0, 2).join(" "));
+  if (entities.length > 0) {
+    const phrase = entities.slice(0, 2).join(" ");
+    queries.push(phrase);
+    queries.push(phrase + " Nigeria");
+  }
   const keywords = [...articleKeywords(post)];
   if (keywords.length >= 2) queries.push(keywords.slice(0, 4).join(" "));
   const context = [post.category, ...post.tags.slice(0, 2)].filter(Boolean).join(" ").trim();
   if (context.length > 0) queries.push(context);
-  return [...new Set(queries.map((query) => query.trim()).filter(Boolean))].slice(0, 3);
+  const haystack = post.title + " " + post.tags.join(" ") + " " + post.category;
+  const concepts: string[] = [];
+  for (const entry of CATEGORY_CONCEPTS) {
+    if (entry.match.test(haystack)) concepts.push(...entry.concepts);
+  }
+  for (const concept of [...new Set(concepts)].slice(0, 4)) {
+    queries.push(concept + " Nigeria");
+    if (queries.length >= MAX_QUERIES_PER_ARTICLE) break;
+    queries.push(concept);
+  }
+  return [...new Set(queries.map((query) => query.trim()).filter(Boolean))].slice(
+    0,
+    MAX_QUERIES_PER_ARTICLE,
+  );
+};
+
+const delay = async (ms: number): Promise<void> => {
+  await new Promise((done) => setTimeout(done, ms));
 };
 
 const searchOpenverse = async (query: string, licenses: string[]): Promise<OpenverseImage[]> => {
@@ -266,7 +356,7 @@ const searchOpenverse = async (query: string, licenses: string[]): Promise<Openv
       Accept: "application/json",
       "User-Agent": "NairaLeap editorial media discovery/1.0",
     },
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(QUERY_TIMEOUT_MS),
   });
   if (response.status === 429 || response.status === 403) {
     throw new Error("Openverse rate limit reached (HTTP " + response.status + ")");
@@ -314,155 +404,187 @@ const attributionFor = (image: OpenverseImage): string => {
   return parts.filter(Boolean).join(" — ");
 };
 
-const limit = Math.max(1, Number(flagValue("limit") ?? 3));
-const requestedSlugs = (flagValue("slugs") ?? "")
-  .split(",")
-  .map((slug) => slug.trim())
-  .filter((slug) => slug.length > 0);
-const licenses = (flagValue("licenses") ?? DEFAULT_LICENSES.join(","))
-  .split(",")
-  .map((license) => license.trim().toLowerCase())
-  .filter((license) => license.length > 0);
-const minScore = Math.max(1, Number(flagValue("min-score") ?? 2));
-const refresh = hasFlag("refresh");
+const main = async (): Promise<void> => {
+  const { EDITORIAL_POSTS } = await import("../src/data/wordpressEditorial");
 
-const manifest = readManifest();
-const report = readReport();
-const statusBySlug = new Map<string, Set<string>>();
-for (const record of manifest.records) {
-  const statuses = statusBySlug.get(record.articleSlug) ?? new Set<string>();
-  statuses.add(record.status);
-  statusBySlug.set(record.articleSlug, statuses);
-}
+  const limit = Math.max(1, Number(flagValue("limit") ?? 3));
+  const requestedSlugs = (flagValue("slugs") ?? "")
+    .split(",")
+    .map((slug) => slug.trim())
+    .filter((slug) => slug.length > 0);
+  const licenses = (flagValue("licenses") ?? DEFAULT_LICENSES.join(","))
+    .split(",")
+    .map((license) => license.trim().toLowerCase())
+    .filter((license) => license.length > 0);
+  const minScore = Math.max(1, Number(flagValue("min-score") ?? 2));
+  const refresh = hasFlag("refresh");
 
-const pending = EDITORIAL_POSTS.filter((post) => !post.image)
-  .filter((post) => requestedSlugs.length === 0 || requestedSlugs.includes(post.slug))
-  .filter((post) => {
-    if (refresh) return true;
-    const statuses = statusBySlug.get(post.slug);
-    if (!statuses) return true;
-    return !statuses.has("candidate") && !statuses.has("approved") && !statuses.has("rejected");
-  })
-  .slice(0, limit);
+  const manifest = readManifest();
+  const report = readReport();
+  const statusBySlug = new Map<string, Set<string>>();
+  for (const record of manifest.records) {
+    const statuses = statusBySlug.get(record.articleSlug) ?? new Set<string>();
+    statuses.add(record.status);
+    statusBySlug.set(record.articleSlug, statuses);
+  }
+  const approvedSlugs = new Set(
+    manifest.records
+      .filter((record) => record.status === "approved")
+      .map((record) => record.articleSlug),
+  );
 
-const log = {
-  ranAt: new Date().toISOString(),
-  endpoint: OPENVERSE_ENDPOINT,
-  licenses,
-  minScore,
-  articlesProcessed: pending.length,
-  queriesIssued: 0,
-  candidatesRecorded: 0,
-  errors: [] as string[],
-};
+  const pending = EDITORIAL_POSTS.filter((post) =>
+    isEligibleForDiscovery(post, INVALID_ORIGINAL_IMAGES, RECOVERED_ORIGINAL_IMAGES, approvedSlugs),
+  )
+    .filter((post) => requestedSlugs.length === 0 || requestedSlugs.includes(post.slug))
+    .filter((post) => {
+      if (refresh) return true;
+      const statuses = statusBySlug.get(post.slug);
+      if (!statuses) return true;
+      return !statuses.has("candidate") && !statuses.has("approved") && !statuses.has("rejected");
+    })
+    .slice(0, limit);
 
-const newRecords: EditorialMediaRecord[] = [];
+  const log = {
+    ranAt: new Date().toISOString(),
+    endpoint: OPENVERSE_ENDPOINT,
+    licenses,
+    minScore,
+    articlesProcessed: pending.length,
+    queriesIssued: 0,
+    candidatesRecorded: 0,
+    errors: [] as string[],
+  };
 
-for (const post of pending) {
-  const keywords = articleKeywords(post);
-  const queries = buildQueries(post);
-  const scored = new Map<
-    string,
-    { image: OpenverseImage; score: number; matched: string[]; query: string }
-  >();
+  const newRecords: EditorialMediaRecord[] = [];
 
-  for (const query of queries) {
-    let results: OpenverseImage[] = [];
-    try {
-      results = await searchOpenverse(query, licenses);
-      log.queriesIssued += 1;
-    } catch (error) {
-      log.errors.push(post.slug + " / " + query + ": " + (error as Error).message);
-      continue;
-    }
-    for (const image of results) {
-      if (!image.id || !image.url) continue;
-      const imageTerms = new Set([
-        ...tokenize(image.title ?? ""),
-        ...(image.tags ?? []).flatMap((tag) => tokenize(tag.name ?? "")),
-      ]);
-      const matched = [...keywords].filter((keyword) => imageTerms.has(keyword));
-      const score = matched.length;
-      const previous = scored.get(image.id);
-      if (!previous || score > previous.score) {
-        scored.set(image.id, { image, score, matched, query });
+  for (const post of pending) {
+    const keywords = articleKeywords(post);
+    const queries = buildQueries(post);
+    const scored = new Map<
+      string,
+      { image: OpenverseImage; score: number; matched: string[]; query: string }
+    >();
+
+    for (const query of queries) {
+      let results: OpenverseImage[] = [];
+      try {
+        await delay(QUERY_DELAY_MS);
+        results = await searchOpenverse(query, licenses);
+        log.queriesIssued += 1;
+      } catch (error) {
+        log.errors.push(post.slug + " / " + query + ": " + (error as Error).message);
+        continue;
+      }
+      for (const image of results) {
+        if (!image.id || !image.url) continue;
+        const imageTerms = new Set([
+          ...tokenize(image.title ?? ""),
+          ...(image.tags ?? []).flatMap((tag) => tokenize(tag.name ?? "")),
+        ]);
+        const matched = [...keywords].filter((keyword) => imageTerms.has(keyword));
+        const score = matched.length;
+        const previous = scored.get(image.id);
+        if (!previous || score > previous.score) {
+          scored.set(image.id, { image, score, matched, query });
+        }
       }
     }
+
+    const ranked = [...scored.values()]
+      .filter((entry) => entry.score >= minScore)
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          (LICENSE_RANK[a.image.license ?? ""] ?? 3) - (LICENSE_RANK[b.image.license ?? ""] ?? 3),
+      )
+      .slice(0, MAX_CANDIDATES_PER_ARTICLE);
+
+    for (const entry of ranked) {
+      const license = entry.image.license ?? null;
+      const licenseCode = (license ?? "").toLowerCase();
+      const attributionRequired = licenseCode !== "cc0" && licenseCode !== "pdm";
+      const rights = rightsNotesFor(entry.image);
+      const record: EditorialMediaRecord = {
+        articleId: post.id,
+        articleSlug: post.slug,
+        articleTitle: post.title,
+        originalImage: post.image ?? null,
+        replacementImage: null,
+        sourceProvider: "openverse",
+        sourceRecordId: entry.image.id,
+        sourceUrl: entry.image.foreign_landing_url ?? entry.image.url ?? null,
+        imageUrl: entry.image.url,
+        imageCreator: entry.image.creator ?? null,
+        license,
+        licenseVersion: entry.image.license_version ?? null,
+        licenseUrl: entry.image.license_url ?? null,
+        attributionRequired,
+        attributionText: attributionRequired ? attributionFor(entry.image) : null,
+        rightsReviewRequired: rights.required,
+        rightsNotes: rights.notes,
+        relevanceScore: entry.score,
+        relevanceNotes:
+          "Matched article terms: " + entry.matched.join(", ") + " (query: " + entry.query + ").",
+        queryUsed: entry.query,
+        retrievedAt: new Date().toISOString(),
+        reviewedAt: null,
+        reviewedBy: null,
+        rejectionReason: null,
+        recoveryMethod: null,
+        rightsClearedBy: null,
+        rightsClearedAt: null,
+        visualInspectionConfirmedBy: null,
+        visualInspectionConfirmedAt: null,
+        editorialRelevanceConfirmedBy: null,
+        editorialRelevanceConfirmedAt: null,
+        downloadVerified: false,
+        downloadedSha256: null,
+        statusHistory: [
+          {
+            at: new Date().toISOString(),
+            by: "openverse-discovery",
+            action: "discovered",
+            notes: "query: " + entry.query,
+          },
+        ],
+        status: "candidate",
+      };
+      newRecords.push(record);
+    }
   }
 
-  const ranked = [...scored.values()]
-    .filter((entry) => entry.score >= minScore)
-    .sort(
-      (a, b) =>
-        b.score - a.score ||
-        (LICENSE_RANK[a.image.license ?? ""] ?? 3) - (LICENSE_RANK[b.image.license ?? ""] ?? 3),
-    )
-    .slice(0, MAX_CANDIDATES_PER_ARTICLE);
+  log.candidatesRecorded = newRecords.length;
 
-  for (const entry of ranked) {
-    const license = entry.image.license ?? null;
-    const licenseCode = (license ?? "").toLowerCase();
-    const attributionRequired = licenseCode !== "cc0" && licenseCode !== "pdm";
-    const rights = rightsNotesFor(entry.image);
-    const record: EditorialMediaRecord = {
-      articleId: post.id,
-      articleSlug: post.slug,
-      articleTitle: post.title,
-      originalImage: post.image ?? null,
-      replacementImage: null,
-      sourceProvider: "openverse",
-      sourceRecordId: entry.image.id,
-      sourceUrl: entry.image.foreign_landing_url ?? entry.image.url ?? null,
-      imageUrl: entry.image.url,
-      imageCreator: entry.image.creator ?? null,
-      license,
-      licenseVersion: entry.image.license_version ?? null,
-      licenseUrl: entry.image.license_url ?? null,
-      attributionRequired,
-      attributionText: attributionRequired ? attributionFor(entry.image) : null,
-      rightsReviewRequired: rights.required,
-      rightsNotes: rights.notes,
-      relevanceScore: entry.score,
-      relevanceNotes:
-        "Matched article terms: " + entry.matched.join(", ") + " (query: " + entry.query + ").",
-      queryUsed: entry.query,
-      retrievedAt: new Date().toISOString(),
-      reviewedAt: null,
-      reviewedBy: null,
-      rejectionReason: null,
-      recoveryMethod: null,
-      status: "candidate",
-    };
-    newRecords.push(record);
-  }
-}
+  const processedSlugs = new Set(pending.map((post) => post.slug));
+  const keptRecords = refresh
+    ? manifest.records.filter(
+        (record) => !(record.status === "candidate" && processedSlugs.has(record.articleSlug)),
+      )
+    : manifest.records;
+  const nextManifest: EditorialMediaManifest = {
+    schemaVersion: 1,
+    records: [...keptRecords, ...newRecords],
+  };
 
-log.candidatesRecorded = newRecords.length;
+  writeJson(MANIFEST_PATH, nextManifest);
+  writeJson(DISCOVERY_LOG_PATH, log);
+  regenerateSubset(report, nextManifest);
 
-const processedSlugs = new Set(pending.map((post) => post.slug));
-const keptRecords = refresh
-  ? manifest.records.filter(
-      (record) => !(record.status === "candidate" && processedSlugs.has(record.articleSlug)),
-    )
-  : manifest.records;
-const nextManifest: EditorialMediaManifest = {
-  schemaVersion: 1,
-  records: [...keptRecords, ...newRecords],
+  console.log(
+    JSON.stringify(
+      {
+        articlesProcessed: log.articlesProcessed,
+        queriesIssued: log.queriesIssued,
+        candidatesRecorded: log.candidatesRecorded,
+        errors: log.errors,
+      },
+      null,
+      2,
+    ),
+  );
 };
 
-writeJson(MANIFEST_PATH, nextManifest);
-writeJson(DISCOVERY_LOG_PATH, log);
-regenerateSubset(report, nextManifest);
-
-console.log(
-  JSON.stringify(
-    {
-      articlesProcessed: log.articlesProcessed,
-      queriesIssued: log.queriesIssued,
-      candidatesRecorded: log.candidatesRecorded,
-      errors: log.errors,
-    },
-    null,
-    2,
-  ),
-);
+if ((import.meta as ImportMeta & { main?: boolean }).main === true) {
+  await main();
+}
