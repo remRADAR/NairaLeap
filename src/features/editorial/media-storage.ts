@@ -16,12 +16,13 @@ const MEDIA_BASE_URL = RAW_MEDIA_BASE_URL.replace(/\/+$/, "");
 
 /**
  * Join a configured media base URL with a local editorial media path.
- * Absolute, protocol-relative, and data URLs pass through untouched.
+ * Fully-absolute URLs (https://…), protocol-relative URLs (//…), and data URLs
+ * pass through untouched; local root-relative paths are joined onto the base.
  */
 export const joinMediaBaseUrl = (baseUrl: string, path: string): string => {
   const trimmedBase = baseUrl.replace(/\/+$/, "");
   if (!trimmedBase || !path) return path;
-  if (/^(?:https?:)?\//i.test(path) || path.startsWith("data:")) return path;
+  if (/^(?:https?:)?\/\//i.test(path) || path.startsWith("data:")) return path;
   return `${trimmedBase}/${path.replace(/^\/+/, "")}`;
 };
 
