@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="NairaLeap editorial archive placeholder">
+  <defs>
+    <linearGradient id="placeholder-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#20202d"/>
+      <stop offset="0.55" stop-color="#34284e"/>
+      <stop offset="1" stop-color="#53308f"/>
+    </linearGradient>
+    <pattern id="placeholder-lines" width="120" height="120" patternUnits="userSpaceOnUse" patternTransform="rotate(-24)">
+      <line x1="0" y1="0" x2="0" y2="120" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#placeholder-bg)"/>
+  <rect width="1600" height="1000" fill="url(#placeholder-lines)"/>
+  <circle cx="1280" cy="230" r="150" fill="#7a2ce2" fill-opacity="0.18"/>
+  <circle cx="230" cy="800" r="110" fill="#a46aff" fill-opacity="0.12"/>
+  <path d="M120 200 l18 40 44 6 -32 31 8 44 -38 -20 -38 20 8 -44 -32 -31 44 -6 z" fill="#ffffff" fill-opacity="0.35"/>
+  <text x="80" y="872" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="bold" letter-spacing="2" fill="#ffffff">Nairaleap</text>
+  <text x="84" y="924" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#ffffff" fill-opacity="0.65" letter-spacing="8">EDITORIAL ARCHIVE</text>
+</svg>

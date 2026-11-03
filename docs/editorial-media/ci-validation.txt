@@ -1,0 +1,62 @@
+$ bun run scripts/test-editorial-media-validation.ts
+PASS detects the PNG signature
+PASS detects the JPEG signature
+PASS detects the GIF signature
+PASS detects the WebP signature
+PASS rejects HTML bytes as an image signature
+PASS rejects SVG bytes as an image signature
+PASS downloads a valid PNG and records its full SHA-256
+PASS follows bounded http(s) redirects
+PASS rejects non-http image URLs
+PASS rejects redirects to non-http targets
+PASS rejects too many redirects
+PASS rejects non-200 final responses
+PASS rejects HTML responses
+PASS rejects SVG responses
+PASS rejects content type and signature mismatches
+PASS rejects unrecognized image bytes
+PASS rejects oversized declared downloads
+PASS rejects oversized streamed bodies without content-length
+PASS enforces the streaming cap in readBodyWithLimit
+PASS requires an explicit reviewer identity
+PASS requires creator information for CC BY
+PASS requires an attribution line for CC BY
+PASS accepts an attribution override for CC BY
+PASS requires explicit rights clearance for flagged candidates
+PASS requires documented visual inspection
+PASS requires editorial relevance confirmation
+PASS refuses rejected candidates permanently
+PASS only candidate records can be approved
+PASS approves a fully validated candidate
+PASS records sign-offs and supersession history on approval
+PASS skips articles with valid original images
+PASS skips articles with recovered originals
+PASS allows broken originals to receive replacement candidates
+PASS allows articles without any original image
+PASS skips articles that already have an approved replacement
+PASS builds bounded, deduplicated, Nigeria-aware queries
+PASS blocks IPv4 loopback destinations
+PASS blocks IPv4 link-local and cloud metadata destinations
+PASS blocks RFC1918 private IPv4 destinations
+PASS blocks multicast, reserved, and special-purpose IPv4 destinations
+PASS blocks IPv6 loopback, link-local, unique-local, and multicast destinations
+PASS blocks IPv4-mapped IPv6 destinations
+PASS blocks NAT64 and 6to4 destinations embedding prohibited IPv4
+PASS allows public IPv4 and IPv6 literals
+PASS blocks downloads to literal loopback and metadata destinations
+PASS blocks downloads to IPv6 loopback, link-local, and mapped destinations
+PASS blocks hostnames that resolve to prohibited addresses
+PASS blocks hostnames with any unsafe resolved address
+PASS blocks redirects to prohibited destinations
+PASS blocks redirect chains with an unsafe intermediate destination
+PASS revalidates the destination after the response arrives
+PASS probes report unsafe without fetching prohibited destinations
+PASS probes classify reachable public URLs
+PASS blocks Teredo and 2001::/23 protocol-assignment destinations
+PASS blocks ORCHID and ORCHIDv2 destinations
+PASS blocks IPv6 benchmarking destinations
+PASS blocks non-global and special-purpose IPv6 assignments
+PASS allows public global-unicast IPv6 destinations
+PASS blocks AS112 and other IANA special-purpose IPv4 ranges
+
+59 checks passed, 0 failed.

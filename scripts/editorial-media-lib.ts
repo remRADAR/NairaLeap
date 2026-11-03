@@ -1,0 +1,159 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import type { EditorialMediaRecord } from "../src/features/editorial/media-types";
+
+export const MANIFEST_PATH = resolve(process.cwd(), "docs/editorial-media/manifest.json");
+export const DISCOVERY_LOG_PATH = resolve(process.cwd(), "docs/editorial-media/discovery-log.json");
+export const REPORT_PATH = resolve(process.cwd(), "docs/editorial-media/recovery-report.json");
+export const REPORT_MD_PATH = resolve(process.cwd(), "docs/editorial-media/RECOVERY_REPORT.md");
+export const SUBSET_PATH = resolve(process.cwd(), "src/data/editorialMediaApproved.ts");
+
+export type EditorialMediaManifest = {
+  schemaVersion: 1;
+  records: EditorialMediaRecord[];
+};
+
+/** Per-host reachability summary for external content image references. */
+export type ExternalHostReachability = {
+  host: string;
+  references: number;
+  checked: number;
+  ok: number;
+  unavailable: number;
+  forbidden: number;
+  timeout: number;
+  unknown: number;
+  unsafe: number;
+  unchecked: number;
+};
+
+export type EditorialRecoveryReport = {
+  schemaVersion: 1;
+  generatedAt: string;
+  totals: {
+    articles: number;
+    localMediaFiles: number;
+    articlesWithOriginalImage: number;
+    validOriginalImages: number;
+    brokenOriginalImages: number;
+    repairedOriginalImages: number;
+    unrepairedOriginalImages: number;
+    articlesWithoutOriginalImage: number;
+    recoveredFromContent: number;
+    approvedReplacementsInUse: number;
+    placeholderArticles: number;
+    imagesSharedByMultipleArticles: number;
+    externalContentImageReferences: number;
+  };
+  externalReachability: {
+    checked: number;
+    ok: number;
+    unavailable: number;
+    forbidden: number;
+    timeout: number;
+    unknown: number;
+    unsafe: number;
+    unchecked: number;
+  };
+  broken: Array<{ slug: string; id: number; image: string; repairedTo: string | null }>;
+  recovered: Array<{ slug: string; id: number; path: string; method: string }>;
+  duplicates: Array<{ image: string; articles: Array<{ slug: string; id: number }> }>;
+  externalHosts: ExternalHostReachability[];
+};
+
+/** Fill in hardening fields missing from records written by older tooling. */
+export const normalizeMediaRecord = (record: EditorialMediaRecord): EditorialMediaRecord => ({
+  ...record,
+  rightsClearedBy: record.rightsClearedBy ?? null,
+  rightsClearedAt: record.rightsClearedAt ?? null,
+  visualInspectionConfirmedBy: record.visualInspectionConfirmedBy ?? null,
+  visualInspectionConfirmedAt: record.visualInspectionConfirmedAt ?? null,
+  editorialRelevanceConfirmedBy: record.editorialRelevanceConfirmedBy ?? null,
+  editorialRelevanceConfirmedAt: record.editorialRelevanceConfirmedAt ?? null,
+  downloadVerified: record.downloadVerified ?? false,
+  downloadedSha256: record.downloadedSha256 ?? null,
+  statusHistory: Array.isArray(record.statusHistory) ? record.statusHistory : [],
+});
+
+export const readManifest = (): EditorialMediaManifest => {
+  if (!existsSync(MANIFEST_PATH)) {
+    throw new Error("Editorial media manifest is missing: " + MANIFEST_PATH);
+  }
+  const parsed = JSON.parse(readFileSync(MANIFEST_PATH, "utf8")) as EditorialMediaManifest;
+  if (parsed.schemaVersion !== 1 || !Array.isArray(parsed.records)) {
+    throw new Error("Editorial media manifest has an unsupported schema.");
+  }
+  return { schemaVersion: 1, records: parsed.records.map(normalizeMediaRecord) };
+};
+
+export const readReport = (): EditorialRecoveryReport | null => {
+  if (!existsSync(REPORT_PATH)) return null;
+  const parsed = JSON.parse(readFileSync(REPORT_PATH, "utf8")) as EditorialRecoveryReport;
+  if (parsed.schemaVersion !== 1) {
+    throw new Error("Editorial recovery report has an unsupported schema.");
+  }
+  return parsed;
+};
+
+export const writeJson = (path: string, value: unknown): void => {
+  writeText(path, JSON.stringify(value, null, 2) + "\n");
+};
+
+export const writeText = (path: string, value: string): void => {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, value, "utf8");
+};
+
+/**
+ * Build the content of the generated runtime subset. The subset is deliberately
+ * tiny: only slug-keyed maps the browser needs. Full provenance stays in the
+ * manifest, which the app never imports.
+ *
+ * Every broken original reference (repaired or not) is marked invalid so the
+ * resolution hierarchy never serves the broken path: repaired originals come
+ * back through the recovered map, unrepaired ones fall through to the
+ * placeholder.
+ */
+export const generateSubsetContent = (
+  report: EditorialRecoveryReport | null,
+  manifest: EditorialMediaManifest,
+): string => {
+  const recovered: Record<string, string> = {};
+  const invalid: Record<string, true> = {};
+  const approved: Record<string, string> = {};
+  for (const entry of report?.recovered ?? []) {
+    recovered[entry.slug] = entry.path;
+  }
+  for (const entry of report?.broken ?? []) {
+    invalid[entry.slug] = true;
+  }
+  for (const record of manifest.records) {
+    if (record.status === "approved" && record.replacementImage) {
+      approved[record.articleSlug] = record.replacementImage;
+    }
+  }
+  return [
+    "// Generated by scripts/editorial-media-lib.ts — do not edit manually.",
+    "// Sources: docs/editorial-media/recovery-report.json and docs/editorial-media/manifest.json.",
+    "",
+    "export const RECOVERED_ORIGINAL_IMAGES: Record<string, string> = " +
+      JSON.stringify(recovered, null, 2) +
+      ";",
+    "",
+    "export const INVALID_ORIGINAL_IMAGES: Record<string, true> = " +
+      JSON.stringify(invalid, null, 2) +
+      ";",
+    "",
+    "export const APPROVED_REPLACEMENT_IMAGES: Record<string, string> = " +
+      JSON.stringify(approved, null, 2) +
+      ";",
+    "",
+  ].join("\n");
+};
+
+export const regenerateSubset = (
+  report: EditorialRecoveryReport | null,
+  manifest: EditorialMediaManifest,
+): void => {
+  writeText(SUBSET_PATH, generateSubsetContent(report, manifest));
+};

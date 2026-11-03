@@ -1,0 +1,233 @@
+name: Editorial media audit
+
+on:
+  push:
+    branches:
+      - feat/editorial-media-recovery
+  workflow_dispatch:
+
+# Least privilege by default; each job grants only what it needs.
+permissions: {}
+
+# One run per ref: a new push cancels the superseded run, and bot artifact
+# commits can never pile up concurrent runs.
+concurrency:
+  group: editorial-media-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify editorial media pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Prepare diagnostics directory
+        run: mkdir -p docs/editorial-media
+      - name: Set up Bun
+        id: setup
+        continue-on-error: true
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        id: install
+        continue-on-error: true
+        run: |
+          set +e
+          bun install --frozen-lockfile > docs/editorial-media/ci-install.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-install.txt
+          exit $code
+      - name: Type-check
+        id: typecheck
+        continue-on-error: true
+        run: |
+          set +e
+          bunx tsc --noEmit > docs/editorial-media/ci-typecheck.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-typecheck.txt
+          exit $code
+      - name: Resolution self-test
+        id: selftest
+        continue-on-error: true
+        run: |
+          set +e
+          bun run test:editorial-images > docs/editorial-media/ci-selftest.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-selftest.txt
+          exit $code
+      - name: Approval and download validation tests
+        id: validation
+        continue-on-error: true
+        run: |
+          set +e
+          bun run test:editorial-media > docs/editorial-media/ci-validation.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-validation.txt
+          exit $code
+      - name: Reconcile originals against local media
+        id: reconcile
+        continue-on-error: true
+        run: |
+          set +e
+          bun run media:reconcile > docs/editorial-media/ci-reconcile.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-reconcile.txt
+          exit $code
+      - name: Openverse discovery pilot (best effort)
+        id: discover
+        continue-on-error: true
+        run: |
+          set +e
+          bun run media:discover --limit 3 > docs/editorial-media/ci-discover.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-discover.txt
+          exit $code
+      - name: Audit editorial images
+        id: audit
+        continue-on-error: true
+        run: |
+          set +e
+          bun run audit:editorial-images > docs/editorial-media/ci-audit.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-audit.txt
+          exit $code
+      - name: Check formatting (no writes)
+        id: format
+        continue-on-error: true
+        run: |
+          set +e
+          bunx prettier --check scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts scripts/editorial-network-guard.ts > docs/editorial-media/ci-format.txt 2>&1
+          bunx prettier --check scripts/reconcile-editorial-images.ts scripts/discover-editorial-images.ts >> docs/editorial-media/ci-format.txt 2>&1
+          bunx prettier --check scripts/approve-editorial-media.ts scripts/test-editorial-image-resolution.ts >> docs/editorial-media/ci-format.txt 2>&1
+          bunx prettier --check scripts/test-editorial-media-validation.ts >> docs/editorial-media/ci-format.txt 2>&1
+          bunx prettier --check src/features/editorial/images.ts src/features/editorial/media-storage.ts >> docs/editorial-media/ci-format.txt 2>&1
+          bunx prettier --check src/features/editorial/media-types.ts package.json >> docs/editorial-media/ci-format.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-format.txt
+          exit $code
+      - name: Lint editorial media files
+        id: lint
+        continue-on-error: true
+        run: |
+          set +e
+          bunx eslint scripts/audit-editorial-images.ts scripts/editorial-media-lib.ts scripts/editorial-network-guard.ts > docs/editorial-media/ci-lint.txt 2>&1
+          bunx eslint scripts/reconcile-editorial-images.ts scripts/discover-editorial-images.ts >> docs/editorial-media/ci-lint.txt 2>&1
+          bunx eslint scripts/approve-editorial-media.ts scripts/test-editorial-image-resolution.ts >> docs/editorial-media/ci-lint.txt 2>&1
+          bunx eslint scripts/test-editorial-media-validation.ts >> docs/editorial-media/ci-lint.txt 2>&1
+          bunx eslint src/features/editorial/images.ts src/features/editorial/media-storage.ts >> docs/editorial-media/ci-lint.txt 2>&1
+          bunx eslint src/features/editorial/media-types.ts >> docs/editorial-media/ci-lint.txt 2>&1
+          code=$?
+          tail -n 100 docs/editorial-media/ci-lint.txt
+          exit $code
+      - name: Production build
+        id: build
+        continue-on-error: true
+        run: |
+          set +e
+          bun run build > docs/editorial-media/ci-build.txt 2>&1
+          code=$?
+          tail -n 60 docs/editorial-media/ci-build.txt
+          exit $code
+      - name: Record CI status
+        if: always()
+        run: |
+          cat > docs/editorial-media/ci-status.json <<EOF
+          {
+            "ranAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "commit": "${{ github.sha }}",
+            "event": "${{ github.event_name }}",
+            "setup": "${{ steps.setup.outcome }}",
+            "install": "${{ steps.install.outcome }}",
+            "typecheck": "${{ steps.typecheck.outcome }}",
+            "selftest": "${{ steps.selftest.outcome }}",
+            "validation": "${{ steps.validation.outcome }}",
+            "reconcile": "${{ steps.reconcile.outcome }}",
+            "discover": "${{ steps.discover.outcome }}",
+            "audit": "${{ steps.audit.outcome }}",
+            "format": "${{ steps.format.outcome }}",
+            "lint": "${{ steps.lint.outcome }}",
+            "build": "${{ steps.build.outcome }}"
+          }
+          EOF
+      - name: Upload verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-media-verification
+          path: |
+            docs/editorial-media
+            src/data/editorialMediaApproved.ts
+          if-no-files-found: warn
+      - name: Fail on step failures
+        if: always()
+        run: |
+          if [ "${{ steps.setup.outcome }}" = "failure" ]; then echo "setup failed"; exit 1; fi
+          if [ "${{ steps.install.outcome }}" = "failure" ]; then echo "install failed"; exit 1; fi
+          if [ "${{ steps.typecheck.outcome }}" = "failure" ]; then echo "typecheck failed"; exit 1; fi
+          if [ "${{ steps.selftest.outcome }}" = "failure" ]; then echo "selftest failed"; exit 1; fi
+          if [ "${{ steps.validation.outcome }}" = "failure" ]; then echo "validation failed"; exit 1; fi
+          if [ "${{ steps.reconcile.outcome }}" = "failure" ]; then echo "reconcile failed"; exit 1; fi
+          if [ "${{ steps.discover.outcome }}" = "failure" ]; then echo "discover failed"; exit 1; fi
+          if [ "${{ steps.audit.outcome }}" = "failure" ]; then echo "audit failed"; exit 1; fi
+          if [ "${{ steps.format.outcome }}" = "failure" ]; then echo "format failed"; exit 1; fi
+          if [ "${{ steps.lint.outcome }}" = "failure" ]; then echo "lint failed"; exit 1; fi
+          if [ "${{ steps.build.outcome }}" = "failure" ]; then echo "build failed"; exit 1; fi
+          echo "All editorial media verification steps passed."
+
+  # Artifact publishing is isolated in its own job: the verification job runs
+  # read-only, and only this job — restricted to the feature branch, to push
+  # events that were not triggered by the bot itself, and to commits without
+  # a [skip ci] marker — can write to the repository. It commits only the
+  # explicitly permitted generated artifacts: reports and diagnostics under
+  # docs/editorial-media, the generated runtime subset, and approved media
+  # assets. Application source files are never modified or committed here.
+  publish-artifacts:
+    name: Publish verification artifacts
+    needs: verify
+    if: >-
+      always() && github.event_name == 'push' &&
+      github.ref == 'refs/heads/feat/editorial-media-recovery' &&
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      github.actor != 'nairaleap-verification-bot' &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: feat/editorial-media-recovery
+      - name: Download verification artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: editorial-media-verification
+          path: artifact
+      - name: Apply permitted artifacts
+        run: |
+          mkdir -p docs/editorial-media public/editorial/media
+          if [ -d artifact/docs/editorial-media ]; then
+            rsync -a artifact/docs/editorial-media/ docs/editorial-media/
+          fi
+          if [ -f artifact/src/data/editorialMediaApproved.ts ]; then
+            cp artifact/src/data/editorialMediaApproved.ts src/data/editorialMediaApproved.ts
+          fi
+      - name: Commit permitted artifacts
+        continue-on-error: true
+        run: |
+          git config user.name "nairaleap-verification-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs/editorial-media
+          git add -A src/data/editorialMediaApproved.ts
+          git add -A public/editorial/media
+          if git diff --staged --quiet; then
+            echo "No verification artifacts to commit"
+          else
+            git commit -m "chore: editorial media verification artifacts [skip ci]"
+            git push origin HEAD:refs/heads/feat/editorial-media-recovery
+          fi

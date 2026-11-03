@@ -1,0 +1,29 @@
+$ bun run scripts/reconcile-editorial-images.ts
+{
+  "report": {
+    "articles": 3688,
+    "localMediaFiles": 469,
+    "articlesWithOriginalImage": 434,
+    "validOriginalImages": 434,
+    "brokenOriginalImages": 0,
+    "repairedOriginalImages": 0,
+    "unrepairedOriginalImages": 0,
+    "articlesWithoutOriginalImage": 3254,
+    "recoveredFromContent": 0,
+    "approvedReplacementsInUse": 0,
+    "placeholderArticles": 3254,
+    "imagesSharedByMultipleArticles": 36,
+    "externalContentImageReferences": 140
+  },
+  "externalReachability": {
+    "checked": 62,
+    "ok": 32,
+    "unavailable": 14,
+    "forbidden": 4,
+    "timeout": 12,
+    "unknown": 0,
+    "unsafe": 0,
+    "unchecked": 78
+  },
+  "recovered": 0
+}
