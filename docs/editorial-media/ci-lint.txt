@@ -1,7 +1,16 @@
 
-/home/runner/work/NairaLeap/NairaLeap/scripts/test-editorial-media-validation.ts
-  378:28  error  Replace `⏎······{·slug:·"a",·image:·"/editorial/cms/1.jpg"·},⏎······{},⏎······{},⏎······new·Set<string>(),⏎····` with `{·slug:·"a",·image:·"/editorial/cms/1.jpg"·},·{},·{},·new·Set<string>()`  prettier/prettier
+/home/runner/work/NairaLeap/NairaLeap/scripts/editorial-network-guard.ts
+  78:24  error  Replace `⏎··side:·string,⏎` with `side:·string`  prettier/prettier
 
 ✖ 1 problem (1 error, 0 warnings)
   1 error and 0 warnings potentially fixable with the `--fix` option.
+
+
+/home/runner/work/NairaLeap/NairaLeap/scripts/test-editorial-media-validation.ts
+  123:42  error  Delete `⏎·`                                                                                                                                                                                      prettier/prettier
+  398:28  error  Replace `⏎······{·slug:·"a",·image:·"/editorial/cms/1.jpg"·},⏎······{},⏎······{},⏎······new·Set<string>(),⏎····` with `{·slug:·"a",·image:·"/editorial/cms/1.jpg"·},·{},·{},·new·Set<string>()`  prettier/prettier
+  541:10  error  Delete `⏎·····`                                                                                                                                                                                  prettier/prettier
+
+✖ 3 problems (3 errors, 0 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
 

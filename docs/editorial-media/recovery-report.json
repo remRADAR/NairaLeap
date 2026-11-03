@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-03T13:09:56.453Z",
+  "generatedAt": "2026-11-03T14:46:25.855Z",
   "totals": {
     "articles": 3688,
     "localMediaFiles": 469,
@@ -23,6 +23,7 @@
     "forbidden": 4,
     "timeout": 0,
     "unknown": 0,
+    "unsafe": 0,
     "unchecked": 78
   },
   "broken": [],
@@ -559,6 +560,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 44
     },
     {
@@ -570,6 +572,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 13
     },
     {
@@ -581,6 +584,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 12
     },
     {
@@ -592,6 +596,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 0
     },
     {
@@ -603,6 +608,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 0
     },
     {
@@ -614,6 +620,7 @@
       "forbidden": 4,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 0
     },
     {
@@ -625,6 +632,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 3
     },
     {
@@ -636,6 +644,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 2
     },
     {
@@ -647,6 +656,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 0
     },
     {
@@ -658,6 +668,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 1
     },
     {
@@ -669,6 +680,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 1
     },
     {
@@ -680,6 +692,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 1
     },
     {
@@ -691,6 +704,7 @@
       "forbidden": 0,
       "timeout": 0,
       "unknown": 0,
+      "unsafe": 0,
       "unchecked": 1
     }
   ]

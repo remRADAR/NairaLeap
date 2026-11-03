@@ -22,6 +22,7 @@ $ bun run scripts/reconcile-editorial-images.ts
     "forbidden": 4,
     "timeout": 0,
     "unknown": 0,
+    "unsafe": 0,
     "unchecked": 78
   },
   "recovered": 0
