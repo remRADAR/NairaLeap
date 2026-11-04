@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-11-03T15:33:45.730Z",
+  "ranAt": "2026-11-04T17:53:37.731Z",
   "endpoint": "https://api.openverse.org/v1/images/",
   "licenses": [
     "cc0",
@@ -8,15 +8,7 @@
   ],
   "minScore": 2,
   "articlesProcessed": 3,
-  "queriesIssued": 9,
-  "candidatesRecorded": 0,
-  "errors": [
-    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate Nigeria: The operation timed out.",
-    "frsc-commends-dangote-cement-on-new-transport-safety-policy / real estate: The operation timed out.",
-    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / Oyo: The operation timed out.",
-    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / Oyo Nigeria: The operation timed out.",
-    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / Sustainable Development: The operation timed out.",
-    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / classroom Nigeria: The operation timed out.",
-    "tinubu-mourns-beheaded-oyo-teacher-pledges-rescue-of-abducted-students / classroom: The operation timed out."
-  ]
+  "queriesIssued": 16,
+  "candidatesRecorded": 3,
+  "errors": []
 }

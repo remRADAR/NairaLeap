@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-03T15:33:45.518Z",
+  "generatedAt": "2026-11-04T17:53:37.459Z",
   "totals": {
     "articles": 3688,
     "localMediaFiles": 469,
@@ -19,9 +19,9 @@
   "externalReachability": {
     "checked": 62,
     "ok": 32,
-    "unavailable": 14,
+    "unavailable": 26,
     "forbidden": 4,
-    "timeout": 12,
+    "timeout": 0,
     "unknown": 0,
     "unsafe": 0,
     "unchecked": 78
@@ -568,9 +568,9 @@
       "references": 25,
       "checked": 12,
       "ok": 0,
-      "unavailable": 0,
+      "unavailable": 12,
       "forbidden": 0,
-      "timeout": 12,
+      "timeout": 0,
       "unknown": 0,
       "unsafe": 0,
       "unchecked": 13
