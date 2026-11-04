@@ -1,0 +1,2426 @@
+{
+  "finalizedAt": "2026-11-04T17:28:37.827Z",
+  "assigned": 242,
+  "assignments": [
+    {
+      "id": 3955,
+      "slug": "why-pension-system-still-excludes-majority",
+      "title": "Why pension system still excludes majority",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/2713.jpg",
+      "matchedArticleId": 2713,
+      "matchedArticleSlug": "pencom-unveils-pension-revolution-20-to-strengthen-retirement-system-broaden-access",
+      "score": 112
+    },
+    {
+      "id": 3916,
+      "slug": "hiv-prevention-lenacapavir-injection-arrives-nigeria-in-march",
+      "title": "HIV Prevention (Lenacapavir) Injection Arrives Nigeria In March",
+      "category": "Incidence and Prevalence of Disease",
+      "image": "/editorial/recovered/3128.jpg",
+      "matchedArticleId": 3128,
+      "matchedArticleSlug": "benue-govt-set-to-improve-hiv-health-programmes",
+      "score": 112
+    },
+    {
+      "id": 3889,
+      "slug": "afdb-targets-africas-25tr-air-travel-opportunity",
+      "title": "AfDB targets Africa’s $25tr air travel opportunity",
+      "category": "African Development Bank Group (AfDB)",
+      "image": "/editorial/recovered/3362.jpg",
+      "matchedArticleId": 3362,
+      "matchedArticleSlug": "afdb-approves-100-million-to-spur-renewable-energy-transport-projects-across-africa",
+      "score": 118
+    },
+    {
+      "id": 3842,
+      "slug": "tinubu-announces-that-naira-cards-are-now-accepted-for-transactions-worldwide",
+      "title": "Tinubu Announces That Naira Cards Are Now Accepted For Transactions Worldwide",
+      "category": "Supportive Government Policies",
+      "image": "/editorial/recovered/4002.jpg",
+      "matchedArticleId": 4002,
+      "matchedArticleSlug": "public-service-leaders-unite-to-drive-reforms-professionalism-in-nigeria",
+      "score": 109
+    },
+    {
+      "id": 3584,
+      "slug": "nbs-nigeria-recorded-n6trn-trade-surplus-in-q3-india-spain-top-export-destinations",
+      "title": "NBS: Nigeria recorded N6trn trade surplus in Q3 | India, Spain top export destinations",
+      "category": "Trade Volumes",
+      "image": "/editorial/recovered/3765.webp",
+      "matchedArticleId": 3765,
+      "matchedArticleSlug": "capital-importation-jumps-by-380-to-6bn-in-q3-2025-nbs",
+      "score": 109
+    },
+    {
+      "id": 3560,
+      "slug": "glo-confirms-nationwide-data-outage-disrupting-services-across-nigeria",
+      "title": "Glo Confirms Nationwide Data Outage Disrupting Services Across Nigeria",
+      "category": "Internet Service Providers",
+      "image": "/editorial/recovered/3245.jpg",
+      "matchedArticleId": 3245,
+      "matchedArticleSlug": "glo-customers-get-more-data-without-price-hike",
+      "score": 115
+    },
+    {
+      "id": 3524,
+      "slug": "akwa-ibom-house-of-assembly-rejects-motion-to-stop-dog-meat-consumption",
+      "title": "Akwa Ibom House Of Assembly Rejects Motion To Stop Dog-meat Consumption",
+      "category": "Wellbeing",
+      "image": "/editorial/recovered/3699.png",
+      "matchedArticleId": 3699,
+      "matchedArticleSlug": "drug-abuse-control-bill-scales-second-reading-at-yobe-assembly",
+      "score": 106
+    },
+    {
+      "id": 3491,
+      "slug": "breakdown-of-abia-2026-proposed-budget",
+      "title": "Breakdown Of Abia 2026 Proposed Budget",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/3887.webp",
+      "matchedArticleId": 3887,
+      "matchedArticleSlug": "faac-sub-committees-get-n115bn-for-2026-budget-planning",
+      "score": 115
+    },
+    {
+      "id": 3444,
+      "slug": "sec-to-begin-capital-market-t2-settlement-cycle-transition-friday",
+      "title": "SEC To Begin Capital Market T+2 Settlement Cycle Transition Friday",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/3976.jpg",
+      "matchedArticleId": 3976,
+      "matchedArticleSlug": "sec-fixes-june-1-for-t1-settlement-cycle-transition",
+      "score": 133
+    },
+    {
+      "id": 3371,
+      "slug": "how-to-optimise-cocoas-productivity",
+      "title": "‘How to optimise cocoa’s productivity’",
+      "category": "Fruits, Legumes and Nuts",
+      "image": "/editorial/recovered/3393.jpg",
+      "matchedArticleId": 3393,
+      "matchedArticleSlug": "cocoa-falls-over-12-so-far-in-november-2025-on-positive-events",
+      "score": 112
+    },
+    {
+      "id": 3302,
+      "slug": "firms-partner-on-renewable-energy",
+      "title": "Firms partner on renewable energy",
+      "category": "Renewable and Non-Renewable Energy",
+      "image": "/editorial/recovered/3841.webp",
+      "matchedArticleId": 3841,
+      "matchedArticleSlug": "nnpc-pushes-cng-investments-as-akk-nears-completion",
+      "score": 109
+    },
+    {
+      "id": 3271,
+      "slug": "group-canvasses-enhanced-cocoa-production",
+      "title": "Group canvasses enhanced cocoa production",
+      "category": "Fruits, Legumes and Nuts",
+      "image": "/editorial/recovered/3393.jpg",
+      "matchedArticleId": 3393,
+      "matchedArticleSlug": "cocoa-falls-over-12-so-far-in-november-2025-on-positive-events",
+      "score": 112
+    },
+    {
+      "id": 3259,
+      "slug": "planned-convention-pdp-nwc-suspends-national-secretary-legal-adviser-others",
+      "title": "Planned Convention: PDP NWC Suspends National Secretary, Legal Adviser, others",
+      "category": "Political Parties and Ideologies",
+      "image": "/editorial/recovered/3172.webp",
+      "matchedArticleId": 3172,
+      "matchedArticleSlug": "pdp-suspends-aspirants-screening-as-uncertainty-looms-over-ibadan-convention",
+      "score": 118
+    },
+    {
+      "id": 3258,
+      "slug": "the-pdp-faction-supported-by-nyesom-wike-suspends-pdp-chair-others",
+      "title": "The PDP Faction, Supported By Nyesom Wike, Suspends PDP Chair, Others",
+      "category": "Political Parties and Ideologies",
+      "image": "/editorial/recovered/3172.webp",
+      "matchedArticleId": 3172,
+      "matchedArticleSlug": "pdp-suspends-aspirants-screening-as-uncertainty-looms-over-ibadan-convention",
+      "score": 115
+    },
+    {
+      "id": 3257,
+      "slug": "six-innovative-business-ideas-you-can-start-with-less-than-n100000",
+      "title": "Six innovative business ideas you can start with less than N100,000",
+      "category": "Entrepreneurship",
+      "image": "/editorial/recovered/3256.png",
+      "matchedArticleId": 3256,
+      "matchedArticleSlug": "obi-cubana-blames-solo-ownership-culture-for-african-business-failures",
+      "score": 106
+    },
+    {
+      "id": 3226,
+      "slug": "stop-fossil-fuel-incentives-to-drive-energy-transition",
+      "title": "‘Stop fossil fuel incentives to drive energy transition’",
+      "category": "Renewable and Non-Renewable Energy",
+      "image": "/editorial/recovered/3841.webp",
+      "matchedArticleId": 3841,
+      "matchedArticleSlug": "nnpc-pushes-cng-investments-as-akk-nears-completion",
+      "score": 109
+    },
+    {
+      "id": 3225,
+      "slug": "citn-reaffirms-roles-of-professionals-in-tax-policy-implementation",
+      "title": "CITN reaffirms roles of professionals in tax policy implementation",
+      "category": "Professional Institutes and Associations",
+      "image": "/editorial/recovered/3751.webp",
+      "matchedArticleId": 3751,
+      "matchedArticleSlug": "coren-advances-reforms-to-boost-professionalism-public-safety",
+      "score": 109
+    },
+    {
+      "id": 3224,
+      "slug": "africa-must-scale-up-energy-supply-quickly-says-transcorp-ceo",
+      "title": "Africa must scale up energy supply quickly, says Transcorp CEO",
+      "category": "Alternative Energy Sources",
+      "image": "/editorial/recovered/3348.jpg",
+      "matchedArticleId": 3348,
+      "matchedArticleSlug": "fg-firm-sign-concession-deal-to-develop-hydropower-projects-in-oyo-kogi",
+      "score": 109
+    },
+    {
+      "id": 3222,
+      "slug": "fed-govt-reaffirms-commitment-to-gender-equity-in-innovation-agenda",
+      "title": "Fed Govt reaffirms commitment to gender equity in innovation agenda",
+      "category": "Gender Equality",
+      "image": "/editorial/recovered/1618.jpg",
+      "matchedArticleId": 1618,
+      "matchedArticleSlug": "independence-fg-reaffirms-commitment-to-sdgs",
+      "score": 112
+    },
+    {
+      "id": 3235,
+      "slug": "total-number-of-customers-across-nigerias-electricity-distribution-companies",
+      "title": "Total Number Of Customers Across Nigeria’s Electricity Distribution Companies",
+      "category": "Energy Consumption",
+      "image": "/editorial/recovered/3893.jpg",
+      "matchedArticleId": 3893,
+      "matchedArticleSlug": "jos-disco-introduces-flexible-electricity-debt-repayment-plan-for-customers",
+      "score": 112
+    },
+    {
+      "id": 3234,
+      "slug": "imf-warns-nigeria-of-debt-and-oil-and-revenue-risks",
+      "title": "IMF Warns Nigeria Of Debt And Oil And Revenue Risks",
+      "category": "Internatinal Monetary Fund (IMF)",
+      "image": "/editorial/recovered/2973.webp",
+      "matchedArticleId": 2973,
+      "matchedArticleSlug": "imf-projects-nigerias-debt-to-gdp-ratio-to-decline-to-35-by-2026",
+      "score": 115
+    },
+    {
+      "id": 3232,
+      "slug": "coleman-wires-launches-africas-largest-fibre-optic-factory-in-nigeria",
+      "title": "Coleman Wires Launches Africa’s Largest Fibre Optic Factory In Nigeria",
+      "category": "Manufacturing",
+      "image": "/editorial/recovered/1710.png",
+      "matchedArticleId": 1710,
+      "matchedArticleSlug": "manufacturing-sector-still-challenged-says-coleman",
+      "score": 106
+    },
+    {
+      "id": 3231,
+      "slug": "visas-are-privileges-not-rights-us-defends-soyinkas-visa-revocation",
+      "title": "‘Visas Are Privileges, Not Rights’: US Defends Soyinka’s Visa Revocation",
+      "category": "Diplomatic Missions, Embassy and High Commission",
+      "image": "/editorial/recovered/3663.jpg",
+      "matchedArticleId": 3663,
+      "matchedArticleSlug": "us-ambassador-says-visa-restrictions-not-targeted-at-nigerians",
+      "score": 121
+    },
+    {
+      "id": 3230,
+      "slug": "emir-sanusi-cautions-tinubu-continuous-borrowing-after-subsidy-removal-is-wrong",
+      "title": "Emir Sanusi Cautions Tinubu: Continuous Borrowing After Subsidy Removal Is Wrong",
+      "category": "Nigeria Traditional Institutions",
+      "image": "/editorial/recovered/3201.png",
+      "matchedArticleId": 3201,
+      "matchedArticleSlug": "sanusi-blames-delayed-fuel-subsidy-removal-for-nigerias-economic-hardship",
+      "score": 115
+    },
+    {
+      "id": 3227,
+      "slug": "world-bank-boi-mull-new-development-finance-framework",
+      "title": "World Bank, BOI mull new development finance framework",
+      "category": "World Bank (WB)",
+      "image": "/editorial/recovered/3642.jpg",
+      "matchedArticleId": 3642,
+      "matchedArticleSlug": "world-bank-approves-500m-msme-finance-package-for-nigeria",
+      "score": 109
+    },
+    {
+      "id": 3203,
+      "slug": "fg-allocates-450m-fertiliser-to-jigawa-farmers",
+      "title": "FG allocates ₦450m fertiliser to Jigawa farmers",
+      "category": "Agricultural Allied Ventures",
+      "image": "/editorial/recovered/2639.webp",
+      "matchedArticleId": 2639,
+      "matchedArticleSlug": "soil-values-project-trains-50-extension-agents-farmers-in-bauchi",
+      "score": 112
+    },
+    {
+      "id": 3194,
+      "slug": "everything-you-need-to-know-as-a-retiree-under-ptad",
+      "title": "Everything you need to know as a retiree under PTAD",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3804.png",
+      "matchedArticleId": 3804,
+      "matchedArticleSlug": "only-high-court-letters-of-administration-are-valid-for-accessing-pension-benefits-says-ptad",
+      "score": 109
+    },
+    {
+      "id": 3069,
+      "slug": "soludo-okays-n35b-for-youth-empowerment",
+      "title": "Soludo okays N3.5b for youth empowerment",
+      "category": "Youth Empowerment",
+      "image": "/editorial/recovered/3503.webp",
+      "matchedArticleId": 3503,
+      "matchedArticleSlug": "ogun-empowers-over-72000-residents-with-agric-skills",
+      "score": 106
+    },
+    {
+      "id": 2937,
+      "slug": "nairaandkobo-proposes-inclusive-strategy-of-sourcing-morgage-in-nigeria",
+      "title": "nairaandkobo proposes inclusive strategy of sourcing Morgage in Nigeria",
+      "category": "Wealth Creation",
+      "image": "/editorial/recovered/3786.png",
+      "matchedArticleId": 3786,
+      "matchedArticleSlug": "why-is-dmo-hoarding-public-debt-data",
+      "score": 106
+    },
+    {
+      "id": 2936,
+      "slug": "amac-election-mbagwu-hails-dr-moses-capacity-as-peter-obi-endorses-him",
+      "title": "AMAC Election: Mbagwu Hails Dr. Moses Capacity As Peter Obi Endorses Him",
+      "category": "Electioneering and Campaigns",
+      "image": "/editorial/recovered/3971.jpg",
+      "matchedArticleId": 3971,
+      "matchedArticleSlug": "2027-atiku-obi-amaechi-are-apcs-campaign-tools-for-2027-oshiomhole",
+      "score": 3
+    },
+    {
+      "id": 2922,
+      "slug": "top-five-side-hustles-from-using-ai",
+      "title": "Top five side hustles from using AI",
+      "category": "Entrepreneurship",
+      "image": "/editorial/recovered/3970.png",
+      "matchedArticleId": 3970,
+      "matchedArticleSlug": "otedola-increases-stake-in-first-holdco-with-n43bn-shares-acquisition",
+      "score": 103
+    },
+    {
+      "id": 2854,
+      "slug": "new-northern-development-initiative-secures-10b-for-mining-agriculture-power",
+      "title": "New northern development initiative secures $10b for mining, agriculture, power",
+      "category": "Agricultural Allied Ventures",
+      "image": "/editorial/recovered/2614.webp",
+      "matchedArticleId": 2614,
+      "matchedArticleSlug": "new-initiative-to-boost-fertilisers",
+      "score": 112
+    },
+    {
+      "id": 2834,
+      "slug": "zamfara-targets-over-10000-settlements-for-vaccination",
+      "title": "Zamfara targets over 10,000 settlements for vaccination",
+      "category": "Incidence and Prevalence of Disease",
+      "image": "/editorial/recovered/3386.webp",
+      "matchedArticleId": 3386,
+      "matchedArticleSlug": "zamfara-begins-distribution-of-cholera-intervention-drugs",
+      "score": 112
+    },
+    {
+      "id": 2818,
+      "slug": "opec-raises-production-by-137000-bpd",
+      "title": "OPEC+ raises production by 137,000 bpd",
+      "category": "Organization of the Petroleum Exporting Countries (OPEC)",
+      "image": "/editorial/recovered/2218.png",
+      "matchedArticleId": 2218,
+      "matchedArticleSlug": "opec-to-raise-oil-output-by-547000-bpd-in-september-as-market-stabilizes",
+      "score": 121
+    },
+    {
+      "id": 2811,
+      "slug": "boat-mishap-wipes-out-5-siblings-in-benue",
+      "title": "Boat Mishap Wipes Out 5 Siblings In Benue",
+      "category": "Water",
+      "image": "/editorial/recovered/3915.jpg",
+      "matchedArticleId": 3915,
+      "matchedArticleSlug": "shipping-company-signs-45-year-concession-agreement-with-nigerdock",
+      "score": 103
+    },
+    {
+      "id": 2695,
+      "slug": "kwara-government-temporarily-relocates-nysc-orientation-camp-over-insecurity-nysc",
+      "title": "Kwara Government Temporarily Relocates NYSC Orientation Camp Over Insecurity – NYSC",
+      "category": "National Youth Service Corps (NYSC)",
+      "image": "/editorial/recovered/2767.png",
+      "matchedArticleId": 2767,
+      "matchedArticleSlug": "tinubu-makes-nerd-compliance-mandatory-for-nysc-mobilisation",
+      "score": 115
+    },
+    {
+      "id": 2663,
+      "slug": "rising-drug-abuse-among-youths-fuelling-kidney-liver-diseases-expert",
+      "title": "Rising Drug Abuse Among Youths Fuelling Kidney, Liver Diseases – Expert",
+      "category": "Incidence and Prevalence of Disease",
+      "image": "/editorial/recovered/2826.png",
+      "matchedArticleId": 2826,
+      "matchedArticleSlug": "fg-targets-16-million-children-flags-off-campaign-for-measles-other-diseases",
+      "score": 112
+    },
+    {
+      "id": 2610,
+      "slug": "why-indigenous-carriers-should-adopt-leasing",
+      "title": "‘Why indigenous carriers should adopt leasing ‘",
+      "category": "Aviation",
+      "image": "/editorial/recovered/3289.png",
+      "matchedArticleId": 3289,
+      "matchedArticleSlug": "fg-to-establish-nigerian-aircraft-leasing-company",
+      "score": 106
+    },
+    {
+      "id": 2575,
+      "slug": "fg-seeks-modern-scientific-scrutiny-of-traditional-medicine",
+      "title": "FG seeks modern scientific scrutiny of traditional medicine",
+      "category": "Traditional Medicines",
+      "image": "/editorial/recovered/3596.png",
+      "matchedArticleId": 3596,
+      "matchedArticleSlug": "who-to-unveil-initiatives-promoting-safe-science-backed-traditional-medicine",
+      "score": 109
+    },
+    {
+      "id": 2567,
+      "slug": "nigeria-others-require-28tr-to-achieve-universal-connectivity",
+      "title": "Nigeria, others require $2.8tr to achieve universal connectivity",
+      "category": "Internet Penetration",
+      "image": "/editorial/recovered/3894.png",
+      "matchedArticleId": 3894,
+      "matchedArticleSlug": "starlink-to-deliver-5g-connectivity-directly-to-smartphones-with-new-satellites",
+      "score": 109
+    },
+    {
+      "id": 2542,
+      "slug": "jaiz-bank-rewards-148-pioneer-staff",
+      "title": "Jaiz Bank rewards 148 pioneer staff",
+      "category": "Motivation",
+      "image": "/editorial/recovered/2871.webp",
+      "matchedArticleId": 2871,
+      "matchedArticleSlug": "credibility-next-gen-leadership-key-to-nigerias-economic-renewal-cardoso",
+      "score": 103
+    },
+    {
+      "id": 2540,
+      "slug": "airlines-must-have-robust-management-structure-to-protect-pilots-others",
+      "title": "‘Airlines must have robust management structure to protect pilots, others’",
+      "category": "Transportation Investigation and Safety Boards",
+      "image": "/editorial/recovered/2692.jpg",
+      "matchedArticleId": 2692,
+      "matchedArticleSlug": "list-of-airlines-banning-power-banks-on-flights-for-safety-reasons",
+      "score": 115
+    },
+    {
+      "id": 2523,
+      "slug": "fg-begins-phase-2-of-12000mw-siemens-power-project",
+      "title": "FG Begins Phase 2 Of 12,000MW Siemens Power Project",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1428.jpg",
+      "matchedArticleId": 1428,
+      "matchedArticleSlug": "nigeria-libya-in-talks-over-5600km-regional-gas-pipeline-project",
+      "score": 112
+    },
+    {
+      "id": 2522,
+      "slug": "zenith-at-35-the-jim-ovia-dream",
+      "title": "Zenith At 35: The Jim Ovia Dream",
+      "category": "Mentorship and Role Models",
+      "image": "/editorial/recovered/3510.png",
+      "matchedArticleId": 3510,
+      "matchedArticleSlug": "ban-ki-moon-ex-un-secretary-general-to-speak-at-imo-economic-summit",
+      "score": 109
+    },
+    {
+      "id": 2484,
+      "slug": "yabatech-secures-117000-eu-grant-to-develop-solar-powered-aquaponics-for-food-security",
+      "title": "Yabatech secures €117,000 EU grant to develop solar-powered aquaponics for food security",
+      "category": "Grants",
+      "image": "/editorial/recovered/3822.jpg",
+      "matchedArticleId": 3822,
+      "matchedArticleSlug": "govt-secures-700000-grant-to-electrify-schools-hospitals",
+      "score": 112
+    },
+    {
+      "id": 2461,
+      "slug": "tuggar-nigeria-aiming-to-deepen-ties-with-japan-push-for-un-security-council-seat-at-ticad",
+      "title": "Tuggar: Nigeria aiming to deepen ties with Japan, push for UN security council seat at TICAD",
+      "category": "Other Affiliate Associations",
+      "image": "/editorial/recovered/3834.jpg",
+      "matchedArticleId": 3834,
+      "matchedArticleSlug": "us-iran-conflict-what-it-means-for-nigerias-economy-exchange-rate",
+      "score": 109
+    },
+    {
+      "id": 2456,
+      "slug": "hospitals-where-nigerians-can-get-dialysis-at-12000",
+      "title": "Hospitals Where Nigerians Can Get Dialysis At ₦12,000",
+      "category": "Complex Medical Services",
+      "image": "/editorial/recovered/3465.jpg",
+      "matchedArticleId": 3465,
+      "matchedArticleSlug": "cancer-treatment-nnpc-jv-donates-300000-to-national-hospital",
+      "score": 112
+    },
+    {
+      "id": 2435,
+      "slug": "us-visa-applicants-must-show-5-year-social-media-history-usernames-us-embasy",
+      "title": "US Visa Applicants Must Show 5-year Social Media history, usernames – US Embasy",
+      "category": "Diplomatic Missions, Embassy and High Commission",
+      "image": "/editorial/recovered/3575.jpg",
+      "matchedArticleId": 3575,
+      "matchedArticleSlug": "us-to-require-five-year-social-media-history-from-visa-waiver-tourists",
+      "score": 130
+    },
+    {
+      "id": 2431,
+      "slug": "fg-to-connect-baro-inland-port-to-lagos-kano-rail-network",
+      "title": "FG To Connect Baro Inland Port To Lagos-kano Rail Network",
+      "category": "Infrastructure and Network",
+      "image": "/editorial/recovered/2569.png",
+      "matchedArticleId": 2569,
+      "matchedArticleSlug": "abuja-kaduna-rail-tracks-will-be-restored-in-10-days-says-minister",
+      "score": 109
+    },
+    {
+      "id": 2411,
+      "slug": "fg-begins-national-pasture-planting-to-revive-grazing-reserves",
+      "title": "FG Begins National Pasture Planting To Revive Grazing Reserves",
+      "category": "Life Stock and Aquaculture",
+      "image": "/editorial/recovered/3460.png",
+      "matchedArticleId": 3460,
+      "matchedArticleSlug": "nigerian-govt-bans-open-grazing-to-end-farmers-herders-conflicts",
+      "score": 112
+    },
+    {
+      "id": 2410,
+      "slug": "cross-river-governor-signs-104-billion-supplementary-budget-into-law",
+      "title": "Cross River Governor Signs ₦104 Billion Supplementary Budget Into Law",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/3712.png",
+      "matchedArticleId": 3712,
+      "matchedArticleSlug": "lagos-assembly-passes-n444trn-2026-budget-into-law",
+      "score": 118
+    },
+    {
+      "id": 2409,
+      "slug": "phone-numbers-of-each-nigerian-police-force-state-commands",
+      "title": "Phone Numbers Of Each Nigerian Police Force State Commands",
+      "category": "Community Policing",
+      "image": "/editorial/recovered/2162.jpg",
+      "matchedArticleId": 2162,
+      "matchedArticleSlug": "police-reaffirm-commitment-to-peace-safety",
+      "score": 109
+    },
+    {
+      "id": 2399,
+      "slug": "liverpool-survive-late-scare-to-defeat-bournemouth-in-six-goal-epl-opener",
+      "title": "Liverpool survive late scare to defeat Bournemouth in six-goal EPL opener",
+      "category": "Team Sports",
+      "image": "/editorial/recovered/3654.png",
+      "matchedArticleId": 3654,
+      "matchedArticleSlug": "morocco-claim-easy-win-over-comoros-in-afcon-2025-opener",
+      "score": 109
+    },
+    {
+      "id": 2340,
+      "slug": "minister-boi-pledge-reform-investments-to-revive-textile-industry",
+      "title": "Minister, BoI pledge reform, investments to revive textile industry",
+      "category": "Manufacturing",
+      "image": "/editorial/recovered/2032.jpg",
+      "matchedArticleId": 2032,
+      "matchedArticleSlug": "govt-to-revive-textile-industry-tackle-smuggling-enoh",
+      "score": 112
+    },
+    {
+      "id": 2338,
+      "slug": "insurance-firms-in-strange-rally-post-41-per-cent-gain-in-one-week",
+      "title": "Insurance firms in ‘strange’ rally, post 41 per cent gain in one week",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/2775.webp",
+      "matchedArticleId": 2775,
+      "matchedArticleSlug": "week-kicks-off-in-green-as-equities-gain-n155bn",
+      "score": 127
+    },
+    {
+      "id": 2323,
+      "slug": "nsia-grows-fertiliser-plants-from-4-to-92-transfers-pfi-management-to-mofi",
+      "title": "NSIA Grows Fertiliser Plants From 4 to 92, Transfers PFI Management To MOFI",
+      "category": "Agricultural Allied Ventures",
+      "image": "/editorial/recovered/2639.webp",
+      "matchedArticleId": 2639,
+      "matchedArticleSlug": "soil-values-project-trains-50-extension-agents-farmers-in-bauchi",
+      "score": 109
+    },
+    {
+      "id": 2290,
+      "slug": "alveena-events-plans-exclusive-doha-masterclass-for-professionals",
+      "title": "Alveena events plans exclusive Doha masterclass for professionals",
+      "category": "Mentorship and Role Models",
+      "image": "/editorial/recovered/3510.png",
+      "matchedArticleId": 3510,
+      "matchedArticleSlug": "ban-ki-moon-ex-un-secretary-general-to-speak-at-imo-economic-summit",
+      "score": 109
+    },
+    {
+      "id": 2266,
+      "slug": "lagos-benue-kaduna-fg-issues-flood-alert-for-in-29-states-fct",
+      "title": "Lagos, Benue, Kaduna… FG issues flood alert for in 29 states, FCT",
+      "category": "Climate Change",
+      "image": "/editorial/recovered/2494.png",
+      "matchedArticleId": 2494,
+      "matchedArticleSlug": "adamawa-gombe-kano-fg-issues-fresh-flood-alert-in-nine-northern-states",
+      "score": 118
+    },
+    {
+      "id": 2223,
+      "slug": "us-to-introduce-visa-bonds-of-up-to-15000-for-some-foreign-visitors",
+      "title": "US to introduce visa bonds of up to $15,000 for some foreign visitors",
+      "category": "Diplomatic Missions, Embassy and High Commission",
+      "image": "/editorial/recovered/3870.jpg",
+      "matchedArticleId": 3870,
+      "matchedArticleSlug": "us-embassy-in-abuja-suspends-visa-appointments-amid-protest-fears",
+      "score": 118
+    },
+    {
+      "id": 2157,
+      "slug": "app-downloads-record-320-growth-as-regional-sales-near-n1b",
+      "title": "App downloads record 320% growth as regional sales near N1b",
+      "category": "Internet Penetration",
+      "image": "/editorial/recovered/3894.png",
+      "matchedArticleId": 3894,
+      "matchedArticleSlug": "starlink-to-deliver-5g-connectivity-directly-to-smartphones-with-new-satellites",
+      "score": 106
+    },
+    {
+      "id": 2150,
+      "slug": "fec-approves-n900bn-for-aviation-infrastructure-upgrade",
+      "title": "FEC approves N900bn for aviation infrastructure upgrade",
+      "category": "Critical Infrastructure",
+      "image": "/editorial/recovered/3634.png",
+      "matchedArticleId": 3634,
+      "matchedArticleSlug": "kano-approves-n162-billion-road-contract-for-gwarzo-corridor-n44-billion-for-karaye-dualization",
+      "score": 109
+    },
+    {
+      "id": 2129,
+      "slug": "seplatenergys-h1-2025-revenue-rises-to-n2167-trillion",
+      "title": "Seplat Energy’s H1 2025 revenue rises to N2.167 Trillion",
+      "category": "Upstream Sector",
+      "image": "/editorial/recovered/3622.png",
+      "matchedArticleId": 3622,
+      "matchedArticleSlug": "nigerias-crude-oil-exports-hit-n377-trillion-in-9-months",
+      "score": 109
+    },
+    {
+      "id": 2108,
+      "slug": "opec-plans-new-supply-surge-as-nigeria-braces-for-oil-price-revenue-volatility",
+      "title": "OPEC+ plans new supply surge as Nigeria braces for oil price, revenue volatility",
+      "category": "Organization of the Petroleum Exporting Countries (OPEC)",
+      "image": "/editorial/recovered/3682.webp",
+      "matchedArticleId": 3682,
+      "matchedArticleSlug": "opec-to-pause-oil-supply-increases-through-q1-2026-amid-surplus",
+      "score": 121
+    },
+    {
+      "id": 2106,
+      "slug": "naira-converges-us-dollar-index-gains-strength",
+      "title": "Naira converges, US dollar index gains strength",
+      "category": "Economic Volatilities",
+      "image": "/editorial/recovered/2359.png",
+      "matchedArticleId": 2359,
+      "matchedArticleSlug": "cbn-urges-nigerians-to-protect-nairas-dignity-warns-against-abuse",
+      "score": 109
+    },
+    {
+      "id": 2104,
+      "slug": "cac-moves-to-delist-100000-dormant-companies-gives-90-day-grace-period",
+      "title": "CAC moves to delist 100,000 dormant companies, gives 90-day grace period",
+      "category": "Institutional Framework",
+      "image": "/editorial/recovered/3241.webp",
+      "matchedArticleId": 3241,
+      "matchedArticleSlug": "cac-reaffirms-transparency-warns-against-smear-campaign",
+      "score": 109
+    },
+    {
+      "id": 2094,
+      "slug": "katsina-govt-begins-free-treatment-of-typhoid-for-residents",
+      "title": "Katsina Gov’t Begins Free Treatment Of Typhoid For Residents",
+      "category": "Access to Essential Medicine",
+      "image": "/editorial/recovered/2319.jpg",
+      "matchedArticleId": 2319,
+      "matchedArticleSlug": "fg-debunks-viral-claim-on-free-revolutionary-diabetes-drug-distribution",
+      "score": 112
+    },
+    {
+      "id": 2093,
+      "slug": "ngx-gains-n400bn-as-investor-appetite-lifts-index",
+      "title": "NGX gains N400bn as investor appetite lifts index",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/2142.webp",
+      "matchedArticleId": 2142,
+      "matchedArticleSlug": "ngx-closes-july-strong-gains-n1262tn",
+      "score": 127
+    },
+    {
+      "id": 2084,
+      "slug": "n18tr-faac-t-bills-bond-bolster-liquidity",
+      "title": "N1.8tr FAAC, T-Bills, bond bolster liquidity",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/3964.png",
+      "matchedArticleId": 3964,
+      "matchedArticleSlug": "dmo-announces-n600-billion-fgn-bond-auction-for-may-2026",
+      "score": 112
+    },
+    {
+      "id": 2070,
+      "slug": "nemsa-niso-partner-on-grid-safety-metering-accuracy",
+      "title": "NEMSA, NISO partner on grid safety, metering accuracy",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/3963.webp",
+      "matchedArticleId": 3963,
+      "matchedArticleSlug": "gencos-demand-blacklisting-of-firms-stealing-grid-electricity",
+      "score": 112
+    },
+    {
+      "id": 2019,
+      "slug": "lasaco-assurances-total-assets-hit-n3047bn-n226bn-revenue",
+      "title": "Lasaco Assurance’s Total Assets Hit N30.47bn , N22.6bn Revenue",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/3605.jpg",
+      "matchedArticleId": 3605,
+      "matchedArticleSlug": "lasaco-assurance-seeks-to-triple-share-capital-to-n3608-billion",
+      "score": 127
+    },
+    {
+      "id": 2008,
+      "slug": "domestic-refiners-tackle-crude-producers-over-zero-allocation",
+      "title": "Domestic refiners tackle crude producers over zero allocation",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1363.webp",
+      "matchedArticleId": 1363,
+      "matchedArticleSlug": "dangote-officials-refiners-tackle-marketers-over-imported-pms",
+      "score": 118
+    },
+    {
+      "id": 2005,
+      "slug": "g-launches-reviewed-guidelines-for-school-based-management-committees-in-federal-unity-colleges",
+      "title": "G launches reviewed guidelines for school-based management committees in Federal Unity Colleges",
+      "category": "Primary, Secondary and Vocational Education",
+      "image": "/editorial/recovered/2745.jpg",
+      "matchedArticleId": 2745,
+      "matchedArticleSlug": "fg-confirms-full-funding-for-federal-technical-colleges-warns-against-illegal-charges",
+      "score": 118
+    },
+    {
+      "id": 2002,
+      "slug": "manufacturing-sector-records-poor-business-performance-in-january-2025-nesg-report",
+      "title": "Manufacturing sector records poor business performance in January 2025 – NESG report",
+      "category": "Manufacturing",
+      "image": "/editorial/recovered/3651.jpg",
+      "matchedArticleId": 3651,
+      "matchedArticleSlug": "fg-mulls-50-textile-sector-upgrade",
+      "score": 106
+    },
+    {
+      "id": 1985,
+      "slug": "fed-govt-to-restructure-recapitalise-bank-of-agriculture",
+      "title": "Fed Govt to restructure, recapitalise Bank of Agriculture",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3728.jpg",
+      "matchedArticleId": 3728,
+      "matchedArticleSlug": "heritage-bank-liquidation-ndic-recovers-additional-n243bn-for-depositors",
+      "score": 109
+    },
+    {
+      "id": 1965,
+      "slug": "interswitch-unlocks-startups-with-ecosystem-innovation-mixer",
+      "title": "Interswitch unlocks startups with ecosystem innovation mixer",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3969.jpg",
+      "matchedArticleId": 3969,
+      "matchedArticleSlug": "pencom-abolishes-prior-approval-requirement-for-pfa-advertisements",
+      "score": 106
+    },
+    {
+      "id": 1905,
+      "slug": "mrs-oil-nigeria-reports-63-surge-in-fy-2024-pre-tax-profit-amid-strong-pms-sales",
+      "title": "MRS Oil Nigeria reports 63% surge in FY 2024 pre-tax profit, amid strong PMS sales",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/1989.jpg",
+      "matchedArticleId": 1989,
+      "matchedArticleSlug": "uac-of-nigeria-achieves-109-profit-increase-for-2024-reports-strong-sales-other-factors",
+      "score": 136
+    },
+    {
+      "id": 1904,
+      "slug": "nigerians-benefiting-from-fgs-cash-transfers-hit-3221-million-in-january-2025-world-bank",
+      "title": "Nigerians benefiting from FG’s cash transfers hit 32.21 million in January 2025 – World Bank",
+      "category": "World Bank (WB)",
+      "image": "/editorial/recovered/2872.webp",
+      "matchedArticleId": 2872,
+      "matchedArticleSlug": "139-million-nigerians-living-in-poverty-despite-reform-gains-world-bank",
+      "score": 112
+    },
+    {
+      "id": 1873,
+      "slug": "httpsnairametricscom20250125edo-state-records-36-lassa-fever-cases-8-deaths-in-early-2025",
+      "title": "https://nairametrics.com/2025/01/25/edo-state-records-36-lassa-fever-cases-8-deaths-in-early-2025/",
+      "category": "Security Agencies",
+      "image": "/editorial/recovered/1824.webp",
+      "matchedArticleId": 1824,
+      "matchedArticleSlug": "httpsthenationonlinengnetfull-list-addresses-of-nysc-orientation-camps-in-nigeria",
+      "score": 109
+    },
+    {
+      "id": 1834,
+      "slug": "guinness-nigeria-records-822-revenue-growth-in-h125",
+      "title": "Guinness Nigeria records 82.2% revenue growth in H1’25",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/1663.jpg",
+      "matchedArticleId": 1663,
+      "matchedArticleSlug": "tolaram-takes-over-guinness-nigeria",
+      "score": 124
+    },
+    {
+      "id": 1819,
+      "slug": "nigerian-education-loan-fund-disburses-n1367-million-to-joseph-sarwan-tarka-university",
+      "title": "Nigerian Education Loan Fund disburses N136.7 Million to Joseph Sarwan Tarka University",
+      "category": "Institutions",
+      "image": "/editorial/recovered/3217.jpg",
+      "matchedArticleId": 3217,
+      "matchedArticleSlug": "fg-releases-n23-billion-to-universities-pledges-sustainable-education-reforms",
+      "score": 106
+    },
+    {
+      "id": 1802,
+      "slug": "nairaandkobong-reviews-strategy-and-operational-realignment",
+      "title": "nairaandkobo.ng Reviews Strategy and Operational Realignment",
+      "category": "Gender Equality",
+      "image": "/editorial/recovered/3959.jpg",
+      "matchedArticleId": 3959,
+      "matchedArticleSlug": "dr-felicia-tamuno-advocates-non-interest-banking-ethical-finance-to-boost-women-led-businesses-in-africa",
+      "score": 106
+    },
+    {
+      "id": 1801,
+      "slug": "nairaandkobong-about-us",
+      "title": "nairaandkobo.ng: About Us",
+      "category": "Wealth Creation",
+      "image": "/editorial/recovered/3786.png",
+      "matchedArticleId": 3786,
+      "matchedArticleSlug": "why-is-dmo-hoarding-public-debt-data",
+      "score": 106
+    },
+    {
+      "id": 1755,
+      "slug": "africas-gas-reserves-offer-solutions",
+      "title": "Africa’s gas reserves offer solutions",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/3635.jpg",
+      "matchedArticleId": 3635,
+      "matchedArticleSlug": "fg-issues-n590-billion-power-sector-bond-to-clear-genco-gas-arrears",
+      "score": 112
+    },
+    {
+      "id": 1765,
+      "slug": "investor-education-key-to-stable-capital-market-sec",
+      "title": "Investor Education Key To Stable Capital Market – SEC",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/1017.jpg",
+      "matchedArticleId": 1017,
+      "matchedArticleSlug": "sec-approves-dreamcity-capital-digital-platform",
+      "score": 112
+    },
+    {
+      "id": 1757,
+      "slug": "afdb-badea-pool-additional-300m-to-co-finance-sapz-2",
+      "title": "AfDB, BADEA pool additional $300m to co-finance SAPZ-2",
+      "category": "Production",
+      "image": "/editorial/recovered/3312.jpg",
+      "matchedArticleId": 3312,
+      "matchedArticleSlug": "nepc-intensifies-crackdown-on-banned-paraquat-use-in-sesame-production",
+      "score": 103
+    },
+    {
+      "id": 1754,
+      "slug": "customs-seizes-94550-litres-of-petrol",
+      "title": "Customs seizes 94,550 litres of petrol",
+      "category": "Economic Volatilities",
+      "image": "/editorial/recovered/2363.jpg",
+      "matchedArticleId": 2363,
+      "matchedArticleSlug": "insurance-cover-now-mandatory-for-petrol-gas-stations",
+      "score": 109
+    },
+    {
+      "id": 1752,
+      "slug": "over-10942-civil-servants-get-consumer-credit-loans-in-five-days",
+      "title": "Over 10,942 civil servants get consumer credit loans in five days",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3375.jpg",
+      "matchedArticleId": 3375,
+      "matchedArticleSlug": "n35000-wage-award-arrears-civil-servants-demand-payment-after-delays",
+      "score": 112
+    },
+    {
+      "id": 1740,
+      "slug": "ngx-lauds-german-govt-deg-for-sustainability",
+      "title": "NGX lauds German govt, DEG for sustainability",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/1811.jpg",
+      "matchedArticleId": 1811,
+      "matchedArticleSlug": "ngx-must-hold-stocks-with-double-digit-upside-for-the-year",
+      "score": 109
+    },
+    {
+      "id": 1711,
+      "slug": "ncmb-iocs-will-come-back-to-invest-in-nigeria",
+      "title": "NCMB: IOCs will come back to invest in Nigeria",
+      "category": "Energy",
+      "image": "/editorial/recovered/1712.png",
+      "matchedArticleId": 1712,
+      "matchedArticleSlug": "nigerians-will-smile-once-we-begin-lifting-dangote-petrol-says-ipman",
+      "score": 106
+    },
+    {
+      "id": 1709,
+      "slug": "growth-in-food-production-will-bring-down-inflation-stabilise-exchange-rate-says-edun",
+      "title": "Growth in food production will bring down inflation, stabilise exchange rate, says Edun",
+      "category": "Production",
+      "image": "/editorial/recovered/2677.webp",
+      "matchedArticleId": 2677,
+      "matchedArticleSlug": "horticulture-key-to-jobs-food-security-minister",
+      "score": 106
+    },
+    {
+      "id": 1706,
+      "slug": "fg-proposes-30-advance-payment-from-nlng-to-expedite-bodo-bonny-road-project",
+      "title": "FG proposes 30% advance payment from NLNG to expedite Bodo-Bonny road project",
+      "category": "Infrastructure",
+      "image": "/editorial/recovered/2994.jpg",
+      "matchedArticleId": 2994,
+      "matchedArticleSlug": "fcta-demolishes-multi-million-naira-estate",
+      "score": 103
+    },
+    {
+      "id": 1687,
+      "slug": "over-3-rural-population-face-acute-poverty-hunger-ifad",
+      "title": "Over 3 rural population face acute poverty, hunger -IFAD",
+      "category": "Production",
+      "image": "/editorial/recovered/1568.png",
+      "matchedArticleId": 1568,
+      "matchedArticleSlug": "rice-farmers-face-hard-time-over-rising-costs",
+      "score": 109
+    },
+    {
+      "id": 1681,
+      "slug": "insurers-must-harness-ai-to-remain-competitive-experts",
+      "title": "Insurers Must Harness AI To Remain Competitive – Experts",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/2927.jpg",
+      "matchedArticleId": 2927,
+      "matchedArticleSlug": "ethics-must-guide-disruptions-pencom-dg",
+      "score": 109
+    },
+    {
+      "id": 1677,
+      "slug": "how-to-build-a-profitable-consultancy-business",
+      "title": "How To Build A Profitable Consultancy Business",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/2879.jpg",
+      "matchedArticleId": 2879,
+      "matchedArticleSlug": "fg-says-world-banks-139-million-in-poverty-not-reflective-of-current-realities",
+      "score": 106
+    },
+    {
+      "id": 1659,
+      "slug": "nigeria-may-face-gas-supply-crisis-says-nuprc",
+      "title": "Nigeria may face gas supply crisis, says NUPRC",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/3979.jpg",
+      "matchedArticleId": 3979,
+      "matchedArticleSlug": "lagos-to-enjoy-247-electricity-supply-soon-ndphc-boss",
+      "score": 112
+    },
+    {
+      "id": 1635,
+      "slug": "emirates-nigerian-carriers-close-to-codeshare-deal",
+      "title": "Emirates, Nigerian carriers close to codeshare deal",
+      "category": "Aviation",
+      "image": "/editorial/recovered/1526.png",
+      "matchedArticleId": 1526,
+      "matchedArticleSlug": "nigeria-uae-agree-on-reciprocal-rights-ahead-of-emirates-flight-resumption",
+      "score": 106
+    },
+    {
+      "id": 1632,
+      "slug": "fed-govt-wema-bank-partner-to-empower-500000-women",
+      "title": "Fed Govt, WEMA Bank partner to empower 500,000 women",
+      "category": "Supportive Government Policies",
+      "image": "/editorial/recovered/1772.webp",
+      "matchedArticleId": 1772,
+      "matchedArticleSlug": "cbn-boi-to-empower-women-entrepreneurs",
+      "score": 115
+    },
+    {
+      "id": 1637,
+      "slug": "polaris-is-top-bank-in-msme-lending",
+      "title": "Polaris is top bank in MSME lending",
+      "category": "Small and Medium Enterprises (SME)",
+      "image": "/editorial/recovered/3763.jpg",
+      "matchedArticleId": 3763,
+      "matchedArticleSlug": "fg-deploys-n117bn-to-power-msme-growth",
+      "score": 115
+    },
+    {
+      "id": 1616,
+      "slug": "opec-expects-oil-demand-growth",
+      "title": "OPEC expects oil demand growth",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/626.webp",
+      "matchedArticleId": 626,
+      "matchedArticleSlug": "nigerias-crude-oil-production-now-13mbpd-opec",
+      "score": 115
+    },
+    {
+      "id": 1611,
+      "slug": "pfa-roles-on-fund-investments-retirement-benefit-payments-others-by-pencom",
+      "title": "PFA roles on fund investments, retirement benefit payments, others, by PenCom",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3969.jpg",
+      "matchedArticleId": 3969,
+      "matchedArticleSlug": "pencom-abolishes-prior-approval-requirement-for-pfa-advertisements",
+      "score": 112
+    },
+    {
+      "id": 1603,
+      "slug": "why-govt-must-slash-3b-annual-wheat-import-by-experts",
+      "title": "Why govt must slash $3b annual wheat import, by experts",
+      "category": "Food Security",
+      "image": "/editorial/recovered/2043.webp",
+      "matchedArticleId": 2043,
+      "matchedArticleSlug": "kogi-cashew-dealers-urge-govt-to-halt-foreign-interference",
+      "score": 109
+    },
+    {
+      "id": 1581,
+      "slug": "oil-prices-rise-on-middle-east-conflict-set-for-monthly-loss",
+      "title": "Oil prices rise on Middle East conflict, set for monthly loss",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1604.png",
+      "matchedArticleId": 1604,
+      "matchedArticleSlug": "oil-prices-rise-by-1-as-iran-launches-attack-on-isreal",
+      "score": 118
+    },
+    {
+      "id": 1566,
+      "slug": "foreign-reserves-post-fourth-week-gain-to-377b",
+      "title": "Foreign reserves post fourth-week gain to $37.7b",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/2465.jpg",
+      "matchedArticleId": 2465,
+      "matchedArticleSlug": "external-reserves-surge-driven-by-policy-reforms-refinery-exports-investor-confidence-economist",
+      "score": 115
+    },
+    {
+      "id": 1565,
+      "slug": "sec-strengthens-enforcements-against-illegal-fund-managers",
+      "title": "SEC strengthens enforcements against illegal fund managers",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/3423.png",
+      "matchedArticleId": 3423,
+      "matchedArticleSlug": "nigeria-q3-2025-gdp-analysts-split-between-39-moderation-and-45-expansion",
+      "score": 112
+    },
+    {
+      "id": 1567,
+      "slug": "nigeria-ghana-turkiye-lead-global-equities-returns",
+      "title": "Nigeria, Ghana, Turkiye, lead global equities’ returns",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/1356.jpg",
+      "matchedArticleId": 1356,
+      "matchedArticleSlug": "assessing-ubas-global-influence-returns-for-investors",
+      "score": 127
+    },
+    {
+      "id": 1549,
+      "slug": "fish-production-will-boost-gdp-says-niomr-trains-70-fish-farmers",
+      "title": "Fish production will boost GDP, says NIOMR, trains 70 fish farmers",
+      "category": "Production",
+      "image": "/editorial/recovered/1840.jpg",
+      "matchedArticleId": 1840,
+      "matchedArticleSlug": "fish-farmers-seek-fgs-support-as-production-costs-soar-to-n4-million-per-tonne",
+      "score": 109
+    },
+    {
+      "id": 1548,
+      "slug": "army-sweeps-172-gold-medals-at-armed-forces-games",
+      "title": "Army sweeps 172 gold medals at Armed Forces Games",
+      "category": "Dual Sports",
+      "image": "/editorial/recovered/1894.jpg",
+      "matchedArticleId": 1894,
+      "matchedArticleSlug": "eniola-bolaji-wins-gold-at-2025-para-badminton-international-championship",
+      "score": 109
+    },
+    {
+      "id": 1543,
+      "slug": "udo-udoma-acquires-first-significant-stake-in-seplat-energy-plc",
+      "title": "Udo Udoma acquires first significant stake in Seplat Energy Plc",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/2736.png",
+      "matchedArticleId": 2736,
+      "matchedArticleSlug": "femi-otedola-acquires-n2bn-shares-to-increase-stake-in-first-holdco",
+      "score": 130
+    },
+    {
+      "id": 1524,
+      "slug": "naira-depreciates-to-n1700-at-parallel-market-lowest-level-in-seven-months",
+      "title": "Naira depreciates to N1,700/$ at parallel market — lowest level in seven months",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/1327.png",
+      "matchedArticleId": 1327,
+      "matchedArticleSlug": "naira-under-pressure-in-black-market-amid-us-dollar-resilience",
+      "score": 118
+    },
+    {
+      "id": 1523,
+      "slug": "nigeria-mastercard-partner-to-support-1mn-african-farmers",
+      "title": "Nigeria, Mastercard partner to support 1mn African farmers",
+      "category": "Production",
+      "image": "/editorial/recovered/1840.jpg",
+      "matchedArticleId": 1840,
+      "matchedArticleSlug": "fish-farmers-seek-fgs-support-as-production-costs-soar-to-n4-million-per-tonne",
+      "score": 109
+    },
+    {
+      "id": 1510,
+      "slug": "efcc-goes-after-oil-sector-debtors-owing-fed-govt-6b-n66b",
+      "title": "EFCC goes after oil sector debtors owing Fed Govt $6b, N66b",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/2056.jpg",
+      "matchedArticleId": 2056,
+      "matchedArticleSlug": "fed-govt-focuses-on-non-oil-revenue-to-meet-budget-targets",
+      "score": 118
+    },
+    {
+      "id": 1508,
+      "slug": "how-to-unlock-africas-20b-gemstone",
+      "title": "‘How to unlock Africa’s $20b gemstone’",
+      "category": "Raw Materials and Mapping",
+      "image": "/editorial/recovered/3961.jpg",
+      "matchedArticleId": 3961,
+      "matchedArticleSlug": "fg-deploys-mining-marshals-for-intelligence-gathering-compliance-monitoring",
+      "score": 109
+    },
+    {
+      "id": 1507,
+      "slug": "inflation-man-seeks-review-of-effects-of-rate-hikes",
+      "title": "Inflation: MAN seeks review of effects of rate hikes",
+      "category": "Manufacturing",
+      "image": "/editorial/recovered/3200.png",
+      "matchedArticleId": 3200,
+      "matchedArticleSlug": "man-projects-14-inflation-rate-23-benchmark-interest-in-2026",
+      "score": 112
+    },
+    {
+      "id": 1506,
+      "slug": "ndic-pays-94-insured-depositors-of-heritage-bank",
+      "title": "NDIC pays 94% insured depositors of Heritage Bank",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/631.webp",
+      "matchedArticleId": 631,
+      "matchedArticleSlug": "zenith-bank-begins-n290bn-capital-raise",
+      "score": 115
+    },
+    {
+      "id": 1504,
+      "slug": "tinubu-turning-maritime-sector-to-a-key-driver-of-economic-growth-says-oyetola",
+      "title": "Tinubu turning maritime sector to a key driver of economic growth, says Oyetola",
+      "category": "Gender Equality",
+      "image": "/editorial/recovered/3959.jpg",
+      "matchedArticleId": 3959,
+      "matchedArticleSlug": "dr-felicia-tamuno-advocates-non-interest-banking-ethical-finance-to-boost-women-led-businesses-in-africa",
+      "score": 106
+    },
+    {
+      "id": 1484,
+      "slug": "fg-proposes-tetfund-to-allocate-30-of-its-funds-for-student-loans",
+      "title": "FG proposes TETFUND to allocate 30% of its funds for student loans",
+      "category": "Institutions",
+      "image": "/editorial/recovered/1136.webp",
+      "matchedArticleId": 1136,
+      "matchedArticleSlug": "nelfund-disburses-n21-billion-student-loans-to-40-institutions-5-from-the-east",
+      "score": 109
+    },
+    {
+      "id": 1485,
+      "slug": "google-announces-2025-software-engineering-winter-internship",
+      "title": "Google announces 2025 software engineering winter internship",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/3409.png",
+      "matchedArticleId": 3409,
+      "matchedArticleSlug": "google-unveils-ai-skilling-blueprint-for-african-governments",
+      "score": 109
+    },
+    {
+      "id": 1479,
+      "slug": "nigerias-unemployment-rate-rises-to-53-in-q1-2024-as-economic-woes-linger",
+      "title": "Nigeria’s unemployment rate rises to 5.3% in Q1 2024 as economic woes linger",
+      "category": "Economic Volatilities",
+      "image": "/editorial/recovered/1649.jpg",
+      "matchedArticleId": 1649,
+      "matchedArticleSlug": "why-nigerias-inflation-rate-is-hardly-the-same-as-your-reality",
+      "score": 109
+    },
+    {
+      "id": 1465,
+      "slug": "we-are-not-recruiting-says-chevron",
+      "title": "We are not recruiting, says Chevron",
+      "category": "Vacancies",
+      "image": "/editorial/recovered/3597.png",
+      "matchedArticleId": 3597,
+      "matchedArticleSlug": "apply-psc-opens-portal-for-recruitment-of-50000-constables",
+      "score": 103
+    },
+    {
+      "id": 1469,
+      "slug": "things-to-know-about-old-pension-scheme-4",
+      "title": "Things to know about old pension scheme (4)",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/2172.png",
+      "matchedArticleId": 2172,
+      "matchedArticleSlug": "fg-states-launch-grassroots-development-scheme-to-tackle-poverty-unemployment",
+      "score": 109
+    },
+    {
+      "id": 1458,
+      "slug": "why-the-cbn-shocked-the-world-by-raising-interest-rates-to-2725",
+      "title": "Why the CBN shocked the world by raising interest rates to 27.25%,",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/3452.webp",
+      "matchedArticleId": 3452,
+      "matchedArticleSlug": "cbn-retains-benchmark-interest-rate-at-27",
+      "score": 112
+    },
+    {
+      "id": 1416,
+      "slug": "unrealised-agro-export-potential-put-at-31b",
+      "title": "Unrealised agro export potential put at $3.1b",
+      "category": "Production",
+      "image": "/editorial/recovered/1839.jpg",
+      "matchedArticleId": 1839,
+      "matchedArticleSlug": "enugu-state-to-establish-340-greenhouse-farms-in-17-lgas-to-boost-export",
+      "score": 106
+    },
+    {
+      "id": 1418,
+      "slug": "warrior-joshua-wont-quit-despite-dubois-mauling",
+      "title": "‘Warrior’ Joshua won’t quit despite Dubois mauling",
+      "category": "Dual Sports",
+      "image": "/editorial/recovered/1408.jpg",
+      "matchedArticleId": 1408,
+      "matchedArticleSlug": "sensational-dubois-knocks-anthony-joshua-out-in-5th-round-at-wembley-stadium",
+      "score": 112
+    },
+    {
+      "id": 1415,
+      "slug": "pensioners-withdraw-n2475b-from-retirement-savings-accounts",
+      "title": "Pensioners withdraw N247.5b from Retirement Savings Accounts",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3193.png",
+      "matchedArticleId": 3193,
+      "matchedArticleSlug": "ptad-resolving-pensioners-issues-3185",
+      "score": 109
+    },
+    {
+      "id": 1412,
+      "slug": "cbn-likely-to-retain-rates-to-support-economic-recovery",
+      "title": "CBN likely to retain rates to support economic recovery",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/2123.jpg",
+      "matchedArticleId": 2123,
+      "matchedArticleSlug": "cbn-retains-policy-instruments-amid-global-economic-pressures",
+      "score": 112
+    },
+    {
+      "id": 1386,
+      "slug": "university-awards-scholarships-to-107-students",
+      "title": "University awards scholarships to 107 students",
+      "category": "Scholarships",
+      "image": "/editorial/recovered/3525.png",
+      "matchedArticleId": 3525,
+      "matchedArticleSlug": "apply-now-qatar-university-2026-graduate-scholarships-for-international-students-fully-funded",
+      "score": 109
+    },
+    {
+      "id": 1385,
+      "slug": "kaduna-police-arrest-notorious-gunrunner-recover-20-ak-47-rifles",
+      "title": "Kaduna Police arrest notorious gunrunner, recover 20 AK-47 rifles",
+      "category": "Security Agencies",
+      "image": "/editorial/recovered/1879.jpg",
+      "matchedArticleId": 1879,
+      "matchedArticleSlug": "delta-woman-accuses-police-officers-of-extorting-n21million-tracking-and-movement-fees-to-recover-two-stolen-vehicles",
+      "score": 112
+    },
+    {
+      "id": 1349,
+      "slug": "neco-releases-junejuly-2024-ssce-results",
+      "title": "NECO releases June/July 2024 SSCE results",
+      "category": "Primary, Secondary and Vocational Education",
+      "image": "/editorial/recovered/610.webp",
+      "matchedArticleId": 610,
+      "matchedArticleSlug": "breaking-waec-releases-2024-wassce-results",
+      "score": 121
+    },
+    {
+      "id": 1348,
+      "slug": "ncc-moves-to-boost-internet-speed-in-nigeria-with-6ghz-spectrum",
+      "title": "NCC moves to boost internet speed in Nigeria with 6GHz spectrum",
+      "category": "Telecom",
+      "image": "/editorial/recovered/1077.jpg",
+      "matchedArticleId": 1077,
+      "matchedArticleSlug": "ncc-grants-airtel-nigeria-licences-to-boost-connectivity",
+      "score": 109
+    },
+    {
+      "id": 1326,
+      "slug": "research-statement-writing-tips",
+      "title": "Research statement writing tips",
+      "category": "Research",
+      "image": "/editorial/recovered/3389.png",
+      "matchedArticleId": 3389,
+      "matchedArticleSlug": "petroleum-fund-sokoto-varsity-collaborate-on-oil-gas-technology-research",
+      "score": 103
+    },
+    {
+      "id": 1325,
+      "slug": "transport-fare-hike-low-turnout-of-students-1-week-after-school-resumption",
+      "title": "Transport fare hike: Low turnout of students 1 week after school resumption",
+      "category": "Primary, Secondary and Vocational Education",
+      "image": "/editorial/recovered/1268.jpg",
+      "matchedArticleId": 1268,
+      "matchedArticleSlug": "northern-leaders-blame-govs-for-out-of-school-children-menace",
+      "score": 115
+    },
+    {
+      "id": 1335,
+      "slug": "govt-afdb-parley-on-food-security-economy",
+      "title": "Govt, AfDB parley on food security, economy",
+      "category": "Food Security",
+      "image": "/editorial/recovered/2043.webp",
+      "matchedArticleId": 2043,
+      "matchedArticleSlug": "kogi-cashew-dealers-urge-govt-to-halt-foreign-interference",
+      "score": 109
+    },
+    {
+      "id": 1322,
+      "slug": "mainone-graduate-internship-pogram-seeks-new-talent-for-2024",
+      "title": "MainOne graduate internship pogram seeks new talent for 2024",
+      "category": "Vacancies",
+      "image": "/editorial/recovered/777.jpg",
+      "matchedArticleId": 777,
+      "matchedArticleSlug": "apply-now-2024-kpmg-nigeria-graduate-trainee-program",
+      "score": 109
+    },
+    {
+      "id": 1321,
+      "slug": "bitcoin-price-surges-above-59000-as-crypto-market-prepares-for-fomc-meeting",
+      "title": "Bitcoin Price surges above $59,000 as crypto market prepares for FOMC meeting",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/615.png",
+      "matchedArticleId": 615,
+      "matchedArticleSlug": "bitcoin-falls-below-60000-as-crypto-market-loses-179-million-to-liquidations",
+      "score": 118
+    },
+    {
+      "id": 1320,
+      "slug": "fg-to-train-5000-nigerian-youths-on-data-protection-to-create-jobs",
+      "title": "FG to train 5,000 Nigerian youths on data protection to create jobs",
+      "category": "Gender Equality",
+      "image": "/editorial/recovered/3812.png",
+      "matchedArticleId": 3812,
+      "matchedArticleSlug": "ai-ventures-accelerator-offers-10000-for-women-led-african-startups",
+      "score": 109
+    },
+    {
+      "id": 1319,
+      "slug": "naira-appreciates-to-n1539-at-ie-window-as-the-dollar-weakens",
+      "title": "Naira appreciates to N1,539 at I&E Window as the dollar weakens",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/2554.jpg",
+      "matchedArticleId": 2554,
+      "matchedArticleSlug": "naira-stable-in-black-market-asus-dollar-weakens-globally",
+      "score": 115
+    },
+    {
+      "id": 1318,
+      "slug": "binance-sets-two-conditions-before-registering-under-nigerias-sec-crypto-program",
+      "title": "Binance sets two conditions before ‘registering’ under Nigeria’s SEC crypto program",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/3156.png",
+      "matchedArticleId": 3156,
+      "matchedArticleSlug": "sec-nigerias-crypto-transactions-hit-50bn-in-one-year",
+      "score": 112
+    },
+    {
+      "id": 1313,
+      "slug": "flooding-edo-delta-anambra-in-high-alert-as-cameroon-begins-water-release-from-lagdo-dam",
+      "title": "Flooding: Edo, Delta, Anambra in high alert as Cameroon begins water release from Lagdo dam",
+      "category": "Human Development Index (HDI) and Poverty Rates",
+      "image": "/editorial/recovered/1254.webp",
+      "matchedArticleId": 1254,
+      "matchedArticleSlug": "climate-change-threatening-water-sanitation-facilities-fg",
+      "score": 121
+    },
+    {
+      "id": 1311,
+      "slug": "coffee-prices-double-in-nigeria-as-global-supply-disruptions-push-futures-up-in-2024",
+      "title": "Coffee prices double in Nigeria as global supply disruptions push futures up in 2024",
+      "category": "Production",
+      "image": "/editorial/recovered/3280.jpg",
+      "matchedArticleId": 3280,
+      "matchedArticleSlug": "nsdc-to-integrate-outgrower-farmers-into-sugar-supply-chain",
+      "score": 106
+    },
+    {
+      "id": 1314,
+      "slug": "instagram-rolls-out-teen-accounts-globally-amid-concern-over-social-media-effect",
+      "title": "Instagram rolls out ‘Teen Accounts’ globally amid concern over social media effect",
+      "category": "Music",
+      "image": "/editorial/recovered/3920.png",
+      "matchedArticleId": 3920,
+      "matchedArticleSlug": "nigerian-artistes-earn-over-n60-billion-from-spotify-streaming-in-2025",
+      "score": 106
+    },
+    {
+      "id": 1309,
+      "slug": "fg-partners-uk-agency-caav-to-review-compensation-rates-for-public-land-acquisition-in-nigeria",
+      "title": "FG partners UK agency CAAV to review compensation rates for public land acquisition in NIgeria",
+      "category": "Hard Infrastructure",
+      "image": "/editorial/recovered/1907.jpg",
+      "matchedArticleId": 1907,
+      "matchedArticleSlug": "niqs-partners-julius-berger-for-infrastructure-excellence",
+      "score": 109
+    },
+    {
+      "id": 1294,
+      "slug": "small-research-grant-opportunity-for-researcher-apply-now",
+      "title": "Small Research Grant Opportunity for Researcher: Apply Now!",
+      "category": "Grants",
+      "image": "/editorial/recovered/3822.jpg",
+      "matchedArticleId": 3822,
+      "matchedArticleSlug": "govt-secures-700000-grant-to-electrify-schools-hospitals",
+      "score": 106
+    },
+    {
+      "id": 1292,
+      "slug": "fg-targets-15-billion-gdp-boost-from-halal-economy-by-2027",
+      "title": "FG targets $1.5 billion GDP boost from Halal economy by 2027",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/1594.jpg",
+      "matchedArticleId": 1594,
+      "matchedArticleSlug": "nigeria-must-boost-production-to-achieve-1tn-economy-boi",
+      "score": 118
+    },
+    {
+      "id": 1291,
+      "slug": "nigerias-interest-in-bitcoin-second-highest-globally",
+      "title": "Nigeria’s interest in Bitcoin second highest globally",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/2909.jpg",
+      "matchedArticleId": 2909,
+      "matchedArticleSlug": "bitcoin-ethereum-flash-crash-ignites-cryptos-blackest-day",
+      "score": 109
+    },
+    {
+      "id": 1289,
+      "slug": "nnpcl-releases-retail-prices-of-petrol-from-dangote-refinery-in-lagos-and-other-states",
+      "title": "NNPCL releases retail prices of petrol from Dangote refinery in Lagos and other states",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1998.webp",
+      "matchedArticleId": 1998,
+      "matchedArticleSlug": "dangote-refinery-fccpc-differ-as-nnpcl-insists-on-fuel-import",
+      "score": 118
+    },
+    {
+      "id": 1282,
+      "slug": "railway-should-prioritise-cargo-movement",
+      "title": "‘Railway should prioritise cargo movement’",
+      "category": "Rail",
+      "image": "/editorial/recovered/3269.jpg",
+      "matchedArticleId": 3269,
+      "matchedArticleSlug": "fg-to-unveil-railway-roadmap-to-connect-36-states-abuja",
+      "score": 106
+    },
+    {
+      "id": 1281,
+      "slug": "emirates-airlines-unveils-plans-for-return",
+      "title": "Emirates Airlines unveils plans for return",
+      "category": "Aviation",
+      "image": "/editorial/recovered/4000.png",
+      "matchedArticleId": 4000,
+      "matchedArticleSlug": "airlines-raise-fare-amidst-rising-fuel-price",
+      "score": 106
+    },
+    {
+      "id": 1272,
+      "slug": "efcc-secures-n342-million-forfeiture-from-nigerian-accused-of-fraudulently-diverting-uk-companys-2-million",
+      "title": "EFCC Secures N342 million forfeiture from Nigerian accused of fraudulently diverting UK Company’s £2 Million",
+      "category": "Security Agencies",
+      "image": "/editorial/recovered/3324.jpg",
+      "matchedArticleId": 3324,
+      "matchedArticleSlug": "efcc-declares-ex-minister-timipre-sylva-wanted-over-alleged-148m-refinery-fraud",
+      "score": 109
+    },
+    {
+      "id": 1261,
+      "slug": "exclusive-wpg-nears-final-stages-of-sale-of-stake-in-eko-disco",
+      "title": "Exclusive: WPG nears final stages of sale of stake in Eko DisCo",
+      "category": "Energy Consumption",
+      "image": "/editorial/recovered/925.webp",
+      "matchedArticleId": 925,
+      "matchedArticleSlug": "eko-disco-laments-mdas-n144bn-electricity-debt",
+      "score": 112
+    },
+    {
+      "id": 1256,
+      "slug": "all-share-index-gains-032-with-first-bank-and-nestle-among-top-advancers",
+      "title": "All-Share Index gains 0.32%, with First bank and Nestlé among top advancers",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/1534.jpg",
+      "matchedArticleId": 1534,
+      "matchedArticleSlug": "nigerian-all-share-index-declines-007-despite-surge-in-market-volume",
+      "score": 121
+    },
+    {
+      "id": 1229,
+      "slug": "nigerias-ocean-resources-potential-untapped-oyetola",
+      "title": "Nigeria’s ocean resources potential untapped — Oyetola",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/3969.jpg",
+      "matchedArticleId": 3969,
+      "matchedArticleSlug": "pencom-abolishes-prior-approval-requirement-for-pfa-advertisements",
+      "score": 106
+    },
+    {
+      "id": 1225,
+      "slug": "digital-normadism-remote-jobs-you-can-do-from-anywhere-in-2024",
+      "title": "Digital normadism: Remote jobs you can do from anywhere in 2024",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/1912.webp",
+      "matchedArticleId": 1912,
+      "matchedArticleSlug": "cbn-policies-prevented-4281-inflation-in-2024-cardoso",
+      "score": 109
+    },
+    {
+      "id": 1224,
+      "slug": "fully-funded-scholarships-available-for-african-graduate-students-and-researchers",
+      "title": "Fully funded scholarships available for African graduate students and researchers",
+      "category": "Scholarships",
+      "image": "/editorial/recovered/3525.png",
+      "matchedArticleId": 3525,
+      "matchedArticleSlug": "apply-now-qatar-university-2026-graduate-scholarships-for-international-students-fully-funded",
+      "score": 115
+    },
+    {
+      "id": 1222,
+      "slug": "naira-rebounds-to-n1558-at-ie-window-as-nigerian-oil-blends-outperform-brent",
+      "title": "Naira rebounds to N1,558 at I&E Window as Nigerian oil blends outperform Brent",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/1767.png",
+      "matchedArticleId": 1767,
+      "matchedArticleSlug": "naira-closes-at-n162513-in-ie-window-amid-market-turnover-decline",
+      "score": 112
+    },
+    {
+      "id": 1221,
+      "slug": "nigerias-first-domestic-dollar-bond-records-180-subscription",
+      "title": "Nigeria’s first domestic dollar bond records 180% subscription",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/1202.jpg",
+      "matchedArticleId": 1202,
+      "matchedArticleSlug": "federal-govt-dollar-bond-attracts-900m-subscription",
+      "score": 118
+    },
+    {
+      "id": 1220,
+      "slug": "gtco-reports-n1-trillion-pre-tax-profit-in-6-months-first-to-hit-milestone",
+      "title": "GTCO reports N1 trillion pre-tax profit in 6 months, first to hit milestone",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/980.jpg",
+      "matchedArticleId": 980,
+      "matchedArticleSlug": "zenith-bank-post-n4068-billion-pre-tax-profits-in-q2-on-track-to-hit-n1-trillion-profits-by-year-end",
+      "score": 133
+    },
+    {
+      "id": 1219,
+      "slug": "nigerias-trade-surplus-hits-n695-trillion-in-q2-2024-as-import-weakens",
+      "title": "Nigeria’s trade surplus hits N6.95 trillion in Q2 2024 as import weakens",
+      "category": "Small and Medium Enterprises (SME)",
+      "image": "/editorial/recovered/2612.jpg",
+      "matchedArticleId": 2612,
+      "matchedArticleSlug": "how-to-close-msmes-57-trillion-financing-gap",
+      "score": 115
+    },
+    {
+      "id": 1205,
+      "slug": "5g-mtn-hopeful-on-improved-uptake",
+      "title": "5G: MTN hopeful on improved uptake",
+      "category": "Telecom",
+      "image": "/editorial/recovered/645.jpg",
+      "matchedArticleId": 645,
+      "matchedArticleSlug": "mtn-foundation-drives-music-development-with-muson-scholarship",
+      "score": 106
+    },
+    {
+      "id": 1203,
+      "slug": "funke-akindele-empowers-175-crew-members-in-upcoming-film-project",
+      "title": "Funke Akindele empowers 175 crew members in upcoming film project",
+      "category": "Philanthropy",
+      "image": "/editorial/recovered/3773.jpg",
+      "matchedArticleId": 3773,
+      "matchedArticleSlug": "dangote-salt-rewards-50-outstanding-customers-with-trucks-cash-gifts",
+      "score": 103
+    },
+    {
+      "id": 1201,
+      "slug": "assessing-nigerias-150-day-duty-free-import-policy-insights-from-afex-ceo-ayodeji-balogun",
+      "title": "Assessing Nigeria’s 150-day duty-free import policy: Insights from AFEX CEO Ayodeji Balogun",
+      "category": "Production",
+      "image": "/editorial/recovered/3312.jpg",
+      "matchedArticleId": 3312,
+      "matchedArticleSlug": "nepc-intensifies-crackdown-on-banned-paraquat-use-in-sesame-production",
+      "score": 103
+    },
+    {
+      "id": 1199,
+      "slug": "preparing-for-the-unexpected-securing-your-loved-ones-future-with-a-written-will",
+      "title": "Preparing for the unexpected: Securing your loved ones’ future with a written will",
+      "category": "Interconnectedness",
+      "image": "/editorial/recovered/1226.png",
+      "matchedArticleId": 1226,
+      "matchedArticleSlug": "how-to-update-your-nin-details-from-home",
+      "score": 106
+    },
+    {
+      "id": 1198,
+      "slug": "electricity-security-and-youth-entrepreneurship-three-key-areas-to-be-addressed-to-fix-nigeria-tony-elumelu",
+      "title": "Electricity, Security and Youth Entrepreneurship, three key areas to be addressed to fix Nigeria – Tony Elumelu",
+      "category": "Gender Equality",
+      "image": "/editorial/recovered/1401.jpg",
+      "matchedArticleId": 1401,
+      "matchedArticleSlug": "elumelu-sets-out-africas-priorities-for-unga-2024",
+      "score": 109
+    },
+    {
+      "id": 1197,
+      "slug": "naira-slips-to-n1637-at-ie-window-as-demand-pressure-grows",
+      "title": "Naira slips to N1,637 at I&E Window as demand pressure grows",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/1767.png",
+      "matchedArticleId": 1767,
+      "matchedArticleSlug": "naira-closes-at-n162513-in-ie-window-amid-market-turnover-decline",
+      "score": 112
+    },
+    {
+      "id": 1196,
+      "slug": "nigerias-crude-oil-production-rises-by-34-to-135million-bpd-in-august-opec",
+      "title": "Nigeria’s crude oil production rises by 3.4% to 1.35million bpd in August – OPEC",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/626.webp",
+      "matchedArticleId": 626,
+      "matchedArticleSlug": "nigerias-crude-oil-production-now-13mbpd-opec",
+      "score": 121
+    },
+    {
+      "id": 1192,
+      "slug": "forex-crisis-threatens-multimillion-dollar-data-centre-investments-in-nigeria",
+      "title": "Forex crisis threatens multimillion-dollar data centre investments in Nigeria",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/1797.jpg",
+      "matchedArticleId": 1797,
+      "matchedArticleSlug": "10-countries-with-highest-foreign-investments-into-nigeria-in-q2-2024",
+      "score": 115
+    },
+    {
+      "id": 1191,
+      "slug": "economic-hardship-pensioners-want-fg-states-to-recompute-emoluments-with-n70000-minimum-wage",
+      "title": "Economic hardship: Pensioners want FG, states to recompute emoluments with N70,000 minimum wage",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/1851.jpg",
+      "matchedArticleId": 1851,
+      "matchedArticleSlug": "n70000-minimum-wage-not-enough-nigerian-workers-lament",
+      "score": 118
+    },
+    {
+      "id": 1190,
+      "slug": "exploring-positive-crypto-regulation-how-nigerian-authorities-are-opening-doors-to-bitcoin-trading",
+      "title": "Exploring positive crypto regulation: How Nigerian authorities are opening doors to Bitcoin trading",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/2909.jpg",
+      "matchedArticleId": 2909,
+      "matchedArticleSlug": "bitcoin-ethereum-flash-crash-ignites-cryptos-blackest-day",
+      "score": 112
+    },
+    {
+      "id": 1186,
+      "slug": "proposed-vat-reforms-offer-0-tax-on-intellectual-property-and-export-of-services",
+      "title": "Proposed VAT reforms offer 0% tax on intellectual property and export of services",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/3717.webp",
+      "matchedArticleId": 3717,
+      "matchedArticleSlug": "nigerian-tax-act-2025-exempts-gaming-stakes-from-vat",
+      "score": 115
+    },
+    {
+      "id": 1185,
+      "slug": "electricity-discos-lose-n2571-billion-in-one-month-over-bill-collection-inefficiency",
+      "title": "Electricity DisCos lose N25.71 billion in one month over bill collection inefficiency",
+      "category": "Energy",
+      "image": "/editorial/recovered/1956.jpg",
+      "matchedArticleId": 1956,
+      "matchedArticleSlug": "expect-another-electricity-tariff-hike-within-months-presidential-aide",
+      "score": 106
+    },
+    {
+      "id": 1184,
+      "slug": "tanker-accident-causes-gridlock-on-abuja-road",
+      "title": "Tanker accident causes gridlock on Abuja road",
+      "category": "Road",
+      "image": "/editorial/recovered/3726.jpg",
+      "matchedArticleId": 3726,
+      "matchedArticleSlug": "12-die-in-multiple-vehicle-crash-on-abuja-road",
+      "score": 106
+    },
+    {
+      "id": 1181,
+      "slug": "naira-shows-recovery-ahead-of-us-inflation-data",
+      "title": "Naira shows recovery ahead of U.S. inflation data",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/1042.png",
+      "matchedArticleId": 1042,
+      "matchedArticleSlug": "purchase-cost-inflation-hits-five-month-high-in-august-due-to-weak-naira-report",
+      "score": 112
+    },
+    {
+      "id": 1178,
+      "slug": "investors-take-fgn-500m-bond-to-oversubscription",
+      "title": "Investors take FGN $500m bond to oversubscription",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/3964.png",
+      "matchedArticleId": 3964,
+      "matchedArticleSlug": "dmo-announces-n600-billion-fgn-bond-auction-for-may-2026",
+      "score": 115
+    },
+    {
+      "id": 1167,
+      "slug": "university-of-bradford-offers-50-scholarship-for-international-students-in-applied-artificial-intelligence-bsc-program",
+      "title": "University of Bradford offers 50% scholarship for international students in applied artificial intelligence BSc program",
+      "category": "Scholarships",
+      "image": "/editorial/recovered/3525.png",
+      "matchedArticleId": 3525,
+      "matchedArticleSlug": "apply-now-qatar-university-2026-graduate-scholarships-for-international-students-fully-funded",
+      "score": 112
+    },
+    {
+      "id": 1166,
+      "slug": "nitda-nysc-deploy-corps-members-in-12-states-to-drive-digital-literacy-initiative",
+      "title": "NITDA, NYSC deploy corps members in 12 states to drive digital literacy initiative",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/2172.png",
+      "matchedArticleId": 2172,
+      "matchedArticleSlug": "fg-states-launch-grassroots-development-scheme-to-tackle-poverty-unemployment",
+      "score": 109
+    },
+    {
+      "id": 1157,
+      "slug": "miss-universe-i-didnt-win-by-pity-i-worked-hard-for-it-chidimma-adetshina",
+      "title": "Miss Universe: I didn’t win by pity, I worked hard for it – Chidimma Adetshina",
+      "category": "Music",
+      "image": "/editorial/recovered/3984.jpg",
+      "matchedArticleId": 3984,
+      "matchedArticleSlug": "wizkid-sets-record-as-first-african-artiste-to-reach-11-billion-spotify-streams",
+      "score": 103
+    },
+    {
+      "id": 1154,
+      "slug": "fuel-price-hike-uber-drivers-ask-for-more-as-platform-increases-fares-by-13",
+      "title": "Fuel price hike: Uber drivers ask for more as platform increases fares by 13%",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/1276.webp",
+      "matchedArticleId": 1276,
+      "matchedArticleSlug": "we-will-give-dangote-refinery-nnpc-others-a-chance-to-reduce-fuel-price-wale-edun",
+      "score": 112
+    },
+    {
+      "id": 1153,
+      "slug": "explained-nigerias-70-windfall-tax-and-its-economic-necessity",
+      "title": "Explained: Nigeria’s 70% windfall tax and its economic necessity",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/1597.webp",
+      "matchedArticleId": 1597,
+      "matchedArticleSlug": "70-windfall-tax-economists-raise-mixed-concerns-over-nigerias-growth-outlook",
+      "score": 115
+    },
+    {
+      "id": 1152,
+      "slug": "moniepoint-opay-others-to-start-deducting-n50-emtl-from-september-9-2024",
+      "title": "Moniepoint, OPay, others to start deducting N50 EMTL from September 9, 2024",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/1340.png",
+      "matchedArticleId": 1340,
+      "matchedArticleSlug": "fg-seeks-n150-billion-from-bond-market-in-september-2024",
+      "score": 115
+    },
+    {
+      "id": 1150,
+      "slug": "boxers-tip-joshua-to-beat-dubois-in-ibf-fight",
+      "title": "Boxers tip Joshua to beat Dubois in IBF fight",
+      "category": "Dual Sports",
+      "image": "/editorial/recovered/1408.jpg",
+      "matchedArticleId": 1408,
+      "matchedArticleSlug": "sensational-dubois-knocks-anthony-joshua-out-in-5th-round-at-wembley-stadium",
+      "score": 112
+    },
+    {
+      "id": 1148,
+      "slug": "we-are-not-sole-suppliers-of-dangote-petrol-nnpcl",
+      "title": "We are not sole suppliers of Dangote petrol – NNPCL",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1144.jpg",
+      "matchedArticleId": 1144,
+      "matchedArticleSlug": "petrol-crisis-trucks-stranded-at-depots-as-nnpcl-dangote-tango-over-pricing",
+      "score": 118
+    },
+    {
+      "id": 1140,
+      "slug": "smes-contribute-4631-to-gdp",
+      "title": "SMEs contribute 46.31% to GDP",
+      "category": "Small and Medium Enterprises (SME)",
+      "image": "/editorial/recovered/2089.webp",
+      "matchedArticleId": 2089,
+      "matchedArticleSlug": "providus-bank-reaffirms-support-for-smes",
+      "score": 115
+    },
+    {
+      "id": 1137,
+      "slug": "efccrecovers-53-vehicles-180300-for-canadian-victims",
+      "title": "EFCCrecovers 53 vehicles, $180,300 for Canadian victims",
+      "category": "Simple and Miscellaneous Offences",
+      "image": "/editorial/recovered/3636.webp",
+      "matchedArticleId": 3636,
+      "matchedArticleSlug": "police-arrest-4-suspects-for-unlawful-possession-of-fireworks",
+      "score": 109
+    },
+    {
+      "id": 1134,
+      "slug": "prepare-for-ember-months-surge-in-cybercrime-experts-tell-nigerian-businesses",
+      "title": "Prepare for ember months surge in cybercrime, experts tell Nigerian businesses",
+      "category": "Simple and Miscellaneous Offences",
+      "image": "/editorial/recovered/3636.webp",
+      "matchedArticleId": 3636,
+      "matchedArticleSlug": "police-arrest-4-suspects-for-unlawful-possession-of-fireworks",
+      "score": 109
+    },
+    {
+      "id": 1132,
+      "slug": "cbn-to-sell-20k-to-eligible-bdcs-at-n1580-to-meet-market-demand",
+      "title": "CBN to sell $20k to eligible BDCs at N1580/$ to meet market demand",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/3530.jpg",
+      "matchedArticleId": 3530,
+      "matchedArticleSlug": "82-bdcs-meet-cbns-new-guidelines",
+      "score": 115
+    },
+    {
+      "id": 1131,
+      "slug": "how-we-can-build-ai-in-nigeria-without-hitting-the-data-limitation-walls",
+      "title": "How we can build Ai in Nigeria without hitting the data limitation walls",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/1903.png",
+      "matchedArticleId": 1903,
+      "matchedArticleSlug": "how-deepseeks-ai-models-can-supercharge-ai-innovation-for-your-business",
+      "score": 112
+    },
+    {
+      "id": 1118,
+      "slug": "nigeria-customs-collected-n2775-billion-in-import-duties-in-augus",
+      "title": "Nigeria Customs collected N277.5 billion in import duties in Augus",
+      "category": "Budgeting and Debt Financing",
+      "image": "/editorial/recovered/3964.png",
+      "matchedArticleId": 3964,
+      "matchedArticleSlug": "dmo-announces-n600-billion-fgn-bond-auction-for-may-2026",
+      "score": 112
+    },
+    {
+      "id": 1114,
+      "slug": "lagos-signs-mou-with-chinese-firm-for-68km-rail-project-to-connect-vi-lekki-ajah",
+      "title": "Lagos signs MoU with chinese firm for 68km rail project to connect VI, lekki, Ajah",
+      "category": "Rail",
+      "image": "/editorial/recovered/3269.jpg",
+      "matchedArticleId": 3269,
+      "matchedArticleSlug": "fg-to-unveil-railway-roadmap-to-connect-36-states-abuja",
+      "score": 106
+    },
+    {
+      "id": 1112,
+      "slug": "oil-and-gas-companies-paid-n132-billion-in-insurance-premiums-in-q1-2024",
+      "title": "Oil and gas companies paid N132 billion in insurance premiums in Q1 2024",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/1296.png",
+      "matchedArticleId": 1296,
+      "matchedArticleSlug": "seven-nigerian-banks-rake-in-n13245-billion-from-e-business-in-half-year-2024",
+      "score": 130
+    },
+    {
+      "id": 1101,
+      "slug": "nddc-commended-for-solar-powered-electricity-delivery",
+      "title": "NDDC commended for solar-powered electricity delivery",
+      "category": "Energy Consumption",
+      "image": "/editorial/recovered/3893.jpg",
+      "matchedArticleId": 3893,
+      "matchedArticleSlug": "jos-disco-introduces-flexible-electricity-debt-repayment-plan-for-customers",
+      "score": 109
+    },
+    {
+      "id": 1100,
+      "slug": "collapse-dangiwa-urges-valuers-involvement-in-buildings-post-construction-phases",
+      "title": "Collapse: Dangiwa urges valuers’ involvement in buildings’ post-construction phases",
+      "category": "Hard Infrastructure",
+      "image": "/editorial/recovered/1946.png",
+      "matchedArticleId": 1946,
+      "matchedArticleSlug": "federal-housing-authority-suspends-construction-in-three-abuja-estates-orders-documentation-from-feb-3",
+      "score": 109
+    },
+    {
+      "id": 1099,
+      "slug": "nimet-canvasses-farmers-insurance-to-boost-food-security",
+      "title": "NiMet canvasses farmers’ insurance to boost food security",
+      "category": "Production",
+      "image": "/editorial/recovered/2677.webp",
+      "matchedArticleId": 2677,
+      "matchedArticleSlug": "horticulture-key-to-jobs-food-security-minister",
+      "score": 109
+    },
+    {
+      "id": 1094,
+      "slug": "corps-members-allowance-will-increase-with-new-minimum-wage-nysc",
+      "title": "Corps members’ allowance will increase with new minimum wage – NYSC",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/1486.jpg",
+      "matchedArticleId": 1486,
+      "matchedArticleSlug": "federal-govt-jerks-up-nysc-monthly-allowance-above-n70k-minimum-wage",
+      "score": 118
+    },
+    {
+      "id": 1046,
+      "slug": "petrol-will-be-exported-if-marketers-boycott-product-dangote-refinery",
+      "title": "Petrol will be exported if marketers boycott product — Dangote refinery",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1493.webp",
+      "matchedArticleId": 1493,
+      "matchedArticleSlug": "dangote-refinery-marketers-plan-direct-petrol-purchase",
+      "score": 121
+    },
+    {
+      "id": 1040,
+      "slug": "dangote-refinerys-price-forecast-sparks-mixed-reactions-as-petrol-hits-n1000-per-liter",
+      "title": "Dangote Refinery’s price forecast sparks mixed reactions as petrol hits N1,000 per liter",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/1443.jpg",
+      "matchedArticleId": 1443,
+      "matchedArticleSlug": "dangote-refinery-marketers-to-meet-over-direct-petrol-lifting-price-reduction",
+      "score": 121
+    },
+    {
+      "id": 1000,
+      "slug": "lovonus-microfinance-bank-to-disburse-n15bn-loan",
+      "title": "Lovonus Microfinance Bank to disburse N1.5bn loan",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/1576.png",
+      "matchedArticleId": 1576,
+      "matchedArticleSlug": "wema-bank-to-disburse-n135m-through-5-for-5-promo-season-4",
+      "score": 112
+    },
+    {
+      "id": 990,
+      "slug": "uba-boss-others-call-for-more-financial-inclusion",
+      "title": "UBA boss, others call for more financial inclusion",
+      "category": "Wealth Redistribution",
+      "image": "/editorial/recovered/1829.jpg",
+      "matchedArticleId": 1829,
+      "matchedArticleSlug": "moniepoint-secures-investment-from-visa-to-drive-financial-inclusion-in-africa",
+      "score": 112
+    },
+    {
+      "id": 979,
+      "slug": "flood-destroys-over-2500-houses-and-1000-hectares-of-farmlands-in-gombe-state-979",
+      "title": "Flood destroys over 2500 houses and 1000 hectares of farmlands in Gombe state",
+      "category": "Human Development Index (HDI) and Poverty Rates",
+      "image": "/editorial/recovered/1398.webp",
+      "matchedArticleId": 1398,
+      "matchedArticleSlug": "1m-affected-94741-homeless-farmlands-submerged-by-flood-nema",
+      "score": 124
+    },
+    {
+      "id": 973,
+      "slug": "flood-destroys-over-2500-houses-and-1000-hectares-of-farmlands-in-gombe-state",
+      "title": "Flood destroys over 2500 houses and 1000 hectares of farmlands in Gombe state",
+      "category": "Infrastructure",
+      "image": "/editorial/recovered/2994.jpg",
+      "matchedArticleId": 2994,
+      "matchedArticleSlug": "fcta-demolishes-multi-million-naira-estate",
+      "score": 103
+    },
+    {
+      "id": 968,
+      "slug": "bandits-kill-man-abduct-wife-kids-in-abuja-suburb",
+      "title": "Bandits kill man, abduct wife, kids in Abuja suburb",
+      "category": "Access to Finance",
+      "image": "/editorial/recovered/2144.webp",
+      "matchedArticleId": 2144,
+      "matchedArticleSlug": "explore-alternative-financing-ogun-man-urges-manufacturers",
+      "score": 109
+    },
+    {
+      "id": 954,
+      "slug": "oil-giant-shell-to-cut-hundreds-of-jobs",
+      "title": "Oil Giant Shell To Cut Hundreds Of Jobs",
+      "category": "Human Development Index (HDI) and Poverty Rates",
+      "image": "/editorial/recovered/1927.jpg",
+      "matchedArticleId": 1927,
+      "matchedArticleSlug": "ogoni-youths-seek-inclusion-in-fgs-plans-to-resume-oil-production-in-region",
+      "score": 121
+    },
+    {
+      "id": 949,
+      "slug": "world-bank-bans-two-nigerians-one-firm-in-march-2024-for-corruption-fraud",
+      "title": "World Bank bans two Nigerians, one firm in March 2024 for corruption, fraud",
+      "category": "World Bank (WB)",
+      "image": "/editorial/recovered/2872.webp",
+      "matchedArticleId": 2872,
+      "matchedArticleSlug": "139-million-nigerians-living-in-poverty-despite-reform-gains-world-bank",
+      "score": 109
+    },
+    {
+      "id": 942,
+      "slug": "unilag-power-disconnected-over-n1bn-debt-ekedc",
+      "title": "UNILAG power disconnected over N1bn debt – EKEDC",
+      "category": "Institutions",
+      "image": "/editorial/recovered/3376.webp",
+      "matchedArticleId": 3376,
+      "matchedArticleSlug": "nelfund-urges-institutions-to-refund-students-over-disbursement-delays",
+      "score": 106
+    },
+    {
+      "id": 935,
+      "slug": "abuja-industrial-park-will-generate-40000-jobs-boost-nigerias-economy-wike",
+      "title": "Abuja Industrial Park will generate 40,000 Jobs, boost Nigeria’s Economy – Wike",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/1851.jpg",
+      "matchedArticleId": 1851,
+      "matchedArticleSlug": "n70000-minimum-wage-not-enough-nigerian-workers-lament",
+      "score": 109
+    },
+    {
+      "id": 927,
+      "slug": "government-plans-evacuation-camps-as-flood-hits-28-states",
+      "title": "Government plans evacuation, camps as flood hits 28 states",
+      "category": "Human Development Index (HDI) and Poverty Rates",
+      "image": "/editorial/recovered/1305.jpg",
+      "matchedArticleId": 1305,
+      "matchedArticleSlug": "despite-n40bn-ecological-fund-flood-ravages-states",
+      "score": 124
+    },
+    {
+      "id": 926,
+      "slug": "fg-laments-rising-drug-trafficking-via-sea",
+      "title": "FG laments rising drug trafficking via sea",
+      "category": "Water",
+      "image": "/editorial/recovered/3880.jpg",
+      "matchedArticleId": 3880,
+      "matchedArticleSlug": "lekki-deep-sea-port-records-highest-cargo-throughput-in-nigeria-for-2025",
+      "score": 106
+    },
+    {
+      "id": 910,
+      "slug": "top-10-states-with-the-highest-vat-allocation-in-2023",
+      "title": "Top 10 states with the highest VAT allocation in 2023",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/1297.webp",
+      "matchedArticleId": 1297,
+      "matchedArticleSlug": "enaira-nigeria-others-top-global-cbdc-adoption-as-44-countries-join-race-report",
+      "score": 109
+    },
+    {
+      "id": 904,
+      "slug": "ekiti-approves-n415bn-for-road-construction-agric-others",
+      "title": "Ekiti approves N4.15bn for road construction, agric, others",
+      "category": "Road",
+      "image": "/editorial/recovered/953.png",
+      "matchedArticleId": 953,
+      "matchedArticleSlug": "gov-lawal-flags-off-construction-of-66bn-road-linking-two-lgas",
+      "score": 106
+    },
+    {
+      "id": 901,
+      "slug": "fg-to-launch-equivalent-of-nysc-program-for-nce-graduates",
+      "title": "FG to launch equivalent of NYSC program for NCE graduates",
+      "category": "Institutions",
+      "image": "/editorial/recovered/1036.jpg",
+      "matchedArticleId": 1036,
+      "matchedArticleSlug": "nysc-refutes-claims-of-denying-registration-to-slt-graduates-in-gombe",
+      "score": 109
+    },
+    {
+      "id": 895,
+      "slug": "key-sectors-driving-nigerias-economic-growth-since-tinubu-became-president",
+      "title": "Key sectors driving Nigeria’s economic growth since Tinubu became President",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/2717.webp",
+      "matchedArticleId": 2717,
+      "matchedArticleSlug": "nigerias-gdp-records-423-growth-in-q225",
+      "score": 115
+    },
+    {
+      "id": 890,
+      "slug": "fg-spending-exceeds-revenue-by-225-budgit",
+      "title": "FG spending exceeds revenue by 225% — BudgIT",
+      "category": "Economic Volatilities",
+      "image": "/editorial/recovered/3788.jpg",
+      "matchedArticleId": 3788,
+      "matchedArticleSlug": "fg-prioritises-revenue-over-efficiency-in-asset-sales-analysts",
+      "score": 109
+    },
+    {
+      "id": 882,
+      "slug": "nigerian-resident-doctors-begin-7-days-nationwide-warning-strike-today",
+      "title": "Nigerian Resident Doctors begin 7 days Nationwide warning strike today",
+      "category": "Soft Infrastructure",
+      "image": "/editorial/recovered/2926.webp",
+      "matchedArticleId": 2926,
+      "matchedArticleSlug": "fg-extends-keffi-toto-road-to-199km-assures-50-year-durability",
+      "score": 106
+    },
+    {
+      "id": 877,
+      "slug": "federal-government-looks-to-unlock-full-potential-of-nigerias-tourism-sector",
+      "title": "Federal Government looks to unlock full potential of Nigeria’s tourism sector",
+      "category": "Music",
+      "image": "/editorial/recovered/3984.jpg",
+      "matchedArticleId": 3984,
+      "matchedArticleSlug": "wizkid-sets-record-as-first-african-artiste-to-reach-11-billion-spotify-streams",
+      "score": 103
+    },
+    {
+      "id": 875,
+      "slug": "time-to-rethink-nysc-allawee-the-case-for-differential-allowances",
+      "title": "Time to rethink NYSC Allawee: The Case for “Differential Allowances”",
+      "category": "Monetary Policy",
+      "image": "/editorial/recovered/3928.webp",
+      "matchedArticleId": 3928,
+      "matchedArticleSlug": "banking-sector-lending-hits-n1114trn",
+      "score": 106
+    },
+    {
+      "id": 873,
+      "slug": "enugu-government-starts-pension-payment-arrears-to-7100-local-government-retirees",
+      "title": "Enugu Government starts pension payment arrears to 7,100 local government retirees",
+      "category": "Poverty Reduction",
+      "image": "/editorial/recovered/2820.jpg",
+      "matchedArticleId": 2820,
+      "matchedArticleSlug": "federal-government-sets-5-year-target-for-poverty-eradication",
+      "score": 109
+    },
+    {
+      "id": 871,
+      "slug": "niger-buries-13-slain-farmers-laments-soldiers-withdrawal",
+      "title": "Niger buries 13 slain farmers, laments soldiers’ withdrawal",
+      "category": "Access to Finance",
+      "image": "/editorial/recovered/3541.webp",
+      "matchedArticleId": 3541,
+      "matchedArticleSlug": "cbn-moves-to-boost-lending-for-farmers",
+      "score": 109
+    },
+    {
+      "id": 869,
+      "slug": "surveyors-blame-corruption-for-infrastructure-failure",
+      "title": "Surveyors blame corruption for infrastructure failure",
+      "category": "Infrastructure",
+      "image": "/editorial/recovered/2994.jpg",
+      "matchedArticleId": 2994,
+      "matchedArticleSlug": "fcta-demolishes-multi-million-naira-estate",
+      "score": 103
+    },
+    {
+      "id": 866,
+      "slug": "top-10-african-countries-with-most-expensive-flight-costs-from-nigeria",
+      "title": "Top 10 African Countries with most expensive flight costs from Nigeria",
+      "category": "Aviation",
+      "image": "/editorial/recovered/2863.png",
+      "matchedArticleId": 2863,
+      "matchedArticleSlug": "bayelsa-acquires-two-aircraft-for-commercial-flight-operations",
+      "score": 106
+    },
+    {
+      "id": 864,
+      "slug": "abuja-butchers-lament-high-cost-of-livestock-low-demand-from-customers",
+      "title": "Abuja butchers lament high cost of livestock, low demand from customers",
+      "category": "Food Security",
+      "image": "/editorial/recovered/3305.jpg",
+      "matchedArticleId": 3305,
+      "matchedArticleSlug": "food-prices-fall-as-abuja-residents-battle-low-purchasing-power",
+      "score": 112
+    },
+    {
+      "id": 861,
+      "slug": "anger-as-petrol-sells-for-over-n1000-per-litre-in-benue",
+      "title": "Anger as petrol sells for over N1,000 per litre in Benue",
+      "category": "Decentralized Power Generation",
+      "image": "/editorial/recovered/662.jpg",
+      "matchedArticleId": 662,
+      "matchedArticleSlug": "petrol-sells-for-n950-per-litre-in-kano",
+      "score": 121
+    },
+    {
+      "id": 859,
+      "slug": "rivers-enrolls-36855-people-in-contributory-health-scheme",
+      "title": "Rivers enrolls 36,855 people in contributory health scheme",
+      "category": "Soft Infrastructure",
+      "image": "/editorial/recovered/897.jpg",
+      "matchedArticleId": 897,
+      "matchedArticleSlug": "nigerias-health-sector-grows-by-241-in-q2-2024-nbs",
+      "score": 109
+    },
+    {
+      "id": 857,
+      "slug": "over-100-transmission-towers-vandalised-in-kaduna-tcn",
+      "title": "Over 100 transmission towers vandalised in Kaduna – TCN",
+      "category": "Energy Consumption",
+      "image": "/editorial/recovered/3489.png",
+      "matchedArticleId": 3489,
+      "matchedArticleSlug": "ibedc-resumes-installation-of-over-55000-free-meters-warns-against-extortion",
+      "score": 109
+    },
+    {
+      "id": 856,
+      "slug": "another-businessman-excretes-68-wraps-of-cocaine-at-lagos-airport",
+      "title": "Another businessman excretes 68 wraps of cocaine at Lagos airport",
+      "category": "Access to Finance",
+      "image": "/editorial/recovered/3394.jpg",
+      "matchedArticleId": 3394,
+      "matchedArticleSlug": "lagos-rewards-33-agripreneurs-with-n150m",
+      "score": 109
+    },
+    {
+      "id": 854,
+      "slug": "navy-destroys-14-illegal-refineries-9-boats-recovers-stolen-crude",
+      "title": "Navy destroys 14 illegal refineries, 9 boats; recovers stolen crude",
+      "category": "Water",
+      "image": "/editorial/recovered/1731.webp",
+      "matchedArticleId": 1731,
+      "matchedArticleSlug": "21-passengers-missing-as-2-boats-collide-in-lagos",
+      "score": 106
+    },
+    {
+      "id": 853,
+      "slug": "insecurity-acquire-martial-arts-to-enhance-your-security-don-tells-nigerian-women",
+      "title": "Insecurity: Acquire martial arts to enhance your security, don tells Nigerian women",
+      "category": "Access to Finance",
+      "image": "/editorial/recovered/3588.png",
+      "matchedArticleId": 3588,
+      "matchedArticleSlug": "fsdh-boi-outline-requirements-to-access-loans-for-women-led-businesses",
+      "score": 109
+    },
+    {
+      "id": 844,
+      "slug": "fuel-scarcity-calling-for-kyaris-sack-mischievous-ex-militant-leader-akpodoro",
+      "title": "Fuel scarcity: Calling for Kyari’s sack ‘mischievous’, Ex militant leader, Akpodoro",
+      "category": "Simple and Miscellaneous Offences",
+      "image": "/editorial/recovered/700.webp",
+      "matchedArticleId": 700,
+      "matchedArticleSlug": "woman-arrested-with-ak-47-hidden-in-garri-sack",
+      "score": 112
+    },
+    {
+      "id": 840,
+      "slug": "efcc-urges-public-officeholders-to-embrace-transparency-accountability",
+      "title": "EFCC urges public officeholders to embrace transparency, accountability",
+      "category": "Security Agencies",
+      "image": "/editorial/recovered/3324.jpg",
+      "matchedArticleId": 3324,
+      "matchedArticleSlug": "efcc-declares-ex-minister-timipre-sylva-wanted-over-alleged-148m-refinery-fraud",
+      "score": 109
+    },
+    {
+      "id": 839,
+      "slug": "police-arrest-nasarawa-woman-for-smuggling-anti-craft-ammunition-in-palm-oil",
+      "title": "Police arrest Nasarawa woman for smuggling anti-craft ammunition in palm oil",
+      "category": "Simple and Miscellaneous Offences",
+      "image": "/editorial/recovered/3636.webp",
+      "matchedArticleId": 3636,
+      "matchedArticleSlug": "police-arrest-4-suspects-for-unlawful-possession-of-fireworks",
+      "score": 115
+    },
+    {
+      "id": 837,
+      "slug": "dispatch-rider-killed-two-injured-in-lekki-epe-expressway-road-crash",
+      "title": "Dispatch rider killed, two injured in Lekki-Epe expressway road crash",
+      "category": "Road",
+      "image": "/editorial/recovered/641.webp",
+      "matchedArticleId": 641,
+      "matchedArticleSlug": "12-dead-four-injured-in-lagos-ibadan-expressway-crash",
+      "score": 112
+    },
+    {
+      "id": 829,
+      "slug": "student-loan-not-determined-by-zones-nelfund",
+      "title": "Student loan not determined by zones – NELFUND",
+      "category": "Grants",
+      "image": "/editorial/recovered/823.png",
+      "matchedArticleId": 823,
+      "matchedArticleSlug": "full-list-student-loan-unilag-oau-others-receive-n29tn-from-nelfund",
+      "score": 112
+    },
+    {
+      "id": 765,
+      "slug": "president-tinubu-appoints-new-management-team-for-niger-delta-power-holding-comp",
+      "title": "President Tinubu Appoints New Management Team For Niger Delta Power Holding Comp –",
+      "category": "Gender Equality",
+      "image": "/editorial/recovered/3959.jpg",
+      "matchedArticleId": 3959,
+      "matchedArticleSlug": "dr-felicia-tamuno-advocates-non-interest-banking-ethical-finance-to-boost-women-led-businesses-in-africa",
+      "score": 106
+    },
+    {
+      "id": 702,
+      "slug": "epl-man-utd-beat-fulham-1-0-in-opening-game",
+      "title": "EPL: Man Utd beat Fulham 1-0 in opening game",
+      "category": "Dual Sports",
+      "image": "/editorial/recovered/695.webp",
+      "matchedArticleId": 695,
+      "matchedArticleSlug": "man-utd-kick-off-premier-league-season-before-man-city-face-new-look-chelsea",
+      "score": 112
+    },
+    {
+      "id": 676,
+      "slug": "nigerias-inflation-rate-drops-to-3330-in-july-nbs",
+      "title": "Nigeria’s Inflation Rate Drops To 33.30% In July — NBS",
+      "category": "Gross Domestic Product (GDP)",
+      "image": "/editorial/recovered/1724.png",
+      "matchedArticleId": 1724,
+      "matchedArticleSlug": "nigerias-capital-importation-declines-by-22-in-second-quarter-nbs",
+      "score": 115
+    },
+    {
+      "id": 675,
+      "slug": "oyo-approves-500m-for-youth-agribusiness-initiative",
+      "title": "Oyo Approves ₦500m For Youth Agribusiness Initiative",
+      "category": "Policy Implementation",
+      "image": "/editorial/recovered/3515.webp",
+      "matchedArticleId": 3515,
+      "matchedArticleSlug": "nigeria-loses-363m-yearly-to-eu-beans-export-ban",
+      "score": 106
+    },
+    {
+      "id": 665,
+      "slug": "food-crisis-military-deploys-troops-in-north-west-ncentral-farms",
+      "title": "Food crisis: Military deploys troops in North-West, N’Central farms",
+      "category": "Food Security",
+      "image": "/editorial/recovered/3637.png",
+      "matchedArticleId": 3637,
+      "matchedArticleSlug": "resurgent-farmer-abductions-may-cause-food-crisis-in-2026-farmers-union-leader",
+      "score": 109
+    },
+    {
+      "id": 643,
+      "slug": "japan-invests-500m-to-boost-power-supply-in-ogun",
+      "title": "Japan invests $500m to boost power supply in Ogun",
+      "category": "Energy Consumption",
+      "image": "/editorial/recovered/1592.jpg",
+      "matchedArticleId": 1592,
+      "matchedArticleSlug": "consumers-oppose-minister-on-20-hour-power-supply-claim",
+      "score": 112
+    },
+    {
+      "id": 372,
+      "slug": "the-ex-nigerian-finance-minister-took-office-as-wto-boss-on-march-1-2021-for-a-term-of-four-years-which-will-expire-on-august-31-2025",
+      "title": "58 Countries Back Okonjo-Iweala For Second Term As WTO DG",
+      "category": "Economic Countries of West African States (ECOWAS)",
+      "image": "/editorial/recovered/3848.jpg",
+      "matchedArticleId": 3848,
+      "matchedArticleSlug": "gulf-tensions-ecowas-warns-of-global-fallout-urges-restraint",
+      "score": 118
+    },
+    {
+      "id": 308,
+      "slug": "depreciated-assets-option",
+      "title": "DEPRECIATED ASSETS OPTION",
+      "category": "Wealth Creation",
+      "image": "/editorial/recovered/305.png",
+      "matchedArticleId": 305,
+      "matchedArticleSlug": "loans-option",
+      "score": 109
+    },
+    {
+      "id": 307,
+      "slug": "foreclosure-options",
+      "title": "FORECLOSURE OPTIONS",
+      "category": "Wealth Creation",
+      "image": "/editorial/recovered/310.png",
+      "matchedArticleId": 310,
+      "matchedArticleSlug": "partnership-options",
+      "score": 109
+    },
+    {
+      "id": 300,
+      "slug": "insurance-and-equivalents",
+      "title": "Insurance and Equivalents",
+      "category": "Wealth Creation",
+      "image": "/editorial/recovered/306.png",
+      "matchedArticleId": 306,
+      "matchedArticleSlug": "insurance-options",
+      "score": 109
+    },
+    {
+      "id": 291,
+      "slug": "ready-to-join-a-team-thats-shaping-the-future",
+      "title": "Vacancy: Front Desk Officer/Receptionist",
+      "category": "Research",
+      "image": "/editorial/recovered/3389.png",
+      "matchedArticleId": 3389,
+      "matchedArticleSlug": "petroleum-fund-sokoto-varsity-collaborate-on-oil-gas-technology-research",
+      "score": 103
+    },
+    {
+      "id": 80,
+      "slug": "falana-urges-states-to-abolish-pension-payment-to-ex-govs",
+      "title": "Falana urges states to abolish pension payment to ex-govs",
+      "category": "Financial Health Performance and Relative Strength Index (RSI)",
+      "image": "/editorial/recovered/2126.png",
+      "matchedArticleId": 2126,
+      "matchedArticleSlug": "nigerias-pension-fund-assets-hit-n2463-trillion-in-june-2025-driven-by-equities-and-fgn-securities",
+      "score": 124
+    },
+    {
+      "id": 71,
+      "slug": "bitcoin-and-the-rise-of-the-crypto-community-from-memes-to-movements",
+      "title": "Bitcoin and the Rise of the Crypto-Community: From Memes to Movements",
+      "category": "Bulk Technology",
+      "image": "/editorial/recovered/2909.jpg",
+      "matchedArticleId": 2909,
+      "matchedArticleSlug": "bitcoin-ethereum-flash-crash-ignites-cryptos-blackest-day",
+      "score": 112
+    }
+  ]
+}

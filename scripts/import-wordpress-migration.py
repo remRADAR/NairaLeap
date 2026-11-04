@@ -70,6 +70,26 @@ def strip_excerpt(value: str) -> str:
     return re.sub(r'\s+', ' ', text).strip()
 
 
+def rewrite_inline_media(content: str, media_sources: dict[str, str]) -> str:
+    """Replace downloaded WordPress image URLs in article HTML with local paths."""
+    if not content or not media_sources:
+        return content
+
+    def replace(match: re.Match[str]) -> str:
+        attribute, quote, value = match.group(1), match.group(2), match.group(3)
+        try:
+            parsed = urlparse(html.unescape(value))
+            key = parsed._replace(query='', fragment='').geturl()
+        except ValueError:
+            return match.group(0)
+        local = media_sources.get(key)
+        if not local:
+            return match.group(0)
+        return f'{attribute}={quote}{local}{quote}'
+
+    return re.sub(r'\b(src|data-src|data-lazy-src|data-original|data-orig-file)=("|\')(.*?)(?:\2)', replace, content, flags=re.IGNORECASE)
+
+
 def format_date(value: str) -> str:
     try:
         return datetime.fromisoformat(value).strftime('%B %-d, %Y')
@@ -104,12 +124,17 @@ def main() -> None:
     MEDIA_DIR.mkdir(parents=True, exist_ok=True)
 
     media_map: dict[int, str] = {}
+    media_sources: dict[str, str] = {}
     failures: list[int] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         futures = [pool.submit(download_media, item) for item in media_list]
         for future in concurrent.futures.as_completed(futures):
             media_id, image_path, ok = future.result()
             media_map[media_id] = image_path
+            source_url = next((item['source_url'] for item in media_list if int(item['id']) == media_id), '')
+            if ok and source_url:
+                parsed_source = urlparse(source_url)
+                media_sources[parsed_source._replace(query='', fragment='').geturl()] = image_path
             if not ok:
                 failures.append(media_id)
 
@@ -130,7 +155,7 @@ def main() -> None:
             'categoryPath': category_path,
             'tags': [tags[tag_id] for tag_id in post.get('tags', []) if int(tag_id) in tags],
             'excerpt': strip_excerpt(post.get('excerpt', {}).get('rendered', '')),
-            'content': post.get('content', {}).get('rendered', ''),
+            'content': rewrite_inline_media(post.get('content', {}).get('rendered', ''), media_sources),
             'sourceUrl': post.get('link', ''),
             **({'image': image} if image else {}),
         })
