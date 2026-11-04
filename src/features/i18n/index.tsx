@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { LocaleContext, type LocaleContextValue } from "./locale-context";
 
 export type LocaleCode = "en" | "hau" | "ibo" | "yor" | "pcm" | "tiv";
 export type CultureCode = "neutral";
@@ -58,17 +59,6 @@ function readStoredLocale(): LocaleCode {
     : "en";
 }
 
-interface LocaleContextValue {
-  locale: LocaleCode;
-  culture: CultureCode;
-  locales: readonly LocaleDefinition[];
-  setLocale: (nextLocale: LocaleCode) => void;
-  setCulture: (nextCulture: CultureCode) => void;
-  t: typeof COPY;
-}
-
-const LocaleContext = createContext<LocaleContextValue | null>(null);
-
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<LocaleCode>(readStoredLocale);
   const [culture, setCultureState] = useState<CultureCode>("neutral");
@@ -98,10 +88,4 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   );
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
-}
-
-export function useLocale() {
-  const context = useContext(LocaleContext);
-  if (!context) throw new Error("useLocale must be used inside LocaleProvider");
-  return context;
 }

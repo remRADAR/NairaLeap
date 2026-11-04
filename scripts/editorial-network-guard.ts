@@ -90,9 +90,7 @@ const inIPv4Range = (value: bigint, base: bigint, bits: number): boolean =>
 const isDisallowedIPv4Value = (value: bigint): boolean =>
   IPV4_BLOCKED.some(([base, bits]) => inIPv4Range(value, base, bits));
 
-const parseIPv6Side = (
-  side: string,
-): { groups: number[]; v4: bigint | null } | null => {
+const parseIPv6Side = (side: string): { groups: number[]; v4: bigint | null } | null => {
   if (side === "") return { groups: [], v4: null };
   const parts = side.split(":");
   const groups: number[] = [];

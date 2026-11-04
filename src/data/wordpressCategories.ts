@@ -1,4 +1,3 @@
-/* eslint-disable */
 // Complete WordPress category catalog with parent/child hierarchy. Generated 2026-10-04.
 
 export interface EditorialCategory {

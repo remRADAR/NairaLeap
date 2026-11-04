@@ -103,10 +103,7 @@ const getWordPressEndpoint = () => {
 
   const endpoint = new URL(baseUrl);
   endpoint.searchParams.set("_embed", "1");
-  endpoint.searchParams.set(
-    "_fields",
-    "id,slug,date,link,title,excerpt,categories,tags,_embedded",
-  );
+  endpoint.searchParams.set("_fields", "id,slug,date,link,title,excerpt,categories,tags,_embedded");
   endpoint.searchParams.set("per_page", "24");
   endpoint.searchParams.set("orderby", "date");
   endpoint.searchParams.set("order", "desc");

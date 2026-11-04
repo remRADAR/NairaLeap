@@ -66,7 +66,13 @@ export const Route = createFileRoute("/admin")({
 
 type Workspace = "website" | "portal";
 type AdminView =
-  "overview" | "homepage" | "articles" | "categories" | "services" | "requests" | "plugins";
+  | "overview"
+  | "homepage"
+  | "articles"
+  | "categories"
+  | "services"
+  | "requests"
+  | "plugins";
 
 function AdminStudioPage() {
   const { signOut } = useAuth();

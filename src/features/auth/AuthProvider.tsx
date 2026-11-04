@@ -1,33 +1,10 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { AuthContext } from "./AuthContext";
 
-export interface AuthActionResult {
-  error: string | null;
-  sessionCreated?: boolean;
-  suggestSignUp?: boolean;
-  suggestSignIn?: boolean;
-}
-
-interface AuthContextValue {
-  user: User | null;
-  loading: boolean;
-  configured: boolean;
-  signIn: (email: string, password: string) => Promise<AuthActionResult>;
-  signUp: (email: string, password: string) => Promise<AuthActionResult>;
-  signOut: () => Promise<AuthActionResult>;
-}
-
-const AuthContext = createContext<AuthContextValue | null>(null);
+export type { AuthActionResult } from "./AuthContext";
 
 const isConfigured = Boolean(
   import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
@@ -135,10 +112,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth(): AuthContextValue {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used inside AuthProvider");
-  return context;
 }

@@ -1,6 +1,6 @@
 import { ChevronDown, Globe2 } from "lucide-react";
 import { useId } from "react";
-import { useLocale } from "@/features/i18n";
+import { useLocale } from "@/features/i18n/locale-context";
 
 type LanguageAvailabilityControlProps = {
   theme: "portal" | "editorial";

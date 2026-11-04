@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Send, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/features/i18n";
+import { useLocale } from "@/features/i18n/locale-context";
 import type { AnswerValue, AnswersState, Question } from "./types";
 import { isQuestionAnswered, useQuestionEngine } from "./useQuestionEngine";
 

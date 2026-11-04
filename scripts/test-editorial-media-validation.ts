@@ -120,8 +120,7 @@ const pngSpec = (body: Uint8Array = PNG_BYTES): FakeResponseSpec => ({
 
 const PUBLIC_LOOKUP: LookupLike = async () => [{ address: "93.184.216.34", family: 4 }];
 
-const neverFetch = (): FetchLike => () =>
-  Promise.reject(new Error("fetch must not be called"));
+const neverFetch = (): FetchLike => () => Promise.reject(new Error("fetch must not be called"));
 
 await check("detects the PNG signature", () => {
   assert.equal(detectImageSignature(PNG_BYTES)?.extension, "png");
@@ -395,12 +394,7 @@ await check("records sign-offs and supersession history on approval", () => {
 
 await check("skips articles with valid original images", () => {
   assert.equal(
-    isEligibleForDiscovery(
-      { slug: "a", image: "/editorial/cms/1.jpg" },
-      {},
-      {},
-      new Set<string>(),
-    ),
+    isEligibleForDiscovery({ slug: "a", image: "/editorial/cms/1.jpg" }, {}, {}, new Set<string>()),
     false,
   );
 });
@@ -538,8 +532,7 @@ await check("blocks downloads to IPv6 loopback, link-local, and mapped destinati
     /non-public/,
   );
   await assert.rejects(
-    () =>
-      downloadCandidateImage("http://[::ffff:192.168.0.1]/a.png", { fetchImpl: neverFetch() }),
+    () => downloadCandidateImage("http://[::ffff:192.168.0.1]/a.png", { fetchImpl: neverFetch() }),
     /non-public/,
   );
 });
