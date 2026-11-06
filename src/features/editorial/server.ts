@@ -18,13 +18,22 @@ type WordPressPost = {
   content?: { rendered?: string };
   categories?: number[];
   tags?: number[];
+  featured_media?: number;
   _embedded?: {
     "wp:term"?: WordPressTerm[][];
     "wp:featuredmedia"?: Array<{ source_url?: string; alt_text?: string }>;
   };
 };
 
-const toEditorialSummary = (post: EditorialPost): EditorialPost => ({
+/**
+ * Posts normalized from the live WordPress API carry the source featured-media
+ * ID alongside the embedded media asset URL. The generated dataset interface
+ * declares featuredMediaId as optional; this intersection keeps live posts
+ * type-safe whether or not that field is present in generated data.
+ */
+type NormalizedEditorialPost = EditorialPost & { featuredMediaId?: number };
+
+const toEditorialSummary = (post: NormalizedEditorialPost): NormalizedEditorialPost => ({
   ...post,
   content: "",
 });
@@ -71,7 +80,7 @@ const toDateLabel = (value: string | undefined) => {
       }).format(date);
 };
 
-const normalizePost = (post: WordPressPost, index: number): EditorialPost | null => {
+const normalizePost = (post: WordPressPost, index: number): NormalizedEditorialPost | null => {
   const title = decodeEntities(stripHtml(post.title?.rendered ?? ""));
   const slug = post.slug?.trim();
   if (!title || !slug) return null;
@@ -93,6 +102,10 @@ const normalizePost = (post: WordPressPost, index: number): EditorialPost | null
     excerpt: stripHtml(post.excerpt?.rendered ?? ""),
     content: "",
     sourceUrl: post.link ?? `/articles/${slug}`,
+    // Preserve the source featured-media relationship. When the post has no
+    // embedded featured image it stays image-less — no category or hash
+    // fallback is manufactured.
+    featuredMediaId: post.featured_media || undefined,
     image: featuredMedia?.source_url,
   };
 };
@@ -105,7 +118,7 @@ const getWordPressEndpoint = () => {
   endpoint.searchParams.set("_embed", "1");
   endpoint.searchParams.set(
     "_fields",
-    "id,slug,date,link,title,excerpt,categories,tags,_embedded",
+    "id,slug,date,link,title,excerpt,categories,tags,featured_media,_embedded",
   );
   endpoint.searchParams.set("per_page", "24");
   endpoint.searchParams.set("orderby", "date");
@@ -129,7 +142,7 @@ export const getEditorialPosts = createServerFn({ method: "GET" }).handler(async
 
     const posts = payload
       .map((post, index) => normalizePost(post as WordPressPost, index))
-      .filter((post): post is EditorialPost => post !== null);
+      .filter((post): post is NormalizedEditorialPost => post !== null);
     return withEditorialImageFallbacks(
       posts.length > 0 ? posts.map(toEditorialSummary) : FALLBACK_POSTS,
     );

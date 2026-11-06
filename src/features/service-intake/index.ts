@@ -1,11 +1,15 @@
 import type { AnswersState, Question, QuestionChoice } from "@/features/question-engine";
 import {
   REQUEST_BLUEPRINT_MAP,
+  getMissingRequiredBlueprintFields,
+  isBlueprintFieldRequired,
+  isBlueprintFieldVisible,
   type BlueprintField,
   type BlueprintFieldType,
 } from "@/features/request-blueprint-engine";
 import { SERVICE_INTELLIGENCE_MAP, type ServiceId } from "@/features/service-intelligence-catalog";
 import { getServiceRoleProfile, type ServiceRole } from "@/features/services/serviceRoleCatalog";
+import { INSURANCE_CATEGORY_CATALOG } from "@/features/insurance/catalog";
 
 export type PriceMode = "fixed" | "estimate" | "quote" | "no-charge";
 
@@ -48,7 +52,7 @@ export const SERVICE_PRICING_MAP = {
     mode: "quote",
     label: "Quote required after review",
     detail:
-      "The NairaLeap team will confirm any service or matching fee after reviewing your request and documents.",
+      "The NairaLeap team will confirm any service or matching fee after reviewing your request.",
   },
   "property-listings": {
     mode: "quote",
@@ -62,23 +66,11 @@ export const SERVICE_PRICING_MAP = {
     detail:
       "Any advisory or matching fee is confirmed after eligibility and funding requirements are reviewed.",
   },
-  partnerships: {
-    mode: "quote",
-    label: "Quote required after review",
-    detail:
-      "Any partnership facilitation fee is confirmed after the proposal and fit requirements are reviewed.",
-  },
   "vendor-marketplace": {
     mode: "quote",
     label: "Quote required after review",
     detail:
       "Any marketplace or quote-request fee is confirmed after the request or vendor profile is reviewed.",
-  },
-  "distress-sales": {
-    mode: "quote",
-    label: "Quote required after review",
-    detail:
-      "Any listing or facilitation fee is confirmed after urgency, ownership, and pricing are verified.",
   },
   "recycling-scrap": {
     mode: "quote",
@@ -96,7 +88,7 @@ export const SERVICE_PRICING_MAP = {
     mode: "quote",
     label: "Quote required after review",
     detail:
-      "The specialist’s availability and professional fee are confirmed after the service need is reviewed.",
+      "The specialist's availability and professional fee are confirmed after the service need is reviewed.",
   },
   "customer-support": {
     mode: "no-charge",
@@ -118,18 +110,57 @@ export const SERVICE_PRICING_MAP = {
 } satisfies Record<ServiceId, ServicePriceRule>;
 
 const CHOICES: Record<string, QuestionChoice[]> = {
+  agricultureRole: [
+    { value: "farmer", label: "Farmer", description: "I grow crops or raise animals" },
+    {
+      value: "input-supplier",
+      label: "Input Supplier",
+      description: "I supply fertilizers, seeds, equipment, or services",
+    },
+  ],
   serviceType: [
     { value: "farm-registration", label: "Register a farm" },
     { value: "farm-inputs", label: "Find farm inputs" },
-    { value: "buyers", label: "Access buyers or markets" },
     { value: "training", label: "Request training or support" },
     { value: "other", label: "Something else in agriculture" },
   ],
+  cropTypes: [
+    { value: "maize", label: "Maize" },
+    { value: "sesame", label: "Sesame" },
+    { value: "sorghum", label: "Sorghum" },
+    { value: "cocoa", label: "Cocoa" },
+    { value: "cassava", label: "Cassava" },
+    { value: "rice", label: "Rice" },
+    { value: "vegetables", label: "Vegetables" },
+    { value: "other-crop", label: "Other crop" },
+  ],
+  animalTypes: [
+    { value: "goats", label: "Goats" },
+    { value: "cows", label: "Cows / Cattle" },
+    { value: "fish", label: "Fish" },
+    { value: "poultry", label: "Poultry (chickens, turkeys, etc.)" },
+    { value: "pigs", label: "Pigs" },
+    { value: "other-animal", label: "Other animal" },
+  ],
+  inputSupplierType: [
+    { value: "fertilizer", label: "Fertilizer supplier" },
+    { value: "improved-seeds", label: "Improved seed company" },
+    { value: "tractors-equipment", label: "Tractors & farm equipment" },
+    { value: "extension-services", label: "Extension services / advice" },
+    { value: "laborers", label: "Laborers / farm workers" },
+    { value: "chemicals", label: "Chemical / agrochemical supplier" },
+    { value: "other-supplier", label: "Other input or service" },
+  ],
+  propertyRole: [
+    { value: "buyer", label: "Buyer", description: "I want to buy or rent a property" },
+    { value: "developer", label: "Developer", description: "I develop or build properties" },
+    { value: "agent", label: "Agent", description: "I list or broker properties" },
+  ],
   transactionType: [
-    { value: "sell", label: "Sell a property" },
-    { value: "rent", label: "Rent out a property" },
-    { value: "buy", label: "Find a property to buy" },
-    { value: "rent-search", label: "Find a property to rent" },
+    { value: "sell", label: "List a property for sale" },
+    { value: "rent", label: "List a property for rent" },
+    { value: "buy", label: "Buy land or property" },
+    { value: "rent-search", label: "Find a home to rent" },
   ],
   propertyType: [
     { value: "land", label: "Land" },
@@ -148,13 +179,11 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "loan", label: "Loan or working capital" },
     { value: "grant", label: "Grant" },
     { value: "investment", label: "Investor or equity funding" },
-    { value: "not-sure", label: "Not sure yet" },
-  ],
-  partnershipType: [
-    { value: "joint-venture", label: "Joint venture" },
-    { value: "distribution", label: "Distribution or sales" },
+    { value: "joint-venture", label: "Joint venture partnership" },
+    { value: "distribution", label: "Distribution or sales partnership" },
     { value: "strategic", label: "Strategic partnership" },
     { value: "co-founder", label: "Co-founder or collaboration" },
+    { value: "not-sure", label: "Not sure yet" },
   ],
   marketplaceRole: [
     { value: "find-vendor", label: "Find a vendor" },
@@ -228,23 +257,89 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "general-business", label: "General business" },
   ],
   insuranceRequestType: [
-    { value: "new-cover", label: "Get new cover" },
-    { value: "compare-options", label: "Compare cover options" },
-    { value: "claim", label: "Make a claim" },
-    { value: "renew-or-change", label: "Renew or change a policy" },
-    { value: "verify-or-support", label: "Verify a policy or get policy support" },
+    { value: "compare-options", label: "Compare Cover" },
+    { value: "new-cover", label: "Get a Quote" },
+    { value: "claim", label: "Make a Claim" },
   ],
-  insuranceCategory: [
-    { value: "motor-auto", label: "Motor and auto" },
-    { value: "health-medical", label: "Health and medical" },
-    { value: "life-family", label: "Life and family" },
-    { value: "home-property", label: "Home and property" },
-    { value: "business-commercial", label: "Business and commercial" },
-    { value: "agriculture", label: "Agriculture" },
-    { value: "travel", label: "Travel" },
-    { value: "marine-cargo-aviation", label: "Marine, cargo and aviation" },
-    { value: "liability-compulsory", label: "Liability and compulsory cover" },
-    { value: "micro-takaful-inclusion", label: "Microinsurance, Takaful and inclusion" },
+  insuranceCategory: INSURANCE_CATEGORY_CATALOG.map(({ id, title }) => ({
+    value: id,
+    label: title,
+  })),
+  insuranceApplicantType: [
+    { value: "individual", label: "Individual" },
+    { value: "organization", label: "Company, association or organization" },
+  ],
+  savingsGoal: [
+    { value: "short-term-savings", label: "Short-term savings" },
+    { value: "planned-expense", label: "A planned future expense" },
+    { value: "long-term-accumulation", label: "Long-term savings or accumulation" },
+    { value: "education", label: "Education" },
+    { value: "retirement", label: "Retirement" },
+    { value: "other", label: "Another goal" },
+  ],
+  contributionStructure: [
+    { value: "lump-sum", label: "One-off contribution or lump sum" },
+    { value: "recurring", label: "Recurring contributions, if offered" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  contributionFrequency: [
+    { value: "monthly", label: "Monthly" },
+    { value: "quarterly", label: "Quarterly" },
+    { value: "semi-annually", label: "Every six months" },
+    { value: "annually", label: "Annually" },
+    { value: "provider-advice", label: "Ask which frequencies are available" },
+  ],
+  annuityType: [
+    { value: "immediate", label: "Immediate annuity enquiry" },
+    { value: "deferred", label: "Deferred annuity enquiry" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  annuityAgeBand: [
+    { value: "under-50", label: "Under 50" },
+    { value: "50-54", label: "50–54" },
+    { value: "55-59", label: "55–59" },
+    { value: "60-64", label: "60–64" },
+    { value: "65-plus", label: "65 or above" },
+    { value: "prefer-not-to-say", label: "Prefer not to say at this stage" },
+  ],
+  annuityFundingSource: [
+    { value: "rsa", label: "Retirement savings account (RSA) balance" },
+    { value: "other-retirement-funds", label: "Other retirement-related funds" },
+    { value: "other-permitted-lump-sum", label: "Another lump sum (subject to provider rules)" },
+    { value: "not-sure", label: "Not sure / discuss with provider" },
+  ],
+  incomePaymentFrequency: [
+    { value: "monthly", label: "Monthly" },
+    { value: "quarterly", label: "Quarterly" },
+    { value: "other", label: "Another frequency, if offered" },
+  ],
+  healthCoverType: [
+    { value: "individual", label: "Just me" },
+    { value: "family", label: "Me and my dependants" },
+    { value: "group", label: "A company, association or cooperative" },
+  ],
+  propertyCoverType: [
+    { value: "building", label: "Building or structure" },
+    { value: "contents", label: "Household contents" },
+    { value: "combined", label: "Building and contents" },
+    { value: "warehouse-stock", label: "Warehouse stock or business contents" },
+    { value: "not-sure", label: "Not sure yet" },
+  ],
+  propertyRelationship: [
+    { value: "owner", label: "Owner" },
+    { value: "tenant", label: "Tenant or occupier" },
+    { value: "landlord", label: "Landlord" },
+    { value: "company", label: "Company or authorized representative" },
+  ],
+  motorUse: [
+    { value: "private", label: "Private use" },
+    { value: "commercial", label: "Commercial use" },
+    { value: "fleet", label: "Fleet" },
+  ],
+  yesNoUnsure: [
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" },
+    { value: "not-sure", label: "Not sure yet" },
   ],
   providerPreference: [
     { value: "no-preference", label: "No preference" },
@@ -252,18 +347,62 @@ const CHOICES: Record<string, QuestionChoice[]> = {
     { value: "takaful", label: "Takaful / cooperative model" },
     { value: "microinsurance", label: "Microinsurance / lower-cost cover" },
   ],
+  providerSelection: [
+    { value: "no-preference", label: "No preference" },
+    { value: "leadway", label: "Leadway Assurance" },
+    { value: "aiico", label: "AIICO Insurance" },
+    { value: "igi", label: "IGI Nigeria" },
+    { value: "stanbic-ibtc", label: "Stanbic IBTC Insurance" },
+    { value: "other", label: "Another provider (please specify below)" },
+  ],
+  savingsProductPreference: [
+    { value: "leadway-investment-plan", label: "Leadway Investment Plan" },
+    { value: "leadway-savings-plan", label: "Leadway Savings Plan" },
+    { value: "leadway-target-plan", label: "Leadway Target Plan" },
+    { value: "leadway-smart-cash-plan", label: "Leadway Smart Cash Plan" },
+    { value: "aiico-income-investment-plan", label: "AIICO Income Investment Plan" },
+    { value: "another-product", label: "Another product / not sure" },
+  ],
+  annuityProductPreference: [
+    { value: "leadway-personal-annuity", label: "Leadway Personal Annuity" },
+    { value: "aiico-annuity", label: "AIICO Annuity Plan" },
+    { value: "igi-annuity", label: "IGI Annuity Plan" },
+    { value: "stanbic-retiree-annuity", label: "Stanbic IBTC Retiree Annuity" },
+    { value: "another-product", label: "Another product / not sure" },
+  ],
   mortgageRequestType: [
-    { value: "home-purchase", label: "Buy a completed home" },
-    { value: "land-and-build", label: "Buy land and build" },
-    { value: "construction", label: "Build on land I already have" },
-    { value: "renovation", label: "Renovate or improve a home" },
-    { value: "rent-to-own", label: "Explore rent-to-own or affordable housing" },
-    { value: "nhf-fmbn", label: "Explore NHF / FMBN housing finance" },
-    { value: "diaspora", label: "Diaspora mortgage enquiry" },
-    { value: "refinance", label: "Refinance or transfer an existing mortgage" },
-    { value: "restructure", label: "Discuss repayment support or restructuring" },
-    { value: "developer-finance", label: "Estate development or developer finance" },
-    { value: "mortgage-support", label: "Mortgage readiness, documents or support" },
+    { value: "buy-or-build", label: "Buy a Home / Build" },
+    { value: "renovate", label: "Renovate" },
+    { value: "nhf-fmbn", label: "Explore NHF / FMBN Pathways" },
+  ],
+  mortgageRole: [
+    {
+      value: "developer",
+      label: "Developer",
+      description: "I develop estates or property projects",
+    },
+    {
+      value: "mortgage-bank",
+      label: "Mortgage Bank",
+      description: "I am a mortgage bank or lender",
+    },
+  ],
+  estateFacilities: [
+    { value: "asphalt-road", label: "Asphalt road" },
+    { value: "security-247", label: "24/7 security" },
+    { value: "power-supply", label: "Power supply" },
+    { value: "streetlight", label: "Streetlight" },
+    { value: "water-supply", label: "Water supply" },
+    { value: "drainage", label: "Drainage" },
+    { value: "perimeter-fence", label: "Perimeter fence" },
+    { value: "other", label: "Other facility" },
+  ],
+  bankLicenseType: [
+    { value: "pmb", label: "Primary Mortgage Bank (PMB)" },
+    { value: "commercial", label: "Commercial Bank" },
+    { value: "non-interest", label: "Non-Interest Bank" },
+    { value: "mfb", label: "Microfinance Bank (MFB)" },
+    { value: "other", label: "Other license type" },
   ],
   applicantProfile: [
     { value: "individual", label: "Individual applicant" },
@@ -345,6 +484,38 @@ const FIELD_HELPERS: Record<string, string> = {
     "A broad range helps route your request; exact affordability is assessed by the selected partner.",
   mortgageStatus: "Choose the option closest to your current mortgage position.",
   nhfPreference: "This indicates a routing preference, not confirmation of NHF eligibility.",
+  savingsContribution:
+    "This is an enquiry amount only. Contribution minimums, accepted frequencies and product terms must be confirmed by the provider.",
+  annuityPurchaseAmount:
+    "An indicative amount helps a provider prepare a quote. Do not send bank details or pension account credentials here.",
+  annuityCommencementAge:
+    "This helps route an annuity enquiry. It is not a provider eligibility decision.",
+  companyRegistrationNumber:
+    "Registration details are optional during initial discovery and may be requested during a formal application.",
+  buildingReplacementValue:
+    "If known, enter an approximate building reconstruction or replacement value, not the land or market value.",
+  contentsValue: "If known, enter the approximate value of contents, separate from building value.",
+  warehouseStockValue:
+    "If known, enter the approximate value of stock or equipment, separate from the building.",
+  mortgageRole: "Developer or mortgage bank. Leave blank if you are a home applicant.",
+  estateName: "The name of the estate or development project.",
+  developerState: "The state where the estate or project is located.",
+  developerLga: "The Local Government Area where the estate or project is located.",
+  estateLandmark: "A nearby landmark, bus stop, or reference point.",
+  estateSizeSqm: "Total estate size in square meters.",
+  propertyDescription: "Describe the property, units, and key features.",
+  amountPerSqm: "Your asking price per square meter. This is not a NairaLeap fee.",
+  mortgageBackQualified: "Indicate whether the project qualifies for mortgage-back arrangements.",
+  yearsInService: "Number of years the developer company has been in operation.",
+  monthlyPaymentAmount: "The monthly payment amount you expect or can offer.",
+  estateFacilities: "Select all facilities available in the estate.",
+  developerCompanyKyc: "Company registration, team, past projects, and KYC details.",
+  siteLocation: "The physical site location of the estate or project.",
+  bankName: "The registered name of the mortgage bank.",
+  bankRcNumber: "The bank's RC or registration number.",
+  bankLicenseType: "The type of license the bank operates under.",
+  bankYearsInOperation: "Number of years the bank has been in operation.",
+  bankAob: "Any other business activities or relevant notes.",
 };
 
 function questionTypeForField(type: BlueprintFieldType): Question["type"] {
@@ -353,6 +524,15 @@ function questionTypeForField(type: BlueprintFieldType): Question["type"] {
 
 const SERVICE_CHOICE_ALIASES: Partial<Record<ServiceId, Record<string, string>>> = {
   mortgage: { propertyType: "mortgagePropertyType" },
+  insurance: {
+    applicantType: "insuranceApplicantType",
+    insuranceProviderPreference: "providerSelection",
+    savingsProductPreference: "savingsProductPreference",
+    annuityProductPreference: "annuityProductPreference",
+    annuityCommencementAgeBand: "annuityAgeBand",
+    annuityPaymentFrequency: "incomePaymentFrequency",
+    earlyAccessNeed: "yesNoUnsure",
+  },
 };
 
 function choiceKeyForField(field: BlueprintField, serviceId?: ServiceId): string {
@@ -362,7 +542,7 @@ function choiceKeyForField(field: BlueprintField, serviceId?: ServiceId): string
 function fallbackChoices(field: BlueprintField, serviceId?: ServiceId): QuestionChoice[] {
   return (
     CHOICES[choiceKeyForField(field, serviceId)] ?? [
-      { value: "not-sure", label: "I’m not sure yet" },
+      { value: "not-sure", label: "I'm not sure yet" },
     ]
   );
 }
@@ -373,6 +553,13 @@ function fieldToQuestion(field: BlueprintField, serviceId: ServiceId): Question 
     title: field.label,
     helper: field.description ?? FIELD_HELPERS[field.key],
     required: field.required,
+    pageGroup: field.pageGroup,
+    showWhen: field.showWhen
+      ? { questionId: field.showWhen.key, values: field.showWhen.values }
+      : undefined,
+    requiredWhen: field.requiredWhen
+      ? { questionId: field.requiredWhen.key, values: field.requiredWhen.values }
+      : undefined,
   };
 
   switch (questionTypeForField(field.type)) {
@@ -462,8 +649,9 @@ export function buildServiceRundown(
   const blueprint = REQUEST_BLUEPRINT_MAP[serviceId];
   const intelligence = SERVICE_INTELLIGENCE_MAP[serviceId];
   const fields = [
-    ...blueprint.requiredFields,
-    ...blueprint.optionalFields,
+    ...[...blueprint.requiredFields, ...blueprint.optionalFields].filter((field) =>
+      isBlueprintFieldVisible(field, answers),
+    ),
     ...getServiceRoleProfile(serviceId)[role].fields,
   ];
   const answerRows = fields
@@ -472,7 +660,7 @@ export function buildServiceRundown(
       key: field.key,
       label: field.label,
       value: formatAnswer(field, answers[field.key], serviceId),
-      required: field.required,
+      required: isBlueprintFieldRequired(field, answers),
     }));
 
   return {
@@ -481,9 +669,9 @@ export function buildServiceRundown(
     outputTitle: blueprint.outputTitle,
     summary: blueprint.summaryTemplate,
     answers: answerRows,
-    missingRequiredFields: blueprint.requiredFields
-      .filter((field) => !hasAnswer(answers[field.key]))
-      .map((field) => field.label),
+    missingRequiredFields: getMissingRequiredBlueprintFields(blueprint, answers).map(
+      (field) => field.label,
+    ),
     requiredDocuments: blueprint.requiredDocuments
       .filter((document) => document.required)
       .map((document) => document.documentTypeId),

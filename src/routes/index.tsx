@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
+import { AdSlot } from "@/features/advertising/AdSlot";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import {
@@ -129,7 +130,7 @@ function EditorialHomePage() {
             <img
               key={hero.image}
               src={hero.image}
-              alt=""
+              alt={hero.title}
               className="editorial-hero-media absolute inset-0 h-full w-full object-cover object-center"
               fetchPriority="high"
               decoding="async"
@@ -152,12 +153,13 @@ function EditorialHomePage() {
               {hero.title}
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-white/75">{hero.excerpt}</p>
-            <a
-              href={`/articles/${hero.slug}`}
+            <Link
+              to="/articles/$slug"
+              params={{ slug: hero.slug }}
               className="interactive-button mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#5f20c9] transition hover:-translate-y-0.5"
             >
               Read story <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
           {heroPosts.length > 1 && (
             <div
@@ -195,7 +197,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot label="Advertisement" />
+      <AdSlot placementId="homepage-top" />
 
       <section aria-label="Taxonomy ticker" className="border-b border-[#eceaf2] bg-[#fbfaff] py-3">
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
@@ -208,14 +210,15 @@ function EditorialHomePage() {
             {[0, 1].map((copy) => (
               <div key={copy} className="flex shrink-0 gap-8" aria-hidden={copy === 1}>
                 {secondaryTickerPosts.map((post) => (
-                  <a
+                  <Link
                     key={`${copy}-${post.slug}`}
                     tabIndex={copy === 1 ? -1 : undefined}
-                    href={`/articles/${post.slug}`}
+                    to="/articles/$slug"
+                    params={{ slug: post.slug }}
                     className="text-xs font-semibold text-[#626277] hover:text-[#7a2ce2]"
                   >
                     {post.title}
-                  </a>
+                  </Link>
                 ))}
               </div>
             ))}
@@ -246,7 +249,7 @@ function EditorialHomePage() {
                 {post.image ? (
                   <img
                     src={post.image}
-                    alt=""
+                    alt={post.title}
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
@@ -263,12 +266,13 @@ function EditorialHomePage() {
                 </Link>
                 <p className="mt-2 text-[10px] text-[#9292a4]">{post.date}</p>
                 <h3 className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-[#262638]">
-                  <a
-                    href={`/articles/${post.slug}`}
+                  <Link
+                    to="/articles/$slug"
+                    params={{ slug: post.slug }}
                     className="transition-colors hover:text-[#7a2ce2]"
                   >
                     {post.title}
-                  </a>
+                  </Link>
                 </h3>
               </div>
             </article>
@@ -296,16 +300,17 @@ function EditorialHomePage() {
         </div>
         <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]">
           {carouselPosts.map((post) => (
-            <a
+            <Link
               key={post.slug}
-              href={`/articles/${post.slug}`}
+              to="/articles/$slug"
+              params={{ slug: post.slug }}
               className="editorial-segment-card group flex min-w-[286px] snap-start gap-4 rounded-xl border border-[#eeeaf5] bg-white p-3 shadow-[0_6px_18px_rgba(43,25,79,0.04)] transition hover:-translate-y-0.5 hover:border-[#d9c7f5] hover:shadow-[0_10px_24px_rgba(43,25,79,0.08)] sm:min-w-[320px] lg:min-w-0 lg:flex-1"
             >
               <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-[#e7d6ff]">
                 {post.image ? (
                   <img
                     src={post.image}
-                    alt=""
+                    alt={post.title}
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover"
@@ -321,12 +326,12 @@ function EditorialHomePage() {
                 </h3>
                 <p className="mt-1 text-[10px] text-[#9292a4]">{post.date}</p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
 
-      <AdSlot label="Advertisement" />
+      <AdSlot placementId="homepage-bottom" />
 
       <section className="mx-auto w-full max-w-[1180px] px-4 pb-12 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between border-t border-[#e9e9f0] pt-5">
@@ -343,17 +348,3 @@ function EditorialHomePage() {
   );
 }
 
-function AdSlot({ label }: { label: string }) {
-  return (
-    <section
-      aria-label={label}
-      className="editorial-ad-slot mx-auto max-w-[1180px] px-4 py-3 sm:px-6"
-    >
-      <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
-          {label}
-        </span>
-      </div>
-    </section>
-  );
-}

@@ -14,6 +14,7 @@ export interface EditorialPost {
   excerpt: string;
   content: string;
   sourceUrl: string;
+  featuredMediaId?: number;
   image?: string;
 }
 

@@ -2,37 +2,23 @@ import type { EditorialPost } from "@/data/wordpressEditorial";
 
 export type EditorialPostWithImage = EditorialPost & { image: string };
 
-// Keep this list intentionally small: the complete editorial catalog is server-side data and
-// should not be pulled into the homepage client bundle just to fill missing card artwork.
-const FALLBACK_IMAGE_PATHS = [
-  "/editorial/featured-debt.jpg",
-  "/editorial/featured-medicine.jpg",
-  "/editorial/cms/4042.jpg",
-  "/editorial/cms/4291.jpg",
-  "/editorial/cms/274.jpg",
-  "/editorial/cms/4167.jpg",
-] as const;
-
-const stableHash = (value: string) => {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-};
-
-const fallbackImageFor = (post: EditorialPost) =>
-  FALLBACK_IMAGE_PATHS[stableHash(post.slug) % FALLBACK_IMAGE_PATHS.length];
-
 /**
- * Preserve a post's original image. Missing images receive a deterministic local fallback.
- * This helper is safe to use in the browser because it does not import the full CMS catalog.
+ * Resolve each post's presentation image from its own source data only.
+ *
+ * A post's source featured image (the WordPress featured_media asset captured
+ * during import) is preserved exactly as recorded. When the source has no
+ * featured image, the resolved reference is an empty string: article cards
+ * already render a neutral gradient/background treatment for image-less
+ * posts, and filling the gap with unrelated editorial artwork would
+ * misrepresent the source archive. No category-based, hash-based or
+ * order-based substitution is performed.
+ *
+ * The historical export name is retained so existing callers keep working.
  */
 export const withEditorialImageFallbacks = (
   posts: readonly EditorialPost[],
 ): EditorialPostWithImage[] =>
   posts.map((post) => ({
     ...post,
-    image: post.image || fallbackImageFor(post),
+    image: post.image ?? "",
   }));

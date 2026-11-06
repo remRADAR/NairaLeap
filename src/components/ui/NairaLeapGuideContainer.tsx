@@ -25,7 +25,7 @@ import {
   type ServiceDefinition,
   type ServiceId,
 } from "@/features/services/serviceCatalog";
-import { getServiceRoleProfile } from "@/features/services/serviceRoleCatalog";
+import { getServiceRoleProfile, type ServiceRole } from "@/features/services/serviceRoleCatalog";
 import { cn } from "@/lib/utils";
 import {
   savePendingGuideDraft,
@@ -37,11 +37,55 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 export interface NairaLeapGuideContainerProps {
   service: ServiceDefinition | null;
   onboardingRole?: OnboardingRole;
+  initialAnswers?: AnswersState;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onBack?: (service: ServiceDefinition) => void;
 }
-export type OnboardingRole = "customer" | "seller";
+export type OnboardingRole =
+  | "customer"
+  | "seller"
+  | "farmer"
+  | "input-supplier"
+  | "buyer"
+  | "developer"
+  | "agent"
+  | "funding-client"
+  | "investor"
+  | "mortgage-bank"
+  | "compare-cover"
+  | "get-quote"
+  | "make-claim";
+
+const ROLE_LABELS: Record<OnboardingRole, string> = {
+  customer: "Buyer / customer onboarding",
+  seller: "Seller / provider onboarding",
+  farmer: "Farmer onboarding",
+  "input-supplier": "Input supplier onboarding",
+  buyer: "Buyer onboarding",
+  developer: "Developer onboarding",
+  agent: "Agent onboarding",
+  "funding-client": "Funding / partnership seeker onboarding",
+  investor: "Investor / funder onboarding",
+  "mortgage-bank": "Mortgage bank onboarding",
+  "compare-cover": "Compare cover onboarding",
+  "get-quote": "Get a quote onboarding",
+  "make-claim": "Make a claim onboarding",
+};
+
+function toServiceRole(role: OnboardingRole | undefined): ServiceRole {
+  switch (role) {
+    case "seller":
+    case "input-supplier":
+    case "developer":
+    case "agent":
+    case "investor":
+    case "mortgage-bank":
+      return "seller";
+    default:
+      return "customer";
+  }
+}
 
 type GuideStage = "discovery" | "service" | "questions" | "review" | "success";
 
@@ -61,6 +105,7 @@ function stageIndex(stage: GuideStage): number {
 export function NairaLeapGuideContainer({
   service,
   onboardingRole,
+  initialAnswers,
   open,
   onOpenChange,
   onBack,
@@ -83,13 +128,17 @@ export function NairaLeapGuideContainer({
     setSelectedService(service);
     setDiscoveryAnswers(null);
     const pendingDraft = service ? consumePendingGuideDraft(service.id as ServiceId) : null;
-    setAnswers({ ...(pendingDraft?.answers ?? {}), ...(onboardingRole ? { onboardingRole } : {}) });
+    setAnswers({
+      ...(pendingDraft?.answers ?? {}),
+      ...(initialAnswers ?? {}),
+      ...(onboardingRole ? { onboardingRole } : {}),
+    });
     setRundown(null);
     setRequestId(null);
     setError(null);
     setSubmitting(false);
     idempotencyKey.current = crypto.randomUUID();
-  }, [open, service, onboardingRole]);
+  }, [open, service, onboardingRole, initialAnswers]);
 
   const resolvedIntent = useMemo(() => {
     const rawIntent = discoveryAnswers?.["discovery-goal"];
@@ -126,7 +175,7 @@ export function NairaLeapGuideContainer({
     const nextRundown = buildServiceRundown(
       selectedService.id as ServiceId,
       nextAnswers,
-      onboardingRole ?? "customer",
+      toServiceRole(onboardingRole),
     );
     if (nextRundown.missingRequiredFields.length > 0) {
       setError(`Please complete: ${nextRundown.missingRequiredFields.join(", ")}.`);
@@ -179,7 +228,7 @@ export function NairaLeapGuideContainer({
   const currentStepIndex = stageIndex(stage);
   const Icon = selectedService?.icon;
   const roleProfile = selectedService
-    ? getServiceRoleProfile(selectedService.id as ServiceId)[onboardingRole ?? "customer"]
+    ? getServiceRoleProfile(selectedService.id as ServiceId)[toServiceRole(onboardingRole)]
     : null;
 
   return (
@@ -243,10 +292,12 @@ export function NairaLeapGuideContainer({
                   NairaLeap Guide · service request
                 </div>
                 <DialogTitle className="truncate text-base font-semibold tracking-tight sm:text-lg">
-                  {selectedService?.title ?? "Let’s find the right path"}
+                  {selectedService?.title ?? "Let's find the right path"}
                 </DialogTitle>
                 {onboardingRole && selectedService ? (
-                  <p className="mt-0.5 text-xs text-primary-glow">{roleProfile?.label}</p>
+                  <p className="mt-0.5 text-xs text-primary-glow">
+                    {roleProfile?.label ?? ROLE_LABELS[onboardingRole] ?? "Service onboarding"}
+                  </p>
                 ) : null}
               </div>
             </div>
@@ -331,12 +382,20 @@ export function NairaLeapGuideContainer({
               {stage === "questions" && selectedService ? (
                 <>
                   <AssistantMessage title={`Let’s prepare your ${selectedService.title} request.`}>
-                    {`${roleProfile?.description ?? "Tell us what you need."} Answer the service questions and review your request before submitting.`}
+                    {selectedService.id === "insurance"
+                      ? "This short enquiry collects contact and product-preference details only. It does not collect identity documents, BVN, bank or pension details, beneficiary documents, medical history or uploads. A provider must confirm current terms and any formal-application requirements."
+                      : onboardingRole &&
+                          onboardingRole !== "customer" &&
+                          onboardingRole !== "seller"
+                        ? "Tell us about your needs. Answer the service questions and review your request before submitting."
+                        : onboardingRole === "seller"
+                          ? "Tell us what you offer. Answer the service questions and review your request before submitting."
+                          : `${roleProfile?.description ?? "Tell us what you need."} Answer the service questions and review your request before submitting.`}
                   </AssistantMessage>
                   <QuestionEngine
                     questionSet={getServiceQuestionSet(
                       selectedService.id as ServiceId,
-                      onboardingRole ?? "customer",
+                      toServiceRole(onboardingRole),
                     )}
                     layout="single-page"
                     title={`${selectedService.title} request`}
@@ -354,6 +413,7 @@ export function NairaLeapGuideContainer({
               {stage === "review" && rundown ? (
                 <RundownPanel
                   rundown={rundown}
+                  insuranceRequest={selectedService?.id === "insurance"}
                   userSignedIn={Boolean(user)}
                   submitting={submitting}
                   onEdit={() => setStage("questions")}
@@ -503,6 +563,7 @@ function ServiceResolutionPanel({
 
 function RundownPanel({
   rundown,
+  insuranceRequest,
   userSignedIn,
   submitting,
   onEdit,
@@ -510,6 +571,7 @@ function RundownPanel({
   onSignIn,
 }: {
   rundown: ServiceRundown;
+  insuranceRequest: boolean;
   userSignedIn: boolean;
   submitting: boolean;
   onEdit: () => void;
@@ -556,26 +618,41 @@ function RundownPanel({
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="glass-panel rounded-3xl p-5">
           <h3 className="font-semibold text-foreground">Documents</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Required before or during team review.
-          </p>
-          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            {rundown.requiredDocuments.map((document) => (
-              <li key={document} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                {document.replaceAll("-", " ")}
-              </li>
-            ))}
-            {rundown.recommendedDocuments.map((document) => (
-              <li key={document} className="flex items-start gap-2">
-                <span
-                  className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary/60"
-                  aria-hidden="true"
-                />
-                Recommended: {document.replaceAll("-", " ")}
-              </li>
-            ))}
-          </ul>
+          {insuranceRequest ? (
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              No files or identity, medical, bank or pension documents are required or uploaded for
+              this initial discovery request. If you proceed to a formal application, the selected
+              insurer must confirm its current product-specific documents through its authorized
+              process.
+            </p>
+          ) : (
+            <>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Required before or during team review.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {rundown.requiredDocuments.map((document) => (
+                  <li key={document} className="flex items-start gap-2">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    {document.replaceAll("-", " ")}
+                  </li>
+                ))}
+                {rundown.recommendedDocuments.map((document) => (
+                  <li key={document} className="flex items-start gap-2">
+                    <span
+                      className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary/60"
+                      aria-hidden="true"
+                    />
+                    Recommended: {document.replaceAll("-", " ")}
+                  </li>
+                ))}
+                {rundown.requiredDocuments.length === 0 &&
+                rundown.recommendedDocuments.length === 0 ? (
+                  <li className="text-muted-foreground">No documents required at this stage.</li>
+                ) : null}
+              </ul>
+            </>
+          )}
         </div>
         <div className="glass-panel rounded-3xl p-5">
           <h3 className="font-semibold text-foreground">Price status</h3>

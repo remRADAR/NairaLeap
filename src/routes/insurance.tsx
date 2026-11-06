@@ -2,19 +2,29 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   BriefcaseBusiness,
+  GraduationCap,
+  Landmark,
+  PiggyBank,
   CarFront,
+  ClipboardList,
   HeartPulse,
   House,
   Leaf,
   Plane,
   Sailboat,
+  Scale,
   ShieldCheck,
   Umbrella,
   Users,
 } from "lucide-react";
 import { AppLayout, BrandButton, Container, GlassCard } from "@/components";
-import { NairaLeapGuideContainer } from "@/components/ui/NairaLeapGuideContainer";
-import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/serviceCatalog";
+import {
+  NairaLeapGuideContainer,
+  type OnboardingRole,
+} from "@/components/ui/NairaLeapGuideContainer";
+import type { AnswersState } from "@/features/question-engine";
+import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
+import { INSURANCE_CATEGORY_CATALOG, type InsuranceCategoryId } from "@/features/insurance/catalog";
 
 export const Route = createFileRoute("/insurance")({
   head: () => ({
@@ -23,7 +33,7 @@ export const Route = createFileRoute("/insurance")({
       {
         name: "description",
         content:
-          "Explore insurance cover, policy support, claims, renewals and quote requests through the Nairaleap guided insurance navigator.",
+          "Compare cover, get a quote, or make a claim through the Nairaleap guided insurance navigator. See indicative starting prices across motor, health, life, home, business and more.",
       },
       { property: "og:title", content: "Insurance — Nairaleap - Service Portal" },
       {
@@ -40,85 +50,123 @@ export const Route = createFileRoute("/insurance")({
 
 const INSURANCE_SERVICE = SERVICE_CATALOG.find((service) => service.id === "insurance") ?? null;
 
-type InsuranceOffering = {
+type InsuranceFlow = {
+  value: string;
+  role: OnboardingRole;
   title: string;
   description: string;
-  examples: string;
-  icon: typeof CarFront;
+  icon: typeof ShieldCheck;
 };
 
-const INSURANCE_OFFERINGS: InsuranceOffering[] = [
+const INSURANCE_FLOWS: InsuranceFlow[] = [
   {
-    title: "Motor & Auto",
+    value: "compare-options",
+    role: "compare-cover",
+    title: "Compare Cover",
     description:
-      "Vehicle protection, third-party, comprehensive, commercial vehicle and fleet enquiries.",
-    examples: "Quotes, renewals, policy verification",
-    icon: CarFront,
+      "See indicative starting prices across motor, health, life, home, business, agriculture, travel, liability and microinsurance.",
+    icon: Scale,
   },
   {
-    title: "Health & Medical",
-    description: "Individual, family, group and corporate health-cover enquiries.",
-    examples: "Plans, comparisons, family cover",
-    icon: HeartPulse,
-  },
-  {
-    title: "Life & Family",
+    value: "new-cover",
+    role: "get-quote",
+    title: "Get a Quote",
     description:
-      "Life protection and family financial-support needs, including group-life enquiries.",
-    examples: "Term life, group life, family protection",
-    icon: Users,
+      "Tell us what you want to protect and receive a structured quote request routed to licensed insurers.",
+    icon: ClipboardList,
   },
   {
-    title: "Home & Property",
+    value: "claim",
+    role: "make-claim",
+    title: "Make a Claim",
     description:
-      "Protection for homes, contents, landlords, renters, buildings and property risks.",
-    examples: "Home, contents, fire and theft",
-    icon: House,
-  },
-  {
-    title: "Business & Commercial",
-    description: "SME and commercial risk enquiries for premises, stock, equipment and operations.",
-    examples: "SME packages, stock, equipment",
-    icon: BriefcaseBusiness,
-  },
-  {
-    title: "Agriculture",
-    description:
-      "Protection needs connected to farms, crops, livestock, equipment and agricultural activity.",
-    examples: "Farm, crop, livestock, equipment",
-    icon: Leaf,
-  },
-  {
-    title: "Travel",
-    description:
-      "Travel and travel-medical protection requests for individuals, families and trips.",
-    examples: "Single trip, annual, travel medical",
-    icon: Plane,
-  },
-  {
-    title: "Marine, Cargo & Aviation",
-    description:
-      "Risk enquiries for goods in transit, cargo, vessels, voyages and aviation activity.",
-    examples: "Cargo, marine, aviation enquiries",
-    icon: Sailboat,
-  },
-  {
-    title: "Liability & Compulsory Cover",
-    description:
-      "Requests involving third-party, builders, occupiers, public or professional liability.",
-    examples: "Third-party, builders, occupiers",
+      "Report an incident and start a claim. NairaLeap will organise the details for the insurer's review.",
     icon: ShieldCheck,
-  },
-  {
-    title: "Microinsurance, Takaful & Inclusion",
-    description: "Lower-cost, cooperative and inclusion-focused protection preferences.",
-    examples: "Microinsurance, Takaful, community cover",
-    icon: Umbrella,
   },
 ];
 
+type InsuranceCompareOffer = {
+  category: string;
+  cover: string;
+  indicativeFrom: string;
+  period: string;
+};
+
+const INSURANCE_COMPARE_OFFERS: InsuranceCompareOffer[] = [
+  { category: "Motor", cover: "Third-party only", indicativeFrom: "₦5,000", period: "per year" },
+  { category: "Motor", cover: "Comprehensive", indicativeFrom: "₦25,000", period: "per year" },
+  {
+    category: "Health",
+    cover: "Individual / family plan",
+    indicativeFrom: "₦60,000",
+    period: "per year",
+  },
+  { category: "Life", cover: "Term life", indicativeFrom: "₦10,000", period: "per year" },
+  { category: "Home", cover: "Home & contents", indicativeFrom: "₦15,000", period: "per year" },
+  { category: "Business", cover: "SME package", indicativeFrom: "₦30,000", period: "per year" },
+  {
+    category: "Agriculture",
+    cover: "Crop / livestock",
+    indicativeFrom: "₦8,000",
+    period: "per season",
+  },
+  { category: "Travel", cover: "Single trip", indicativeFrom: "₦5,500", period: "per trip" },
+  {
+    category: "Liability",
+    cover: "General liability",
+    indicativeFrom: "₦12,000",
+    period: "per year",
+  },
+  {
+    category: "Micro / Takaful",
+    cover: "Microinsurance",
+    indicativeFrom: "₦1,500",
+    period: "per year",
+  },
+];
+
+type InsuranceCategory = {
+  value: string;
+  title: string;
+  description: string;
+  icon: typeof CarFront;
+};
+
+const CATEGORY_ICONS: Partial<Record<InsuranceCategoryId, typeof CarFront>> = {
+  "motor-auto": CarFront,
+  "health-medical": HeartPulse,
+  "home-building": House,
+  "household-contents": House,
+  agricultural: Leaf,
+  "life-protection": Users,
+  "savings-investment": PiggyBank,
+  "personal-annuity": Landmark,
+  "education-endowment": GraduationCap,
+  "group-association": Users,
+  "business-commercial": BriefcaseBusiness,
+  travel: Plane,
+  "marine-cargo-aviation": Sailboat,
+  "liability-compulsory": Scale,
+  "micro-takaful-inclusion": Umbrella,
+};
+
+const INSURANCE_CATEGORIES: InsuranceCategory[] = INSURANCE_CATEGORY_CATALOG.map((category) => ({
+  value: category.id,
+  title: category.title,
+  description: category.description,
+  icon: (CATEGORY_ICONS[category.id] ?? ShieldCheck) as typeof CarFront,
+}));
+
 function InsurancePage() {
   const [guideOpen, setGuideOpen] = useState(false);
+  const [guideAnswers, setGuideAnswers] = useState<AnswersState>({});
+  const [onboardingRole, setOnboardingRole] = useState<OnboardingRole>("compare-cover");
+
+  const openGuide = (initialAnswers: AnswersState, role: OnboardingRole = "compare-cover") => {
+    setGuideAnswers(initialAnswers);
+    setOnboardingRole(role);
+    setGuideOpen(true);
+  };
 
   return (
     <AppLayout>
@@ -137,62 +185,194 @@ function InsurancePage() {
               <span className="text-gradient-brand">clear next step</span>
             </h1>
             <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Tell us what you need to protect, whether you are requesting new cover, comparing
-              options, making a claim, renewing a policy or getting policy support. We will prepare
-              a structured request for review by an authorized insurance operator.
+              Compare cover with indicative starting prices, get a quote, or make a claim. NairaLeap
+              will prepare a structured request for review by an authorized insurance operator.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <BrandButton className="min-h-12 px-6 text-base" onClick={() => setGuideOpen(true)}>
-                Start insurance guide
-              </BrandButton>
-              <a
-                href="#insurance-services"
-                className="inline-flex min-h-12 items-center px-5 text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-              >
-                Explore cover types
-              </a>
-            </div>
           </div>
         </Container>
       </section>
 
-      <section id="insurance-services" aria-labelledby="insurance-services-title">
+      <section id="insurance-flows" aria-labelledby="insurance-flows-title">
+        <Container className="pb-12 sm:pb-16">
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-medium text-primary-glow">Insurance flows</p>
+              <h2
+                id="insurance-flows-title"
+                className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl"
+              >
+                What would you like to do?
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+              Select a flow to start. You can review and edit your answers before submitting.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {INSURANCE_FLOWS.map(({ value, role, title, description, icon: Icon }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => openGuide({ insuranceRequestType: value }, role)}
+                className="group h-full text-left"
+              >
+                <GlassCard className="h-full transition hover:-translate-y-0.5 hover:border-primary/40">
+                  <div className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold tracking-tight">{title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {description}
+                      </p>
+                    </div>
+                  </div>
+                </GlassCard>
+              </button>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="insurance-compare" aria-labelledby="insurance-compare-title">
+        <Container className="pb-12 sm:pb-16">
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-medium text-primary-glow">Compare cover</p>
+              <h2
+                id="insurance-compare-title"
+                className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl"
+              >
+                Indicative starting prices
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+              These are indicative starting prices only. Final premiums are confirmed by a licensed
+              insurer.
+            </p>
+          </div>
+          <GlassCard className="overflow-hidden p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-glass-border bg-glass/50 text-xs uppercase tracking-wide text-muted-foreground">
+                    <th className="px-4 py-3 font-medium">Category</th>
+                    <th className="px-4 py-3 font-medium">Cover</th>
+                    <th className="px-4 py-3 font-medium">Indicative from</th>
+                    <th className="px-4 py-3 font-medium">Period</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {INSURANCE_COMPARE_OFFERS.map((offer, index) => (
+                    <tr
+                      key={`${offer.category}-${offer.cover}`}
+                      className={index % 2 === 1 ? "bg-glass/30" : ""}
+                    >
+                      <td className="px-4 py-3 font-medium text-foreground">{offer.category}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{offer.cover}</td>
+                      <td className="px-4 py-3 font-semibold text-gradient-brand">
+                        {offer.indicativeFrom}
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground">{offer.period}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </GlassCard>
+          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+            Indicative starting prices only — final premium is confirmed by a licensed insurer.
+            NairaLeap does not set, underwrite, or guarantee premiums. Terms, exclusions, claims
+            decisions and cover are determined by the licensed operator.
+          </p>
+        </Container>
+      </section>
+
+      <section id="insurance-categories" aria-labelledby="insurance-categories-title">
         <Container className="pb-12 sm:pb-16">
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-medium text-primary-glow">Coverage areas</p>
               <h2
-                id="insurance-services-title"
+                id="insurance-categories-title"
                 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl"
               >
                 Start with the risk you want to understand
               </h2>
             </div>
             <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              The guide can combine categories when your protection need crosses more than one area.
+              Select a category to compare cover. You can also get a quote or make a claim from the
+              flows above.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {INSURANCE_OFFERINGS.map(({ title, description, examples, icon: Icon }) => (
-              <GlassCard key={title} className="h-full">
-                <div className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
-                  >
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <h3 className="font-semibold tracking-tight">{title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {description}
-                    </p>
-                    <p className="mt-3 text-xs font-medium text-primary-glow">{examples}</p>
+            {INSURANCE_CATEGORIES.map(({ value, title, description, icon: Icon }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() =>
+                  openGuide(
+                    { insuranceRequestType: "compare-options", insuranceCategory: value },
+                    "compare-cover",
+                  )
+                }
+                className="group h-full text-left"
+              >
+                <GlassCard className="h-full transition hover:-translate-y-0.5 hover:border-primary/40">
+                  <div className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]"
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold tracking-tight">{title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </GlassCard>
+                </GlassCard>
+              </button>
             ))}
           </div>
+        </Container>
+      </section>
+
+      <section id="insurance-product-research" aria-labelledby="insurance-research-title">
+        <Container className="pb-12 sm:pb-16">
+          <GlassCard>
+            <p className="text-sm font-medium text-primary-glow">Product research</p>
+            <h2
+              id="insurance-research-title"
+              className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl"
+            >
+              Source-checked product references
+            </h2>
+            <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              NairaLeap maintains dated, official-source notes for a starting catalogue of insurer
+              products, including savings/investment-linked insurance, personal annuities and
+              education endowments. Nothing on this page is an insurer’s confirmed quotation or
+              regulated financial advice: amounts, terms, exclusions and benefits must be confirmed
+              by the licensed provider before comparing or applying. If the product you need is not
+              in the catalogue yet, request a manual review and the team will check it against
+              official sources.
+            </p>
+            <div className="mt-4">
+              <BrandButton
+                variant="ghost"
+                className="min-h-11"
+                onClick={() => openGuide({ insuranceRequestType: "new-cover" }, "get-quote")}
+              >
+                Request a manual product review
+              </BrandButton>
+            </div>
+          </GlassCard>
         </Container>
       </section>
 
@@ -206,15 +386,20 @@ function InsurancePage() {
                   id="insurance-support-title"
                   className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl"
                 >
-                  Claims, renewals and policy support are part of the journey
+                  Claims, quotes and comparisons are part of the journey
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  Existing policyholders can use the same guide to organise a claim, verify a
-                  policy, request a renewal or explain a policy change. No coverage, claim outcome
-                  or premium is guaranteed before authorized provider review.
+                  Use the flows above to compare cover, get a quote, or make a claim. No coverage,
+                  claim outcome or premium is guaranteed before authorized provider review.
                 </p>
               </div>
-              <BrandButton variant="ghost" className="min-h-11" onClick={() => setGuideOpen(true)}>
+              <BrandButton
+                variant="ghost"
+                className="min-h-11"
+                onClick={() =>
+                  openGuide({ insuranceRequestType: "compare-options" }, "compare-cover")
+                }
+              >
                 Get started
               </BrandButton>
             </div>
@@ -224,6 +409,8 @@ function InsurancePage() {
 
       <NairaLeapGuideContainer
         service={INSURANCE_SERVICE}
+        onboardingRole={onboardingRole}
+        initialAnswers={guideAnswers}
         open={guideOpen}
         onOpenChange={setGuideOpen}
       />

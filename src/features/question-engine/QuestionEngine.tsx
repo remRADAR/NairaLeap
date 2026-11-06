@@ -26,10 +26,12 @@ export interface QuestionEngineProps {
   /**
    * Layout of the intake form:
    * - "one-per-page" (default): guided frames, one question per screen.
+   * - "sequential": legacy alias for "one-per-page".
+   * - "horizontal": all questions on one scrollable page.
    * - "single-page": the WHOLE form on one frame/page, grouped into
    *   Required / Optional sections with a single submit action.
    */
-  layout?: "one-per-page" | "single-page";
+  layout?: "one-per-page" | "sequential" | "horizontal" | "single-page";
   /** Optional pre-filled answers (e.g. resume in-progress flow). */
   initialAnswers?: AnswersState;
   /** Completion callback — invoked with the final answers on submit. */
@@ -43,13 +45,22 @@ export interface QuestionEngineProps {
   className?: string;
 }
 
+function hasDisplayedAnswer(value: AnswerValue | undefined): boolean {
+  if (Array.isArray(value)) return value.length > 0;
+  if (typeof value === "string") return value.trim().length > 0;
+  if (typeof value === "number") return Number.isFinite(value);
+  return typeof value === "boolean";
+}
+
 /**
  * QuestionEngine — ONE reusable, service-agnostic question interface.
  *
  * Accepts any Question Set via configuration; no service-specific branches,
  * no backend, no AI, no persistence, and no dependency on demo data.
  * Default layout is the guided one-question-per-frame flow. Set
- * `layout="single-page"` to render the whole intake form on one frame.
+ * `layout="single-page"` to render the whole intake form on one frame, or
+ * `layout="horizontal"` for a single scrollable page with a submit button.
+ * Questions may be grouped or shown singly.
  */
 export function QuestionEngine({
   questionSet,
@@ -100,6 +111,7 @@ export function QuestionEngine({
     <GuidedForm
       questions={resolvedQuestions}
       currentQuestion={currentQuestion}
+      layout={layout}
       initialAnswers={initialAnswers}
       onComplete={onComplete}
       onExit={onExit}
@@ -352,6 +364,7 @@ function FormField({ question, value, invalid, onChange, registerRef }: FormFiel
         onEnter={() => {
           /* Enter moves through native fields; submit is explicit. */
         }}
+        shouldFocus={false}
         labelledBy={titleId}
         describedBy={question.helper ? helperId : undefined}
         autoFocus={false}
@@ -367,6 +380,7 @@ function FormField({ question, value, invalid, onChange, registerRef }: FormFiel
 interface GuidedFormProps {
   questions: Question[];
   currentQuestion?: string;
+  layout: "one-per-page" | "sequential" | "horizontal";
   initialAnswers?: AnswersState;
   onComplete?: (answers: AnswersState) => void;
   onExit?: () => void;
@@ -376,6 +390,7 @@ interface GuidedFormProps {
 function GuidedForm({
   questions,
   currentQuestion,
+  layout,
   initialAnswers,
   onComplete,
   onExit,
@@ -385,6 +400,8 @@ function GuidedForm({
     index,
     total,
     current,
+    currentQuestions,
+    visibleQuestions,
     progress,
     answers,
     setAnswer,
@@ -431,7 +448,113 @@ function GuidedForm({
     }
     goPrevious();
   };
+  const focusQuestionId =
+    currentQuestions.find((question) => !hasDisplayedAnswer(answers[question.id]))?.id ??
+    currentQuestions[0]?.id;
 
+  // ---- Horizontal layout: all questions on one page ----
+  if (layout === "horizontal") {
+    const requiredQuestions = visibleQuestions.filter((q) => q.required !== false);
+    const allRequiredAnswered = requiredQuestions.every((q) =>
+      isQuestionAnswered(q, answers[q.id]),
+    );
+    const answeredCount = visibleQuestions.filter((q) => hasDisplayedAnswer(answers[q.id])).length;
+    const horizontalProgress = visibleQuestions.length
+      ? Math.round((answeredCount / visibleQuestions.length) * 100)
+      : 0;
+
+    return (
+      <section
+        aria-label="Guided questions"
+        className={cn("mx-auto flex w-full max-w-2xl flex-col gap-6", className)}
+      >
+        {/* Progress summary */}
+        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+          <span aria-live="polite">
+            {answeredCount} of {visibleQuestions.length} answered
+          </span>
+          <span aria-hidden="true">{horizontalProgress}%</span>
+        </div>
+        <div
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={horizontalProgress}
+          aria-label="Question progress"
+          className="h-1.5 w-full overflow-hidden rounded-full bg-glass-border"
+        >
+          <div
+            className="h-full gradient-brand shadow-[var(--shadow-glow)] transition-[width] duration-300 motion-reduce:transition-none"
+            style={{ width: `${horizontalProgress}%` }}
+          />
+        </div>
+
+        {/* All questions */}
+        <div className="flex flex-col gap-5">
+          {visibleQuestions.map((question, qIndex) => (
+            <div
+              key={question.id}
+              className="glass-panel rounded-3xl p-5 sm:p-6"
+              aria-live="polite"
+            >
+              <div className="mb-1 flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <span className="grid h-5 w-5 place-items-center rounded-full bg-glass text-[10px] font-semibold text-muted-foreground">
+                  {qIndex + 1}
+                </span>
+                {question.required === false ? (
+                  <span>Optional</span>
+                ) : (
+                  <span className="text-destructive">Required</span>
+                )}
+              </div>
+              <QuestionBody
+                question={question}
+                value={answers[question.id]}
+                onChange={(v) => setAnswer(question.id, v)}
+                shouldFocus={false}
+                onEnter={() => {
+                  // In horizontal mode, Enter just moves focus; no auto-advance
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Submit */}
+        <div className="flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={onExit}
+            className={cn(
+              "inline-flex min-h-11 items-center gap-2 rounded-full border border-glass-border bg-glass px-4 text-sm font-medium text-foreground transition-colors",
+              "hover:text-primary-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+            )}
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onComplete?.(answers)}
+            disabled={!allRequiredAnswered}
+            aria-disabled={!allRequiredAnswered}
+            className={cn(
+              "inline-flex min-h-11 items-center gap-2 rounded-full gradient-brand px-5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition-opacity",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+            )}
+          >
+            Review &amp; Submit
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  // ---- Sequential layout (default): one question at a time ----
   return (
     <section
       aria-label="Guided question"
@@ -467,14 +590,22 @@ function GuidedForm({
         )}
         aria-live="polite"
       >
-        <QuestionBody
-          question={current}
-          value={answers[current.id]}
-          onChange={(v) => setAnswer(current.id, v)}
-          onEnter={() => {
-            if (canGoNext) goNext();
-          }}
-        />
+        {currentQuestions.map((question, questionIndex) => (
+          <div
+            key={question.id}
+            className={cn(questionIndex > 0 && "mt-6 border-t border-border/60 pt-5")}
+          >
+            <QuestionBody
+              question={question}
+              value={answers[question.id]}
+              onChange={(value) => setAnswer(question.id, value)}
+              onEnter={() => {
+                if (canGoNext) goNext();
+              }}
+              shouldFocus={question.id === focusQuestionId}
+            />
+          </div>
+        ))}
       </div>
 
       {/* Actions */}
@@ -521,9 +652,10 @@ interface QuestionBodyProps {
   value: AnswerValue | undefined;
   onChange: (value: AnswerValue) => void;
   onEnter: () => void;
+  shouldFocus: boolean;
 }
 
-function QuestionBody({ question, value, onChange, onEnter }: QuestionBodyProps) {
+function QuestionBody({ question, value, onChange, onEnter, shouldFocus }: QuestionBodyProps) {
   const titleId = useId();
   const helperId = useId();
 
@@ -548,6 +680,7 @@ function QuestionBody({ question, value, onChange, onEnter }: QuestionBodyProps)
         value={value}
         onChange={onChange}
         onEnter={onEnter}
+        shouldFocus={shouldFocus}
         labelledBy={titleId}
         describedBy={question.helper ? helperId : undefined}
       />
@@ -566,6 +699,7 @@ function AnswerField({
   value,
   onChange,
   onEnter,
+  shouldFocus,
   labelledBy,
   describedBy,
   autoFocus = true,
@@ -573,9 +707,9 @@ function AnswerField({
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    if (!autoFocus) return;
+    if (!autoFocus || !shouldFocus) return;
     inputRef.current?.focus({ preventScroll: true });
-  }, [question.id, autoFocus]);
+  }, [question.id, autoFocus, shouldFocus]);
 
   switch (question.type) {
     case "short-text":

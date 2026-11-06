@@ -698,7 +698,7 @@ function Overview({
         <ActionCard
           icon={FolderTree}
           title="Build the taxonomy"
-          description="Start from the imported Naira & Kubo category hierarchy and add new parent or child categories."
+          description="Start from the imported NairaLeap category hierarchy and add new parent or child categories."
           action="Manage categories"
           onClick={() => onView("categories")}
         />
@@ -1197,7 +1197,7 @@ function CategoryStudio({
         </p>
         <h2 className="mt-2 text-2xl font-black text-[#262638]">Category builder</h2>
         <p className="mt-2 text-sm leading-6 text-[#77778a]">
-          The imported Naira & Kubo taxonomy is available below. Add a new parent category or nest
+          The imported NairaLeap taxonomy is available below. Add a new parent category or nest
           it under an existing one.
         </p>
         <form onSubmit={addCategory} className="mt-6 grid gap-4 md:grid-cols-[1fr_1fr_auto]">
@@ -1517,3 +1517,4 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
     </label>
   );
 }
+

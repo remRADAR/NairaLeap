@@ -1,7 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { REQUEST_BLUEPRINT_MAP } from "@/features/request-blueprint-engine";
+import {
+  getMissingRequiredBlueprintFields,
+  REQUEST_BLUEPRINT_MAP,
+} from "@/features/request-blueprint-engine";
+import { insurancePayloadSchema } from "@/features/insurance/schema";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { Json } from "@/lib/supabase/types";
 
@@ -34,14 +38,19 @@ const submitServiceRequestSchema = z
         message: "This request schema is not supported.",
       });
     }
+    if (input.serviceId === "insurance") {
+      const insuranceResult = insurancePayloadSchema.safeParse(input.payload);
+      if (!insuranceResult.success) {
+        for (const issue of insuranceResult.error.issues) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["payload", ...issue.path],
+            message: issue.message,
+          });
+        }
+      }
+    }
   });
-
-function hasValue(value: unknown): boolean {
-  if (Array.isArray(value)) return value.length > 0;
-  if (typeof value === "boolean") return true;
-  if (typeof value === "number") return Number.isFinite(value);
-  return typeof value === "string" ? value.trim().length > 0 : false;
-}
 
 export const submitServiceRequest = createServerFn({ method: "POST" })
   .validator((input: unknown) => submitServiceRequestSchema.parse(input))
@@ -51,9 +60,9 @@ export const submitServiceRequest = createServerFn({ method: "POST" })
       throw new Error("This service does not have a request blueprint yet.");
     }
 
-    const missingFields = blueprint.requiredFields
-      .filter((field) => !hasValue(data.payload[field.key]))
-      .map((field) => field.label);
+    const missingFields = getMissingRequiredBlueprintFields(blueprint, data.payload).map(
+      (field) => field.label,
+    );
     if (missingFields.length > 0) {
       throw new Error(`Please complete: ${missingFields.join(", ")}.`);
     }

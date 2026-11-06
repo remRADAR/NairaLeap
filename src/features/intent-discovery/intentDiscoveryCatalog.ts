@@ -17,7 +17,6 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
     recommendedServiceIds: [
       "property-listings",
       "mortgage",
-      "distress-sales",
       "vendor-marketplace",
       "recycling-scrap",
     ],
@@ -31,7 +30,6 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
     description: "The visitor wants to list, sell, or dispose of an asset, product, or material.",
     recommendedServiceIds: [
       "property-listings",
-      "distress-sales",
       "vendor-marketplace",
       "recycling-scrap",
       "agriculture",
@@ -45,7 +43,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
     title: "Partnering",
     description:
       "The visitor is looking for strategic partners, joint ventures, or collaboration opportunities.",
-    recommendedServiceIds: ["partnerships"],
+    recommendedServiceIds: ["business-funding"],
     followUpCategory: "direct-to-service",
     priority: "high",
     nextWorkflow: "guided-question-engine",
@@ -64,7 +62,7 @@ export const INTENT_DISCOVERY_CATALOG: IntentDiscoveryCatalog = [
     title: "Investment",
     description:
       "The visitor wants to invest in assets, businesses, agriculture, or other opportunities.",
-    recommendedServiceIds: ["agriculture", "business-funding", "property-listings", "partnerships"],
+    recommendedServiceIds: ["agriculture", "business-funding", "property-listings"],
     followUpCategory: "service-match",
     priority: "medium",
     nextWorkflow: "guided-question-engine",
