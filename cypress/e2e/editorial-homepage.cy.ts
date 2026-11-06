@@ -24,6 +24,37 @@ describe("Editorial homepage restoration", () => {
     cy.contains("h1", "Every indicator, in one place.").should("be.visible");
   });
 
+  it("shows Nigerian date and time and updates the date at midnight", () => {
+    cy.clock(Date.parse("2026-11-06T22:59:59.000Z"), ["Date", "setInterval", "clearInterval"]);
+    cy.visit("/");
+
+    cy.get('[data-testid="editorial-clock"]')
+      .should("contain", "Friday, November 6, 2026")
+      .and("contain", "11:59:59 PM WAT");
+
+    cy.tick(1000);
+
+    cy.get('[data-testid="editorial-clock"]')
+      .should("contain", "Saturday, November 7, 2026")
+      .and("contain", "12:00:00 AM WAT");
+  });
+
+  it("keeps the full date and time readable on a mobile viewport", () => {
+    cy.viewport(375, 812);
+    cy.visit("/");
+
+    cy.get('[data-testid="editorial-clock"]')
+      .should("be.visible")
+      .and("contain", "WAT")
+      .should(($clock) => {
+        expect($clock.text().trim()).to.match(/\d{1,2}:\d{2}:\d{2} (AM|PM) WAT/);
+        expect(Number.parseFloat(getComputedStyle($clock[0]).fontSize)).to.be.at.least(12);
+        const { left, right } = $clock[0].getBoundingClientRect();
+        expect(left).to.be.at.least(0);
+        expect(right).to.be.at.most(375);
+      });
+  });
+
   it("opens the archive filtered to the selected homepage story category", () => {
     cy.get("article.editorial-story-card")
       .first()
