@@ -11,7 +11,7 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
 import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
@@ -23,12 +23,36 @@ const slugify = (label: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
+const LAGOS_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Africa/Lagos",
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+const LAGOS_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Africa/Lagos",
+  hour: "numeric",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: true,
+});
+
 export function EditorialLayout({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const routeKey = useRouterState({
     select: (state) => `${state.location.pathname}:${JSON.stringify(state.location.search)}`,
   });
+
+  useEffect(() => {
+    const updateTime = () => setCurrentTime(new Date());
+    updateTime();
+    const intervalId = window.setInterval(updateTime, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   return (
     <div
@@ -84,6 +108,23 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         </div>
         {menuOpen && <EditorialMenu onNavigate={() => setMenuOpen(false)} />}
       </header>
+      <div className="editorial-clock-strip border-b border-[#ececf3] bg-white px-4 py-2 text-center text-xs font-medium text-[#626277] sm:px-6 sm:text-[13px]">
+        <time
+          data-testid="editorial-clock"
+          aria-label="Current date and time in Nigeria"
+          dateTime={currentTime?.toISOString()}
+        >
+          {currentTime ? (
+            <>
+              {LAGOS_DATE_FORMATTER.format(currentTime)}
+              {" · "}
+              {LAGOS_TIME_FORMATTER.format(currentTime)} WAT
+            </>
+          ) : (
+            <span aria-hidden="true">&nbsp;</span>
+          )}
+        </time>
+      </div>
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
