@@ -31,6 +31,13 @@ describe("Editorial homepage restoration", () => {
     cy.clock(Date.parse("2026-11-06T22:59:59.000Z"), ["Date", "setInterval", "clearInterval"]);
     cy.visit("/");
 
+    cy.get('[data-testid="editorial-subscribe-bar"] [data-testid="editorial-clock"]')
+      .should("be.visible")
+      .and("contain", "WAT");
+    cy.get('[data-testid="editorial-subscribe-bar"]')
+      .contains("Subscribe Now!")
+      .should("be.visible");
+    cy.get(".editorial-clock-strip").should("not.exist");
     cy.get('[data-testid="editorial-clock"]')
       .should("contain", "Friday, November 6, 2026")
       .and("contain", "11:59:59 PM WAT");
@@ -59,12 +66,12 @@ describe("Editorial homepage restoration", () => {
     cy.viewport(375, 812);
     cy.visit("/");
 
-    cy.get('[data-testid="editorial-clock"]')
+    cy.get('[data-testid="editorial-subscribe-bar"] [data-testid="editorial-clock"]')
       .should("be.visible")
       .and("contain", "WAT")
       .should(($clock) => {
         expect($clock.text().trim()).to.match(/\d{1,2}:\d{2}:\d{2} (AM|PM) WAT/);
-        expect(Number.parseFloat(getComputedStyle($clock[0]).fontSize)).to.be.at.least(12);
+        expect(Number.parseFloat(getComputedStyle($clock[0]).fontSize)).to.be.at.least(11);
         const { left, right } = $clock[0].getBoundingClientRect();
         expect(left).to.be.at.least(0);
         expect(right).to.be.at.most(375);

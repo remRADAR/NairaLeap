@@ -61,9 +61,36 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
-      <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
-        Subscribe to our newsletter &amp; never miss our best posts.{" "}
-        <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
+      <div
+        data-testid="editorial-subscribe-bar"
+        className="border-b border-[#ececf3] bg-[#f9007a] px-3 py-2 text-white sm:px-6"
+      >
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2 sm:gap-4">
+          <time
+            data-testid="editorial-clock"
+            aria-label="Current date and time in Nigeria"
+            dateTime={currentTime?.toISOString()}
+            className="shrink-0 whitespace-nowrap text-[11px] font-medium leading-4 tracking-[-0.02em] sm:text-xs md:text-[13px]"
+          >
+            {currentTime ? (
+              <>
+                {LAGOS_DATE_FORMATTER.format(currentTime)}
+                {" · "}
+                {LAGOS_TIME_FORMATTER.format(currentTime)} WAT
+              </>
+            ) : (
+              <span aria-hidden="true">&nbsp;</span>
+            )}
+          </time>
+          <div className="ml-auto flex min-w-0 items-center justify-end gap-1 text-right text-[9px] font-medium sm:gap-2 sm:text-xs">
+            <span className="hidden sm:inline">
+              Subscribe to our newsletter &amp; never miss our best posts.
+            </span>
+            <button className="shrink-0 font-bold underline underline-offset-2">
+              Subscribe Now!
+            </button>
+          </div>
+        </div>
       </div>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
@@ -108,23 +135,6 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         </div>
         {menuOpen && <EditorialMenu onNavigate={() => setMenuOpen(false)} />}
       </header>
-      <div className="editorial-clock-strip border-b border-[#ececf3] bg-white px-4 py-2 text-center text-xs font-medium text-[#626277] sm:px-6 sm:text-[13px]">
-        <time
-          data-testid="editorial-clock"
-          aria-label="Current date and time in Nigeria"
-          dateTime={currentTime?.toISOString()}
-        >
-          {currentTime ? (
-            <>
-              {LAGOS_DATE_FORMATTER.format(currentTime)}
-              {" · "}
-              {LAGOS_TIME_FORMATTER.format(currentTime)} WAT
-            </>
-          ) : (
-            <span aria-hidden="true">&nbsp;</span>
-          )}
-        </time>
-      </div>
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
