@@ -5,7 +5,7 @@ function activate(selector: string) {
   cy.get(selector).should("be.visible").click({ force: true });
 }
 
-describe("Nairaleap service discovery and onboarding navigation", () => {
+describe("NairaLeap service discovery and onboarding navigation", () => {
   beforeEach(() => {
     cy.visit("/services");
   });
@@ -196,7 +196,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
 
   it("returns to the homepage Services section from a dedicated page", () => {
     cy.get('#services a[href="/services/insurance"]').click();
-    cy.get('header a[aria-label="Nairaleap - Service Portal"]').click();
+    cy.get('header a[aria-label="NairaLeap Services home"]').click();
 
     cy.location("pathname").should("eq", "/services");
     cy.location("hash").should("eq", "");
@@ -241,7 +241,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
   });
 });
 
-describe("Nairaleap service route recovery", () => {
+describe("NairaLeap service route recovery", () => {
   it("shows a safe recovery page for an unknown service slug", () => {
     cy.visit("/services/not-a-real-service");
 

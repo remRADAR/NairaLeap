@@ -153,3 +153,25 @@ The Admin Studio now has a dedicated `/admin-login` entry point. `/admin` is gua
 The customer request queue now supports search, status filtering, service filtering, newest/oldest ordering, customer-name A–Z/Z–A ordering, status ordering, result counts, CSV export, and follow-up status updates. The Supabase admin RLS migration from the prior checkpoint remains required in the target database, and approved admin users still need `app_metadata.role = 'admin'`.
 
 Verification for this checkpoint: targeted ESLint, `npx tsc --noEmit`, `npm run lint`, `npm run build`, and the protected Admin Studio Cypress spec passed. The full Admin Studio workflow is only accessible in tests when a real approved admin session is available; unauthenticated access is covered by the current regression.
+
+
+## Corporate rebrand, About Us, legal pages and dual footer — 2026-11-07
+
+Branch: `feat/nairaleap-corporate-rebrand-20261107` (opened from `main` @ `13a23ee`). Implements the corporate identity correction (Naira & Kobo → NairaLeap parent ecosystem), the canonical `/about`, `/disclaimer` and `/privacy-policy` routes, shared legal/brand architecture, route-appropriate metadata, and the reconstructed editorial + portal footers.
+
+### What changed
+- New shared architecture: `src/features/brand/brand.ts` (single source of truth for the NairaLeap parent brand, editorial and services naming, site origin, contact email), `src/features/legal/legalDocuments.ts` (metadata, last-updated, honest draft review status, `buildLegalHead()`), `src/components/legal/LegalPageLayout.tsx` (shared legal shell with review banner), exported via `src/components/index.ts`.
+- New routes: `/about` (company story, ecosystem, mission, services, vision, contact with anchors), `/disclaimer` (12 sections covering both experiences), `/privacy-policy` (17 sections grounded in the actual Supabase/browser data flows, NDPA 2023 framing, explicit "pending confirmation" markers where facts are unverified). All three carry a "Draft — pending owner approval" banner and last-updated 2026-11-07.
+- Metadata: root head is now the parent-ecosystem fallback; `/` gets an editorial head (no longer a service-portal identity); `/services` keeps a service-specific head; `/auth`, `/insurance`, `/mortgage`, `/archive`, `/articles`, `/_authenticated` heads corrected; `Nairaleap` → `NairaLeap` casing fixed across routes, `ServiceLandingPage`, and the manifest (`NairaLeap Services` / `NairaLeap`).
+- Footers: editorial footer rebuilt (Brand / Explore / Company / Legal columns, tagline, ecosystem description, informational disclaimer link, accurate copyright, no unverified social links); portal footer rebuilt (Brand / Platform / Company / Legal and Trust, NairaLeap Guide button, sign-in-aware Customer Workspace link, Main Website link, canonical legal links, dead placeholder spans removed). Compact service-page footer suppression (`lg:hidden` wrapper) preserved.
+- `src/routeTree.gen.ts` extended generator-equivalently for the three new flat routes; a dev/build run must regenerate it identically.
+- Docs: `docs/rebrand-discovery-report-2026-11-07.md` (Phase 1 reconnaissance) and `docs/legal-owner-approvals.md` (owner-approval register — 16 items requiring owner and/or counsel confirmation before the legal pages can be marked approved).
+
+### Open-PR coordination
+- PR #11 (`feat/nairaleap-relaunch-implementation`): reviewed; contains earlier about/disclaimer/privacy drafts based on an older base. Superseded by this branch — only its draft-banner pattern was reused. Do not merge.
+- PR #13 (Nigerian homepage clock): touches the editorial newsletter strip only; this branch does not modify that strip. Rebase whichever lands second.
+- PR #12 (editorial media recovery): no overlap.
+
+### Verification status
+- All code was desk-checked only. TypeScript check, ESLint, Prettier check, production build and the Cypress suites were NOT executed in the authoring session and MUST be run on checkout: `npx tsc --noEmit`, `npm run lint`, `npm run build`, and the updated/new specs (`brand-auth.cy.ts`, `service-navigation.cy.ts`, `plugin-integration-status.cy.ts`, `corporate-pages.cy.ts`, `portal-footer.cy.ts`) plus the untouched regression suites (`editorial-homepage`, `ui-interactions`, `leapbot-chauffeur`, `service-role-profiles`, `admin-studio`).
+- No production deployments, database migrations or DNS changes were performed.

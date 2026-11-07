@@ -19,7 +19,7 @@ describe("safe plugin integration status", () => {
       'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="tiv"]',
     ).should("be.disabled");
     cy.get('nav[aria-label="Editorial menu"]').within(() => {
-      cy.contains("Nairaleap services").should("be.visible");
+      cy.contains("NairaLeap services").should("be.visible");
       cy.contains("Admin Studio").should("be.visible");
     });
   });
