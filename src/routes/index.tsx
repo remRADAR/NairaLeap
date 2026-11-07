@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
+import { EditorialImage } from "@/features/editorial/EditorialImage";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import {
@@ -126,9 +127,10 @@ function EditorialHomePage() {
           onBlur={() => setHeroPaused(false)}
         >
           {hero.image ? (
-            <img
+            <EditorialImage
               key={hero.image}
               src={hero.image}
+              slug={hero.slug}
               alt=""
               className="editorial-hero-media absolute inset-0 h-full w-full object-cover object-center"
               fetchPriority="high"
@@ -244,8 +246,9 @@ function EditorialHomePage() {
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
                 {post.image ? (
-                  <img
+                  <EditorialImage
                     src={post.image}
+                    slug={post.slug}
                     alt=""
                     loading="lazy"
                     decoding="async"
@@ -303,8 +306,9 @@ function EditorialHomePage() {
             >
               <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-[#e7d6ff]">
                 {post.image ? (
-                  <img
+                  <EditorialImage
                     src={post.image}
+                    slug={post.slug}
                     alt=""
                     loading="lazy"
                     decoding="async"

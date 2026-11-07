@@ -7,6 +7,9 @@ describe("Editorial homepage restoration", () => {
   it("keeps ten story previews, restores both ad spaces, and links to the full archive", () => {
     cy.contains("h2", "Top Stories").should("be.visible");
     cy.get('section[aria-label="Featured story"] img[src]').should("exist");
+    cy.get('section[aria-label="Featured story"] img[src]').should(($image) => {
+      expect(($image[0] as HTMLImageElement).naturalWidth).to.be.greaterThan(0);
+    });
     cy.get("article.editorial-story-card").should("have.length", 9);
     cy.get("article.editorial-story-card img[src]").should("have.length", 9);
     cy.get('section[aria-label="Advertisement"]').should("have.length", 2);
@@ -37,6 +40,19 @@ describe("Editorial homepage restoration", () => {
     cy.get('[data-testid="editorial-clock"]')
       .should("contain", "Saturday, November 7, 2026")
       .and("contain", "12:00:00 AM WAT");
+  });
+
+  it("recovers with a local fallback when a featured image fails to load", () => {
+    cy.intercept("GET", "**/editorial/recovered/**", { statusCode: 404 }).as(
+      "missingFeaturedImage",
+    );
+    cy.visit("/");
+
+    cy.get('section[aria-label="Featured story"] img[data-editorial-image]')
+      .should("have.attr", "data-fallback-applied", "true")
+      .should(($image) => {
+        expect(($image[0] as HTMLImageElement).naturalWidth).to.be.greaterThan(0);
+      });
   });
 
   it("keeps the full date and time readable on a mobile viewport", () => {
@@ -79,5 +95,8 @@ describe("Editorial homepage restoration", () => {
     cy.visit("/articles/police-nab-three-cops-after-alleged-extortion-of-abia-travellers");
     cy.contains("h1", "police", { matchCase: false }).should("be.visible");
     cy.get("article > header img[src]").should("be.visible");
+    cy.get("article > header img[src]").should(($image) => {
+      expect(($image[0] as HTMLImageElement).naturalWidth).to.be.greaterThan(0);
+    });
   });
 });

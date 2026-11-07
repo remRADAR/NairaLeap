@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Archive, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
+import { EditorialImage } from "@/features/editorial/EditorialImage";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
@@ -85,8 +86,9 @@ function ArticleArchivePage() {
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#e7d6ff] to-[#78609f]">
                   {post.image ? (
-                    <img
+                    <EditorialImage
                       src={post.image}
+                      slug={post.slug}
                       alt=""
                       loading="lazy"
                       className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
