@@ -12,8 +12,28 @@ import {
   Reveal,
 } from "@/components";
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
+import {
+  NAIRALEAP_SERVICES,
+  NAIRALEAP_SITE_ORIGIN,
+} from "@/features/brand/brand";
 
 export const Route = createFileRoute("/services")({
+  head: () => ({
+    meta: [
+      {
+        title: `${NAIRALEAP_SERVICES.name} — Service Discovery & Guided Onboarding`,
+      },
+      { name: "description", content: NAIRALEAP_SERVICES.description },
+      {
+        property: "og:title",
+        content: `${NAIRALEAP_SERVICES.name} — Service Discovery & Guided Onboarding`,
+      },
+      { property: "og:description", content: NAIRALEAP_SERVICES.description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${NAIRALEAP_SITE_ORIGIN}/services` },
+    ],
+    links: [{ rel: "canonical", href: `${NAIRALEAP_SITE_ORIGIN}/services` }],
+  }),
   component: LandingPage,
 });
 
@@ -200,3 +220,4 @@ function LandingPage() {
     </AppLayout>
   );
 }
+

@@ -20,17 +20,17 @@ import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/ser
 export const Route = createFileRoute("/mortgage")({
   head: () => ({
     meta: [
-      { title: "Mortgage — Nairaleap - Service Portal" },
+      { title: "Mortgage — NairaLeap Services" },
       {
         name: "description",
         content:
-          "Explore home purchase, construction, renovation, NHF, rent-to-own, refinancing and mortgage-support pathways through the Nairaleap Mortgage Navigator.",
+          "Explore home purchase, construction, renovation, NHF, rent-to-own, refinancing and mortgage-support pathways through the NairaLeap Mortgage Navigator.",
       },
-      { property: "og:title", content: "Mortgage — Nairaleap - Service Portal" },
+      { property: "og:title", content: "Mortgage — NairaLeap Services" },
       {
         property: "og:description",
         content:
-          "Describe your housing-finance need and Nairaleap will prepare a structured request for review by a suitable verified finance partner.",
+          "Describe your housing-finance need and NairaLeap will prepare a structured request for review by a suitable verified finance partner.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -133,7 +133,7 @@ function MortgagePage() {
           <div className="mx-auto max-w-4xl text-center">
             <span className="glass-panel inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
               <Home className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
-              Nairaleap Mortgage Navigator
+              NairaLeap Mortgage Navigator
             </span>
             <h1
               id="mortgage-title"
@@ -158,7 +158,7 @@ function MortgagePage() {
               </a>
             </div>
             <p className="mx-auto mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">
-              Nairaleap does not approve loans, set rates, validate title, or issue a binding offer.
+              NairaLeap does not approve loans, set rates, validate title, or issue a binding offer.
               Eligibility, affordability, terms, approval and disbursement remain subject to partner
               review.
             </p>
@@ -242,3 +242,4 @@ function MortgagePage() {
     </AppLayout>
   );
 }
+

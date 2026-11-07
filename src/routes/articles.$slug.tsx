@@ -14,10 +14,10 @@ export const Route = createFileRoute("/articles/$slug")({
     const post = getEditorialPost(params.slug);
     return {
       meta: [
-        { title: post ? `${post.title} — Nairaleap` : "Article — Nairaleap" },
+        { title: post ? `${post.title} — NairaLeap` : "Article — NairaLeap" },
         {
           name: "description",
-          content: post?.excerpt ?? "Read the latest Nairaleap indicator story.",
+          content: post?.excerpt ?? "Read the latest NairaLeap indicator story.",
         },
       ],
     };
@@ -139,7 +139,7 @@ function ArticlePage() {
         </section>
         <footer className="mt-12 border-t border-[#e9e9f0] pt-6">
           <p className="text-xs text-[#858598]">
-            Migrated to Nairaleap from the WordPress editorial archive. Read the original source at{" "}
+            Migrated to NairaLeap from the WordPress editorial archive. Read the original source at{" "}
             <a
               href={post.sourceUrl}
               target="_blank"
@@ -165,3 +165,4 @@ function ArticlePage() {
     </EditorialLayout>
   );
 }
+

@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { AuthProvider } from "@/features/auth";
 import { LocaleProvider } from "@/features/i18n";
 import { AppSkeleton, PageTransition } from "@/components";
+import { NAIRALEAP_BRAND, NAIRALEAP_SITE_ORIGIN } from "@/features/brand/brand";
 
 function NotFoundComponent() {
   return (
@@ -76,32 +77,42 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "application-name", content: "Nairaleap - Service Portal" },
-      { name: "apple-mobile-web-app-title", content: "Nairaleap - Service Portal" },
-      { title: "Nairaleap - Service Portal" },
+      { name: "application-name", content: NAIRALEAP_BRAND.name },
+      { name: "apple-mobile-web-app-title", content: NAIRALEAP_BRAND.name },
+      {
+        title: `${NAIRALEAP_BRAND.name} — Nigerian Digital Media, Information & Services Ecosystem`,
+      },
       {
         name: "description",
-        content:
-          "Discover NairaLeap services, get guided onboarding, and submit structured service requests.",
+        content: NAIRALEAP_BRAND.description,
       },
       { name: "theme-color", content: "#1a0b2e" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { property: "og:title", content: "Nairaleap - Service Portal" },
+      { property: "og:site_name", content: NAIRALEAP_BRAND.name },
+      {
+        property: "og:title",
+        content: `${NAIRALEAP_BRAND.name} — Nigerian Digital Media, Information & Services Ecosystem`,
+      },
       {
         property: "og:description",
-        content:
-          "Nairaleap - Service Portal: discover services, complete guided onboarding, and track requests.",
+        content: NAIRALEAP_BRAND.description,
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://nairaleap.vercel.app/nairaleap-wordmark.png" },
+      {
+        property: "og:image",
+        content: `${NAIRALEAP_SITE_ORIGIN}/nairaleap-wordmark.png`,
+      },
       { property: "og:image:width", content: "1706" },
       { property: "og:image:height", content: "922" },
       { property: "og:image:type", content: "image/png" },
-      { property: "og:image:alt", content: "Nairaleap" },
+      { property: "og:image:alt", content: NAIRALEAP_BRAND.name },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://nairaleap.vercel.app/nairaleap-wordmark.png" },
-      { name: "twitter:image:alt", content: "Nairaleap" },
+      {
+        name: "twitter:image",
+        content: `${NAIRALEAP_SITE_ORIGIN}/nairaleap-wordmark.png`,
+      },
+      { name: "twitter:image:alt", content: NAIRALEAP_BRAND.name },
     ],
     links: [
       {
@@ -153,3 +164,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+

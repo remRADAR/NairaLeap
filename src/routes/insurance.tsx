@@ -19,17 +19,17 @@ import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/ser
 export const Route = createFileRoute("/insurance")({
   head: () => ({
     meta: [
-      { title: "Insurance — Nairaleap - Service Portal" },
+      { title: "Insurance — NairaLeap Services" },
       {
         name: "description",
         content:
-          "Explore insurance cover, policy support, claims, renewals and quote requests through the Nairaleap guided insurance navigator.",
+          "Explore insurance cover, policy support, claims, renewals and quote requests through the NairaLeap guided insurance navigator.",
       },
-      { property: "og:title", content: "Insurance — Nairaleap - Service Portal" },
+      { property: "og:title", content: "Insurance — NairaLeap Services" },
       {
         property: "og:description",
         content:
-          "Describe what you need to protect and Nairaleap will prepare a structured insurance request for review.",
+          "Describe what you need to protect and NairaLeap will prepare a structured insurance request for review.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -127,7 +127,7 @@ function InsurancePage() {
           <div className="mx-auto max-w-4xl text-center">
             <span className="glass-panel inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-primary-glow" aria-hidden="true" />
-              Nairaleap Insurance Navigator
+              NairaLeap Insurance Navigator
             </span>
             <h1
               id="insurance-title"
@@ -230,3 +230,4 @@ function InsurancePage() {
     </AppLayout>
   );
 }
+

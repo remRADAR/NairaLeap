@@ -59,7 +59,7 @@ export function ServiceLandingPage({ service }: ServiceLandingPageProps) {
                   </span>
                   <div className="min-w-0">
                     <p className="text-xs uppercase tracking-[0.2em] text-primary-glow">
-                      Nairaleap service
+                      NairaLeap service
                     </p>
                     <h1
                       id="service-page-title"

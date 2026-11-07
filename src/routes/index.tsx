@@ -5,6 +5,10 @@ import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import {
+  NAIRALEAP_EDITORIAL,
+  NAIRALEAP_SITE_ORIGIN,
+} from "@/features/brand/brand";
+import {
   mergeStudioArticles,
   readHomepageSettings,
   STUDIO_CHANGE_EVENT,
@@ -24,6 +28,22 @@ export const Route = createFileRoute("/")({
   validateSearch: (search): HomeSearch =>
     typeof search.topic === "string" ? { topic: search.topic } : {},
   loader: async () => ({ posts: (await getEditorialPosts()).slice(0, 24) }),
+  head: () => ({
+    meta: [
+      {
+        title: `${NAIRALEAP_EDITORIAL.name} — Nigerian Economy News, Indicators & Analysis`,
+      },
+      { name: "description", content: NAIRALEAP_EDITORIAL.description },
+      {
+        property: "og:title",
+        content: `${NAIRALEAP_EDITORIAL.name} — Nigerian Economy News, Indicators & Analysis`,
+      },
+      { property: "og:description", content: NAIRALEAP_EDITORIAL.description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${NAIRALEAP_SITE_ORIGIN}/` },
+    ],
+    links: [{ rel: "canonical", href: `${NAIRALEAP_SITE_ORIGIN}/` }],
+  }),
   component: EditorialHomePage,
 });
 
@@ -357,3 +377,4 @@ function AdSlot({ label }: { label: string }) {
     </section>
   );
 }
+
