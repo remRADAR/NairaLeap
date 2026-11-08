@@ -54,7 +54,7 @@ function AboutPage() {
         <p>
           NairaLeap is the answer to those lessons. The new name keeps the Nigerian currency at
           the heart of the identity, and adds the second idea the project grew into: the leap
-          — from information to action, from understanding Nigeria to moving Nigeria forward. The
+          — from information to action, guided by the forces shaping Nigeria. The
           Naira &amp; Kobo newsroom was not a false start; it was the foundation. Every story in
           the archive is still part of this platform, and the editorial standards it set still
           govern what we publish.
@@ -167,8 +167,8 @@ function AboutPage() {
           understanding the economy and participating in it are part of the same journey.
         </p>
         <p>
-          That is what the leap in our name stands for. From understanding Nigeria to moving
-          Nigeria forward.
+          Our strategic promise is to make the forces shaping Nigeria easier to see, understand and act
+          on.
         </p>
       </LegalSection>
 

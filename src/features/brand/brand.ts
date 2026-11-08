@@ -14,7 +14,7 @@
 
 export const NAIRALEAP_BRAND = {
   name: "NairaLeap",
-  tagline: "From understanding Nigeria to moving Nigeria forward.",
+  tagline: "Indicator Drivers",
   description:
     "NairaLeap is a Nigerian digital media, information and services ecosystem connecting people with the knowledge, opportunities and practical pathways shaping Nigeria's economy.",
 } as const;

@@ -55,7 +55,7 @@ describe("canonical corporate pages", () => {
     cy.get("#our-story").should("exist").and("contain.text", "Naira & Kobo");
     cy.get("#ecosystem").should("exist").and("contain.text", "NairaLeap Services");
     cy.get("#mission").should("exist");
-    cy.get("#vision").should("exist").and("contain.text", "moving Nigeria forward");
+    cy.get("#vision").should("exist").and("contain.text", "forces shaping Nigeria");
     cy.get("#contact").should("exist").and("contain.text", "hello@nairaleap.com");
     cy.contains("Draft — pending owner approval").should("be.visible");
     cy.contains("Last updated:").should("be.visible");
@@ -102,7 +102,7 @@ describe("editorial website footer", () => {
   it("presents the NairaLeap brand, tagline and ecosystem description", () => {
     cy.get("footer").within(() => {
       cy.get('img[alt="NairaLeap"]').should("be.visible");
-      cy.contains("From understanding Nigeria to moving Nigeria forward.").should("be.visible");
+      cy.contains("Indicator Drivers").should("be.visible");
       cy.contains("NairaLeap is a Nigerian digital media, information and services ecosystem").should(
         "be.visible",
       );
