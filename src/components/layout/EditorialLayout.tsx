@@ -1,18 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import {
-  ChevronDown,
-  Facebook,
-  Instagram,
-  Menu,
-  Moon,
-  Search,
-  Send,
-  Sun,
-  X,
-  Youtube,
-} from "lucide-react";
+import { ChevronDown, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
+import { NAIRALEAP_BRAND } from "@/features/brand/brand";
 import { cn } from "@/lib/utils";
 import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
 
@@ -43,10 +33,10 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
       </div>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
-          <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
+          <Link to="/" className="flex min-w-0 items-center" aria-label="NairaLeap home">
             <img
               src="/nairaleap-wordmark.png"
-              alt="Nairaleap"
+              alt="NairaLeap"
               className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
               decoding="async"
             />
@@ -109,25 +99,104 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
       <main key={routeKey} className="page-transition">
         {children}
       </main>
-      <footer className="mt-16 border-t border-[#e9e9f0] bg-white px-4 py-10 text-center text-xs text-[#858598]">
-        <div className="flex justify-center gap-4">
-          <a href="https://www.facebook.com/" aria-label="Facebook">
-            <Facebook className="h-4 w-4" />
-          </a>
-          <a href="https://twitter.com/" aria-label="Twitter">
-            <Send className="h-4 w-4" />
-          </a>
-          <a href="https://t.me/" aria-label="Telegram">
-            <Send className="h-4 w-4" />
-          </a>
-          <a href="https://www.instagram.com/" aria-label="Instagram">
-            <Instagram className="h-4 w-4" />
-          </a>
-          <a href="https://youtube.com/" aria-label="YouTube">
-            <Youtube className="h-4 w-4" />
-          </a>
+      <footer className="mt-16 border-t border-[#e9e9f0] bg-white px-4 py-12 text-xs text-[#858598] sm:px-6">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <Link to="/" className="inline-flex" aria-label="NairaLeap home">
+                <img
+                  src="/nairaleap-wordmark.png"
+                  alt="NairaLeap"
+                  className="h-7 w-auto max-w-[10rem] object-contain object-left"
+                  decoding="async"
+                />
+              </Link>
+              <p className="mt-4 max-w-xs text-[11px] font-bold uppercase tracking-[0.14em] text-[#303044]">
+                {NAIRALEAP_BRAND.tagline}
+              </p>
+              <p className="mt-3 max-w-xs leading-6">{NAIRALEAP_BRAND.description}</p>
+            </div>
+
+            <nav aria-label="Explore">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#303044]">
+                Explore
+              </p>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <Link to="/" className="font-semibold hover:text-[#7a2ce2]">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/articles" className="font-semibold hover:text-[#7a2ce2]">
+                    Latest Stories
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/archive" className="font-semibold hover:text-[#7a2ce2]">
+                    Editorial Archive
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/services" className="font-semibold hover:text-[#7a2ce2]">
+                    Services Portal
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+
+            <nav aria-label="Company">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#303044]">
+                Company
+              </p>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <Link to="/about" className="font-semibold hover:text-[#7a2ce2]">
+                    About NairaLeap
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" hash="our-story" className="font-semibold hover:text-[#7a2ce2]">
+                    Our Story
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" hash="contact" className="font-semibold hover:text-[#7a2ce2]">
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+
+            <nav aria-label="Legal">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#303044]">
+                Legal
+              </p>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <Link to="/disclaimer" className="font-semibold hover:text-[#7a2ce2]">
+                    Disclaimer
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/privacy-policy" className="font-semibold hover:text-[#7a2ce2]">
+                    Privacy Policy
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <p className="mt-10 border-t border-[#ededf4] pt-6 leading-6">
+            Editorial content is provided for general information and does not constitute
+            financial, legal, insurance, mortgage or professional advice.{" "}
+            <Link to="/disclaimer" className="font-semibold text-[#7a2ce2] hover:underline">
+              Read the full disclaimer
+            </Link>
+            .
+          </p>
+          <p className="mt-4">© {new Date().getFullYear()} NairaLeap. All rights reserved.</p>
         </div>
-        <p className="mt-4">© {new Date().getFullYear()} Nairaleap — Indicator Drivers</p>
       </footer>
     </div>
   );
@@ -162,7 +231,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
               onClick={onNavigate}
               className="rounded-full bg-[#7a2ce2] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#6620c8]"
             >
-              Nairaleap services
+              NairaLeap services
             </Link>
             <a
               href="/admin"
@@ -244,3 +313,4 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
     </nav>
   );
 }
+

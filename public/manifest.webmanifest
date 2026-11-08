@@ -1,7 +1,7 @@
 {
-  "name": "Nairaleap - Service Portal",
-  "short_name": "Nairaleap",
-  "description": "Discover NairaLeap services, get guided onboarding, and submit structured service requests.",
+  "name": "NairaLeap Services",
+  "short_name": "NairaLeap",
+  "description": "Service discovery, guided onboarding, request preparation and access to relevant solutions across the Nigerian economy.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a0b2e",

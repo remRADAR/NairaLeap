@@ -2,6 +2,7 @@ import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-r
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { EditorialLayout } from "@/components";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
+import { NAIRALEAP_SITE_ORIGIN } from "@/features/brand/brand";
 
 const PAGE_SIZE = 24;
 const slugify = (value: string) =>
@@ -22,6 +23,25 @@ export const Route = createFileRoute("/articles")({
     const { EDITORIAL_POSTS } = await import("@/data/wordpressEditorial");
     return { posts: withEditorialImageFallbacks(EDITORIAL_POSTS) };
   },
+  head: () => ({
+    meta: [
+      { title: "Latest Stories — NairaLeap Editorial" },
+      {
+        name: "description",
+        content:
+          "The latest NairaLeap journalism and analysis on the Nigerian economy — infrastructure, energy, agriculture, business, policy and more.",
+      },
+      { property: "og:title", content: "Latest Stories — NairaLeap Editorial" },
+      {
+        property: "og:description",
+        content:
+          "The latest NairaLeap journalism and analysis on the Nigerian economy.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${NAIRALEAP_SITE_ORIGIN}/articles` },
+    ],
+    links: [{ rel: "canonical", href: `${NAIRALEAP_SITE_ORIGIN}/articles` }],
+  }),
   component: ArticleArchivePage,
 });
 
@@ -58,7 +78,7 @@ function ArticleArchivePage() {
         <div className="mt-7 flex flex-wrap items-end justify-between gap-4 border-b border-[#e9e9f0] pb-5">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7a2ce2]">
-              Nairaleap archive
+              NairaLeap archive
             </p>
             <h1 className="mt-2 text-3xl font-black tracking-[-0.04em] text-[#252537] sm:text-4xl">
               All articles
@@ -139,3 +159,4 @@ function ArticleArchivePage() {
     </EditorialLayout>
   );
 }
+

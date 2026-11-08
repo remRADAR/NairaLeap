@@ -17,7 +17,7 @@ import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Nairaleap - Service Portal" },
+      { title: "Sign in — NairaLeap Services" },
       {
         name: "description",
         content: "Sign in or create a NairaLeap account to submit and track service requests.",
@@ -166,7 +166,7 @@ function AuthPage() {
                       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-glow">
                         <img
                           src="/nairaleap-wordmark.png"
-                          alt="Nairaleap - Service Portal"
+                          alt="NairaLeap Services"
                           className="block h-8 w-[11rem] object-contain object-left"
                         />
                         <span className="sr-only">Account</span>
@@ -182,7 +182,7 @@ function AuthPage() {
                     </div>
                     <Link
                       to="/"
-                      aria-label="Return to NairaLeap portal"
+                      aria-label="Return to the NairaLeap main website"
                       className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-glass-border bg-glass text-muted-foreground transition-colors hover:bg-surface-elevated hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <span aria-hidden="true" className="text-lg leading-none">
@@ -358,3 +358,4 @@ function AuthModeButton({
     </button>
   );
 }
+

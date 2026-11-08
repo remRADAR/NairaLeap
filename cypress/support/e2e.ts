@@ -17,7 +17,7 @@ export const SERVICE_CASES = [
 
 Cypress.Commands.add("assertServicePage", (serviceTitle: string) => {
   cy.get("main").should("contain.text", serviceTitle);
-  cy.contains("Nairaleap service").should("be.visible");
+  cy.contains("NairaLeap service").should("be.visible");
   cy.contains("Choose your role").should("be.visible");
   cy.get('[data-testid="service-start-onboarding"]').should("be.visible");
   cy.get('[data-testid="service-seller-onboarding"]').should("be.visible");

@@ -5,6 +5,7 @@ import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
+import { NAIRALEAP_SITE_ORIGIN } from "@/features/brand/brand";
 
 const slugify = (value: string) =>
   value
@@ -19,6 +20,25 @@ export const Route = createFileRoute("/archive")({
   validateSearch: (search): ArchiveSearch =>
     typeof search.topic === "string" ? { topic: search.topic } : {},
   loader: async () => ({ posts: await getEditorialPosts() }),
+  head: () => ({
+    meta: [
+      { title: "Editorial Archive — NairaLeap Editorial" },
+      {
+        name: "description",
+        content:
+          "Browse the full NairaLeap editorial archive — every migrated Naira & Kobo story plus new coverage of the Nigerian economy, filterable by topic.",
+      },
+      { property: "og:title", content: "Editorial Archive — NairaLeap Editorial" },
+      {
+        property: "og:description",
+        content:
+          "Browse the full NairaLeap editorial archive of Nigerian economic journalism, filterable by topic.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${NAIRALEAP_SITE_ORIGIN}/archive` },
+    ],
+    links: [{ rel: "canonical", href: `${NAIRALEAP_SITE_ORIGIN}/archive` }],
+  }),
   component: ArticleArchivePage,
 });
 
@@ -141,3 +161,4 @@ function ArticleArchivePage() {
     </EditorialLayout>
   );
 }
+

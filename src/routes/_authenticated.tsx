@@ -10,9 +10,13 @@ export const Route = createFileRoute("/_authenticated")({
     }
     return { user };
   },
+  head: () => ({
+    meta: [{ title: "Customer Workspace — NairaLeap Services" }],
+  }),
   component: AuthenticatedLayout,
 });
 
 function AuthenticatedLayout() {
   return <Outlet />;
 }
+
