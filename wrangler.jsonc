@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nairaleap",
+  "compatibility_date": "2026-11-09",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "NAIRALEAP_DB",
+      "database_name": "nairaleap-data",
+      "database_id": "55e19c59-b032-4f56-b8bc-7b41985426f8",
+      "migrations_dir": "cloudflare/migrations"
+    }
+  ]
+}

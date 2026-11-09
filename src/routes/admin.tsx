@@ -1364,9 +1364,9 @@ function PluginStudio({ workspace }: { workspace: Workspace }) {
     ],
     portal: [
       {
-        title: "Supabase Auth & requests",
+        title: "Supabase Auth & Cloudflare D1 requests",
         description:
-          "Powers portal authentication and customer service-request persistence. Admin triage still requires a protected role and RLS policy.",
+          "Supabase Auth protects the portal while Cloudflare D1 stores service requests when the NairaLeap Worker binding is present. Admin triage still requires a protected role.",
         ready: Boolean(
           import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         ),

@@ -4,13 +4,15 @@ NairaLeap is a customer-facing multi-service portal that turns visitor needs int
 
 ## Current product checkpoint
 
-The public root now follows the authenticated WordPress Blogsy homepage architecture: newsletter strip, Nairaleap wordmark, exact indicator taxonomy navigation, ticker, featured story, Top Stories, All Stories, social footer, and a Services CTA into the portal. The existing service portal is preserved at `/services`, with the Supabase-backed authentication boundary, canonical landing pages, blueprint-driven multi-service intake, Agriculture pilot workflow, review and submission, request tracking, and LeapBot experience intact.
+The public root now follows the authenticated WordPress Blogsy homepage architecture: newsletter strip, Nairaleap wordmark, exact indicator taxonomy navigation, ticker, featured story, Top Stories, All Stories, social footer, and a Services CTA into the portal. The existing service portal is preserved at `/services`, with Supabase Auth retained as the identity boundary and Cloudflare D1 used for service-request persistence when the `NAIRALEAP_DB` binding is present. Non-Cloudflare environments retain the Supabase persistence fallback for rollback and local verification.
 
-Live Supabase authentication, migration execution, RLS behavior, and request insertion are **UNVERIFIED** until the project environment is configured. Copy `.env.example` to `.env.local`, fill in the Supabase URL and publishable key, and apply the migration under `supabase/migrations/` before testing a real account.
+Live Supabase authentication, Cloudflare D1 request insertion, and production deployment remain environment-dependent. Copy `.env.example` to `.env.local` and fill in the Supabase URL and publishable key before testing a real account. The D1 schema is versioned under `cloudflare/migrations/` and the binding is defined in `wrangler.jsonc`.
 
 ## Stack
 
-The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, TanStack Query, Supabase Auth/Postgres, Zod, and Radix/shadcn-style UI primitives. The runtime is configured for Cloudflare-compatible deployment through the project’s own TanStack Start and Nitro build configuration.
+The app uses TanStack Start, React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, TanStack Query, Supabase Auth, Cloudflare D1, Zod, and Radix/shadcn-style UI primitives. The runtime is configured for Cloudflare-compatible deployment through the project’s own TanStack Start and Nitro build configuration.
+
+See [`docs/cloudflare-d1-migration.md`](./docs/cloudflare-d1-migration.md) for the staged migration boundary and rollback behavior.
 
 ## Routes
 
