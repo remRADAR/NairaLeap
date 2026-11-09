@@ -1,6 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+import {
+  getNairaLeapD1,
+  listAllD1ServiceRequests,
+  listD1ServiceRequestsForUser,
+  updateD1ServiceRequestStatus,
+} from "@/lib/nairaleap-d1";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
 import type { ServiceRequestStatus } from "./types";
@@ -40,6 +46,9 @@ export const listMyServiceRequests = createServerFn({ method: "GET" }).handler(a
     throw new Error("You must be signed in to view your requests.");
   }
 
+  const d1 = await getNairaLeapD1();
+  if (d1) return { requests: await listD1ServiceRequestsForUser(d1, authData.user.id) };
+
   const { data, error } = await supabase
     .from("service_requests")
     .select("id, service_id, schema_version, status, source, created_at, updated_at")
@@ -56,6 +65,9 @@ export const listMyServiceRequests = createServerFn({ method: "GET" }).handler(a
 
 export const listAdminServiceRequests = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = await requireAdmin();
+  const d1 = await getNairaLeapD1();
+  if (d1) return { requests: await listAllD1ServiceRequests(d1) };
+
   const { data, error } = await supabase
     .from("service_requests")
     .select(
@@ -80,6 +92,18 @@ export const updateAdminServiceRequest = createServerFn({ method: "POST" })
   .validator((input: unknown) => updateAdminServiceRequestSchema.parse(input))
   .handler(async ({ data }) => {
     const supabase = await requireAdmin();
+    const d1 = await getNairaLeapD1();
+    if (d1) {
+      return {
+        request: await updateD1ServiceRequestStatus(
+          d1,
+          data.requestId,
+          data.status as ServiceRequestStatus,
+          new Date().toISOString(),
+        ),
+      };
+    }
+
     const { data: request, error } = await supabase
       .from("service_requests")
       .update({ status: data.status as ServiceRequestStatus })

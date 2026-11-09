@@ -2,6 +2,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { REQUEST_BLUEPRINT_MAP } from "@/features/request-blueprint-engine";
+import {
+  findD1ServiceRequestByIdempotency,
+  getNairaLeapD1,
+  insertD1ServiceRequest,
+} from "@/lib/nairaleap-d1";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { Json } from "@/lib/supabase/types";
 
@@ -62,6 +67,33 @@ export const submitServiceRequest = createServerFn({ method: "POST" })
     const { data: authData, error: authError } = await supabase.auth.getUser();
     if (authError || !authData.user) {
       throw new Error("You must be signed in to submit this request.");
+    }
+
+    const d1 = await getNairaLeapD1();
+    if (d1) {
+      const existingRequest = await findD1ServiceRequestByIdempotency(
+        d1,
+        authData.user.id,
+        data.idempotencyKey,
+      );
+
+      if (existingRequest) return { request: existingRequest, alreadySubmitted: true };
+
+      const now = new Date().toISOString();
+      const request = await insertD1ServiceRequest(d1, {
+        id: crypto.randomUUID(),
+        user_id: authData.user.id,
+        service_id: data.serviceId,
+        schema_version: data.schemaVersion,
+        status: "submitted",
+        submitted_payload: data.payload as Json,
+        idempotency_key: data.idempotencyKey,
+        source: "portal",
+        created_at: now,
+        updated_at: now,
+      });
+
+      return { request, alreadySubmitted: false };
     }
 
     const { data: existingRequest, error: existingError } = await supabase

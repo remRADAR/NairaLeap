@@ -17,7 +17,11 @@
     "recover:editorial-images": "node scripts/recover-missing-editorial-images.mjs --search-fallback",
     "audit:leapbot-boundaries": "bun run scripts/audit-leapbot-boundaries.ts",
     "audit:leapbot-workflow-boundaries": "bun run scripts/audit-leapbot-workflow-boundaries.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cf:typegen": "npx wrangler types",
+    "cf:d1:migrations:list": "npx wrangler d1 migrations list nairaleap-data",
+    "cf:d1:migrations:apply": "npx wrangler d1 migrations apply nairaleap-data --remote",
+    "cf:deploy": "npm run build && npx nitro deploy --prebuilt"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -93,6 +97,7 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^8.0.16"
+    "vite": "^8.0.16",
+    "wrangler": "^4.158.0"
   }
 }
