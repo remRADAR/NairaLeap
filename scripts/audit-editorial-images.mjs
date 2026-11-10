@@ -19,9 +19,12 @@ const fallbackFor = (slug) => {
   }
   return fallbackImages[(hash >>> 0) % fallbackImages.length];
 };
-const localExists = (value) => value.startsWith("/") && existsSync(resolve(publicRoot, value.slice(1)));
+const localExists = (value) =>
+  value.startsWith("/") && existsSync(resolve(publicRoot, value.slice(1)));
 const resolvedImage = (post) => post.image || fallbackFor(post.slug);
-const displaySource = (value) => value.length > 160 ? `${value.slice(0, 157)}...` : value;
+const supportedImageSource = (value) =>
+  value.startsWith("/") || /^https?:\/\//i.test(value) || /^data:image\//i.test(value);
+const displaySource = (value) => (value.length > 160 ? `${value.slice(0, 157)}...` : value);
 const inlineImages = [];
 for (const post of EDITORIAL_POSTS) {
   for (const match of post.content.matchAll(/<img\b[^>]*>/gi)) {
@@ -30,21 +33,31 @@ for (const post of EDITORIAL_POSTS) {
   }
 }
 
-const missingFeatured = EDITORIAL_POSTS
-  .map((post) => ({ slug: post.slug, image: resolvedImage(post) }))
-  .filter(({ image }) => !localExists(image));
-const invalidInline = inlineImages.filter(({ src }) => !src || (!src.startsWith("/") && !/^https?:\/\//i.test(src) && !/^data:image\//i.test(src)));
+const featuredImages = EDITORIAL_POSTS.map((post) => ({
+  slug: post.slug,
+  image: resolvedImage(post),
+}));
+const missingFeatured = featuredImages.filter(
+  ({ image }) => image.startsWith("/") && !localExists(image),
+);
+const invalidFeatured = featuredImages.filter(({ image }) => !supportedImageSource(image));
+const invalidInline = inlineImages.filter(
+  ({ src }) =>
+    !src || (!src.startsWith("/") && !/^https?:\/\//i.test(src) && !/^data:image\//i.test(src)),
+);
 const localInline = inlineImages.filter(({ src }) => src.startsWith("/"));
 const externalInline = inlineImages.filter(({ src }) => /^https?:\/\//i.test(src));
 const embeddedInline = inlineImages.filter(({ src }) => /^data:image\//i.test(src));
-const cmsFiles = readdirSync(resolve(publicRoot, "editorial/cms"), { withFileTypes: true })
-  .filter((entry) => entry.isFile() && /\.(?:jpe?g|png|webp|gif|avif)$/i.test(entry.name)).length;
+const cmsFiles = readdirSync(resolve(publicRoot, "editorial/cms"), { withFileTypes: true }).filter(
+  (entry) => entry.isFile() && /\.(?:jpe?g|png|webp|gif|avif)$/i.test(entry.name),
+).length;
 
 const report = {
   articlesChecked: EDITORIAL_POSTS.length,
   originalFeaturedImages: EDITORIAL_POSTS.filter((post) => Boolean(post.image)).length,
   fallbackFeaturedImages: EDITORIAL_POSTS.filter((post) => !post.image).length,
   missingFeaturedImages: missingFeatured.length,
+  invalidFeaturedImages: invalidFeatured.length,
   inlineImagesChecked: inlineImages.length,
   localInlineImages: localInline.length,
   externalInlineImages: externalInline.length,
@@ -52,7 +65,10 @@ const report = {
   invalidInlineImages: invalidInline.length,
   localCmsFiles: cmsFiles,
   missingFeatured,
-  invalidInline: invalidInline.slice(0, 20).map(({ slug, src }) => ({ slug, src: displaySource(src) })),
+  invalidFeatured: invalidFeatured.slice(0, 20).map(({ slug, image }) => ({ slug, image })),
+  invalidInline: invalidInline
+    .slice(0, 20)
+    .map(({ slug, src }) => ({ slug, src: displaySource(src) })),
 };
 console.log(JSON.stringify(report, null, 2));
-if (missingFeatured.length || invalidInline.length) process.exitCode = 1;
+if (missingFeatured.length || invalidFeatured.length || invalidInline.length) process.exitCode = 1;

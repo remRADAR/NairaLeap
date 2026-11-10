@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
+import { EditorialImage } from "@/features/editorial/EditorialImage";
 import {
   withEditorialImageFallbacks,
   type EditorialPostWithImage,
@@ -89,8 +90,9 @@ function ArticlePage() {
             ))}
           </div>
           {post.image && (
-            <img
+            <EditorialImage
               src={post.image}
+              slug={post.slug}
               alt=""
               className="mt-5 aspect-[16/9] w-full rounded-2xl object-cover shadow-[0_12px_28px_rgba(43,25,79,0.12)]"
             />

@@ -1,6 +1,7 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { EditorialLayout } from "@/components";
+import { EditorialImage } from "@/features/editorial/EditorialImage";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 
 const PAGE_SIZE = 24;
@@ -92,8 +93,9 @@ function ArticleArchivePage() {
             >
               <div className="h-36 bg-gradient-to-br from-[#d9c7ff] via-[#8f65d9] to-[#34284e]">
                 {post.image && (
-                  <img
+                  <EditorialImage
                     src={post.image}
+                    slug={post.slug}
                     alt=""
                     loading="lazy"
                     className="h-full w-full object-cover"

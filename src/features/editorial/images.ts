@@ -22,8 +22,10 @@ const stableHash = (value: string) => {
   return hash >>> 0;
 };
 
-const fallbackImageFor = (post: EditorialPost) =>
-  FALLBACK_IMAGE_PATHS[stableHash(post.slug) % FALLBACK_IMAGE_PATHS.length];
+export const fallbackEditorialImageFor = (slug: string) =>
+  FALLBACK_IMAGE_PATHS[stableHash(slug) % FALLBACK_IMAGE_PATHS.length];
+
+const fallbackImageFor = (post: EditorialPost) => fallbackEditorialImageFor(post.slug);
 
 /**
  * Preserve a post's original image. Missing images receive a deterministic local fallback.
