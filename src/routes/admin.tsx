@@ -54,6 +54,7 @@ import {
 } from "@/features/editorial/studio";
 import {
   getEditorialStudioState,
+  getEditorialTagOptions,
   publishEditorialArticle,
   removeEditorialCategory,
   saveEditorialCategory,
@@ -914,14 +915,9 @@ function ArticleStudio({
 
   useEffect(() => {
     let active = true;
-    void import("@/data/wordpressEditorial").then(({ EDITORIAL_POSTS }) => {
+    void getEditorialTagOptions().then((options) => {
       if (!active) return;
-      setTagOptions(
-        Array.from(new Set(EDITORIAL_POSTS.flatMap((post) => post.tags)))
-          .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b))
-          .slice(0, 80),
-      );
+      setTagOptions(options);
     });
     return () => {
       active = false;

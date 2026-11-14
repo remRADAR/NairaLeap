@@ -117,12 +117,53 @@ const mergePublishedArticles = (base: EditorialPost[], saved: StudioArticle[]) =
   return [...saved, ...remaining];
 };
 
+const slugifyEditorialTerm = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
 export const getEditorialPosts = createServerFn({ method: "GET" }).handler(async () => {
   const base = await getWordPressPosts();
   const db = await getEditorialD1();
   if (!db) return withEditorialImageFallbacks(base.map(toEditorialSummary));
   const saved = await listEditorialArticles(db);
   return withEditorialImageFallbacks(mergePublishedArticles(base, saved).map(toEditorialSummary));
+});
+
+const editorialArchiveInput = z.object({
+  topic: z.string().optional(),
+  page: z.number().int().min(1).default(1),
+});
+
+export const getEditorialArchivePage = createServerFn({ method: "GET" })
+  .validator((input: unknown) => editorialArchiveInput.parse(input))
+  .handler(async ({ data }) => {
+    const base = await getWordPressPosts();
+    const db = await getEditorialD1();
+    const saved = db ? await listEditorialArticles(db) : [];
+    const posts = withEditorialImageFallbacks(
+      mergePublishedArticles(base, saved).map(toEditorialSummary),
+    );
+    const filtered = data.topic
+      ? posts.filter((post) =>
+          [post.category, ...post.categoryPath, ...post.tags].some(
+            (value) => slugifyEditorialTerm(value) === data.topic,
+          ),
+        )
+      : posts;
+    const pageSize = 24;
+    const start = (data.page - 1) * pageSize;
+    return { posts: filtered.slice(start, start + pageSize), total: filtered.length };
+  });
+
+export const getEditorialTagOptions = createServerFn({ method: "GET" }).handler(async () => {
+  const posts = await getWordPressPosts();
+  return Array.from(new Set(posts.flatMap((post) => post.tags)))
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b))
+    .slice(0, 80);
 });
 
 const editorialPostInput = z.object({ slug: z.string().min(1).max(240) });
