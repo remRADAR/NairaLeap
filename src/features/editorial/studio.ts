@@ -17,16 +17,32 @@ export type StudioCategory = EditorialCategory & {
 };
 
 export type HomepageSettings = {
+  primaryTickerLabel: string;
   secondaryTickerTaxonomy: string;
   carouselTaxonomy: string;
   carouselLimit: number;
 };
 
+export type StudioAd = {
+  slot: "top" | "bottom";
+  label: string;
+  imageUrl: string;
+  clickUrl: string;
+  altText: string;
+  enabled: boolean;
+};
+
 export const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
+  primaryTickerLabel: "Latest",
   secondaryTickerTaxonomy: "all",
   carouselTaxonomy: "all",
   carouselLimit: 5,
 };
+
+export const DEFAULT_STUDIO_ADS: StudioAd[] = [
+  { slot: "top", label: "Advertisement", imageUrl: "", clickUrl: "", altText: "Advertisement", enabled: true },
+  { slot: "bottom", label: "Advertisement", imageUrl: "", clickUrl: "", altText: "Advertisement", enabled: true },
+];
 
 const browserStorage = () => (typeof window === "undefined" ? null : window.localStorage);
 

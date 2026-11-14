@@ -2,13 +2,12 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
-import { getEditorialPosts } from "@/features/editorial/server";
+import { getEditorialHomepage, getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import {
-  mergeStudioArticles,
-  readHomepageSettings,
   STUDIO_CHANGE_EVENT,
   type HomepageSettings,
+  type StudioAd,
 } from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
@@ -23,26 +22,37 @@ type HomeSearch = { topic?: string };
 export const Route = createFileRoute("/")({
   validateSearch: (search): HomeSearch =>
     typeof search.topic === "string" ? { topic: search.topic } : {},
-  loader: async () => ({ posts: (await getEditorialPosts()).slice(0, 24) }),
+  loader: async () => ({
+    posts: (await getEditorialPosts()).slice(0, 24),
+    homepage: await getEditorialHomepage(),
+  }),
   component: EditorialHomePage,
 });
 
 function EditorialHomePage() {
   const { topic } = Route.useSearch();
-  const { posts } = Route.useLoaderData();
+  const { posts, homepage } = Route.useLoaderData();
   const [allPosts, setAllPosts] = useState(posts);
-  const [homepageSettings, setHomepageSettings] = useState<HomepageSettings>(readHomepageSettings);
+  const [homepageSettings, setHomepageSettings] = useState<HomepageSettings>(homepage.settings);
+  const [ads, setAds] = useState(homepage.ads);
   const [heroIndex, setHeroIndex] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
   useEffect(() => {
-    const refresh = () => {
-      setAllPosts(withEditorialImageFallbacks(mergeStudioArticles(posts)));
-      setHomepageSettings(readHomepageSettings());
+    let active = true;
+    const refresh = async () => {
+      const [nextPosts, nextHomepage] = await Promise.all([getEditorialPosts(), getEditorialHomepage()]);
+      if (!active) return;
+      setAllPosts(withEditorialImageFallbacks(nextPosts));
+      setHomepageSettings(nextHomepage.settings);
+      setAds(nextHomepage.ads);
     };
-    refresh();
+    void refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
-    return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
-  }, [posts]);
+    return () => {
+      active = false;
+      window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
+    };
+  }, []);
 
   const filteredPosts = topic
     ? allPosts.filter((post) =>
@@ -195,14 +205,12 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot label="Advertisement" />
+      <AdSlot ad={ads.find((ad) => ad.slot === "top")} />
 
       <section aria-label="Taxonomy ticker" className="border-b border-[#eceaf2] bg-[#fbfaff] py-3">
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
           <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#7a2ce2]">
-            {homepageSettings.secondaryTickerTaxonomy === "all"
-              ? "Latest"
-              : homepageSettings.secondaryTickerTaxonomy}
+            {homepageSettings.primaryTickerLabel}
           </span>
           <div className="ticker-track flex min-w-max gap-8 motion-safe:animate-[ticker_85s_linear_infinite]">
             {[0, 1].map((copy) => (
@@ -326,7 +334,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot label="Advertisement" />
+      <AdSlot ad={ads.find((ad) => ad.slot === "bottom")} />
 
       <section className="mx-auto w-full max-w-[1180px] px-4 pb-12 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between border-t border-[#e9e9f0] pt-5">
@@ -343,16 +351,25 @@ function EditorialHomePage() {
   );
 }
 
-function AdSlot({ label }: { label: string }) {
+function AdSlot({ ad }: { ad?: StudioAd }) {
+  if (!ad?.enabled) return null;
   return (
     <section
-      aria-label={label}
+      aria-label={ad.label}
       className="editorial-ad-slot mx-auto max-w-[1180px] px-4 py-3 sm:px-6"
     >
       <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
-          {label}
-        </span>
+        {ad.imageUrl ? (
+          ad.clickUrl ? (
+            <a href={ad.clickUrl} target="_blank" rel="noreferrer">
+              <img src={ad.imageUrl} alt={ad.altText} className="max-h-28 max-w-full object-contain" />
+            </a>
+          ) : (
+            <img src={ad.imageUrl} alt={ad.altText} className="max-h-28 max-w-full object-contain" />
+          )
+        ) : (
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">{ad.label}</span>
+        )}
       </div>
     </section>
   );

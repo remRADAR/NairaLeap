@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialPosts } from "@/features/editorial/server";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
-import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
+import { STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 const slugify = (value: string) =>
   value
@@ -27,11 +27,18 @@ function ArticleArchivePage() {
   const { posts } = Route.useLoaderData();
   const [allPosts, setAllPosts] = useState(posts);
   useEffect(() => {
-    const refresh = () => setAllPosts(withEditorialImageFallbacks(mergeStudioArticles(posts)));
-    refresh();
+    let active = true;
+    const refresh = async () => {
+      const nextPosts = await getEditorialPosts();
+      if (active) setAllPosts(withEditorialImageFallbacks(nextPosts));
+    };
+    void refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
-    return () => window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
-  }, [posts]);
+    return () => {
+      active = false;
+      window.removeEventListener(STUDIO_CHANGE_EVENT, refresh);
+    };
+  }, []);
   const filteredPosts = topic
     ? allPosts.filter((post) =>
         [post.category, ...post.categoryPath, ...post.tags].some(

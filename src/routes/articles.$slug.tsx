@@ -2,16 +2,13 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
-import {
-  withEditorialImageFallbacks,
-  type EditorialPostWithImage,
-} from "@/features/editorial/images";
-import { mergeStudioArticles, STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
+import { getEditorialPostBySlug, getEditorialPosts } from "@/features/editorial/server";
+import type { EditorialPostWithImage } from "@/features/editorial/images";
+import { STUDIO_CHANGE_EVENT } from "@/features/editorial/studio";
 
 export const Route = createFileRoute("/articles/$slug")({
   head: async ({ params }) => {
-    const { getEditorialPost } = await import("@/data/wordpressEditorial");
-    const post = getEditorialPost(params.slug);
+    const post = await getEditorialPostBySlug({ data: { slug: params.slug } });
     return {
       meta: [
         { title: post ? `${post.title} — Nairaleap` : "Article — Nairaleap" },
@@ -23,11 +20,10 @@ export const Route = createFileRoute("/articles/$slug")({
     };
   },
   loader: async ({ params }) => {
-    const { EDITORIAL_POSTS, getEditorialPost } = await import("@/data/wordpressEditorial");
-    const post = getEditorialPost(params.slug);
+    const post = await getEditorialPostBySlug({ data: { slug: params.slug } });
     return {
-      post: post ? withEditorialImageFallbacks([post])[0] : null,
-      allPosts: withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS)),
+      post,
+      allPosts: await getEditorialPosts(),
     };
   },
   component: ArticlePage,
@@ -47,11 +43,10 @@ function ArticlePage() {
   useEffect(() => {
     let active = true;
     const refresh = async () => {
-      const { EDITORIAL_POSTS } = await import("@/data/wordpressEditorial");
-      const nextPosts = withEditorialImageFallbacks(mergeStudioArticles(EDITORIAL_POSTS));
+      const nextPosts = await getEditorialPosts();
       if (!active) return;
       setAllPosts(nextPosts);
-      setPost(nextPosts.find((item) => item.slug === slug) ?? null);
+      setPost((await getEditorialPostBySlug({ data: { slug } })) as EditorialPostWithImage | null);
     };
     void refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
