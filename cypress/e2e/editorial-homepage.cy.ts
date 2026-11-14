@@ -24,6 +24,14 @@ describe("Editorial homepage restoration", () => {
     cy.contains("h1", "Every indicator, in one place.").should("be.visible");
   });
 
+  it("shows the Nigerian date/time and opens the translator", () => {
+    cy.get('[data-testid="editorial-clock"]').should("be.visible").and("contain", "WAT");
+    cy.get('[data-testid="translator-button"]').click();
+    cy.contains("Translate with NairaLeap").should("be.visible");
+    cy.get('textarea[aria-label="Text to translate"]').type("Good morning");
+    cy.get('[data-testid="translator-submit"]').should("be.enabled");
+  });
+
   it("opens the archive filtered to the selected homepage story category", () => {
     cy.get("article.editorial-story-card")
       .first()

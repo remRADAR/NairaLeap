@@ -76,7 +76,13 @@ export const Route = createFileRoute("/admin")({
 
 type Workspace = "website" | "portal";
 type AdminView =
-  "overview" | "homepage" | "articles" | "categories" | "services" | "requests" | "plugins";
+  | "overview"
+  | "homepage"
+  | "articles"
+  | "categories"
+  | "services"
+  | "requests"
+  | "plugins";
 
 function AdminStudioPage() {
   const { signOut } = useAuth();
@@ -730,8 +736,9 @@ function Overview({
           <ShieldCheck className="h-4 w-4" /> Studio readiness
         </p>
         <p className="mt-2 text-sm leading-6 text-[#66667a]">
-          The studio is connected to the shared editorial store. Published articles, ticker settings,
-          advert slots, and studio taxonomy changes are available to the public site after save.
+          The studio is connected to the shared editorial store. Published articles, ticker
+          settings, advert slots, and studio taxonomy changes are available to the public site after
+          save.
         </p>
       </div>
     </div>
@@ -767,7 +774,8 @@ function HomepageStudio({
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return setMessage("Choose an image file for the advert.");
-    if (file.size > 750_000) return setMessage("Choose an advert image smaller than 750 KB, or paste a hosted image URL.");
+    if (file.size > 750_000)
+      return setMessage("Choose an advert image smaller than 750 KB, or paste a hosted image URL.");
     const reader = new FileReader();
     reader.onload = () => {
       updateAd(slot, { imageUrl: String(reader.result) });
@@ -798,47 +806,193 @@ function HomepageStudio({
       setAds(next.ads);
       onSaved(next);
       setSaved(true);
-      setMessage(caught instanceof Error ? `${caught.message} Local preview saved instead.` : "Saved locally for preview.");
+      setMessage(
+        caught instanceof Error
+          ? `${caught.message} Local preview saved instead.`
+          : "Saved locally for preview.",
+      );
     }
   };
   return (
     <form onSubmit={save} className="space-y-6">
       <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">Website / Homepage</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          Website / Homepage
+        </p>
         <h2 className="mt-2 text-2xl font-black text-[#262638]">Homepage presentation controls</h2>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">Changes publish to the shared editorial store so the public homepage, archive, and article pages stay in sync.</p>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+          Changes publish to the shared editorial store so the public homepage, archive, and article
+          pages stay in sync.
+        </p>
       </div>
       <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">First ticker</p>
-        <h3 className="mt-2 text-lg font-extrabold text-[#262638]">Ticker label and story taxonomy</h3>
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          First ticker
+        </p>
+        <h3 className="mt-2 text-lg font-extrabold text-[#262638]">
+          Ticker label and story taxonomy
+        </h3>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          <label className="block text-xs font-bold text-[#4c4c60]">Ticker label<input value={settings.primaryTickerLabel} onChange={(event) => setSettings((current) => ({ ...current, primaryTickerLabel: event.target.value }))} className={selectClassName} placeholder="Latest" /></label>
-          <label className="block text-xs font-bold text-[#4c4c60]">Story taxonomy<select value={settings.secondaryTickerTaxonomy} onChange={(event) => setSettings((current) => ({ ...current, secondaryTickerTaxonomy: event.target.value }))} className={selectClassName}>{taxonomyOptions.map((taxonomy) => <option key={taxonomy} value={taxonomy}>{taxonomy === "all" ? "All taxonomies" : taxonomy}</option>)}</select></label>
+          <label className="block text-xs font-bold text-[#4c4c60]">
+            Ticker label
+            <input
+              value={settings.primaryTickerLabel}
+              onChange={(event) =>
+                setSettings((current) => ({ ...current, primaryTickerLabel: event.target.value }))
+              }
+              className={selectClassName}
+              placeholder="Latest"
+            />
+          </label>
+          <label className="block text-xs font-bold text-[#4c4c60]">
+            Story taxonomy
+            <select
+              value={settings.secondaryTickerTaxonomy}
+              onChange={(event) =>
+                setSettings((current) => ({
+                  ...current,
+                  secondaryTickerTaxonomy: event.target.value,
+                }))
+              }
+              className={selectClassName}
+            >
+              {taxonomyOptions.map((taxonomy) => (
+                <option key={taxonomy} value={taxonomy}>
+                  {taxonomy === "all" ? "All taxonomies" : taxonomy}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </section>
       <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">Advert spaces</p>
-        <h3 className="mt-2 text-lg font-extrabold text-[#262638]">Manage both homepage placements</h3>
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          Advert spaces
+        </p>
+        <h3 className="mt-2 text-lg font-extrabold text-[#262638]">
+          Manage both homepage placements
+        </h3>
         <div className="mt-5 grid gap-4 lg:grid-cols-2">
           {ads.map((ad) => (
             <div key={ad.slot} className="rounded-2xl border border-[#eeeaf6] bg-[#fcfbff] p-4">
-              <div className="flex items-center justify-between gap-3"><strong className="text-sm text-[#262638]">{ad.slot === "top" ? "Top advert space" : "Bottom advert space"}</strong><label className="flex items-center gap-2 text-xs font-semibold text-[#6f6f82]"><input type="checkbox" checked={ad.enabled} onChange={(event) => updateAd(ad.slot, { enabled: event.target.checked })} /> Enabled</label></div>
-              <input value={ad.label} onChange={(event) => updateAd(ad.slot, { label: event.target.value })} className={selectClassName} placeholder="Advertisement" aria-label={`${ad.slot} advert label`} />
-              <input value={ad.imageUrl.startsWith("data:") ? "" : ad.imageUrl} onChange={(event) => updateAd(ad.slot, { imageUrl: event.target.value })} className={selectClassName} placeholder="Paste image URL or upload below" aria-label={`${ad.slot} advert image URL`} />
-              <input type="file" accept="image/*" onChange={(event) => readImage(ad.slot, event)} className="mt-2 block w-full text-xs text-[#6f6f82] file:mr-3 file:rounded-lg file:border-0 file:bg-[#f2ebff] file:px-3 file:py-2 file:text-xs file:font-bold file:text-[#6f23dd]" aria-label={`Upload ${ad.slot} advert`} />
-              <input value={ad.clickUrl} onChange={(event) => updateAd(ad.slot, { clickUrl: event.target.value })} className={selectClassName} placeholder="Optional click-through URL" aria-label={`${ad.slot} advert click URL`} />
-              <input value={ad.altText} onChange={(event) => updateAd(ad.slot, { altText: event.target.value })} className={selectClassName} placeholder="Accessible image description" aria-label={`${ad.slot} advert alt text`} />
-              {ad.imageUrl && <img src={ad.imageUrl} alt="Advert preview" className="mt-3 h-24 w-full rounded-lg object-contain" />}
+              <div className="flex items-center justify-between gap-3">
+                <strong className="text-sm text-[#262638]">
+                  {ad.slot === "top" ? "Top advert space" : "Bottom advert space"}
+                </strong>
+                <label className="flex items-center gap-2 text-xs font-semibold text-[#6f6f82]">
+                  <input
+                    type="checkbox"
+                    checked={ad.enabled}
+                    onChange={(event) => updateAd(ad.slot, { enabled: event.target.checked })}
+                  />{" "}
+                  Enabled
+                </label>
+              </div>
+              <input
+                value={ad.label}
+                onChange={(event) => updateAd(ad.slot, { label: event.target.value })}
+                className={selectClassName}
+                placeholder="Advertisement"
+                aria-label={`${ad.slot} advert label`}
+              />
+              <input
+                value={ad.imageUrl.startsWith("data:") ? "" : ad.imageUrl}
+                onChange={(event) => updateAd(ad.slot, { imageUrl: event.target.value })}
+                className={selectClassName}
+                placeholder="Paste image URL or upload below"
+                aria-label={`${ad.slot} advert image URL`}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => readImage(ad.slot, event)}
+                className="mt-2 block w-full text-xs text-[#6f6f82] file:mr-3 file:rounded-lg file:border-0 file:bg-[#f2ebff] file:px-3 file:py-2 file:text-xs file:font-bold file:text-[#6f23dd]"
+                aria-label={`Upload ${ad.slot} advert`}
+              />
+              <input
+                value={ad.clickUrl}
+                onChange={(event) => updateAd(ad.slot, { clickUrl: event.target.value })}
+                className={selectClassName}
+                placeholder="Optional click-through URL"
+                aria-label={`${ad.slot} advert click URL`}
+              />
+              <input
+                value={ad.altText}
+                onChange={(event) => updateAd(ad.slot, { altText: event.target.value })}
+                className={selectClassName}
+                placeholder="Accessible image description"
+                aria-label={`${ad.slot} advert alt text`}
+              />
+              {ad.imageUrl && (
+                <img
+                  src={ad.imageUrl}
+                  alt="Advert preview"
+                  className="mt-3 h-24 w-full rounded-lg object-contain"
+                />
+              )}
             </div>
           ))}
         </div>
       </section>
       <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">Final parallel grid carousel</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-[minmax(0,1fr)_180px]"><label className="block text-xs font-bold text-[#4c4c60]">Carousel taxonomy<select value={settings.carouselTaxonomy} onChange={(event) => setSettings((current) => ({ ...current, carouselTaxonomy: event.target.value }))} className={selectClassName}>{taxonomyOptions.map((taxonomy) => <option key={taxonomy} value={taxonomy}>{taxonomy === "all" ? "All taxonomies" : taxonomy}</option>)}</select></label><label className="block text-xs font-bold text-[#4c4c60]">Story limit<input type="number" min={3} max={5000} step={1} value={settings.carouselLimit} onChange={(event) => setSettings((current) => ({ ...current, carouselLimit: Number(event.target.value) }))} className={selectClassName} /></label></div>
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+          Final parallel grid carousel
+        </p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-[minmax(0,1fr)_180px]">
+          <label className="block text-xs font-bold text-[#4c4c60]">
+            Carousel taxonomy
+            <select
+              value={settings.carouselTaxonomy}
+              onChange={(event) =>
+                setSettings((current) => ({ ...current, carouselTaxonomy: event.target.value }))
+              }
+              className={selectClassName}
+            >
+              {taxonomyOptions.map((taxonomy) => (
+                <option key={taxonomy} value={taxonomy}>
+                  {taxonomy === "all" ? "All taxonomies" : taxonomy}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block text-xs font-bold text-[#4c4c60]">
+            Story limit
+            <input
+              type="number"
+              min={3}
+              max={5000}
+              step={1}
+              value={settings.carouselLimit}
+              onChange={(event) =>
+                setSettings((current) => ({
+                  ...current,
+                  carouselLimit: Number(event.target.value),
+                }))
+              }
+              className={selectClassName}
+            />
+          </label>
+        </div>
       </section>
-      {message && <p className="rounded-xl bg-[#f8f3ff] px-4 py-3 text-xs font-semibold text-[#6f23dd]">{message}</p>}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eadffb] bg-[#fbf9ff] p-4"><p className="text-xs text-[#66667a]">Upload a small banner or paste a hosted image URL. The public homepage uses these exact two slots.</p><button type="submit" data-testid="save-homepage-settings" className="inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white"><Save className="h-4 w-4" /> Save homepage controls</button>{saved && <span className="text-xs font-bold text-[#2f8a5b]">Saved</span>}</div>
+      {message && (
+        <p className="rounded-xl bg-[#f8f3ff] px-4 py-3 text-xs font-semibold text-[#6f23dd]">
+          {message}
+        </p>
+      )}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eadffb] bg-[#fbf9ff] p-4">
+        <p className="text-xs text-[#66667a]">
+          Upload a small banner or paste a hosted image URL. The public homepage uses these exact
+          two slots.
+        </p>
+        <button
+          type="submit"
+          data-testid="save-homepage-settings"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white"
+        >
+          <Save className="h-4 w-4" /> Save homepage controls
+        </button>
+        {saved && <span className="text-xs font-bold text-[#2f8a5b]">Saved</span>}
+      </div>
     </form>
   );
 }
@@ -996,7 +1150,11 @@ function ArticleStudio({
       setMessage(`Published “${published.title}” to the shared Website workspace.`);
     } catch (caught) {
       saveStudioArticles([article, ...readStudioArticles()]);
-      setMessage(caught instanceof Error ? `${caught.message} Local preview saved instead.` : "Published locally for preview.");
+      setMessage(
+        caught instanceof Error
+          ? `${caught.message} Local preview saved instead.`
+          : "Published locally for preview.",
+      );
     }
     setTitle("");
     setExcerpt("");

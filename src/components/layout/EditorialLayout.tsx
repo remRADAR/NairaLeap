@@ -15,6 +15,8 @@ import { useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
 import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
+import { NigeriaDateTime } from "../ui/NigeriaDateTime";
+import { TranslatorDialog } from "../ui/TranslatorDialog";
 
 const slugify = (label: string) =>
   label
@@ -37,16 +39,12 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
-      <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
-        Subscribe to our newsletter &amp; never miss our best posts.{" "}
-        <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
-      </div>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
             <img
-              src="/nairaleap-wordmark.png"
-              alt="Nairaleap"
+              src="/nairaleap-3d-logo.png"
+              alt="NairaLeap.com"
               className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
               decoding="async"
             />
@@ -60,6 +58,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
+            <TranslatorDialog />
             <button
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -84,6 +83,22 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         </div>
         {menuOpen && <EditorialMenu onNavigate={() => setMenuOpen(false)} />}
       </header>
+      <div
+        data-testid="editorial-subscribe-bar"
+        className="border-b border-[#ececf3] bg-[#f9007a] px-3 py-2 text-white sm:px-6"
+      >
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2 sm:gap-4">
+          <NigeriaDateTime className="shrink-0 whitespace-nowrap text-[11px] font-medium leading-4 sm:text-xs md:text-[13px]" />
+          <div className="ml-auto flex min-w-0 items-center justify-end gap-1 text-right text-[9px] font-medium sm:gap-2 sm:text-xs">
+            <span className="hidden sm:inline">
+              Subscribe to our newsletter &amp; never miss our best posts.
+            </span>
+            <button type="button" className="shrink-0 font-bold underline underline-offset-2">
+              Subscribe Now!
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
