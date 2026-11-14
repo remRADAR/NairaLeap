@@ -40,7 +40,10 @@ function EditorialHomePage() {
   useEffect(() => {
     let active = true;
     const refresh = async () => {
-      const [nextPosts, nextHomepage] = await Promise.all([getEditorialPosts(), getEditorialHomepage()]);
+      const [nextPosts, nextHomepage] = await Promise.all([
+        getEditorialPosts(),
+        getEditorialHomepage(),
+      ]);
       if (!active) return;
       setAllPosts(withEditorialImageFallbacks(nextPosts));
       setHomepageSettings(nextHomepage.settings);
@@ -353,27 +356,9 @@ function EditorialHomePage() {
 
 function AdSlot({ ad }: { ad?: StudioAd }) {
   if (!ad?.enabled) return null;
-  if (ad.slot === "top") return <CampaignAdCarousel />;
-  return (
-    <section
-      aria-label={ad.label}
-      className="editorial-ad-slot mx-auto max-w-[1180px] px-4 py-3 sm:px-6"
-    >
-      <div className="flex min-h-[104px] items-center justify-center border-y border-dashed border-[#dcd8e8] bg-[#fbfaff] px-4 text-center">
-        {ad.imageUrl ? (
-          ad.clickUrl ? (
-            <a href={ad.clickUrl} target="_blank" rel="noreferrer">
-              <img src={ad.imageUrl} alt={ad.altText} className="max-h-28 max-w-full object-contain" />
-            </a>
-          ) : (
-            <img src={ad.imageUrl} alt={ad.altText} className="max-h-28 max-w-full object-contain" />
-          )
-        ) : (
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">{ad.label}</span>
-        )}
-      </div>
-    </section>
-  );
+  // The same approved campaign creative is used in both advert spaces so the
+  // lower slot never falls back to a different or stale studio creative.
+  return <CampaignAdCarousel />;
 }
 
 const campaignAdverts = [

@@ -17,7 +17,7 @@ import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Nairaleap - Service Portal" },
+      { title: "NairaLeap — Indicator Drivers" },
       {
         name: "description",
         content: "Sign in or create a NairaLeap account to submit and track service requests.",

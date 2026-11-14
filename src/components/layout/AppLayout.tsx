@@ -4,7 +4,7 @@ import { BookOpen, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NairaLeapBot } from "../ui/NairaLeapBot";
 import { NairaLeapGuideContainer } from "../ui/NairaLeapGuideContainer";
-import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
+import { SiteTranslatorToolbar } from "../ui/SiteTranslatorToolbar";
 import { useAuth } from "@/features/auth";
 import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCatalog";
 
@@ -34,6 +34,7 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
       data-app-hydrated={hydrated ? "true" : "false"}
       data-service-id={serviceId}
     >
+      <SiteTranslatorToolbar />
       <Header compact={Boolean(serviceId)} />
       <main className="min-h-0 flex-1">{children}</main>
       <div className={serviceId ? "lg:hidden" : undefined}>
@@ -57,7 +58,11 @@ function Header({ compact = false }: { compact?: boolean }) {
     <header className="sticky top-0 z-40" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
         <div className="glass-panel relative flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Link to="/services" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink-0">
+          <Link
+            to="/services"
+            aria-label="NairaLeap — Indicator Drivers"
+            className="min-w-0 shrink-0"
+          >
             <img
               src="/nairaleap-3d-logo.png"
               alt="NairaLeap.com - Service Portal"
@@ -71,7 +76,6 @@ function Header({ compact = false }: { compact?: boolean }) {
               compact ? "lg:hidden" : "lg:flex",
             )}
           >
-            <LanguageAvailabilityControl theme="portal" />
             <Link
               to="/services"
               className="portal-nav-link shrink-0 rounded-lg px-3 py-2 text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
@@ -92,8 +96,8 @@ function Header({ compact = false }: { compact?: boolean }) {
             </a>
             <Link
               to="/"
-              aria-label="Go to Nairaleap blog"
-              title="Go to Nairaleap blog"
+              aria-label="Go to NairaLeap editorial site"
+              title="Go to NairaLeap editorial site"
               className="portal-nav-link grid h-9 w-9 shrink-0 place-items-center rounded-lg text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               <BookOpen className="h-4 w-4" aria-hidden="true" />
@@ -103,8 +107,8 @@ function Header({ compact = false }: { compact?: boolean }) {
           <div className={cn("flex items-center gap-2", !compact && "lg:hidden")}>
             <Link
               to="/"
-              aria-label="Go to Nairaleap blog"
-              title="Go to Nairaleap blog"
+              aria-label="Go to NairaLeap editorial site"
+              title="Go to NairaLeap editorial site"
               className="portal-nav-link grid h-10 w-10 place-items-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <BookOpen className="h-5 w-5" aria-hidden="true" />
@@ -138,9 +142,6 @@ function Header({ compact = false }: { compact?: boolean }) {
             >
               Services
             </Link>
-            <div className="border-b border-border/50 px-3 py-3">
-              <LanguageAvailabilityControl theme="portal" />
-            </div>
             <Link
               to="/"
               onClick={closeMenus}
@@ -236,7 +237,7 @@ function Footer() {
         ))}
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-6">
-        <p>© {new Date().getFullYear()} Nairaleap - Service Portal</p>
+        <p>© {new Date().getFullYear()} NairaLeap — Indicator Drivers</p>
         <p>Connected to the main NairaLeap website</p>
       </div>
     </footer>

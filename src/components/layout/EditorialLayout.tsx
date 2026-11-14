@@ -14,7 +14,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
-import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
+import { SiteTranslatorToolbar } from "../ui/SiteTranslatorToolbar";
 
 const slugify = (label: string) =>
   label
@@ -37,13 +37,20 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
-      <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
-        Subscribe to our newsletter &amp; never miss our best posts.{" "}
-        <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
-      </div>
+      <SiteTranslatorToolbar>
+        <span>Translate the entire site</span>
+        <span className="site-translator-bar__newsletter">
+          Subscribe to our newsletter &amp; never miss our best posts.
+          <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
+        </span>
+      </SiteTranslatorToolbar>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
-          <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center"
+            aria-label="NairaLeap editorial site home"
+          >
             <img
               src="/nairaleap-3d-logo.png"
               alt="NairaLeap.com"
@@ -127,7 +134,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             <Youtube className="h-4 w-4" />
           </a>
         </div>
-        <p className="mt-4">© {new Date().getFullYear()} Nairaleap — Indicator Drivers</p>
+        <p className="mt-4">© {new Date().getFullYear()} NairaLeap — Indicator Drivers</p>
       </footer>
     </div>
   );
@@ -156,13 +163,12 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <LanguageAvailabilityControl theme="editorial" />
             <Link
               to="/services"
               onClick={onNavigate}
               className="rounded-full bg-[#7a2ce2] px-3 py-2 text-[11px] font-bold text-white hover:bg-[#6620c8]"
             >
-              Nairaleap services
+              NairaLeap services
             </Link>
             <a
               href="/admin"

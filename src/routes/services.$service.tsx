@@ -11,13 +11,13 @@ export const Route = createFileRoute("/services/$service")({
       meta: [
         {
           title: service
-            ? `${service.title} — Nairaleap - Service Portal`
-            : "Service — Nairaleap - Service Portal",
+            ? `${service.title} — NairaLeap — Indicator Drivers`
+            : "Service — NairaLeap — Indicator Drivers",
         },
         {
           name: "description",
           content:
-            service?.longDescription ?? "Explore Nairaleap services before starting onboarding.",
+            service?.longDescription ?? "Explore NairaLeap services before starting onboarding.",
         },
       ],
     };
@@ -33,7 +33,7 @@ function ServiceLandingRoute() {
     return (
       <main className="flex min-h-dvh items-center justify-center bg-background px-4 text-foreground">
         <div className="max-w-md text-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary-glow">Nairaleap services</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary-glow">NairaLeap services</p>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight">
             That service is not available.
           </h1>

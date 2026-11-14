@@ -20,13 +20,13 @@ import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/ser
 export const Route = createFileRoute("/mortgage")({
   head: () => ({
     meta: [
-      { title: "Mortgage — Nairaleap - Service Portal" },
+      { title: "Mortgage — NairaLeap — Indicator Drivers" },
       {
         name: "description",
         content:
           "Explore home purchase, construction, renovation, NHF, rent-to-own, refinancing and mortgage-support pathways through the Nairaleap Mortgage Navigator.",
       },
-      { property: "og:title", content: "Mortgage — Nairaleap - Service Portal" },
+      { property: "og:title", content: "Mortgage — NairaLeap — Indicator Drivers" },
       {
         property: "og:description",
         content:

@@ -2,34 +2,35 @@
 
 ## Status
 
-**UI foundation only; the plugin is not loaded as a runtime dependency.** In this branch NairaLeap exposes the current interface-language availability in both the portal and editorial navigation. English remains the only enabled interface locale. Hausa, Igbo, Yoruba, and Tiv are shown as disabled pending complete, human-reviewed dictionaries.
+**Full-site translation capability; the plugin is not loaded as a runtime dependency.** NairaLeap exposes one shared translation toolbar before both the editorial header and the service-portal header. English, Hausa, Igbo, and Yoruba are selectable through the Google Translate page API and translate the rendered site in place. Nigerian Pidgin and Tiv remain visible as planned locales but disabled until a stable provider or reviewed project dictionaries are available.
 
-This is not a site translation feature: selecting a non-English locale is not possible, no content is translated, and no dictionary/glossary data is served. No language package, API, or provider is called from the browser.
+This is a site translation feature rather than a visible third-party widget: the project owns the purple toolbar and selection state, while Google Translate performs the DOM translation runtime. User-entered form values are not translated by the application, and the selected locale is persisted locally.
 
 ## Frontend adaptation
 
 - Shared component: `src/components/ui/LanguageAvailabilityControl.tsx`.
-- Portal placement: `src/components/layout/AppLayout.tsx`, in the desktop navigation and mobile menu.
-- Editorial placement: `src/components/layout/EditorialLayout.tsx`.
-- Keyboard/screen-reader label and help text state that English is the only enabled language; each pending locale option is disabled.
-- The document remains `lang="en"`. No locale preference is persisted because there is no alternative locale to select.
+- Shared toolbar: `src/components/ui/SiteTranslatorToolbar.tsx`.
+- Portal placement: `src/components/layout/AppLayout.tsx`, before the portal header.
+- Editorial placement: `src/components/layout/EditorialLayout.tsx`, before the editorial header.
+- Keyboard/screen-reader label and help text describe whole-site translation; supported Nigerian locales are enabled and incomplete locales remain disabled.
+- The document language and `nairaleap.locale` preference update when a locale is selected.
 
 ## Plugin API and adoption gate
 
-The package exports `LanguageRegistry`, seeded language records, and translation interfaces. `LanguageRegistry.resolve()` is locale-record lookup; it does not provide application dictionaries, a React context, a glossary UI, or a production translation provider. PR [nigerian-language-engine #7](https://github.com/remRADAR/nigerian-language-engine/pull/7) proposes alias/locale lookup fixes and quality gates but remains a separate review; do not assume that PR has merged or that the NairaLeap branch consumes it.
+The related package exports `LanguageRegistry`, seeded language records, and translation interfaces. `LanguageRegistry.resolve()` is locale-record lookup; it does not provide application dictionaries, a React context, a glossary UI, or a production translation provider. NairaLeap therefore does not load that package as a runtime dependency.
 
-Before runtime adoption:
+Before replacing Google Translate with reviewed first-party dictionaries:
 
 1. Agree the initial locale set and translation provenance with the NairaLeap owner.
 2. Create complete, human-reviewed dictionaries for navigation, article pages, services, onboarding, validation/errors, consent, accessibility labels, and LeapBot.
 3. Add deterministic locale fallback to English and tests proving missing keys never appear raw.
 4. Preserve user-entered names, free text, addresses, IDs, and form values verbatim.
-5. Keep every language unavailable until critical financial, legal, consent, and verification terminology is reviewed.
+5. Keep Nigerian Pidgin and Tiv unavailable until critical financial, legal, consent, and verification terminology is reviewed.
 
 ## Fallback and configuration
 
-Fallback is English; pending/unknown locales are not selectable. No new environment variables, credentials, permissions, or external requests are required by this UI foundation. Do not add live machine translation or claim full language support as a fallback.
+Fallback is English; pending/unknown locales are not selectable. The browser loads Google’s public translation runtime when the root provider mounts; no API key is stored in the application. Do not label Nigerian Pidgin or Tiv as supported until a stable provider or reviewed dictionaries exist.
 
 ## Verification target
 
-`cypress/e2e/plugin-integration-status.cy.ts` checks the active English value and disabled locale options. Test the same control at desktop and mobile breakpoints. Whole-site translation, glossary coverage, native-speaker review, and route/form-state preservation remain unimplemented and unverified.
+`cypress/e2e/plugin-integration-status.cy.ts` checks the first toolbar, desktop/mobile visibility, supported Nigerian-language options, disabled pending locales, and stored-locale restoration. Google’s live machine-translation quality, glossary coverage, native-speaker review, and provider availability remain external runtime concerns.

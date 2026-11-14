@@ -19,13 +19,13 @@ import { SERVICE_CATALOG, type ServiceDefinition } from "@/features/services/ser
 export const Route = createFileRoute("/insurance")({
   head: () => ({
     meta: [
-      { title: "Insurance — Nairaleap - Service Portal" },
+      { title: "Insurance — NairaLeap — Indicator Drivers" },
       {
         name: "description",
         content:
           "Explore insurance cover, policy support, claims, renewals and quote requests through the Nairaleap guided insurance navigator.",
       },
-      { property: "og:title", content: "Insurance — Nairaleap - Service Portal" },
+      { property: "og:title", content: "Insurance — NairaLeap — Indicator Drivers" },
       {
         property: "og:description",
         content:

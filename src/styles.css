@@ -264,6 +264,65 @@
   content-visibility: auto;
   contain-intrinsic-size: 0 720px;
 }
+.site-translator-bar {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  overflow: hidden;
+  background: #7024d6;
+  color: white;
+}
+.site-translator-bar__inner {
+  display: flex;
+  width: 100%;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem max(1rem, calc((100vw - 1180px) / 2));
+  white-space: nowrap;
+}
+.site-translator-bar__message {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}
+.site-translator-bar__newsletter {
+  display: none;
+  margin-left: 0.75rem;
+  font-weight: 500;
+  opacity: 0.86;
+}
+.site-translator-control label {
+  min-height: 1.9rem;
+  border-color: rgb(255 255 255 / 35%);
+  background: rgb(255 255 255 / 12%);
+  color: white;
+}
+.site-translator-control select {
+  max-width: min(8.5rem, 34vw);
+  color: white;
+  font-weight: 700;
+}
+.site-translator-control option {
+  color: #2a173f;
+}
+.google-translate-runtime,
+.goog-te-banner-frame,
+.skiptranslate iframe {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+@media (min-width: 768px) {
+  .site-translator-bar__newsletter {
+    display: inline;
+  }
+}
 
 .interactive-button,
 .interactive-card {

@@ -1,13 +1,13 @@
-describe("canonical Nairaleap branding", () => {
+describe("canonical NairaLeap branding", () => {
   it("renders the canonical wordmark in the shared portal header", () => {
     cy.visit("/services");
 
-    cy.title().should("eq", "Nairaleap - Service Portal");
-    cy.get('header a[aria-label="Nairaleap - Service Portal"] img')
+    cy.title().should("eq", "NairaLeap — Indicator Drivers");
+    cy.get('header a[aria-label="NairaLeap — Indicator Drivers"] img')
       .should("be.visible")
       .and("have.attr", "src", "/nairaleap-3d-logo.png")
-      .and("have.attr", "alt", "NairaLeap.com - Service Portal");
-    cy.get('header a[aria-label="Go to Nairaleap blog"]:visible')
+      .and("have.attr", "alt", "NairaLeap — Indicator Drivers");
+    cy.get('header a[aria-label="Go to NairaLeap editorial site"]:visible')
       .should("be.visible")
       .and("have.attr", "href", "/");
 
@@ -22,7 +22,7 @@ describe("canonical Nairaleap branding", () => {
     cy.request("/manifest.webmanifest")
       .its("body")
       .should((manifest) => {
-        expect(manifest.name).to.equal("Nairaleap - Service Portal");
+        expect(manifest.name).to.equal("NairaLeap — Indicator Drivers");
         expect(manifest.icons).to.deep.include({
           src: "/icons/icon-192.png",
           sizes: "192x192",
@@ -45,8 +45,8 @@ describe("authentication branding and entry states", () => {
   });
 
   it("renders the canonical wordmark and stable sign-in form", () => {
-    cy.title().should("eq", "Nairaleap - Service Portal");
-    cy.get('img[alt="Nairaleap - Service Portal"]')
+    cy.title().should("eq", "NairaLeap — Indicator Drivers");
+    cy.get('img[alt="NairaLeap — Indicator Drivers"]')
       .should("be.visible")
       .and("have.attr", "src", "/nairaleap-3d-logo.png");
     cy.get("#auth-email").should("be.visible").and("have.attr", "autocomplete", "email");

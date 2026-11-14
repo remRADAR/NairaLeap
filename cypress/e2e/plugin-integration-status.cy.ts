@@ -1,25 +1,27 @@
-describe("safe plugin integration status", () => {
-  it("keeps English active and other interface locales disabled in the editorial nav", () => {
+describe("full-site translation", () => {
+  it("shows the full-site translation control before the editorial header", () => {
     cy.visit("/");
-
-    cy.get('button[aria-label="Open menu"]').should("be.visible").click();
-    cy.get('nav[aria-label="Editorial menu"] [data-testid="language-availability-select"]')
+    cy.get(".site-translator-bar")
+      .should("be.visible")
+      .and("contain.text", "Translate the entire site");
+    cy.get('[data-testid="language-availability-select"]')
       .should("have.value", "en")
       .and("have.attr", "aria-describedby");
-    cy.get(
-      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="hau"]',
-    ).should("be.disabled");
-    cy.get(
-      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="ibo"]',
-    ).should("be.disabled");
-    cy.get(
-      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="yor"]',
-    ).should("be.disabled");
-    cy.get(
-      'nav[aria-label="Editorial menu"] [data-testid="language-availability-select"] option[value="tiv"]',
-    ).should("be.disabled");
+    cy.get('[data-testid="language-availability-select"] option[value="hau"]').should(
+      "not.be.disabled",
+    );
+    cy.get('[data-testid="language-availability-select"] option[value="ibo"]').should(
+      "not.be.disabled",
+    );
+    cy.get('[data-testid="language-availability-select"] option[value="yor"]').should(
+      "not.be.disabled",
+    );
+    cy.get('[data-testid="language-availability-select"] option[value="tiv"]').should(
+      "be.disabled",
+    );
+    cy.get('button[aria-label="Open menu"]').click();
     cy.get('nav[aria-label="Editorial menu"]').within(() => {
-      cy.contains("Nairaleap services").should("be.visible");
+      cy.contains("NairaLeap services").should("be.visible");
       cy.contains("Admin Studio").should("be.visible");
     });
   });
@@ -33,19 +35,18 @@ describe("safe plugin integration status", () => {
     cy.contains("a", "Services").should("be.visible");
   });
 
-  it("keeps the English-only status available from the portal mobile menu", () => {
+  it("keeps the full-site translation control available on mobile", () => {
     cy.viewport(390, 844);
     cy.visit("/services");
     cy.get('[data-app-hydrated="true"]').should("exist");
-    cy.get('button[aria-label="Open menu"]').should("be.visible").click();
-
+    cy.get(".site-translator-bar").should("be.visible");
     cy.get('[data-testid="language-availability-select"]')
       .should("be.visible")
       .and("have.value", "en");
-    cy.get('option[value="hau"]').should("be.disabled");
+    cy.get('option[value="hau"]').should("not.be.disabled");
   });
 
-  it("falls back safely when a previously stored locale is not available", () => {
+  it("restores a supported stored locale", () => {
     cy.visit("/services", {
       onBeforeLoad(win) {
         win.localStorage.setItem("nairaleap.locale", "hau");
@@ -53,10 +54,10 @@ describe("safe plugin integration status", () => {
     });
     cy.get('[data-app-hydrated="true"]').should("exist");
     cy.get('[data-testid="language-availability-select"]')
-      .should("have.value", "en")
+      .should("have.value", "hau")
       .find('option[value="hau"]')
-      .should("be.disabled");
-    cy.window().its("localStorage").invoke("getItem", "nairaleap.locale").should("eq", "en");
+      .should("not.be.disabled");
+    cy.window().its("localStorage").invoke("getItem", "nairaleap.locale").should("eq", "hau");
   });
 
   it("keeps Article Intelligence read-only and visibly unavailable on article details", () => {

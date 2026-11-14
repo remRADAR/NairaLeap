@@ -1,11 +1,11 @@
 {
-  "name": "Nairaleap - Service Portal",
-  "short_name": "Nairaleap",
-  "description": "Discover NairaLeap services, get guided onboarding, and submit structured service requests.",
+  "name": "NairaLeap — Indicator Drivers",
+  "short_name": "NairaLeap",
+  "description": "NairaLeap — Indicator Drivers: insight, opportunity and guided services for Nigeria.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a0b2e",
-  "theme_color": "#1a0b2e",
+  "theme_color": "#7024d6",
   "icons": [
     {
       "src": "/icons/icon-192.png",

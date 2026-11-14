@@ -196,7 +196,7 @@ describe("Nairaleap service discovery and onboarding navigation", () => {
 
   it("returns to the homepage Services section from a dedicated page", () => {
     cy.get('#services a[href="/services/insurance"]').click();
-    cy.get('header a[aria-label="Nairaleap - Service Portal"]').click();
+    cy.get('header a[aria-label="NairaLeap — Indicator Drivers"]').click();
 
     cy.location("pathname").should("eq", "/services");
     cy.location("hash").should("eq", "");

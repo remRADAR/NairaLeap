@@ -76,9 +76,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "application-name", content: "Nairaleap - Service Portal" },
-      { name: "apple-mobile-web-app-title", content: "Nairaleap - Service Portal" },
-      { title: "Nairaleap - Service Portal" },
+      { name: "application-name", content: "NairaLeap" },
+      { name: "apple-mobile-web-app-title", content: "NairaLeap" },
+      { title: "NairaLeap — Indicator Drivers" },
       {
         name: "description",
         content:
@@ -87,11 +87,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#1a0b2e" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { property: "og:title", content: "Nairaleap - Service Portal" },
+      { property: "og:title", content: "NairaLeap — Indicator Drivers" },
       {
         property: "og:description",
         content:
-          "Nairaleap - Service Portal: discover services, complete guided onboarding, and track requests.",
+          "NairaLeap — Indicator Drivers: insight, opportunity and guided services for Nigeria.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://nairaleap.com/nairaleap-3d-logo.png" },
@@ -121,7 +121,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "NairaLeap.com",
+          name: "NairaLeap",
+          slogan: "Indicator Drivers",
           url: "https://nairaleap.com",
           logo: "https://nairaleap.com/nairaleap-3d-logo.png",
         }),
