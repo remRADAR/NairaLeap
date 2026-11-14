@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1180, initial-scale=1">
+  <title>NairaLeap campaign advert renderer</title>
+  <style>
+    :root { font-family: Inter, Arial, sans-serif; color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { width: 1180px; height: 300px; margin: 0; overflow: hidden; }
+    body { background: #1a0b2e; }
+    .creative {
+      position: relative; width: 1180px; height: 300px; overflow: hidden;
+      background: #1a0b2e center right / cover no-repeat;
+    }
+    .creative::before {
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(90deg, #190b2d 0%, rgba(25,11,45,.96) 34%, rgba(25,11,45,.68) 53%, rgba(25,11,45,.08) 78%, rgba(25,11,45,.18) 100%);
+    }
+    .creative::after {
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(0deg, rgba(10,5,18,.42), transparent 45%);
+    }
+    .copy { position: relative; z-index: 2; width: 57%; height: 100%; padding: 38px 0 30px 68px; }
+    .eyebrow { margin: 0 0 14px; color: #d8b8ff; font-size: 12px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; }
+    h1 { width: 540px; margin: 0; color: #fff; font-size: 31px; line-height: 1.02; letter-spacing: -.035em; }
+    .accent { width: 74px; height: 5px; margin: 15px 0 13px; border-radius: 99px; background: #a85cff; box-shadow: 0 0 22px rgba(168,92,255,.75); }
+    .body { width: 420px; margin: 0; color: rgba(255,255,255,.83); font-size: 15px; line-height: 1.35; }
+    .cta { display: inline-block; margin-top: 18px; padding: 9px 14px; border: 1px solid rgba(255,255,255,.34); border-radius: 999px; color: white; font-size: 11px; font-weight: 800; letter-spacing: .13em; text-decoration: none; }
+    .contact { position: absolute; left: 68px; bottom: 22px; color: rgba(255,255,255,.78); font-size: 11px; font-weight: 700; letter-spacing: .03em; }
+    .contact span { margin-right: 16px; }
+    .logo { position: absolute; z-index: 3; top: 22px; right: 32px; width: 168px; height: auto; object-fit: contain; }
+    .service { position: absolute; z-index: 3; right: 34px; bottom: 23px; color: rgba(255,255,255,.78); font-size: 10px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <main class="creative" id="creative" data-service="business-funding">
+    <img class="logo" src="../public/nairaleap-wordmark.png" alt="NairaLeap.com">
+    <section class="copy">
+      <p class="eyebrow" id="eyebrow">NairaLeap.com</p>
+      <h1>PUT YOUR BRAND<br>IN THE CONVERSATION.</h1>
+      <div class="accent"></div>
+      <p class="body" id="body">Reach an audience that values insight, opportunity and informed decisions.</p>
+      <a class="cta" href="#">BOOK YOUR ADVERTISING SPACE</a>
+      <p class="contact"><span>contact@nairaleap.com</span><span>0703 861 1703</span></p>
+    </section>
+    <p class="service" id="service">Business funding</p>
+  </main>
+  <script>
+    const campaigns = {
+      'business-funding': ['Business funding', 'Reach decision-makers looking for the insight and opportunity to move business forward.', 'business-funding-background.webp'],
+      'professional-services': ['Professional services', 'Put your expertise in front of people ready to make informed decisions.', 'professional-services-background.webp'],
+      'partnerships': ['Partnerships', 'Build the visibility and trust that turns the right conversations into lasting partnerships.', 'partnerships-background.webp'],
+      'property-listings': ['Property listings', 'Make your next opportunity visible to an audience actively looking for what comes next.', 'property-listings-background.webp'],
+      'business-briefs': ['Business briefs', 'Bring your perspective to a community that values insight, opportunity and informed decisions.', 'business-briefs-background.webp']
+    };
+    const id = new URLSearchParams(location.search).get('service') || 'business-funding';
+    const [label, copy, image] = campaigns[id] || campaigns['business-funding'];
+    document.querySelector('#creative').style.backgroundImage = `url("../public/service-backgrounds/${image}")`;
+    document.querySelector('#eyebrow').textContent = label;
+    document.querySelector('#body').textContent = copy;
+    document.querySelector('#service').textContent = label;
+  </script>
+</body>
+</html>

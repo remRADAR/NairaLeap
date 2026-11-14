@@ -45,8 +45,8 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
             <img
-              src="/nairaleap-wordmark.png"
-              alt="Nairaleap"
+              src="/nairaleap-3d-logo.png"
+              alt="NairaLeap.com"
               className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
               decoding="async"
             />
