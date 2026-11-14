@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
 import { getEditorialHomepage, getEditorialPosts } from "@/features/editorial/server";
@@ -40,7 +40,10 @@ function EditorialHomePage() {
   useEffect(() => {
     let active = true;
     const refresh = async () => {
-      const [nextPosts, nextHomepage] = await Promise.all([getEditorialPosts(), getEditorialHomepage()]);
+      const [nextPosts, nextHomepage] = await Promise.all([
+        getEditorialPosts(),
+        getEditorialHomepage(),
+      ]);
       if (!active) return;
       setAllPosts(withEditorialImageFallbacks(nextPosts));
       setHomepageSettings(nextHomepage.settings);
@@ -353,6 +356,7 @@ function EditorialHomePage() {
 
 function AdSlot({ ad }: { ad?: StudioAd }) {
   if (!ad?.enabled) return null;
+  if (ad.slot === "top") return <CampaignAdCarousel />;
   return (
     <section
       aria-label={ad.label}
@@ -362,14 +366,92 @@ function AdSlot({ ad }: { ad?: StudioAd }) {
         {ad.imageUrl ? (
           ad.clickUrl ? (
             <a href={ad.clickUrl} target="_blank" rel="noreferrer">
-              <img src={ad.imageUrl} alt={ad.altText} className="max-h-28 max-w-full object-contain" />
+              <img
+                src={ad.imageUrl}
+                alt={ad.altText}
+                className="max-h-28 max-w-full object-contain"
+              />
             </a>
           ) : (
-            <img src={ad.imageUrl} alt={ad.altText} className="max-h-28 max-w-full object-contain" />
+            <img
+              src={ad.imageUrl}
+              alt={ad.altText}
+              className="max-h-28 max-w-full object-contain"
+            />
           )
         ) : (
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">{ad.label}</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#aaa6b8]">
+            {ad.label}
+          </span>
         )}
+      </div>
+    </section>
+  );
+}
+
+const campaignAdverts = [
+  { id: "business-funding", label: "Business funding" },
+  { id: "professional-services", label: "Professional services" },
+  { id: "partnerships", label: "Partnerships" },
+  { id: "property-listings", label: "Property listings" },
+  { id: "business-briefs", label: "Business briefs" },
+] as const;
+
+function CampaignAdCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % campaignAdverts.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  const activeAdvert = campaignAdverts[activeIndex];
+
+  return (
+    <section
+      aria-label="Advertise with NairaLeap"
+      className="editorial-ad-slot mx-auto max-w-[1180px] px-4 py-3 sm:px-6"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div className="relative overflow-hidden rounded-xl border border-[#dcd8e8] bg-[#1a0b2e] shadow-[0_10px_30px_rgba(43,25,79,0.12)]">
+        {campaignAdverts.map((advert, index) => (
+          <img
+            key={advert.id}
+            src={`/campaign-adverts/${advert.id}.png`}
+            alt={`${advert.label} campaign: Put your brand in the conversation.`}
+            className={`block h-auto w-full transition-opacity duration-500 ${index === activeIndex ? "opacity-100" : "pointer-events-none absolute inset-0 opacity-0"}`}
+            aria-hidden={index !== activeIndex}
+          />
+        ))}
+        <div className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full bg-[#1a0b2e]/75 px-2 py-1 backdrop-blur-sm">
+          <button
+            type="button"
+            aria-label={paused ? "Resume campaign adverts" : "Pause campaign adverts"}
+            onClick={() => setPaused((current) => !current)}
+            className="grid h-7 w-7 place-items-center rounded-full text-white transition hover:bg-white/15"
+          >
+            {paused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+          </button>
+          <div className="flex items-center gap-1.5" aria-label="Campaign advert slides">
+            {campaignAdverts.map((advert, index) => (
+              <button
+                key={advert.id}
+                type="button"
+                aria-label={`Show ${advert.label} advert`}
+                aria-current={index === activeIndex ? "true" : undefined}
+                onClick={() => setActiveIndex(index)}
+                className={`h-1.5 rounded-full transition-all ${index === activeIndex ? "w-6 bg-white" : "w-1.5 bg-white/45"}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
