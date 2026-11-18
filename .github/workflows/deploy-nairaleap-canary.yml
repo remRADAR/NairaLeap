@@ -1,0 +1,124 @@
+name: Deploy NairaLeap Canary
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type DEPLOY_CANARY to confirm deployment"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nairaleap-canary-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy canary Worker
+    runs-on: ubuntu-latest
+    environment: Preview
+
+    steps:
+      - name: Require explicit canary confirmation
+        if: ${{ inputs.confirmation != 'DEPLOY_CANARY' }}
+        run: |
+          echo "Confirmation must be exactly DEPLOY_CANARY."
+          exit 1
+
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.21"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: TypeScript validation
+        run: bunx tsc --noEmit
+
+      - name: ESLint validation
+        run: bun run lint
+
+      - name: Build Cloudflare artifact
+        run: bun run build
+
+      - name: Verify generated config is safe for canary deployment
+        shell: bash
+        run: |
+          test -f .output/server/wrangler.json
+          test -f .output/server/index.mjs
+
+          node <<'NODE'
+          const fs = require("fs");
+          const config = JSON.parse(
+            fs.readFileSync(".output/server/wrangler.json", "utf8")
+          );
+
+          const databases = config.d1_databases || [];
+          const db = databases.find(
+            (entry) => entry.binding === "NAIRALEAP_DB"
+          );
+
+          if (!db) {
+            throw new Error("NAIRALEAP_DB binding is missing");
+          }
+
+          if (
+            db.database_name !== "nairaleap-data" ||
+            db.database_id !==
+              "55e19c59-b032-4f56-b8bc-7b41985426f8"
+          ) {
+            throw new Error(
+              "Unexpected D1 database; refusing deployment"
+            );
+          }
+
+          if (config.routes || config.route || config.domains) {
+            throw new Error(
+              "Routes/domains are present; refusing to modify routing"
+            );
+          }
+
+          console.log(
+            "Verified production D1 binding and no route/domain changes."
+          );
+          NODE
+
+      - name: Deploy to nairaleap-canary
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: a9fc1498025cb46ee73d1f585bda0c8f
+        run: |
+          npx wrangler deploy \
+            --config .output/server/wrangler.json \
+            --name nairaleap-canary
+
+      - name: Verify staging domain
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --silent --show-error \
+              --retry 0 \
+              --connect-timeout 10 \
+              --max-time 30 \
+              https://staging.nairaleap.com/ \
+              -o /tmp/nairaleap-home.html; then
+              grep -qi "NairaLeap" /tmp/nairaleap-home.html
+              echo "staging.nairaleap.com is serving the deployed application."
+              exit 0
+            fi
+
+            echo "Staging verification attempt ${attempt} failed; waiting..."
+            sleep 10
+          done
+
+          echo "The deployment command completed, but staging verification failed."
+          exit 1
