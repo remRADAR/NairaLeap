@@ -19,9 +19,10 @@ const fallbackFor = (slug) => {
   }
   return fallbackImages[(hash >>> 0) % fallbackImages.length];
 };
-const localExists = (value) => value.startsWith("/") && existsSync(resolve(publicRoot, value.slice(1)));
+const localExists = (value) =>
+  value.startsWith("/") && existsSync(resolve(publicRoot, value.slice(1)));
 const resolvedImage = (post) => post.image || fallbackFor(post.slug);
-const displaySource = (value) => value.length > 160 ? `${value.slice(0, 157)}...` : value;
+const displaySource = (value) => (value.length > 160 ? `${value.slice(0, 157)}...` : value);
 const inlineImages = [];
 for (const post of EDITORIAL_POSTS) {
   for (const match of post.content.matchAll(/<img\b[^>]*>/gi)) {
@@ -30,15 +31,20 @@ for (const post of EDITORIAL_POSTS) {
   }
 }
 
-const missingFeatured = EDITORIAL_POSTS
-  .map((post) => ({ slug: post.slug, image: resolvedImage(post) }))
-  .filter(({ image }) => !localExists(image));
-const invalidInline = inlineImages.filter(({ src }) => !src || (!src.startsWith("/") && !/^https?:\/\//i.test(src) && !/^data:image\//i.test(src)));
+const missingFeatured = EDITORIAL_POSTS.map((post) => ({
+  slug: post.slug,
+  image: resolvedImage(post),
+})).filter(({ image }) => !localExists(image));
+const invalidInline = inlineImages.filter(
+  ({ src }) =>
+    !src || (!src.startsWith("/") && !/^https?:\/\//i.test(src) && !/^data:image\//i.test(src)),
+);
 const localInline = inlineImages.filter(({ src }) => src.startsWith("/"));
 const externalInline = inlineImages.filter(({ src }) => /^https?:\/\//i.test(src));
 const embeddedInline = inlineImages.filter(({ src }) => /^data:image\//i.test(src));
-const cmsFiles = readdirSync(resolve(publicRoot, "editorial/cms"), { withFileTypes: true })
-  .filter((entry) => entry.isFile() && /\.(?:jpe?g|png|webp|gif|avif)$/i.test(entry.name)).length;
+const cmsFiles = readdirSync(resolve(publicRoot, "editorial/cms"), { withFileTypes: true }).filter(
+  (entry) => entry.isFile() && /\.(?:jpe?g|png|webp|gif|avif)$/i.test(entry.name),
+).length;
 
 const report = {
   articlesChecked: EDITORIAL_POSTS.length,
@@ -52,7 +58,9 @@ const report = {
   invalidInlineImages: invalidInline.length,
   localCmsFiles: cmsFiles,
   missingFeatured,
-  invalidInline: invalidInline.slice(0, 20).map(({ slug, src }) => ({ slug, src: displaySource(src) })),
+  invalidInline: invalidInline
+    .slice(0, 20)
+    .map(({ slug, src }) => ({ slug, src: displaySource(src) })),
 };
 console.log(JSON.stringify(report, null, 2));
 if (missingFeatured.length || invalidInline.length) process.exitCode = 1;

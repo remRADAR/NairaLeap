@@ -35,7 +35,11 @@ export type RequestPriority = "low" | "normal" | "high" | "urgent";
 
 /** Category for admin checklist items. */
 export type AdminChecklistCategory =
-  "verification" | "review" | "compliance" | "assignment" | "communication";
+  | "verification"
+  | "review"
+  | "compliance"
+  | "assignment"
+  | "communication";
 
 /**
  * A single field expected in the final request package.

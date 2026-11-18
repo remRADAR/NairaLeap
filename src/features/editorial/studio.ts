@@ -40,8 +40,22 @@ export const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
 };
 
 export const DEFAULT_STUDIO_ADS: StudioAd[] = [
-  { slot: "top", label: "Advertisement", imageUrl: "", clickUrl: "", altText: "Advertisement", enabled: true },
-  { slot: "bottom", label: "Advertisement", imageUrl: "", clickUrl: "", altText: "Advertisement", enabled: true },
+  {
+    slot: "top",
+    label: "Advertisement",
+    imageUrl: "",
+    clickUrl: "",
+    altText: "Advertisement",
+    enabled: true,
+  },
+  {
+    slot: "bottom",
+    label: "Advertisement",
+    imageUrl: "",
+    clickUrl: "",
+    altText: "Advertisement",
+    enabled: true,
+  },
 ];
 
 const browserStorage = () => (typeof window === "undefined" ? null : window.localStorage);

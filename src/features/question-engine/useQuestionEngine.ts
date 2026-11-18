@@ -13,10 +13,7 @@ export interface UseQuestionEngineOptions {
  * Shared answer-presence check. Works for any question so both the guided
  * (one-per-page) and single-page form layouts validate identically.
  */
-export function isQuestionAnswered(
-  question: Question,
-  value: AnswerValue | undefined,
-): boolean {
+export function isQuestionAnswered(question: Question, value: AnswerValue | undefined): boolean {
   if (question.required === false) return true;
   switch (question.type) {
     case "short-text":

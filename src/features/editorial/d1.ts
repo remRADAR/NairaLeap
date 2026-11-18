@@ -10,8 +10,22 @@ const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
 };
 
 const DEFAULT_ADS: StudioAd[] = [
-  { slot: "top", label: "Advertisement", imageUrl: "", clickUrl: "", altText: "Advertisement", enabled: true },
-  { slot: "bottom", label: "Advertisement", imageUrl: "", clickUrl: "", altText: "Advertisement", enabled: true },
+  {
+    slot: "top",
+    label: "Advertisement",
+    imageUrl: "",
+    clickUrl: "",
+    altText: "Advertisement",
+    enabled: true,
+  },
+  {
+    slot: "bottom",
+    label: "Advertisement",
+    imageUrl: "",
+    clickUrl: "",
+    altText: "Advertisement",
+    enabled: true,
+  },
 ];
 
 type EditorialArticleRow = {
@@ -63,7 +77,8 @@ export type EditorialStudioState = EditorialHomepage & {
 const getEnv = () =>
   (globalThis as typeof globalThis & { __env__?: { NAIRALEAP_DB?: D1Database } }).__env__;
 
-export const getEditorialD1 = async (): Promise<D1Database | null> => getEnv()?.NAIRALEAP_DB ?? null;
+export const getEditorialD1 = async (): Promise<D1Database | null> =>
+  getEnv()?.NAIRALEAP_DB ?? null;
 
 const parseJson = <T>(value: string, fallback: T): T => {
   try {
@@ -176,7 +191,9 @@ export const upsertEditorialArticle = async (db: D1Database, article: StudioArti
 
 export const readEditorialHomepage = async (db: D1Database): Promise<EditorialHomepage> => {
   const [settingsResult, adsResult] = await Promise.all([
-    db.prepare("select key, value from editorial_settings where key = 'homepage'").all<{ key: string; value: string }>(),
+    db
+      .prepare("select key, value from editorial_settings where key = 'homepage'")
+      .all<{ key: string; value: string }>(),
     db
       .prepare(
         `select slot, label, image_url, click_url, alt_text, enabled
@@ -218,14 +235,24 @@ export const writeEditorialHomepage = async (
            click_url = excluded.click_url, alt_text = excluded.alt_text,
            enabled = excluded.enabled, updated_at = excluded.updated_at`,
       )
-      .bind(ad.slot, ad.label, ad.imageUrl || null, ad.clickUrl || null, ad.altText, ad.enabled ? 1 : 0, now)
+      .bind(
+        ad.slot,
+        ad.label,
+        ad.imageUrl || null,
+        ad.clickUrl || null,
+        ad.altText,
+        ad.enabled ? 1 : 0,
+        now,
+      )
       .run();
   }
 };
 
 export const listEditorialCategories = async (db: D1Database): Promise<StudioCategory[]> => {
   const result = await db
-    .prepare("select id, name, slug, parent, count, path, source from editorial_categories order by path limit 1000")
+    .prepare(
+      "select id, name, slug, parent, count, path, source from editorial_categories order by path limit 1000",
+    )
     .all<EditorialCategoryRow>();
   return result.results.map(rowToCategory);
 };
@@ -239,18 +266,38 @@ export const upsertEditorialCategory = async (db: D1Database, category: StudioCa
          parent = excluded.parent, count = excluded.count, path = excluded.path,
          source = excluded.source, updated_at = excluded.updated_at`,
     )
-    .bind(category.id, category.name, category.slug, category.parent, category.count, JSON.stringify(category.path), category.source, new Date().toISOString())
+    .bind(
+      category.id,
+      category.name,
+      category.slug,
+      category.parent,
+      category.count,
+      JSON.stringify(category.path),
+      category.source,
+      new Date().toISOString(),
+    )
     .run();
 };
 
 export const deleteEditorialCategory = async (db: D1Database, id: number) => {
-  await db.prepare("delete from editorial_categories where id = ?1 and source = 'studio'").bind(id).run();
+  await db
+    .prepare("delete from editorial_categories where id = ?1 and source = 'studio'")
+    .bind(id)
+    .run();
 };
 
 export const mergeCategories = (saved: StudioCategory[]): StudioCategory[] => {
-  const byId = new Map<number, StudioCategory>(EDITORIAL_CATEGORIES.map((category) => [category.id, { ...category, source: "wordpress" as const }]));
+  const byId = new Map<number, StudioCategory>(
+    EDITORIAL_CATEGORIES.map((category) => [
+      category.id,
+      { ...category, source: "wordpress" as const },
+    ]),
+  );
   for (const category of saved) byId.set(category.id, category);
   return Array.from(byId.values()).sort((a, b) => a.path.join("/").localeCompare(b.path.join("/")));
 };
 
-export const toEditorialSummary = (post: EditorialPost): EditorialPost => ({ ...post, content: "" });
+export const toEditorialSummary = (post: EditorialPost): EditorialPost => ({
+  ...post,
+  content: "",
+});

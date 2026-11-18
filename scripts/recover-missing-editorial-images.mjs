@@ -22,7 +22,8 @@ function parsePosts(source) {
   const prefix = "export const EDITORIAL_POSTS: EditorialPost[] = ";
   const begin = source.indexOf(prefix);
   const end = source.indexOf(";\n\nexport function getEditorialPost", begin);
-  if (begin < 0 || end < 0) throw new Error("Could not locate EDITORIAL_POSTS in the generated data module.");
+  if (begin < 0 || end < 0)
+    throw new Error("Could not locate EDITORIAL_POSTS in the generated data module.");
   return { posts: JSON.parse(source.slice(begin + prefix.length, end)), begin, end, prefix };
 }
 
@@ -42,7 +43,8 @@ function absoluteUrl(value, base) {
 
 function attributes(tag) {
   const result = {};
-  for (const match of tag.matchAll(/([\w:-]+)\s*=\s*(["'])(.*?)\2/gs)) result[match[1].toLowerCase()] = match[3];
+  for (const match of tag.matchAll(/([\w:-]+)\s*=\s*(["'])(.*?)\2/gs))
+    result[match[1].toLowerCase()] = match[3];
   return result;
 }
 
@@ -58,7 +60,14 @@ function extractImageCandidates(html, baseUrl) {
   }
   for (const tagMatch of html.matchAll(/<img\b[^>]*>/gi)) {
     const attrs = attributes(tagMatch[0]);
-    const raw = attrs.src || attrs["data-src"] || attrs["data-lazy-src"] || attrs["data-original"] || attrs["data-orig-file"] || attrs["data-large-file"] || "";
+    const raw =
+      attrs.src ||
+      attrs["data-src"] ||
+      attrs["data-lazy-src"] ||
+      attrs["data-original"] ||
+      attrs["data-orig-file"] ||
+      attrs["data-large-file"] ||
+      "";
     const value = absoluteUrl(raw.split(",")[0].trim().split(/\s+/)[0], baseUrl);
     if (value) candidates.push(value);
   }
@@ -101,14 +110,19 @@ async function fetchText(url) {
 async function searchCandidates(post) {
   const query = encodeURIComponent(`"${post.title}" Nigeria`);
   try {
-    const response = await fetch(`https://news.google.com/rss/search?q=${query}&hl=en-NG&gl=NG&ceid=NG:en`, {
-      headers: { "user-agent": USER_AGENT, accept: "application/rss+xml,text/xml" },
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-    });
+    const response = await fetch(
+      `https://news.google.com/rss/search?q=${query}&hl=en-NG&gl=NG&ceid=NG:en`,
+      {
+        headers: { "user-agent": USER_AGENT, accept: "application/rss+xml,text/xml" },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      },
+    );
     if (!response.ok) return [];
     const html = await response.text();
     const urls = [];
-    for (const match of html.matchAll(/<link>(https?:\/\/news\.google\.com\/rss\/articles\/[^<]+)<\/link>/gi)) {
+    for (const match of html.matchAll(
+      /<link>(https?:\/\/news\.google\.com\/rss\/articles\/[^<]+)<\/link>/gi,
+    )) {
       const value = absoluteUrl(match[1], "https://html.duckduckgo.com");
       if (value) urls.push(value);
     }
@@ -126,23 +140,38 @@ async function findImageCandidates(post) {
     const page = await fetchText(pageUrl);
     if (!page) continue;
     const candidates = extractImageCandidates(page.html, page.url);
-    for (const imageUrl of candidates) results.push({ imageUrl, discoveredFrom: page.url, method: pageUrl === post.sourceUrl ? "source-page" : "reference-page" });
+    for (const imageUrl of candidates)
+      results.push({
+        imageUrl,
+        discoveredFrom: page.url,
+        method: pageUrl === post.sourceUrl ? "source-page" : "reference-page",
+      });
   }
-  for (const imageUrl of inlineCandidates) results.push({ imageUrl, discoveredFrom: post.sourceUrl, method: "article-inline" });
+  for (const imageUrl of inlineCandidates)
+    results.push({ imageUrl, discoveredFrom: post.sourceUrl, method: "article-inline" });
   if (searchFallback) {
     for (const resultUrl of await searchCandidates(post)) {
       const page = await fetchText(resultUrl);
       if (!page) continue;
-      for (const imageUrl of extractImageCandidates(page.html, page.url)) results.push({ imageUrl, discoveredFrom: page.url, method: "web-search" });
+      for (const imageUrl of extractImageCandidates(page.html, page.url))
+        results.push({ imageUrl, discoveredFrom: page.url, method: "web-search" });
     }
   }
   const seen = new Set();
-  return results.filter((candidate) => !seen.has(candidate.imageUrl) && seen.add(candidate.imageUrl));
+  return results.filter(
+    (candidate) => !seen.has(candidate.imageUrl) && seen.add(candidate.imageUrl),
+  );
 }
 
 function extensionFor(contentType, url) {
   const type = contentType.split(";", 1)[0].toLowerCase();
-  const extensions = { "image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "image/gif": ".gif", "image/avif": ".avif" };
+  const extensions = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/webp": ".webp",
+    "image/gif": ".gif",
+    "image/avif": ".avif",
+  };
   if (extensions[type]) return extensions[type];
   try {
     const suffix = path.extname(new URL(url).pathname).toLowerCase();
@@ -154,10 +183,15 @@ function extensionFor(contentType, url) {
 
 async function downloadImage(imageUrl, post) {
   try {
-    const response = await fetch(imageUrl, { redirect: "follow", headers: { "user-agent": USER_AGENT, accept: "image/avif,image/webp,image/*" }, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+    const response = await fetch(imageUrl, {
+      redirect: "follow",
+      headers: { "user-agent": USER_AGENT, accept: "image/avif,image/webp,image/*" },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
     if (!response.ok) return { error: `HTTP ${response.status}` };
     const contentType = response.headers.get("content-type") || "";
-    if (!contentType.toLowerCase().startsWith("image/")) return { error: `not-image:${contentType || "unknown"}` };
+    if (!contentType.toLowerCase().startsWith("image/"))
+      return { error: `not-image:${contentType || "unknown"}` };
     const declaredLength = Number(response.headers.get("content-length") || 0);
     if (declaredLength > MAX_IMAGE_BYTES) return { error: "image-too-large" };
     const bytes = Buffer.from(await response.arrayBuffer());
@@ -174,7 +208,16 @@ async function downloadImage(imageUrl, post) {
 const source = await readFile(DATA_PATH, "utf8");
 const parsed = parsePosts(source);
 const missing = parsed.posts.filter((post) => !post.image).slice(start, start + limit);
-const report = { startedAt: new Date().toISOString(), dryRun, searchFallback, totalArticles: parsed.posts.length, missingBefore: parsed.posts.filter((post) => !post.image).length, selected: missing.length, recovered: [], unresolved: [] };
+const report = {
+  startedAt: new Date().toISOString(),
+  dryRun,
+  searchFallback,
+  totalArticles: parsed.posts.length,
+  missingBefore: parsed.posts.filter((post) => !post.image).length,
+  selected: missing.length,
+  recovered: [],
+  unresolved: [],
+};
 if (!dryRun) await mkdir(IMAGE_DIR, { recursive: true });
 let next = 0;
 async function worker() {
@@ -194,17 +237,38 @@ async function worker() {
       }
     }
     if (!found || !downloaded) {
-      report.unresolved.push({ id: post.id, slug: post.slug, title: post.title, sourceUrl: post.sourceUrl });
+      report.unresolved.push({
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        sourceUrl: post.sourceUrl,
+      });
       console.log(`UNRESOLVED ${post.id} ${post.slug}`);
       continue;
     }
     if (downloaded.path) {
-      report.recovered.push({ id: post.id, slug: post.slug, title: post.title, image: downloaded.path, imageUrl: downloaded.sourceUrl, discoveredFrom: found.discoveredFrom, method: found.method, bytes: downloaded.bytes });
+      report.recovered.push({
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        image: downloaded.path,
+        imageUrl: downloaded.sourceUrl,
+        discoveredFrom: found.discoveredFrom,
+        method: found.method,
+        bytes: downloaded.bytes,
+      });
       const target = parsed.posts.find((item) => item.id === post.id);
       if (target && !dryRun) target.image = downloaded.path;
       console.log(`RECOVERED ${post.id} ${post.slug} -> ${downloaded.path} (${found.method})`);
     } else {
-      report.unresolved.push({ id: post.id, slug: post.slug, title: post.title, sourceUrl: post.sourceUrl, candidate: found.imageUrl, error: downloaded.error });
+      report.unresolved.push({
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        sourceUrl: post.sourceUrl,
+        candidate: found.imageUrl,
+        error: downloaded.error,
+      });
       console.log(`FAILED ${post.id} ${post.slug} ${downloaded.error}`);
     }
   }
@@ -215,6 +279,13 @@ report.recoveredCount = report.recovered.length;
 report.unresolvedCount = report.unresolved.length;
 await mkdir(path.dirname(REPORT_PATH), { recursive: true });
 await writeFile(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
-if (!dryRun && report.recovered.length) await writeFile(DATA_PATH, writePosts(source, parsed, parsed.posts));
-console.log(JSON.stringify({ report: REPORT_PATH, ...report, recovered: undefined, unresolved: undefined }, null, 2));
+if (!dryRun && report.recovered.length)
+  await writeFile(DATA_PATH, writePosts(source, parsed, parsed.posts));
+console.log(
+  JSON.stringify(
+    { report: REPORT_PATH, ...report, recovered: undefined, unresolved: undefined },
+    null,
+    2,
+  ),
+);
 if (report.unresolved.length && !dryRun) process.exitCode = 1;
