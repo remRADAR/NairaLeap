@@ -168,6 +168,7 @@ interface LocaleContextValue {
   culture: CultureCode;
   locales: readonly LocaleDefinition[];
   ensureTranslator: () => void;
+  refreshTranslation: () => void;
   setLocale: (nextLocale: LocaleCode) => void;
   setCulture: (nextCulture: CultureCode) => void;
   t: typeof COPY;
@@ -194,6 +195,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       culture,
       locales: LOCALE_REGISTRY,
       ensureTranslator: () => {
+        void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
+      },
+      refreshTranslation: () => {
         void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
       },
       setLocale: (nextLocale) => {

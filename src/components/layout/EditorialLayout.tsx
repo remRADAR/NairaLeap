@@ -11,7 +11,7 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
 import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
@@ -23,12 +23,36 @@ const slugify = (label: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
+const LAGOS_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Africa/Lagos",
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+const LAGOS_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Africa/Lagos",
+  hour: "numeric",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: true,
+});
+
 export function EditorialLayout({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const routeKey = useRouterState({
     select: (state) => `${state.location.pathname}:${JSON.stringify(state.location.search)}`,
   });
+
+  useEffect(() => {
+    const updateTime = () => setCurrentTime(new Date());
+    updateTime();
+    const intervalId = window.setInterval(updateTime, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   return (
     <div
@@ -37,6 +61,36 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
+      <div
+        data-testid="editorial-writers-bar"
+        className="border-b border-[#ececf3] bg-[#f9007a] px-3 py-2 text-white sm:px-6"
+      >
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2 sm:gap-4">
+          <time
+            data-testid="editorial-clock"
+            aria-label="Current date and time in Nigeria"
+            dateTime={currentTime?.toISOString()}
+            className="shrink-0 whitespace-nowrap text-[11px] font-medium leading-4 tracking-[-0.02em] sm:text-xs md:text-[13px]"
+          >
+            {currentTime ? (
+              <>
+                {LAGOS_DATE_FORMATTER.format(currentTime)}
+                {" · "}
+                {LAGOS_TIME_FORMATTER.format(currentTime)} WAT
+              </>
+            ) : (
+              <span aria-hidden="true">&nbsp;</span>
+            )}
+          </time>
+          <p className="ml-auto min-w-0 text-right text-[9px] font-medium leading-4 sm:text-xs">
+            <span className="hidden sm:inline">
+              Call for writers: share your insight, investigation, or indicator story with
+              NairaLeap.{" "}
+            </span>
+            <span className="font-bold underline underline-offset-2">Call for writers</span>
+          </p>
+        </div>
+      </div>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link

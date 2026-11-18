@@ -9,6 +9,7 @@ import {
   type HomepageSettings,
   type StudioAd,
 } from "@/features/editorial/studio";
+import { useLocale } from "@/features/i18n";
 
 const slugify = (value: string) =>
   value
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/")({
 
 function EditorialHomePage() {
   const { topic } = Route.useSearch();
+  const { locale, refreshTranslation } = useLocale();
   const { posts, homepage } = Route.useLoaderData();
   const [allPosts, setAllPosts] = useState(posts);
   const [homepageSettings, setHomepageSettings] = useState<HomepageSettings>(homepage.settings);
@@ -90,6 +92,20 @@ function EditorialHomePage() {
   }, [heroPaused, heroPosts.length]);
 
   const hero = heroPosts[heroIndex] ?? filteredPosts[0];
+  const translationContentKey = [
+    hero?.category,
+    hero?.date,
+    hero?.excerpt,
+    hero?.slug,
+    hero?.title,
+    homepageSettings.primaryTickerLabel,
+    secondaryTickerPosts.map((post) => `${post.slug}:${post.title}`).join("|"),
+  ].join("|");
+
+  useEffect(() => {
+    if (locale === "en") return;
+    refreshTranslation();
+  }, [locale, refreshTranslation, translationContentKey]);
 
   if (!hero) {
     return (
