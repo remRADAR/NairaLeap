@@ -339,7 +339,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <section aria-label="Lower campaign advert" className="contents">
+      <section aria-label="Lower campaign advert">
         <AdSlot ad={topAd?.enabled ? topAd : bottomAd} />
       </section>
 
