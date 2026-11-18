@@ -1,15 +1,9 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { EditorialLayout } from "@/components";
-import { withEditorialImageFallbacks } from "@/features/editorial/images";
+import { getEditorialArchivePage } from "@/features/editorial/server";
 
 const PAGE_SIZE = 24;
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
 
 type ArchiveSearch = { topic?: string; page?: number };
 
@@ -18,9 +12,9 @@ export const Route = createFileRoute("/articles")({
     topic: typeof search.topic === "string" ? search.topic : undefined,
     page: typeof search.page === "number" && search.page > 0 ? search.page : 1,
   }),
-  loader: async () => {
-    const { EDITORIAL_POSTS } = await import("@/data/wordpressEditorial");
-    return { posts: withEditorialImageFallbacks(EDITORIAL_POSTS) };
+  loaderDeps: ({ search }) => ({ topic: search.topic, page: search.page ?? 1 }),
+  loader: async ({ deps }) => {
+    return getEditorialArchivePage({ data: deps });
   },
   component: ArticleArchivePage,
 });
@@ -28,21 +22,13 @@ export const Route = createFileRoute("/articles")({
 function ArticleArchivePage() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { topic, page = 1 } = Route.useSearch();
-  const { posts: editorialPosts } = Route.useLoaderData();
+  const { posts, total } = Route.useLoaderData();
   if (pathname !== "/articles" && pathname.startsWith("/articles/")) {
     return <Outlet />;
   }
 
-  const filtered = topic
-    ? editorialPosts.filter((post) =>
-        [post.category, ...post.categoryPath, ...post.tags].some(
-          (value) => slugify(value) === topic,
-        ),
-      )
-    : editorialPosts;
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
-  const posts = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
   const pageLink = (nextPage: number) =>
     `/articles?${new URLSearchParams({ ...(topic ? { topic } : {}), page: String(nextPage) }).toString()}`;
 
@@ -69,7 +55,7 @@ function ArticleArchivePage() {
             </p>
           </div>
           <div className="flex items-center gap-2 rounded-full bg-[#f7f2ff] px-3 py-2 text-[11px] font-bold text-[#6f23dd]">
-            <Search className="h-3.5 w-3.5" /> {filtered.length} stories
+            <Search className="h-3.5 w-3.5" /> {total} stories
           </div>
         </div>
         {topic && (
