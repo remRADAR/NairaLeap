@@ -14,7 +14,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
-import { SiteTranslatorToolbar } from "../ui/SiteTranslatorToolbar";
+import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
 
 const slugify = (label: string) =>
   label
@@ -37,13 +37,6 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
-      <SiteTranslatorToolbar>
-        <span>Translate the entire site</span>
-        <span className="site-translator-bar__newsletter">
-          Subscribe to our newsletter &amp; never miss our best posts.
-          <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
-        </span>
-      </SiteTranslatorToolbar>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link
@@ -163,6 +156,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
+            <LanguageAvailabilityControl theme="editorial" />
             <Link
               to="/services"
               onClick={onNavigate}

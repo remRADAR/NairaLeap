@@ -113,6 +113,8 @@ function EditorialHomePage() {
   }
 
   const stories = featuredPosts.filter((post) => post.slug !== hero.slug);
+  const topAd = ads.find((ad) => ad.slot === "top");
+  const bottomAd = ads.find((ad) => ad.slot === "bottom");
 
   return (
     <EditorialLayout>
@@ -208,7 +210,7 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot ad={ads.find((ad) => ad.slot === "top")} />
+      <AdSlot ad={topAd} />
 
       <section aria-label="Taxonomy ticker" className="border-b border-[#eceaf2] bg-[#fbfaff] py-3">
         <div className="mx-auto flex max-w-[1180px] items-center gap-4 overflow-hidden px-4 sm:px-6">
@@ -337,7 +339,9 @@ function EditorialHomePage() {
         </div>
       </section>
 
-      <AdSlot ad={ads.find((ad) => ad.slot === "bottom")} />
+      <section aria-label="Lower campaign advert" className="contents">
+        <AdSlot ad={topAd?.enabled ? topAd : bottomAd} />
+      </section>
 
       <section className="mx-auto w-full max-w-[1180px] px-4 pb-12 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between border-t border-[#e9e9f0] pt-5">

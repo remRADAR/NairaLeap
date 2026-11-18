@@ -4,7 +4,7 @@ import { BookOpen, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NairaLeapBot } from "../ui/NairaLeapBot";
 import { NairaLeapGuideContainer } from "../ui/NairaLeapGuideContainer";
-import { SiteTranslatorToolbar } from "../ui/SiteTranslatorToolbar";
+import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
 import { useAuth } from "@/features/auth";
 import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCatalog";
 
@@ -34,7 +34,6 @@ export function AppLayout({ children, serviceId }: AppLayoutProps) {
       data-app-hydrated={hydrated ? "true" : "false"}
       data-service-id={serviceId}
     >
-      <SiteTranslatorToolbar />
       <Header compact={Boolean(serviceId)} />
       <main className="min-h-0 flex-1">{children}</main>
       <div className={serviceId ? "lg:hidden" : undefined}>
@@ -135,6 +134,9 @@ function Header({ compact = false }: { compact?: boolean }) {
             aria-label={compact ? "Portal menu" : "Mobile"}
             className="glass-panel flex max-h-[70vh] flex-col overflow-y-auto p-2 text-sm"
           >
+            <div className="border-b border-glass-border px-3 py-3">
+              <LanguageAvailabilityControl theme="portal" />
+            </div>
             <Link
               to="/services"
               onClick={closeMenus}

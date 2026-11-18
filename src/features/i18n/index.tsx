@@ -30,16 +30,21 @@ export interface LocaleDefinition {
 export const LOCALE_STORAGE_KEY = "nairaleap.locale";
 export const CULTURE_STORAGE_KEY = "nairaleap.culture";
 
-// Google Translate supports these Nigerian languages in its public web translator.
-// Tiv and Nigerian Pidgin remain visible as planned locales until Google provides
-// a stable source language option or the project supplies reviewed dictionaries.
+// Keep the language registry in one place so the menu control and the full-page
+// Google Translate runtime always expose the same set of site languages.
 export const LOCALE_REGISTRY: readonly LocaleDefinition[] = [
   { code: "en", label: "English", nativeLabel: "English", status: "supported" },
   { code: "hau", label: "Hausa", nativeLabel: "Hausa", googleCode: "ha", status: "supported" },
   { code: "ibo", label: "Igbo", nativeLabel: "Igbo", googleCode: "ig", status: "supported" },
   { code: "yor", label: "Yoruba", nativeLabel: "Yorùbá", googleCode: "yo", status: "supported" },
-  { code: "pcm", label: "Nigerian Pidgin", nativeLabel: "Nigerian Pidgin", status: "unavailable" },
-  { code: "tiv", label: "Tiv", nativeLabel: "Tiv", status: "unavailable" },
+  {
+    code: "pcm",
+    label: "Nigerian Pidgin",
+    nativeLabel: "Nigerian Pidgin",
+    googleCode: "pcm",
+    status: "supported",
+  },
+  { code: "tiv", label: "Tiv", nativeLabel: "Tiv", googleCode: "tiv", status: "supported" },
 ] as const;
 
 export const CULTURE_REGISTRY = [
@@ -78,20 +83,20 @@ function readStoredLocale(): LocaleCode {
     : "en";
 }
 
+let googleTranslateReady: Promise<void> | null = null;
+
 function loadGoogleTranslate(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
-  const existing = document.getElementById("google-translate-script");
-  if (existing && window.google?.translate) return Promise.resolve();
+  if (window.google?.translate) return Promise.resolve();
+  if (googleTranslateReady) return googleTranslateReady;
 
-  return new Promise((resolve) => {
-    const previous = window.nairaLeapGoogleTranslateInit;
-    window.nairaLeapGoogleTranslateInit = () => {
-      previous?.();
+  googleTranslateReady = new Promise((resolve) => {
+    const initialize = () => {
       if (window.google?.translate) {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "ha,ig,yo",
+            includedLanguages: "ha,ig,yo,pcm,tiv",
             autoDisplay: false,
           },
           "google_translate_element",
@@ -99,7 +104,22 @@ function loadGoogleTranslate(): Promise<void> {
       }
       resolve();
     };
-    if (existing) return;
+
+    window.nairaLeapGoogleTranslateInit = initialize;
+    const existing = document.getElementById("google-translate-script");
+    if (existing) {
+      const retry = window.setInterval(() => {
+        if (!window.google?.translate) return;
+        window.clearInterval(retry);
+        initialize();
+      }, 100);
+      window.setTimeout(() => {
+        window.clearInterval(retry);
+        resolve();
+      }, 10000);
+      return;
+    }
+
     const script = document.createElement("script");
     script.id = "google-translate-script";
     script.async = true;
@@ -108,6 +128,7 @@ function loadGoogleTranslate(): Promise<void> {
     script.onerror = () => resolve();
     document.head.appendChild(script);
   });
+  return googleTranslateReady;
 }
 
 function selectGoogleLocale(locale: LocaleCode) {
@@ -117,6 +138,17 @@ function selectGoogleLocale(locale: LocaleCode) {
   const googleCode = LOCALE_REGISTRY.find((item) => item.code === locale)?.googleCode ?? "";
   combo.value = googleCode;
   combo.dispatchEvent(new Event("change"));
+}
+
+function selectGoogleLocaleWhenReady(locale: LocaleCode, attempts = 0) {
+  if (typeof window === "undefined") return;
+  const combo = document.querySelector(".goog-te-combo") as HTMLSelectElement | null;
+  if (combo) {
+    selectGoogleLocale(locale);
+    return;
+  }
+  if (attempts < 30)
+    window.setTimeout(() => selectGoogleLocaleWhenReady(locale, attempts + 1), 150);
 }
 
 interface LocaleContextValue {
@@ -143,9 +175,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       element.className = "google-translate-runtime";
       document.body.appendChild(element);
     }
-    void loadGoogleTranslate().then(() => {
-      window.setTimeout(() => selectGoogleLocale(locale), 150);
-    });
+    void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
   }, [locale]);
 
   useEffect(() => {
@@ -166,7 +196,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
         const definition = LOCALE_REGISTRY.find((item) => item.code === nextLocale);
         if (definition?.status === "supported") {
           setLocaleState(nextLocale);
-          window.setTimeout(() => selectGoogleLocale(nextLocale), 250);
+          window.setTimeout(() => selectGoogleLocaleWhenReady(nextLocale), 250);
         }
       },
       setCulture: setCultureState,
