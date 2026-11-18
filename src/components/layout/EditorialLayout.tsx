@@ -11,7 +11,9 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { getEditorialHomepage, getEditorialPosts } from "@/features/editorial/server";
+import { STUDIO_CHANGE_EVENT, type HomepageSettings } from "@/features/editorial/studio";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
 import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
@@ -28,9 +30,50 @@ const slugify = (label: string) =>
 export function EditorialLayout({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tickerLabel, setTickerLabel] = useState("Latest");
+  const [tickerItems, setTickerItems] = useState<Array<{ title: string; slug: string }>>([]);
   const routeKey = useRouterState({
     select: (state) => `${state.location.pathname}:${JSON.stringify(state.location.search)}`,
   });
+
+  useEffect(() => {
+    let active = true;
+    const refreshTicker = async () => {
+      const [homepage, posts] = await Promise.all([getEditorialHomepage(), getEditorialPosts()]);
+      if (!active) return;
+      const settings: HomepageSettings = homepage.settings;
+      const matchesTaxonomy = (post: (typeof posts)[number]) =>
+        settings.secondaryTickerTaxonomy === "all" ||
+        post.category === settings.secondaryTickerTaxonomy ||
+        post.categoryPath.includes(settings.secondaryTickerTaxonomy);
+      setTickerLabel(settings.primaryTickerLabel);
+      setTickerItems(
+        posts
+          .filter(matchesTaxonomy)
+          .slice(0, 12)
+          .map((post) => ({ title: post.title, slug: post.slug })),
+      );
+    };
+    void refreshTicker();
+    window.addEventListener(STUDIO_CHANGE_EVENT, refreshTicker);
+    return () => {
+      active = false;
+      window.removeEventListener(STUDIO_CHANGE_EVENT, refreshTicker);
+    };
+  }, []);
+
+  const visibleTickerItems =
+    tickerItems.length > 0
+      ? tickerItems
+      : [
+          { title: "FRSC commends Dangote Cement on new transport safety policy", slug: "" },
+          {
+            title:
+              "UAE envoy: First Abu Dhabi Bank, Etihad Airways will begin Nigeria operations soon",
+            slug: "",
+          },
+          { title: "US-Nigeria air strike kills ‘21 ISWAP fighters’ in Borno", slug: "" },
+        ];
 
   return (
     <div
@@ -102,20 +145,22 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
-            Latest
+            {tickerLabel}
           </span>
           <div className="editorial-ticker flex min-w-0 flex-1 overflow-hidden">
             <div className="editorial-ticker-track flex min-w-max gap-8 pr-8">
               {[...Array(2)]
-                .flatMap(() => [
-                  "FRSC commends Dangote Cement on new transport safety policy",
-                  "UAE envoy: First Abu Dhabi Bank, Etihad Airways will begin Nigeria operations soon",
-                  "US-Nigeria air strike kills ‘21 ISWAP fighters’ in Borno",
-                ])
+                .flatMap(() => visibleTickerItems)
                 .map((item, index) => (
-                  <span key={`${item}-${index}`} className="whitespace-nowrap">
-                    {item}
-                  </span>
+                  <a
+                    key={`${item.title}-${index}`}
+                    href={item.slug ? `/articles/${item.slug}` : "/archive"}
+                    className="whitespace-nowrap hover:text-[#7a2ce2]"
+                    aria-hidden={index >= visibleTickerItems.length}
+                    tabIndex={index >= visibleTickerItems.length ? -1 : undefined}
+                  >
+                    {item.title}
+                  </a>
                 ))}
             </div>
           </div>
