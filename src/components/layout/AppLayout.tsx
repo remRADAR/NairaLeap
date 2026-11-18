@@ -59,8 +59,8 @@ function Header({ compact = false }: { compact?: boolean }) {
         <div className="glass-panel relative flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link to="/services" aria-label="Nairaleap - Service Portal" className="min-w-0 shrink-0">
             <img
-              src="/nairaleap-wordmark.png"
-              alt="Nairaleap - Service Portal"
+              src="/nairaleap-3d-logo.png"
+              alt="NairaLeap.com - Service Portal"
               className="block h-10 w-[10rem] max-w-full object-contain object-left sm:h-11 sm:w-[13rem]"
             />
           </Link>

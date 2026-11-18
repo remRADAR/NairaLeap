@@ -11,10 +11,14 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { getEditorialHomepage, getEditorialPosts } from "@/features/editorial/server";
+import { STUDIO_CHANGE_EVENT, type HomepageSettings } from "@/features/editorial/studio";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
 import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
+import { NigeriaDateTime } from "../ui/NigeriaDateTime";
+import { TranslatorDialog } from "../ui/TranslatorDialog";
 
 const slugify = (label: string) =>
   label
@@ -26,9 +30,50 @@ const slugify = (label: string) =>
 export function EditorialLayout({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tickerLabel, setTickerLabel] = useState("Latest");
+  const [tickerItems, setTickerItems] = useState<Array<{ title: string; slug: string }>>([]);
   const routeKey = useRouterState({
     select: (state) => `${state.location.pathname}:${JSON.stringify(state.location.search)}`,
   });
+
+  useEffect(() => {
+    let active = true;
+    const refreshTicker = async () => {
+      const [homepage, posts] = await Promise.all([getEditorialHomepage(), getEditorialPosts()]);
+      if (!active) return;
+      const settings: HomepageSettings = homepage.settings;
+      const matchesTaxonomy = (post: (typeof posts)[number]) =>
+        settings.secondaryTickerTaxonomy === "all" ||
+        post.category === settings.secondaryTickerTaxonomy ||
+        post.categoryPath.includes(settings.secondaryTickerTaxonomy);
+      setTickerLabel(settings.primaryTickerLabel);
+      setTickerItems(
+        posts
+          .filter(matchesTaxonomy)
+          .slice(0, 12)
+          .map((post) => ({ title: post.title, slug: post.slug })),
+      );
+    };
+    void refreshTicker();
+    window.addEventListener(STUDIO_CHANGE_EVENT, refreshTicker);
+    return () => {
+      active = false;
+      window.removeEventListener(STUDIO_CHANGE_EVENT, refreshTicker);
+    };
+  }, []);
+
+  const visibleTickerItems =
+    tickerItems.length > 0
+      ? tickerItems
+      : [
+          { title: "FRSC commends Dangote Cement on new transport safety policy", slug: "" },
+          {
+            title:
+              "UAE envoy: First Abu Dhabi Bank, Etihad Airways will begin Nigeria operations soon",
+            slug: "",
+          },
+          { title: "US-Nigeria air strike kills ‘21 ISWAP fighters’ in Borno", slug: "" },
+        ];
 
   return (
     <div
@@ -37,16 +82,12 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         dark && "editorial-dark",
       )}
     >
-      <div className="border-b border-[#ececf3] bg-[#f9007a] px-4 py-2 text-center text-xs font-medium text-white">
-        Subscribe to our newsletter &amp; never miss our best posts.{" "}
-        <button className="ml-1 font-bold underline underline-offset-2">Subscribe Now!</button>
-      </div>
       <header className="border-b border-[#ededf4] bg-white">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link to="/" className="flex min-w-0 items-center" aria-label="Nairaleap blog home">
             <img
-              src="/nairaleap-wordmark.png"
-              alt="Nairaleap"
+              src="/nairaleap-3d-logo.png"
+              alt="NairaLeap.com"
               className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
               decoding="async"
             />
@@ -60,6 +101,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
+            <TranslatorDialog />
             <button
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -84,23 +126,41 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         </div>
         {menuOpen && <EditorialMenu onNavigate={() => setMenuOpen(false)} />}
       </header>
+      <div
+        data-testid="editorial-subscribe-bar"
+        className="border-b border-[#ececf3] bg-[#f9007a] px-3 py-2 text-white sm:px-6"
+      >
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2 sm:gap-4">
+          <NigeriaDateTime className="shrink-0 whitespace-nowrap text-[11px] font-medium leading-4 sm:text-xs md:text-[13px]" />
+          <div className="ml-auto flex min-w-0 items-center justify-end gap-1 text-right text-[9px] font-medium sm:gap-2 sm:text-xs">
+            <span className="hidden sm:inline">
+              Subscribe to our newsletter &amp; never miss our best posts.
+            </span>
+            <button type="button" className="shrink-0 font-bold underline underline-offset-2">
+              Subscribe Now!
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="border-b border-[#ececf3] bg-white py-2.5">
         <div className="mx-auto flex max-w-[1180px] items-center gap-3 overflow-hidden px-4 text-[11px] text-[#77778a] sm:px-6">
           <span className="shrink-0 rounded-full bg-[#eeedf7] px-2 py-1 font-bold text-[#6f23dd]">
-            Latest
+            {tickerLabel}
           </span>
           <div className="editorial-ticker flex min-w-0 flex-1 overflow-hidden">
             <div className="editorial-ticker-track flex min-w-max gap-8 pr-8">
               {[...Array(2)]
-                .flatMap(() => [
-                  "FRSC commends Dangote Cement on new transport safety policy",
-                  "UAE envoy: First Abu Dhabi Bank, Etihad Airways will begin Nigeria operations soon",
-                  "US-Nigeria air strike kills ‘21 ISWAP fighters’ in Borno",
-                ])
+                .flatMap(() => visibleTickerItems)
                 .map((item, index) => (
-                  <span key={`${item}-${index}`} className="whitespace-nowrap">
-                    {item}
-                  </span>
+                  <a
+                    key={`${item.title}-${index}`}
+                    href={item.slug ? `/articles/${item.slug}` : "/archive"}
+                    className="whitespace-nowrap hover:text-[#7a2ce2]"
+                    aria-hidden={index >= visibleTickerItems.length}
+                    tabIndex={index >= visibleTickerItems.length ? -1 : undefined}
+                  >
+                    {item.title}
+                  </a>
                 ))}
             </div>
           </div>

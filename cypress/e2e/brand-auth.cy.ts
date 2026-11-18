@@ -5,8 +5,8 @@ describe("canonical Nairaleap branding", () => {
     cy.title().should("eq", "Nairaleap - Service Portal");
     cy.get('header a[aria-label="Nairaleap - Service Portal"] img')
       .should("be.visible")
-      .and("have.attr", "src", "/nairaleap-wordmark.png")
-      .and("have.attr", "alt", "Nairaleap - Service Portal");
+      .and("have.attr", "src", "/nairaleap-3d-logo.png")
+      .and("have.attr", "alt", "NairaLeap.com - Service Portal");
     cy.get('header a[aria-label="Go to Nairaleap blog"]:visible')
       .should("be.visible")
       .and("have.attr", "href", "/");
@@ -15,7 +15,7 @@ describe("canonical Nairaleap branding", () => {
   });
 
   it("serves the favicon and manifest with the canonical icon family", () => {
-    cy.request("/favicon.ico?v=20260825-wordmark")
+    cy.request("/favicon.ico?v=20261114-3d-logo")
       .its("headers.content-type")
       .should("include", "image/x-icon");
 
@@ -27,13 +27,13 @@ describe("canonical Nairaleap branding", () => {
           src: "/icons/icon-192.png",
           sizes: "192x192",
           type: "image/png",
-          purpose: "any",
+          purpose: "any maskable",
         });
         expect(manifest.icons).to.deep.include({
           src: "/icons/icon-512.png",
           sizes: "512x512",
           type: "image/png",
-          purpose: "any",
+          purpose: "any maskable",
         });
       });
   });
@@ -48,7 +48,7 @@ describe("authentication branding and entry states", () => {
     cy.title().should("eq", "Nairaleap - Service Portal");
     cy.get('img[alt="Nairaleap - Service Portal"]')
       .should("be.visible")
-      .and("have.attr", "src", "/nairaleap-wordmark.png");
+      .and("have.attr", "src", "/nairaleap-3d-logo.png");
     cy.get("#auth-email").should("be.visible").and("have.attr", "autocomplete", "email");
     cy.get("#auth-password")
       .should("be.visible")
@@ -72,5 +72,16 @@ describe("authentication branding and entry states", () => {
     cy.get("#auth-password").should("be.visible");
 
     cy.screenshot("branding-auth-sign-up");
+  });
+});
+
+describe("homepage campaign advertising", () => {
+  it("renders the five-slide campaign carousel in the top advert slot", () => {
+    cy.visit("/");
+    cy.get('section[aria-label="Advertise with NairaLeap"] img').should("have.length", 5);
+    cy.get('section[aria-label="Advertise with NairaLeap"] button[aria-label^="Show "]').should(
+      "have.length",
+      5,
+    );
   });
 });
