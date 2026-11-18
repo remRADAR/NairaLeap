@@ -14,7 +14,7 @@ export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityContr
   const helpId = useId();
   const isPortal = theme === "portal";
   const isToolbar = theme === "toolbar";
-  const { locale, locales, setLocale, t } = useLocale();
+  const { locale, locales, ensureTranslator, setLocale, t } = useLocale();
 
   return (
     <div className={`shrink-0 ${isToolbar ? "site-translator-control" : ""}`}>
@@ -34,6 +34,9 @@ export function LanguageAvailabilityControl({ theme }: LanguageAvailabilityContr
           aria-label="Interface language"
           data-testid="language-availability-select"
           value={locale}
+          onFocus={ensureTranslator}
+          onPointerDown={ensureTranslator}
+          onKeyDown={ensureTranslator}
           onChange={(event) => setLocale(event.target.value as typeof locale)}
           className={`max-w-[5.75rem] cursor-pointer appearance-none border-0 bg-transparent py-1 pr-0 text-[10px] outline-none ${
             isToolbar ? "text-white" : isPortal ? "text-foreground" : "text-[#626277]"

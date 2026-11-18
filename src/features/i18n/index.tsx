@@ -85,8 +85,20 @@ function readStoredLocale(): LocaleCode {
 
 let googleTranslateReady: Promise<void> | null = null;
 
+function ensureGoogleTranslateRoot() {
+  if (typeof document === "undefined") return;
+  if (document.getElementById("google_translate_element")) return;
+
+  const element = document.createElement("div");
+  element.id = "google_translate_element";
+  element.setAttribute("aria-hidden", "true");
+  element.className = "google-translate-runtime";
+  document.body.appendChild(element);
+}
+
 function loadGoogleTranslate(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
+  ensureGoogleTranslateRoot();
   if (window.google?.translate) return Promise.resolve();
   if (googleTranslateReady) return googleTranslateReady;
 
@@ -155,6 +167,7 @@ interface LocaleContextValue {
   locale: LocaleCode;
   culture: CultureCode;
   locales: readonly LocaleDefinition[];
+  ensureTranslator: () => void;
   setLocale: (nextLocale: LocaleCode) => void;
   setCulture: (nextCulture: CultureCode) => void;
   t: typeof COPY;
@@ -165,18 +178,6 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<LocaleCode>(readStoredLocale);
   const [culture, setCultureState] = useState<CultureCode>("neutral");
-
-  useEffect(() => {
-    const translateRoot = document.getElementById("google_translate_element");
-    if (!translateRoot) {
-      const element = document.createElement("div");
-      element.id = "google_translate_element";
-      element.setAttribute("aria-hidden", "true");
-      element.className = "google-translate-runtime";
-      document.body.appendChild(element);
-    }
-    void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
-  }, [locale]);
 
   useEffect(() => {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
@@ -192,9 +193,13 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       locale,
       culture,
       locales: LOCALE_REGISTRY,
+      ensureTranslator: () => {
+        void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
+      },
       setLocale: (nextLocale) => {
         const definition = LOCALE_REGISTRY.find((item) => item.code === nextLocale);
         if (definition?.status === "supported") {
+          void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(nextLocale));
           setLocaleState(nextLocale);
           window.setTimeout(() => selectGoogleLocaleWhenReady(nextLocale), 250);
         }
