@@ -7,7 +7,18 @@ describe("Admin Studio access boundary", () => {
     cy.contains("h1", "Admin Studio sign in").should("be.visible");
     cy.get('input[autocomplete="username"]').should("be.visible");
     cy.get('input[autocomplete="current-password"]').should("be.visible");
-    cy.contains("button", "Open Admin Studio").should("be.visible");
+    cy.contains("button", "Open Admin Studio")
+      .should("be.visible")
+      .then(($button) => {
+        cy.get("body").then(($body) => {
+          const missingConfiguration = $body.text().includes("not configured in this deployment");
+          if (missingConfiguration) {
+            cy.wrap($button).should("be.disabled");
+          } else {
+            cy.wrap($button).should("not.be.disabled");
+          }
+        });
+      });
     cy.contains("Open the service portal sign in").should("have.attr", "href", "/auth");
   });
 
