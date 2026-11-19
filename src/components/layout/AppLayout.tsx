@@ -59,14 +59,20 @@ function Header({ compact = false }: { compact?: boolean }) {
         <div className="glass-panel relative flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link
             to="/services"
-            aria-label="NairaLeap — Indicator Drivers"
-            className="min-w-0 shrink-0"
+            aria-label="NairaLeap — Services Portal"
+            className="flex min-w-0 shrink-0 flex-col items-start"
           >
             <img
-              src="/nairaleap-3d-logo.png"
-              alt="NairaLeap.com - Service Portal"
-              className="block h-10 w-[10rem] max-w-full object-contain object-left sm:h-11 sm:w-[13rem]"
+              src="/nairaleap-3d-logo.png?v=20261119-official-logo"
+              alt="NairaLeap — Services Portal"
+              className="block h-8 w-[8rem] max-w-full object-contain object-left sm:h-10 sm:w-[11rem]"
             />
+            <span
+              data-testid="services-portal-badge"
+              className="mt-0.5 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-[9px] font-semibold leading-none text-primary-glow"
+            >
+              Services Portal
+            </span>
           </Link>
 
           <div
@@ -93,10 +99,18 @@ function Header({ compact = false }: { compact?: boolean }) {
             >
               Admin
             </a>
+            <details data-testid="portal-language-menu" className="relative shrink-0">
+              <summary className="portal-nav-link cursor-pointer list-none rounded-lg px-3 py-2 text-foreground hover:bg-surface-elevated">
+                Language
+              </summary>
+              <div className="absolute right-0 top-full z-50 mt-2 rounded-xl border border-glass-border bg-background p-3 shadow-xl">
+                <LanguageAvailabilityControl theme="portal" />
+              </div>
+            </details>
             <Link
               to="/"
-              aria-label="Go to NairaLeap editorial site"
-              title="Go to NairaLeap editorial site"
+              aria-label="Go to Indicator Drivers"
+              title="Go to Indicator Drivers"
               className="portal-nav-link grid h-9 w-9 shrink-0 place-items-center rounded-lg text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.98]"
             >
               <BookOpen className="h-4 w-4" aria-hidden="true" />
@@ -106,8 +120,8 @@ function Header({ compact = false }: { compact?: boolean }) {
           <div className={cn("flex items-center gap-2", !compact && "lg:hidden")}>
             <Link
               to="/"
-              aria-label="Go to NairaLeap editorial site"
-              title="Go to NairaLeap editorial site"
+              aria-label="Go to Indicator Drivers"
+              title="Go to Indicator Drivers"
               className="portal-nav-link grid h-10 w-10 place-items-center rounded-xl border border-glass-border bg-glass text-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated active:translate-y-0 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <BookOpen className="h-5 w-5" aria-hidden="true" />
@@ -130,42 +144,44 @@ function Header({ compact = false }: { compact?: boolean }) {
             open ? "mt-2 max-h-[75vh] opacity-100" : "max-h-0 opacity-0",
           )}
         >
-          <nav
-            aria-label={compact ? "Portal menu" : "Mobile"}
-            className="glass-panel flex max-h-[70vh] flex-col overflow-y-auto p-2 text-sm"
-          >
-            <div className="border-b border-glass-border px-3 py-3">
-              <LanguageAvailabilityControl theme="portal" />
-            </div>
-            <Link
-              to="/services"
-              onClick={closeMenus}
-              className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
+          {open && (
+            <nav
+              aria-label="Portal menu"
+              className="glass-panel flex max-h-[70vh] flex-col overflow-y-auto p-2 text-sm"
             >
-              Services
-            </Link>
-            <Link
-              to="/"
-              onClick={closeMenus}
-              className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
-            >
-              Blog
-            </Link>
-            <Link
-              to={user ? "/dashboard" : "/auth"}
-              onClick={closeMenus}
-              className="portal-nav-link rounded-lg px-3 py-3 text-foreground"
-            >
-              {user ? "Dashboard" : "Sign in"}
-            </Link>
-            <a
-              href="/admin"
-              onClick={closeMenus}
-              className="portal-nav-link rounded-lg px-3 py-3 text-primary-glow"
-            >
-              Admin
-            </a>
-          </nav>
+              <Link
+                to="/services"
+                onClick={closeMenus}
+                className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
+              >
+                Services
+              </Link>
+              <Link
+                to="/"
+                onClick={closeMenus}
+                className="portal-nav-link rounded-lg px-3 py-3 font-semibold text-foreground"
+              >
+                Blog
+              </Link>
+              <Link
+                to={user ? "/dashboard" : "/auth"}
+                onClick={closeMenus}
+                className="portal-nav-link rounded-lg px-3 py-3 text-foreground"
+              >
+                {user ? "Dashboard" : "Sign in"}
+              </Link>
+              <a
+                href="/admin"
+                onClick={closeMenus}
+                className="portal-nav-link rounded-lg px-3 py-3 text-primary-glow"
+              >
+                Admin
+              </a>
+              <div className="border-t border-glass-border px-3 py-3">
+                <LanguageAvailabilityControl theme="portal" />
+              </div>
+            </nav>
+          )}
         </div>
       </div>
     </header>
@@ -239,7 +255,7 @@ function Footer() {
         ))}
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-6">
-        <p>© {new Date().getFullYear()} NairaLeap — Indicator Drivers</p>
+        <p>© {new Date().getFullYear()} NairaLeap — Services Portal</p>
         <p>Connected to the main NairaLeap website</p>
       </div>
     </footer>

@@ -3,6 +3,12 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { getCurrentUser } from "@/features/auth/server";
 
 export const Route = createFileRoute("/_authenticated")({
+  head: () => ({
+    meta: [
+      { title: "NairaLeap — Services Portal" },
+      { property: "og:title", content: "NairaLeap — Services Portal" },
+    ],
+  }),
   beforeLoad: async () => {
     const { user } = await getCurrentUser();
     if (!user) {

@@ -100,6 +100,8 @@ function EditorialHomePage() {
     hero?.title,
     homepageSettings.primaryTickerLabel,
     secondaryTickerPosts.map((post) => `${post.slug}:${post.title}`).join("|"),
+    carouselPosts.map((post) => `${post.slug}:${post.title}`).join("|"),
+    ads.map((ad) => `${ad.slot}:${ad.label}:${ad.imageUrl}:${ad.altText}:${ad.enabled}`).join("|"),
   ].join("|");
 
   useEffect(() => {

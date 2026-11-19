@@ -14,6 +14,12 @@ import {
 import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 
 export const Route = createFileRoute("/services")({
+  head: () => ({
+    meta: [
+      { title: "NairaLeap — Services Portal" },
+      { property: "og:title", content: "NairaLeap — Services Portal" },
+    ],
+  }),
   component: LandingPage,
 });
 

@@ -8,7 +8,8 @@ import { SERVICE_CATALOG, type ServiceId } from "@/features/services/serviceCata
 export const Route = createFileRoute("/_authenticated/requests")({
   head: () => ({
     meta: [
-      { title: "My Requests — NairaLeap" },
+      { title: "My Requests — NairaLeap — Services Portal" },
+      { property: "og:title", content: "My Requests — NairaLeap — Services Portal" },
       {
         name: "description",
         content: "Track the service requests you have submitted to NairaLeap.",
@@ -37,6 +38,12 @@ function RequestsPage() {
   return (
     <main className="min-h-dvh bg-background pb-20 text-foreground">
       <Container className="py-8 sm:py-12">
+        <p
+          data-testid="services-portal-badge"
+          className="mb-4 inline-flex rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-glow"
+        >
+          Services Portal
+        </p>
         <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <Link to="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">

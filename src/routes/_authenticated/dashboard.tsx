@@ -9,7 +9,8 @@ import { SERVICE_CATALOG } from "@/features/services/serviceCatalog";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — NairaLeap" },
+      { title: "Dashboard — NairaLeap — Services Portal" },
+      { property: "og:title", content: "Dashboard — NairaLeap — Services Portal" },
       {
         name: "description",
         content: "Manage your NairaLeap profile and continue service requests.",
@@ -39,13 +40,19 @@ function DashboardPage() {
   return (
     <main className="min-h-dvh bg-background pb-20 text-foreground">
       <Container className="py-8 sm:py-12">
+        <p
+          data-testid="services-portal-badge"
+          className="mb-4 inline-flex rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-glow"
+        >
+          Services Portal
+        </p>
         <header className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <Link
               to="/"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              ← Back to portal
+              ← Back to Services Portal
             </Link>
             <div className="mt-5 flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-2xl gradient-brand text-primary-foreground shadow-[var(--shadow-glow)]">

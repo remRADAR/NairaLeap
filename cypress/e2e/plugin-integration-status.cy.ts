@@ -1,26 +1,28 @@
 describe("full-site translation", () => {
-  it("shows the full-site translation control before the editorial header", () => {
+  it("shows the language selector in the editorial menu", () => {
     cy.visit("/");
-    cy.get(".site-translator-bar")
-      .should("be.visible")
-      .and("contain.text", "Translate the entire site");
-    cy.get('[data-testid="language-availability-select"]')
-      .should("have.value", "en")
-      .and("have.attr", "aria-describedby");
-    cy.get('[data-testid="language-availability-select"] option[value="hau"]').should(
-      "not.be.disabled",
-    );
-    cy.get('[data-testid="language-availability-select"] option[value="ibo"]').should(
-      "not.be.disabled",
-    );
-    cy.get('[data-testid="language-availability-select"] option[value="yor"]').should(
-      "not.be.disabled",
-    );
-    cy.get('[data-testid="language-availability-select"] option[value="tiv"]').should(
-      "be.disabled",
-    );
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get(".site-translator-bar").should("not.exist");
     cy.get('button[aria-label="Open menu"]').click();
     cy.get('nav[aria-label="Editorial menu"]').within(() => {
+      cy.get('[data-testid="language-availability-select"]')
+        .should("have.value", "en")
+        .and("have.attr", "aria-describedby");
+      cy.get('[data-testid="language-availability-select"] option[value="hau"]').should(
+        "not.be.disabled",
+      );
+      cy.get('[data-testid="language-availability-select"] option[value="ibo"]').should(
+        "not.be.disabled",
+      );
+      cy.get('[data-testid="language-availability-select"] option[value="yor"]').should(
+        "not.be.disabled",
+      );
+      cy.get('[data-testid="language-availability-select"] option[value="tiv"]').should(
+        "not.be.disabled",
+      );
+      cy.get('[data-testid="language-availability-select"] option[value="pcm"]').should(
+        "be.disabled",
+      );
       cy.contains("NairaLeap services").should("be.visible");
       cy.contains("Admin Studio").should("be.visible");
     });
@@ -35,15 +37,39 @@ describe("full-site translation", () => {
     cy.contains("a", "Services").should("be.visible");
   });
 
-  it("keeps the full-site translation control available on mobile", () => {
+  it("keeps the translator inside the Services Portal menu on mobile", () => {
     cy.viewport(390, 844);
     cy.visit("/services");
     cy.get('[data-app-hydrated="true"]').should("exist");
-    cy.get(".site-translator-bar").should("be.visible");
-    cy.get('[data-testid="language-availability-select"]')
+    cy.get(".site-translator-bar").should("not.exist");
+    cy.get('button[aria-label="Open menu"]').click();
+    cy.get('nav[aria-label="Portal menu"]').within(() => {
+      cy.get('[data-testid="language-availability-select"]')
+        .should("be.visible")
+        .and("have.value", "en");
+      cy.get('option[value="hau"]').should("not.be.disabled");
+    });
+  });
+
+  it("keeps the desktop Services Portal translator inside its dropdown", () => {
+    cy.viewport(1280, 800);
+    cy.visit("/services");
+    cy.get('[data-app-hydrated="true"]').should("exist");
+    cy.get('[data-testid="portal-language-menu"] summary').click();
+    cy.get('[data-testid="portal-language-menu"] [data-testid="language-availability-select"]')
       .should("be.visible")
       .and("have.value", "en");
-    cy.get('option[value="hau"]').should("not.be.disabled");
+  });
+
+  it("keeps only the Call for writers CTA copy in the editorial top bar", () => {
+    cy.visit("/");
+    cy.get('[data-testid="editorial-writers-bar"] p').should("have.text", "Call for writers");
+    cy.get('[data-testid="editorial-clock"]').should("not.be.empty");
+    cy.get('[data-testid="editorial-writers-bar"]').should(
+      "have.css",
+      "background-color",
+      "rgb(111, 35, 221)",
+    );
   });
 
   it("restores a supported stored locale", () => {
@@ -53,7 +79,8 @@ describe("full-site translation", () => {
       },
     });
     cy.get('[data-app-hydrated="true"]').should("exist");
-    cy.get('[data-testid="language-availability-select"]')
+    cy.get('[data-testid="portal-language-menu"] summary').click();
+    cy.get('[data-testid="portal-language-menu"] [data-testid="language-availability-select"]')
       .should("have.value", "hau")
       .find('option[value="hau"]')
       .should("not.be.disabled");

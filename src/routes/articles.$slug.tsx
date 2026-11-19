@@ -11,7 +11,11 @@ export const Route = createFileRoute("/articles/$slug")({
     const post = await getEditorialPostBySlug({ data: { slug: params.slug } });
     return {
       meta: [
-        { title: post ? `${post.title} — Nairaleap` : "Article — Nairaleap" },
+        {
+          title: post
+            ? `${post.title} — NairaLeap — Indicator Drivers`
+            : "Article — NairaLeap — Indicator Drivers",
+        },
         {
           name: "description",
           content: post?.excerpt ?? "Read the latest Nairaleap indicator story.",

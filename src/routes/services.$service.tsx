@@ -11,8 +11,14 @@ export const Route = createFileRoute("/services/$service")({
       meta: [
         {
           title: service
-            ? `${service.title} — NairaLeap — Indicator Drivers`
-            : "Service — NairaLeap — Indicator Drivers",
+            ? `${service.title} — NairaLeap — Services Portal`
+            : "Service — NairaLeap — Services Portal",
+        },
+        {
+          property: "og:title",
+          content: service
+            ? `${service.title} — NairaLeap — Services Portal`
+            : "Service — NairaLeap — Services Portal",
         },
         {
           name: "description",

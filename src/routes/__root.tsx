@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import appCss from "../styles.css?url";
 import { AuthProvider } from "@/features/auth";
@@ -76,13 +76,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "application-name", content: "NairaLeap" },
-      { name: "apple-mobile-web-app-title", content: "NairaLeap" },
+      { name: "application-name", content: "NairaLeap — Indicator Drivers" },
+      { name: "apple-mobile-web-app-title", content: "NairaLeap — Indicator Drivers" },
       { title: "NairaLeap — Indicator Drivers" },
       {
         name: "description",
         content:
-          "Discover NairaLeap services, get guided onboarding, and submit structured service requests.",
+          "NairaLeap — Indicator Drivers: insight, opportunity, and editorial coverage across Nigeria.",
       },
       { name: "theme-color", content: "#1a0b2e" },
       { name: "mobile-web-app-capable", content: "yes" },
@@ -90,30 +90,60 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "NairaLeap — Indicator Drivers" },
       {
         property: "og:description",
-        content:
-          "NairaLeap — Indicator Drivers: insight, opportunity and guided services for Nigeria.",
+        content: "Editorial insights, opportunities, and indicator reporting across Nigeria.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://nairaleap.com/nairaleap-3d-logo.png" },
-      { property: "og:image:width", content: "1024" },
-      { property: "og:image:height", content: "576" },
+      {
+        property: "og:image",
+        content: "https://nairaleap.com/nairaleap-3d-logo.png?v=20261119-official-logo",
+      },
+      { property: "og:image:width", content: "2536" },
+      { property: "og:image:height", content: "673" },
       { property: "og:image:type", content: "image/png" },
-      { property: "og:image:alt", content: "NairaLeap.com" },
+      { property: "og:image:alt", content: "Official NairaLeap.com — Indicator Drivers logo" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://nairaleap.com/nairaleap-3d-logo.png" },
-      { name: "twitter:image:alt", content: "NairaLeap.com" },
+      {
+        name: "twitter:image",
+        content: "https://nairaleap.com/nairaleap-3d-logo.png?v=20261119-official-logo",
+      },
+      { name: "twitter:image:alt", content: "Official NairaLeap.com — Indicator Drivers logo" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico?v=20261114-3d-logo", type: "image/x-icon" },
-      { rel: "icon", href: "/icons/favicon-16x16.png", type: "image/png", sizes: "16x16" },
-      { rel: "icon", href: "/icons/favicon-32x32.png", type: "image/png", sizes: "32x32" },
-      { rel: "icon", href: "/icons/favicon-48x48.png", type: "image/png", sizes: "48x48" },
-      { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png", sizes: "180x180" },
-      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "icon", href: "/favicon.ico?v=20261119-official-logo", type: "image/x-icon" },
+      {
+        rel: "icon",
+        href: "/icons/favicon-16x16.png?v=20261119-official-logo",
+        type: "image/png",
+        sizes: "16x16",
+      },
+      {
+        rel: "icon",
+        href: "/icons/favicon-32x32.png?v=20261119-official-logo",
+        type: "image/png",
+        sizes: "32x32",
+      },
+      {
+        rel: "icon",
+        href: "/icons/favicon-48x48.png?v=20261119-official-logo",
+        type: "image/png",
+        sizes: "48x48",
+      },
+      {
+        rel: "icon",
+        href: "/icons/favicon-96x96.png?v=20261119-official-logo",
+        type: "image/png",
+        sizes: "96x96",
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/icons/apple-touch-icon.png?v=20261119-official-logo",
+        sizes: "180x180",
+      },
+      { rel: "manifest", href: "/manifest.webmanifest?v=20261119-official-logo" },
     ],
     scripts: [
       {
@@ -124,7 +154,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           name: "NairaLeap",
           slogan: "Indicator Drivers",
           url: "https://nairaleap.com",
-          logo: "https://nairaleap.com/nairaleap-3d-logo.png",
+          logo: "https://nairaleap.com/nairaleap-3d-logo.png?v=20261119-official-logo",
         }),
       },
     ],
@@ -152,17 +182,24 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <LocaleProvider>
-        <AuthProvider>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <PageTransition>
-            <Outlet />
-          </PageTransition>
-        </AuthProvider>
-      </LocaleProvider>
-    </QueryClientProvider>
+    <div data-app-hydrated={hydrated ? "true" : "false"}>
+      <QueryClientProvider client={queryClient}>
+        <LocaleProvider>
+          <AuthProvider>
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
+          </AuthProvider>
+        </LocaleProvider>
+      </QueryClientProvider>
+    </div>
   );
 }

@@ -23,11 +23,7 @@ export type IntentId =
 
 /** Broad category used to group follow-up behaviour after intent is detected. */
 export type FollowUpCategory =
-  | "service-match"
-  | "guided-intake"
-  | "direct-to-service"
-  | "support-queue"
-  | "informational";
+  "service-match" | "guided-intake" | "direct-to-service" | "support-queue" | "informational";
 
 /** Priority level used to rank or order matched intents. */
 export type IntentPriority = "low" | "medium" | "high" | "critical";

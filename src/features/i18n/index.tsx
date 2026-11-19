@@ -1,3 +1,4 @@
+import { useRouterState } from "@tanstack/react-router";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 export type LocaleCode = "en" | "hau" | "ibo" | "yor" | "pcm" | "tiv";
@@ -33,7 +34,7 @@ export const CULTURE_STORAGE_KEY = "nairaleap.culture";
 // Keep the language registry in one place so the menu control and the full-page
 // Google Translate runtime always expose the same set of site languages.
 export const LOCALE_REGISTRY: readonly LocaleDefinition[] = [
-  { code: "en", label: "English", nativeLabel: "English", status: "supported" },
+  { code: "en", label: "English", nativeLabel: "English", googleCode: "en", status: "supported" },
   { code: "hau", label: "Hausa", nativeLabel: "Hausa", googleCode: "ha", status: "supported" },
   { code: "ibo", label: "Igbo", nativeLabel: "Igbo", googleCode: "ig", status: "supported" },
   { code: "yor", label: "Yoruba", nativeLabel: "Yorùbá", googleCode: "yo", status: "supported" },
@@ -42,7 +43,7 @@ export const LOCALE_REGISTRY: readonly LocaleDefinition[] = [
     label: "Nigerian Pidgin",
     nativeLabel: "Nigerian Pidgin",
     googleCode: "pcm",
-    status: "supported",
+    status: "unavailable",
   },
   { code: "tiv", label: "Tiv", nativeLabel: "Tiv", googleCode: "tiv", status: "supported" },
 ] as const;
@@ -60,7 +61,7 @@ export const COPY = {
   languageUnavailable: (language: string) =>
     `${language} translation is not available through Google Translate yet.`,
   languageStatus: (language: string) =>
-    `The entire site can be translated to ${language}. Page navigation and editorial content are translated in place; your entered form values are kept unchanged.`,
+    `Visible page text and navigation can be translated to ${language} in place. Form entries and text embedded in images remain unchanged.`,
   services: "Services",
   signIn: "Sign in",
   dashboard: "Dashboard",
@@ -84,6 +85,7 @@ function readStoredLocale(): LocaleCode {
 }
 
 let googleTranslateReady: Promise<void> | null = null;
+let googleLocaleRequestId = 0;
 
 function ensureGoogleTranslateRoot() {
   if (typeof document === "undefined") return;
@@ -108,7 +110,7 @@ function loadGoogleTranslate(): Promise<void> {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "ha,ig,yo,pcm,tiv",
+            includedLanguages: "ha,ig,yo,tiv",
             autoDisplay: false,
           },
           "google_translate_element",
@@ -147,9 +149,12 @@ function selectGoogleLocale(locale: LocaleCode) {
   if (typeof document === "undefined") return;
   const combo = document.querySelector(".goog-te-combo") as HTMLSelectElement | null;
   if (!combo) return;
-  const googleCode = LOCALE_REGISTRY.find((item) => item.code === locale)?.googleCode ?? "";
+  const googleCode = LOCALE_REGISTRY.find((item) => item.code === locale)?.googleCode ?? "en";
+  if (googleCode === "en" && !Array.from(combo.options).some((option) => option.value === "en")) {
+    combo.add(new Option("English", "en"));
+  }
   combo.value = googleCode;
-  combo.dispatchEvent(new Event("change"));
+  combo.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
 function selectGoogleLocaleWhenReady(locale: LocaleCode, attempts = 0) {
@@ -161,6 +166,13 @@ function selectGoogleLocaleWhenReady(locale: LocaleCode, attempts = 0) {
   }
   if (attempts < 30)
     window.setTimeout(() => selectGoogleLocaleWhenReady(locale, attempts + 1), 150);
+}
+
+function applyGoogleLocale(locale: LocaleCode) {
+  const requestId = ++googleLocaleRequestId;
+  void loadGoogleTranslate().then(() => {
+    if (requestId === googleLocaleRequestId) selectGoogleLocaleWhenReady(locale);
+  });
 }
 
 interface LocaleContextValue {
@@ -179,11 +191,24 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<LocaleCode>(readStoredLocale);
   const [culture, setCultureState] = useState<CultureCode>("neutral");
+  const routeKey = useRouterState({
+    select: (state) => `${state.location.pathname}:${JSON.stringify(state.location.search)}`,
+  });
 
   useEffect(() => {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
     document.documentElement.lang = locale === "en" ? "en" : locale;
-  }, [locale]);
+    if (locale !== "en" || window.google?.translate) {
+      applyGoogleLocale(locale);
+      if (locale !== "en") {
+        const refreshTimers = [
+          window.setTimeout(() => applyGoogleLocale(locale), 0),
+          window.setTimeout(() => applyGoogleLocale(locale), 180),
+        ];
+        return () => refreshTimers.forEach((timer) => window.clearTimeout(timer));
+      }
+    }
+  }, [locale, routeKey]);
 
   useEffect(() => {
     window.localStorage.setItem(CULTURE_STORAGE_KEY, culture);
@@ -195,18 +220,14 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       culture,
       locales: LOCALE_REGISTRY,
       ensureTranslator: () => {
-        void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
+        applyGoogleLocale(locale);
       },
       refreshTranslation: () => {
-        void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(locale));
+        applyGoogleLocale(locale);
       },
       setLocale: (nextLocale) => {
         const definition = LOCALE_REGISTRY.find((item) => item.code === nextLocale);
-        if (definition?.status === "supported") {
-          void loadGoogleTranslate().then(() => selectGoogleLocaleWhenReady(nextLocale));
-          setLocaleState(nextLocale);
-          window.setTimeout(() => selectGoogleLocaleWhenReady(nextLocale), 250);
-        }
+        if (definition?.status === "supported") setLocaleState(nextLocale);
       },
       setCulture: setCultureState,
       t: COPY,

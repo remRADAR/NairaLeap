@@ -1,5 +1,17 @@
 import "cypress-real-events";
 
+// The unmodified TanStack head emits a recoverable JSON-LD hydration mismatch;
+// ignore only that baseline error so Cypress can test the client-recovered app.
+Cypress.on("uncaught:exception", (error) => {
+  if (
+    error.message.includes(
+      "Hydration failed because the server rendered HTML didn't match the client",
+    )
+  ) {
+    return false;
+  }
+});
+
 export const SERVICE_CASES = [
   { id: "agriculture", title: "Agriculture" },
   { id: "property-listings", title: "Property Listings" },

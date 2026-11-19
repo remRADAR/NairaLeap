@@ -17,11 +17,12 @@ import { getPendingGuideServiceId } from "@/features/service-intake/pendingGuide
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "NairaLeap — Indicator Drivers" },
+      { title: "Sign in — NairaLeap — Services Portal" },
       {
         name: "description",
         content: "Sign in or create a NairaLeap account to submit and track service requests.",
       },
+      { property: "og:title", content: "Sign in — NairaLeap — Services Portal" },
     ],
   }),
   component: AuthPage,
@@ -165,8 +166,8 @@ function AuthPage() {
                     <div>
                       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-glow">
                         <img
-                          src="/nairaleap-3d-logo.png"
-                          alt="NairaLeap.com - Service Portal"
+                          src="/nairaleap-3d-logo.png?v=20261119-official-logo"
+                          alt="NairaLeap — Services Portal"
                           className="block h-8 w-[11rem] object-contain object-left"
                         />
                         <span className="sr-only">Account</span>

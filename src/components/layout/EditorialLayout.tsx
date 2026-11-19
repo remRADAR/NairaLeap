@@ -12,9 +12,9 @@ import {
   Youtube,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { LanguageAvailabilityControl } from "@/components/ui/LanguageAvailabilityControl";
 import { WORDPRESS_MAIN_NAVIGATION } from "@/features/navigation-agent/wordpressMainNavigation";
 import { cn } from "@/lib/utils";
-import { LanguageAvailabilityControl } from "../ui/LanguageAvailabilityControl";
 
 const slugify = (label: string) =>
   label
@@ -63,7 +63,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
     >
       <div
         data-testid="editorial-writers-bar"
-        className="border-b border-[#ececf3] bg-[#f9007a] px-3 py-2 text-white sm:px-6"
+        className="border-b border-[#ececf3] bg-[#6f23dd] px-3 py-2 text-white sm:px-6"
       >
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2 sm:gap-4">
           <time
@@ -83,10 +83,6 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             )}
           </time>
           <p className="ml-auto min-w-0 text-right text-[9px] font-medium leading-4 sm:text-xs">
-            <span className="hidden sm:inline">
-              Call for writers: share your insight, investigation, or indicator story with
-              NairaLeap.{" "}
-            </span>
             <span className="font-bold underline underline-offset-2">Call for writers</span>
           </p>
         </div>
@@ -95,15 +91,21 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link
             to="/"
-            className="flex min-w-0 items-center"
+            className="flex min-w-0 flex-col items-start"
             aria-label="NairaLeap editorial site home"
           >
             <img
-              src="/nairaleap-3d-logo.png"
-              alt="NairaLeap.com"
+              src="/nairaleap-3d-logo.png?v=20261119-official-logo"
+              alt="NairaLeap — Indicator Drivers"
               className="h-8 w-auto max-w-[11rem] object-contain object-left sm:h-10 sm:max-w-[15rem]"
               decoding="async"
             />
+            <span
+              data-testid="indicator-drivers-badge"
+              className="mt-0.5 rounded-full bg-[#f1e9ff] px-2 py-0.5 text-[9px] font-bold leading-none text-[#6f23dd]"
+            >
+              Indicator Drivers
+            </span>
           </Link>
           <div className="flex items-center gap-2">
             <button
@@ -210,7 +212,6 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <LanguageAvailabilityControl theme="editorial" />
             <Link
               to="/services"
               onClick={onNavigate}
@@ -225,6 +226,7 @@ function EditorialMenu({ onNavigate }: { onNavigate: () => void }) {
             >
               Admin Studio
             </a>
+            <LanguageAvailabilityControl theme="editorial" />
           </div>
         </div>
         <div className="divide-y divide-[#eeeaf6] overflow-hidden rounded-xl border border-[#eeeaf6]">
