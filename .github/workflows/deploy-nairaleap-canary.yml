@@ -60,13 +60,13 @@ jobs:
             echo "Missing Preview environment secret: VITE_SUPABASE_PUBLISHABLE_KEY"
             exit 1
           }
-          # Supabase commonly displays the Project URL with a trailing slash.
-          # Normalize it once so the validated value is also used by the build.
+          # Normalize common dashboard copy/paste artifacts before validation.
+          VITE_SUPABASE_URL="$(printf '%s' "$VITE_SUPABASE_URL" | tr -d '\r\n' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'$//")"
           VITE_SUPABASE_URL="${VITE_SUPABASE_URL%/}"
           echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" >> "$GITHUB_ENV"
           case "$VITE_SUPABASE_URL" in
-            https://*.supabase.co) ;;
-            *) echo "VITE_SUPABASE_URL must be an https://<project>.supabase.co URL"; exit 1 ;;
+            https://odixzoveqjhovkgdcfta.supabase.co) ;;
+            *) echo "VITE_SUPABASE_URL must be https://odixzoveqjhovkgdcfta.supabase.co (optionally with one trailing slash)"; exit 1 ;;
           esac
 
       - name: TypeScript validation
