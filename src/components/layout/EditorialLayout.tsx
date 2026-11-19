@@ -83,12 +83,12 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             )}
           </time>
           <p className="ml-auto min-w-0 text-right text-[9px] font-medium leading-4 sm:text-xs">
-            <a
-              href="mailto:hello@nairaleap.com?subject=Writer%20pitch%20for%20NairaLeap"
+            <Link
+              to="/writers"
               className="font-bold underline underline-offset-2 hover:opacity-80"
             >
               Call for writers
-            </a>
+            </Link>
           </p>
         </div>
       </div>

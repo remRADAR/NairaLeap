@@ -9,6 +9,7 @@
     { "path": "/dashboard", "title": "Customer dashboard" },
     { "path": "/requests", "title": "Customer requests" },
     { "path": "/onboarding/$service", "title": "Service onboarding" },
+    { "path": "/writers", "title": "Writer onboarding and KYC" },
     { "path": "/insurance", "title": "Insurance" },
     { "path": "/mortgage", "title": "Mortgage" }
   ]

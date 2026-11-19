@@ -19,6 +19,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as MortgageRouteImport } from './routes/mortgage'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as WritersRouteImport } from './routes/writers'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated/requests'
 import { Route as ArticlesSlugRouteImport } from './routes/articles.$slug'
@@ -74,6 +75,11 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WritersRoute = WritersRouteImport.update({
+  id: '/writers',
+  path: '/writers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/insurance': typeof InsuranceRoute
   '/mortgage': typeof MortgageRoute
   '/services': typeof ServicesRouteWithChildren
+  '/writers': typeof WritersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/requests': typeof AuthenticatedRequestsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/insurance': typeof InsuranceRoute
   '/mortgage': typeof MortgageRoute
   '/services': typeof ServicesRouteWithChildren
+  '/writers': typeof WritersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/requests': typeof AuthenticatedRequestsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/insurance': typeof InsuranceRoute
   '/mortgage': typeof MortgageRoute
   '/services': typeof ServicesRouteWithChildren
+  '/writers': typeof WritersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/mortgage'
     | '/services'
+    | '/writers'
     | '/dashboard'
     | '/requests'
     | '/articles/$slug'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/mortgage'
     | '/services'
+    | '/writers'
     | '/dashboard'
     | '/requests'
     | '/articles/$slug'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/mortgage'
     | '/services'
+    | '/writers'
     | '/_authenticated/dashboard'
     | '/_authenticated/requests'
     | '/articles/$slug'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   InsuranceRoute: typeof InsuranceRoute
   MortgageRoute: typeof MortgageRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  WritersRoute: typeof WritersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/writers': {
+      id: '/writers'
+      path: '/writers'
+      fullPath: '/writers'
+      preLoaderRoute: typeof WritersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -377,6 +397,7 @@ const rootRouteChildren: RootRouteChildren = {
   InsuranceRoute: InsuranceRoute,
   MortgageRoute: MortgageRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  WritersRoute: WritersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
