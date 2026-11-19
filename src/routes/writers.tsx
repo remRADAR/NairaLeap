@@ -95,8 +95,8 @@ function WritersOnboardingPage() {
                 Your details are used for contributor verification and editorial follow-up.
               </p>
               <p className="flex gap-3">
-                <CheckCircle2 className="h-5 w-5 shrink-0 text-[#d5b8ff]" aria-hidden="true" />
-                A completed application is handed to the NairaLeap editorial email workflow.
+                <CheckCircle2 className="h-5 w-5 shrink-0 text-[#d5b8ff]" aria-hidden="true" />A
+                completed application is handed to the NairaLeap editorial email workflow.
               </p>
             </div>
           </section>
@@ -107,8 +107,8 @@ function WritersOnboardingPage() {
                 <CheckCircle2 className="h-12 w-12 text-[#6f23dd]" aria-hidden="true" />
                 <h2 className="mt-5 text-3xl font-black text-[#24103e]">Application prepared</h2>
                 <p className="mt-3 max-w-md leading-7 text-[#686477]">
-                  Your email app should now be open with the completed application. Send it to finish
-                  the handoff to the NairaLeap editorial team.
+                  Your email app should now be open with the completed application. Send it to
+                  finish the handoff to the NairaLeap editorial team.
                 </p>
                 <a
                   href="mailto:hello@nairaleap.com?subject=NairaLeap%20writer%20onboarding%20application"
@@ -132,10 +132,32 @@ function WritersOnboardingPage() {
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Full name *" value={form.fullName} required onChange={(v) => update("fullName", v)} />
-                  <Field label="Email address *" type="email" value={form.email} required onChange={(v) => update("email", v)} />
-                  <Field label="Phone number *" type="tel" value={form.phone} required onChange={(v) => update("phone", v)} />
-                  <Field label="City / state *" value={form.location} required onChange={(v) => update("location", v)} />
+                  <Field
+                    label="Full name *"
+                    value={form.fullName}
+                    required
+                    onChange={(v) => update("fullName", v)}
+                  />
+                  <Field
+                    label="Email address *"
+                    type="email"
+                    value={form.email}
+                    required
+                    onChange={(v) => update("email", v)}
+                  />
+                  <Field
+                    label="Phone number *"
+                    type="tel"
+                    value={form.phone}
+                    required
+                    onChange={(v) => update("phone", v)}
+                  />
+                  <Field
+                    label="City / state *"
+                    value={form.location}
+                    required
+                    onChange={(v) => update("location", v)}
+                  />
                 </div>
 
                 <div className="rounded-2xl border border-[#eadff8] bg-[#fbf9ff] p-5">
@@ -153,19 +175,38 @@ function WritersOnboardingPage() {
                         className="mt-2 w-full rounded-xl border border-[#ddd2ed] bg-white px-3 py-3 font-normal outline-none focus:border-[#6f23dd]"
                       >
                         <option value="">Select one</option>
-                        <option value="National Identity Number (NIN)">National Identity Number (NIN)</option>
+                        <option value="National Identity Number (NIN)">
+                          National Identity Number (NIN)
+                        </option>
                         <option value="International passport">International passport</option>
                         <option value="Drivers license">Driver&apos;s licence</option>
                         <option value="Voters card">Voter&apos;s card</option>
                       </select>
                     </label>
-                    <Field label="ID number *" value={form.idNumber} required onChange={(v) => update("idNumber", v)} />
+                    <Field
+                      label="ID number *"
+                      value={form.idNumber}
+                      required
+                      onChange={(v) => update("idNumber", v)}
+                    />
                   </div>
                 </div>
 
                 <div className="grid gap-5">
-                  <Field label="Areas of expertise *" value={form.expertise} required placeholder="e.g. business, technology, public policy" onChange={(v) => update("expertise", v)} />
-                  <Field label="Portfolio link" type="url" value={form.portfolio} placeholder="https://" onChange={(v) => update("portfolio", v)} />
+                  <Field
+                    label="Areas of expertise *"
+                    value={form.expertise}
+                    required
+                    placeholder="e.g. business, technology, public policy"
+                    onChange={(v) => update("expertise", v)}
+                  />
+                  <Field
+                    label="Portfolio link"
+                    type="url"
+                    value={form.portfolio}
+                    placeholder="https://"
+                    onChange={(v) => update("portfolio", v)}
+                  />
                   <label className="block text-sm font-semibold text-[#39334a]">
                     Proposed article or coverage idea *
                     <textarea
@@ -188,7 +229,10 @@ function WritersOnboardingPage() {
                     onChange={(event) => update("consent", event.target.checked)}
                     className="mt-1 h-4 w-4 accent-[#6f23dd]"
                   />
-                  <span>I consent to NairaLeap reviewing my identity and application for contributor access. *</span>
+                  <span>
+                    I consent to NairaLeap reviewing my identity and application for contributor
+                    access. *
+                  </span>
                 </label>
 
                 <button

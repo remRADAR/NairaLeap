@@ -83,10 +83,7 @@ export function EditorialLayout({ children }: { children: ReactNode }) {
             )}
           </time>
           <p className="ml-auto min-w-0 text-right text-[9px] font-medium leading-4 sm:text-xs">
-            <Link
-              to="/writers"
-              className="font-bold underline underline-offset-2 hover:opacity-80"
-            >
+            <Link to="/writers" className="font-bold underline underline-offset-2 hover:opacity-80">
               Call for writers
             </Link>
           </p>
