@@ -14,7 +14,9 @@ import type { NextWorkflow } from "@/features/service-intelligence-catalog";
 
 /** Stable identifier for a workflow definition. */
 export type WorkflowId =
-  "guided-service-request" | "support-request" | "informational-subscription";
+  | "guided-service-request"
+  | "support-request"
+  | "informational-subscription";
 
 /**
  * Modules that participate in the orchestrated sequence.

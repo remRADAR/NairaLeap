@@ -66,7 +66,11 @@ export type QuestionSetId = string;
 
 /** Stages a service request can flow into after the service preview. */
 export type NextWorkflow =
-  "guided-question-engine" | "document-upload" | "admin-review" | "auto-submit" | "support-queue";
+  | "guided-question-engine"
+  | "document-upload"
+  | "admin-review"
+  | "auto-submit"
+  | "support-queue";
 
 /** Icon identifier from the Lucide icon library. UI layers map this to a component. */
 export type IconName = string;
