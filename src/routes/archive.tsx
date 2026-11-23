@@ -1,4 +1,4 @@
-import { Link, createFileRoute, redirect } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Archive, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
@@ -18,13 +18,9 @@ type ArchiveSearch = { topic?: string };
 export const Route = createFileRoute("/archive")({
   validateSearch: (search): ArchiveSearch =>
     typeof search.topic === "string" ? { topic: search.topic } : {},
-  beforeLoad: ({ search }) => {
-    throw redirect({
-      to: "/articles",
-      search: { topic: search.topic, page: 1 },
-    });
-  },
-  loader: async () => ({ posts: await getEditorialPosts() }),
+  // Keep the legacy compatibility route bounded; the complete collection is available
+  // through the paginated /articles route and must not be serialized into one SSR response.
+  loader: async () => ({ posts: (await getEditorialPosts()).slice(0, 24) }),
   component: ArticleArchivePage,
 });
 
@@ -36,7 +32,7 @@ function ArticleArchivePage() {
     let active = true;
     const refresh = async () => {
       const nextPosts = await getEditorialPosts();
-      if (active) setAllPosts(withEditorialImageFallbacks(nextPosts));
+      if (active) setAllPosts(withEditorialImageFallbacks(nextPosts).slice(0, 24));
     };
     void refresh();
     window.addEventListener(STUDIO_CHANGE_EVENT, refresh);
