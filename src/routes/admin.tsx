@@ -11,6 +11,7 @@ import {
   BookOpen,
   CheckCircle2,
   ClipboardList,
+  ChevronDown,
   ChevronRight,
   Download,
   ExternalLink,
@@ -1044,10 +1045,122 @@ function ActionCard({
   );
 }
 
-const flattenCategoryBranch = (parentId: number, categories: StudioCategory[]): StudioCategory[] =>
-  categories
-    .filter((category) => category.parent === parentId)
-    .flatMap((category) => [category, ...flattenCategoryBranch(category.id, categories)]);
+function CategoryPicker({
+  categories,
+  value,
+  onChange,
+}: {
+  categories: StudioCategory[];
+  value: number;
+  onChange: (categoryId: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+  const roots = useMemo(() => categories.filter((category) => category.parent === 0), [categories]);
+  const selectedCategory = categories.find((category) => category.id === value) ?? roots[0];
+
+  const childrenOf = (parentId: number) =>
+    categories.filter((category) => category.parent === parentId);
+
+  const toggleExpanded = (categoryId: number) => {
+    setExpandedIds((current) => {
+      const next = new Set(current);
+      if (next.has(categoryId)) next.delete(categoryId);
+      else next.add(categoryId);
+      return next;
+    });
+  };
+
+  const expandSelectedPath = () => {
+    const next = new Set<number>();
+    let current = categories.find((category) => category.id === value);
+    while (current && current.parent !== 0) {
+      next.add(current.parent);
+      current = categories.find((category) => category.id === current?.parent);
+    }
+    setExpandedIds(next);
+  };
+
+  const renderCategory = (category: StudioCategory, depth: number): ReactNode => {
+    const children = childrenOf(category.id);
+    const hasChildren = children.length > 0;
+    const expanded = expandedIds.has(category.id);
+    const selected = category.id === value;
+
+    return (
+      <div key={category.id}>
+        <div
+          className={`flex items-center gap-1 rounded-lg px-2 py-1.5 transition ${selected ? "bg-[#f2ebff]" : "hover:bg-[#faf8ff]"}`}
+          style={{ paddingLeft: `${8 + depth * 18}px` }}
+        >
+          {hasChildren ? (
+            <button
+              type="button"
+              onClick={() => toggleExpanded(category.id)}
+              aria-label={`${expanded ? "Collapse" : "Expand"} ${category.name}`}
+              aria-expanded={expanded}
+              className="rounded-md p-1 text-[#7a2ce2] hover:bg-[#ece1ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a879e9]"
+            >
+              <ChevronRight
+                className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-90" : ""}`}
+              />
+            </button>
+          ) : (
+            <span className="w-6" aria-hidden="true" />
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              onChange(category.id);
+              setOpen(false);
+            }}
+            className={`min-w-0 flex-1 truncate text-left text-xs ${selected ? "font-extrabold text-[#6f23dd]" : "font-semibold text-[#4d4d60]"}`}
+          >
+            {category.name}
+          </button>
+          {selected && <span className="text-[10px] font-bold text-[#7a2ce2]">Selected</span>}
+        </div>
+        {hasChildren && expanded && (
+          <div>{children.map((child) => renderCategory(child, depth + 1))}</div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => {
+          if (!open) expandSelectedPath();
+          setOpen((current) => !current);
+        }}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="studio-input flex w-full items-center justify-between gap-3 text-left"
+      >
+        <span className="min-w-0 truncate">
+          {selectedCategory?.path.join(" / ") ?? "Choose a category"}
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-[#7a2ce2] transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div
+          role="listbox"
+          aria-label="Article categories"
+          className="absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-[#e5dff0] bg-white p-2 shadow-[0_16px_35px_rgba(43,25,79,0.14)]"
+        >
+          <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#9a91a8]">
+            Browse categories
+          </p>
+          {roots.map((root) => renderCategory(root, 0))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ArticleStudio({
   articles,
@@ -1059,14 +1172,6 @@ function ArticleStudio({
   onSaved: () => void;
 }) {
   const roots = useMemo(() => categories.filter((category) => category.parent === 0), [categories]);
-  const categoryGroups = useMemo(
-    () =>
-      roots.map((root) => ({
-        root,
-        options: [root, ...flattenCategoryBranch(root.id, categories)],
-      })),
-    [categories, roots],
-  );
   const [tagOptions, setTagOptions] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | StudioArticle["status"]>("all");
@@ -1358,23 +1463,7 @@ function ArticleStudio({
           </Field>
           <div className="grid gap-5 md:grid-cols-2">
             <Field label="Category">
-              <select
-                value={categoryId}
-                onChange={(event) => setCategoryId(Number(event.target.value))}
-                className="studio-input"
-              >
-                {categoryGroups.map(({ root, options }) => (
-                  <optgroup key={root.id} label={root.name}>
-                    {options.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.id === root.id
-                          ? category.name
-                          : `${"— ".repeat(Math.max(1, category.path.length - 1))}${category.name}`}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+              <CategoryPicker categories={categories} value={categoryId} onChange={setCategoryId} />
             </Field>
             <Field label="Author">
               <input
