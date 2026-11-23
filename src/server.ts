@@ -2,9 +2,14 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { publishDueEditorialArticles } from "./features/editorial/d1";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
+};
+
+type WorkerEnv = {
+  NAIRALEAP_DB?: D1Database;
 };
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
@@ -57,5 +62,29 @@ export default {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
     }
+  },
+
+  async scheduled(controller: ScheduledController, env: WorkerEnv, ctx: ExecutionContext) {
+    ctx.waitUntil(
+      (async () => {
+        if (!env.NAIRALEAP_DB) {
+          console.error("Scheduled editorial publishing skipped: NAIRALEAP_DB is unavailable.");
+          return;
+        }
+
+        try {
+          const publishedCount = await publishDueEditorialArticles(env.NAIRALEAP_DB);
+          console.log(
+            JSON.stringify({
+              event: "editorial.publish_due",
+              cron: controller.cron,
+              publishedCount,
+            }),
+          );
+        } catch (error) {
+          console.error("Scheduled editorial publishing failed.", error);
+        }
+      })(),
+    );
   },
 };

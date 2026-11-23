@@ -6,10 +6,15 @@ export const STUDIO_CATEGORIES_KEY = "nairaleap.studio.categories.v1";
 export const HOMEPAGE_SETTINGS_KEY = "nairaleap.studio.homepage.v1";
 export const STUDIO_CHANGE_EVENT = "nairaleap:studio-change";
 
+export type EditorialStatus = "draft" | "scheduled" | "published";
+
 export type StudioArticle = EditorialPost & {
-  status: "published";
+  status: EditorialStatus;
   author: string;
   updatedAt: string;
+  createdAt?: string;
+  publishAt?: string;
+  source?: "studio" | "legacy";
 };
 
 export type StudioCategory = EditorialCategory & {
@@ -182,11 +187,15 @@ export const createStudioArticle = (input: {
   tags: string[];
   image?: string;
   author: string;
+  status?: EditorialStatus;
+  publishAt?: string;
+  id?: number;
+  slug?: string;
 }): StudioArticle => {
   const now = new Date();
-  const slugBase = slugify(input.title) || `article-${now.getTime()}`;
+  const slugBase = input.slug?.trim() || slugify(input.title) || `article-${now.getTime()}`;
   return {
-    id: -now.getTime(),
+    id: input.id ?? -now.getTime(),
     slug: slugBase,
     title: input.title.trim(),
     date: new Intl.DateTimeFormat("en-US", {
@@ -204,8 +213,11 @@ export const createStudioArticle = (input: {
       : "<p></p>",
     sourceUrl: `/articles/${slugBase}`,
     image: input.image?.trim() || undefined,
-    status: "published",
+    status: input.status ?? "draft",
     author: input.author.trim() || "NairaLeap Editorial",
     updatedAt: now.toISOString(),
+    createdAt: now.toISOString(),
+    publishAt: input.publishAt,
+    source: "studio",
   };
 };

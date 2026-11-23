@@ -5,9 +5,10 @@ import { EDITORIAL_CATEGORIES } from "@/data/wordpressCategories";
 import { withEditorialImageFallbacks } from "@/features/editorial/images";
 import {
   deleteEditorialCategory,
-  findEditorialArticle,
+  findEditorialArticleOverride,
   getEditorialD1,
   listEditorialArticles,
+  listAllEditorialArticles,
   listEditorialCategories,
   mergeCategories,
   readEditorialHomepage,
@@ -132,14 +133,22 @@ const getWordPressPosts = async (): Promise<EditorialPost[]> => {
 const mergePublishedArticles = (base: EditorialPost[], saved: StudioArticle[]) => {
   const savedBySlug = new Map(saved.map((post) => [post.slug, post]));
   const remaining = base.filter((post) => !savedBySlug.has(post.slug));
-  return [...saved, ...remaining];
+  return [...saved.filter((post) => post.status === "published"), ...remaining];
 };
+
+const toLegacyStudioArticle = (post: EditorialPost): StudioArticle => ({
+  ...post,
+  status: "published",
+  author: "Imported WordPress archive",
+  updatedAt: "",
+  source: "legacy",
+});
 
 export const getEditorialPosts = createServerFn({ method: "GET" }).handler(async () => {
   const base = await getWordPressPosts();
   const db = await getEditorialD1();
   if (!db) return withEditorialImageFallbacks(base.map(toEditorialSummary));
-  const saved = await listEditorialArticles(db);
+  const saved = await listAllEditorialArticles(db);
   return withEditorialImageFallbacks(mergePublishedArticles(base, saved).map(toEditorialSummary));
 });
 
@@ -148,8 +157,11 @@ export const getEditorialPostBySlug = createServerFn({ method: "GET" })
   .validator((input: unknown) => editorialPostInput.parse(input))
   .handler(async ({ data }) => {
     const db = await getEditorialD1();
-    const saved = db ? await findEditorialArticle(db, data.slug) : null;
-    if (saved) return withEditorialImageFallbacks([saved])[0] ?? null;
+    const override = db ? await findEditorialArticleOverride(db, data.slug) : null;
+    if (override) {
+      if (override.status !== "published") return null;
+      return withEditorialImageFallbacks([override])[0] ?? null;
+    }
     const base = await getWordPressPosts();
     const post = base.find((item) => item.slug === data.slug);
     return post ? (withEditorialImageFallbacks([post])[0] ?? null) : null;
@@ -176,17 +188,25 @@ export const getEditorialStudioState = createServerFn({ method: "GET" }).handler
   const homepage = db
     ? await readEditorialHomepage(db)
     : { settings: DEFAULT_HOMEPAGE_SETTINGS, ads: DEFAULT_STUDIO_ADS };
-  const [articles, categories] = db
-    ? await Promise.all([listEditorialArticles(db), listEditorialCategories(db)])
+  const [savedArticles, categories] = db
+    ? await Promise.all([listAllEditorialArticles(db), listEditorialCategories(db)])
     : [[], []];
+  const savedSlugs = new Set(savedArticles.map((article) => article.slug));
+  const legacyArticles = (await getWordPressPosts())
+    .filter((article) => !savedSlugs.has(article.slug))
+    .map(toLegacyStudioArticle);
   return {
     ...homepage,
-    articles,
+    articles: [...savedArticles, ...legacyArticles],
     categories: mergeCategories(categories),
   };
 });
 
 const articleInput = z.object({
+  id: z.number().optional(),
+  slug: z.string().trim().min(1).max(240).optional(),
+  status: z.enum(["draft", "scheduled", "published"]).default("draft"),
+  publishAt: z.string().datetime().optional(),
   title: z.string().trim().min(1).max(240),
   category: z.object({
     id: z.number(),
@@ -203,19 +223,21 @@ const articleInput = z.object({
   image: z.string().max(1_500_000).optional(),
   author: z.string().trim().max(120),
 });
-export const publishEditorialArticle = createServerFn({ method: "POST" })
+export const saveEditorialArticle = createServerFn({ method: "POST" })
   .validator((input: unknown) => articleInput.parse(input))
   .handler(async ({ data }) => {
     await requireAdmin();
     const now = new Date();
     const slug =
+      data.slug ||
       data.title
         .toLowerCase()
         .replace(/&/g, "and")
         .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "") || `article-${now.getTime()}`;
+        .replace(/(^-|-$)/g, "") ||
+      `article-${now.getTime()}`;
     const article: StudioArticle = {
-      id: now.getTime(),
+      id: data.id ?? now.getTime(),
       slug,
       title: data.title,
       date: new Intl.DateTimeFormat("en-US", {
@@ -231,15 +253,28 @@ export const publishEditorialArticle = createServerFn({ method: "POST" })
       content: `<p>${data.content.trim().replace(/\n+/g, "</p><p>")}</p>`,
       sourceUrl: `/articles/${slug}`,
       image: data.image?.trim() || undefined,
-      status: "published",
+      status: data.status,
       author: data.author || "NairaLeap Editorial",
+      publishAt: data.status === "scheduled" ? data.publishAt : undefined,
+      createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
+      source: "studio",
     };
+    if (article.status === "scheduled" && !article.publishAt) {
+      throw new Error("Choose a future publish time for scheduled articles.");
+    }
+    if (
+      article.status === "scheduled" &&
+      new Date(article.publishAt ?? "").getTime() <= now.getTime()
+    ) {
+      throw new Error("Scheduled publish time must be in the future.");
+    }
     const db = await getEditorialD1();
     if (!db) throw new Error("Editorial persistence is not configured in this deployment.");
     await upsertEditorialArticle(db, article);
     return { article };
   });
+export const publishEditorialArticle = saveEditorialArticle;
 
 const homepageInput = z.object({
   settings: z.object({

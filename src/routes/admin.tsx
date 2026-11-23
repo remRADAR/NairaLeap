@@ -54,7 +54,7 @@ import {
 } from "@/features/editorial/studio";
 import {
   getEditorialStudioState,
-  publishEditorialArticle,
+  saveEditorialArticle,
   removeEditorialCategory,
   saveEditorialCategory,
   saveEditorialHomepage,
@@ -75,13 +75,7 @@ export const Route = createFileRoute("/admin")({
 
 type Workspace = "website" | "portal";
 type AdminView =
-  | "overview"
-  | "homepage"
-  | "articles"
-  | "categories"
-  | "services"
-  | "requests"
-  | "plugins";
+  "overview" | "homepage" | "articles" | "categories" | "services" | "requests" | "plugins";
 
 function AdminStudioPage() {
   const { signOut } = useAuth();
@@ -105,7 +99,11 @@ function AdminStudioPage() {
     setCategories(readStudioCategories());
     try {
       const remote = await getEditorialStudioState();
-      setArticles(remote.articles);
+      const remoteSlugs = new Set(remote.articles.map((article) => article.slug));
+      setArticles([
+        ...remote.articles,
+        ...readStudioArticles().filter((article) => !remoteSlugs.has(article.slug)),
+      ]);
       setCategories(remote.categories);
       setHomepage({ settings: remote.settings, ads: remote.ads });
     } catch {
@@ -206,7 +204,9 @@ function AdminStudioPage() {
             {view === "homepage" && workspace === "website" && (
               <HomepageStudio categories={categories} homepage={homepage} onSaved={setHomepage} />
             )}
-            {view === "articles" && <ArticleStudio categories={categories} onPublished={reload} />}
+            {view === "articles" && (
+              <ArticleStudio articles={articles} categories={categories} onSaved={reload} />
+            )}
             {view === "categories" && <CategoryStudio categories={categories} onChanged={reload} />}
             {view === "overview" && workspace === "portal" && <PortalOverview onView={setView} />}
             {view === "services" && <PortalServices />}
@@ -1044,16 +1044,35 @@ function ActionCard({
   );
 }
 
+const flattenCategoryBranch = (parentId: number, categories: StudioCategory[]): StudioCategory[] =>
+  categories
+    .filter((category) => category.parent === parentId)
+    .flatMap((category) => [category, ...flattenCategoryBranch(category.id, categories)]);
+
 function ArticleStudio({
+  articles,
   categories,
-  onPublished,
+  onSaved,
 }: {
+  articles: StudioArticle[];
   categories: StudioCategory[];
-  onPublished: () => void;
+  onSaved: () => void;
 }) {
-  const roots = categories.filter((category) => category.parent === 0);
+  const roots = useMemo(() => categories.filter((category) => category.parent === 0), [categories]);
+  const categoryGroups = useMemo(
+    () =>
+      roots.map((root) => ({
+        root,
+        options: [root, ...flattenCategoryBranch(root.id, categories)],
+      })),
+    [categories, roots],
+  );
   const [tagOptions, setTagOptions] = useState<string[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [statusFilter, setStatusFilter] = useState<"all" | StudioArticle["status"]>("all");
+  const [query, setQuery] = useState("");
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [categoryId, setCategoryId] = useState(roots[0]?.id ?? 0);
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
@@ -1062,50 +1081,98 @@ function ArticleStudio({
   const [image, setImage] = useState("");
   const [imageName, setImageName] = useState("");
   const [author, setAuthor] = useState("NairaLeap Editorial");
+  const [status, setStatus] = useState<StudioArticle["status"]>("draft");
+  const [publishAt, setPublishAt] = useState("");
   const [message, setMessage] = useState("");
-  const [publishedSlug, setPublishedSlug] = useState("");
   const selectedCategory = categories.find((category) => category.id === categoryId) ?? roots[0];
-
+  const filteredArticles = useMemo(
+    () =>
+      articles.filter((article) => {
+        const matchesStatus = statusFilter === "all" || article.status === statusFilter;
+        const needle = query.trim().toLowerCase();
+        const matchesQuery =
+          !needle ||
+          [article.title, article.category, article.author, ...article.tags].some((value) =>
+            value.toLowerCase().includes(needle),
+          );
+        return matchesStatus && matchesQuery;
+      }),
+    [articles, query, statusFilter],
+  );
   useEffect(() => {
     let active = true;
     void import("@/data/wordpressEditorial").then(({ EDITORIAL_POSTS }) => {
-      if (!active) return;
-      setTagOptions(
-        Array.from(new Set(EDITORIAL_POSTS.flatMap((post) => post.tags)))
-          .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b))
-          .slice(0, 80),
-      );
+      if (active)
+        setTagOptions(
+          Array.from(new Set(EDITORIAL_POSTS.flatMap((post) => post.tags)))
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .slice(0, 80),
+        );
     });
     return () => {
       active = false;
     };
   }, []);
-
-  const toggleTag = (tag: string) => {
+  useEffect(() => {
+    if (!selectedId) return;
+    const article = articles.find((item) => item.id === selectedId);
+    if (!article) return;
+    setTitle(article.title);
+    setSlug(article.slug);
+    setCategoryId(article.categoryId);
+    setExcerpt(article.excerpt);
+    setContent(
+      article.content
+        .replace(/<br\s*\/?>(\n)?/gi, "\n")
+        .replace(/<\/p>\s*<p>/gi, "\n")
+        .replace(/<[^>]+>/g, "")
+        .trim(),
+    );
+    setSelectedTags(article.tags);
+    setImage(article.image ?? "");
+    setImageName("");
+    setAuthor(article.author);
+    setStatus(article.status);
+    setPublishAt(article.publishAt ? article.publishAt.slice(0, 16) : "");
+    setMessage(
+      article.source === "legacy"
+        ? "Editing an imported legacy article. Saving creates a managed studio override."
+        : "",
+    );
+  }, [selectedId, articles]);
+  const resetEditor = () => {
+    setSelectedId(null);
+    setTitle("");
+    setSlug("");
+    setCategoryId(roots[0]?.id ?? 0);
+    setExcerpt("");
+    setContent("");
+    setSelectedTags([]);
+    setCustomTag("");
+    setImage("");
+    setImageName("");
+    setAuthor("NairaLeap Editorial");
+    setStatus("draft");
+    setPublishAt("");
+    setMessage("New article ready. It will remain a draft until you choose an action.");
+  };
+  const toggleTag = (tag: string) =>
     setSelectedTags((current) =>
       current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag],
     );
-  };
-
   const addCustomTag = () => {
     const cleanTag = customTag.trim();
     if (cleanTag && !selectedTags.includes(cleanTag))
       setSelectedTags((current) => [...current, cleanTag]);
     setCustomTag("");
   };
-
   const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setMessage("Choose an image file for the featured image.");
-      return;
-    }
-    if (file.size > 2_000_000) {
-      setMessage("Choose an image smaller than 2 MB for browser publishing.");
-      return;
-    }
+    if (!file.type.startsWith("image/"))
+      return setMessage("Choose an image file for the featured image.");
+    if (file.size > 2_000_000) return setMessage("Choose an image smaller than 2 MB.");
     const reader = new FileReader();
     reader.onload = () => {
       setImage(String(reader.result));
@@ -1114,226 +1181,359 @@ function ArticleStudio({
     };
     reader.readAsDataURL(file);
   };
-
-  const publish = async (event: FormEvent) => {
-    event.preventDefault();
+  const save = async (nextStatus: StudioArticle["status"]) => {
     if (!title.trim() || !selectedCategory || !content.trim()) {
-      setMessage("Add a title, category and article body before publishing.");
+      setMessage("Add a title, category and article body before saving.");
       return;
     }
-    const tags = [
-      ...selectedTags,
-      ...customTag
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-    ];
-    const article = createStudioArticle({
+    const tags = Array.from(
+      new Set([
+        ...selectedTags,
+        ...customTag
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      ]),
+    );
+    if (nextStatus === "scheduled" && (!publishAt || Number.isNaN(new Date(publishAt).getTime()))) {
+      setMessage("Choose a valid future date and time before scheduling.");
+      return;
+    }
+    const nextPublishAt =
+      nextStatus === "scheduled" ? new Date(publishAt).toISOString() : undefined;
+    const localArticle = createStudioArticle({
+      id: selectedId ?? undefined,
+      slug: slug || undefined,
       title,
       category: selectedCategory,
       excerpt: excerpt || content.slice(0, 180),
       content,
-      tags: Array.from(new Set(tags)),
+      tags,
       image,
       author,
+      status: nextStatus,
+      publishAt: nextPublishAt,
     });
-    let published = article;
     try {
-      const result = await publishEditorialArticle({
+      const result = await saveEditorialArticle({
         data: {
+          id: selectedId ?? undefined,
+          slug: slug || undefined,
+          status: nextStatus,
+          publishAt: nextPublishAt,
           title,
           category: selectedCategory,
           excerpt: excerpt || content.slice(0, 180),
           content,
-          tags: Array.from(new Set(tags)),
+          tags,
           image: image || undefined,
           author,
         },
       });
-      published = result.article;
-      setMessage(`Published “${published.title}” to the shared Website workspace.`);
+      setSelectedId(result.article.id);
+      setStatus(result.article.status);
+      setMessage(
+        nextStatus === "published"
+          ? `Published “${result.article.title}”.`
+          : nextStatus === "scheduled"
+            ? `Scheduled “${result.article.title}” for ${new Date(nextPublishAt ?? "").toLocaleString()}.`
+            : `Draft saved for “${result.article.title}”.`,
+      );
     } catch (caught) {
-      saveStudioArticles([article, ...readStudioArticles()]);
+      const remaining = readStudioArticles().filter((article) => article.id !== localArticle.id);
+      saveStudioArticles([localArticle, ...remaining]);
+      setSelectedId(localArticle.id);
+      setStatus(nextStatus);
       setMessage(
         caught instanceof Error
           ? `${caught.message} Local preview saved instead.`
-          : "Published locally for preview.",
+          : "Saved locally for preview.",
       );
     }
-    setTitle("");
-    setExcerpt("");
-    setContent("");
-    setSelectedTags([]);
-    setCustomTag("");
-    setImage("");
-    setImageName("");
-    setPublishedSlug(published.slug);
-    onPublished();
+    onSaved();
   };
-
   return (
-    <section className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
-            Website workspace
-          </p>
-          <h2 className="mt-2 text-2xl font-black text-[#262638]">Publish an article</h2>
-          <p className="mt-2 text-sm text-[#77778a]">
-            Published content is stored in the shared editorial database and immediately becomes
-            available to the public homepage and article routes.
-          </p>
+    <section className="space-y-6">
+      <div className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+              Website workspace
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-[#262638]">Article archive</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77778a]">
+              Review imported legacy stories and manage new editorial work without publishing it by
+              accident.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={resetEditor}
+            className="inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white"
+          >
+            <Plus className="h-4 w-4" /> New article
+          </button>
         </div>
-        <Upload className="h-6 w-6 text-[#7a2ce2]" />
-      </div>
-      <form onSubmit={publish} className="mt-7 grid gap-5">
-        <Field label="Headline">
-          <input
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            placeholder="Article headline"
-            className="studio-input"
-          />
-        </Field>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Category — choose where this article belongs">
-            <select
-              value={categoryId}
-              onChange={(event) => setCategoryId(Number(event.target.value))}
-              className="studio-input"
-            >
-              {categories.map((category) => (
-                <option
-                  key={category.id}
-                  value={category.id}
-                >{`${"— ".repeat(Math.max(0, category.path.length - 1))}${category.name}`}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Author">
+        <div className="mt-6 grid gap-3 md:grid-cols-[1fr_180px]">
+          <label className="relative block">
+            <Search className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-[#aaa0b7]" />
             <input
-              value={author}
-              onChange={(event) => setAuthor(event.target.value)}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search title, category, author or tag"
+              className="studio-input pl-9"
+              aria-label="Search articles"
+            />
+          </label>
+          <select
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+            className="studio-input"
+            aria-label="Filter articles by status"
+          >
+            <option value="all">All statuses</option>
+            <option value="draft">Drafts</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+        <div className="mt-4 grid gap-2">
+          {filteredArticles.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-[#ddd3ea] px-4 py-6 text-center text-sm text-[#77778a]">
+              No articles match this archive filter.
+            </p>
+          ) : (
+            filteredArticles.map((article) => (
+              <button
+                key={`${article.source ?? "studio"}-${article.id}-${article.slug}`}
+                type="button"
+                onClick={() => setSelectedId(article.id)}
+                className={`flex items-center justify-between gap-3 rounded-xl border p-3 text-left transition ${selectedId === article.id ? "border-[#a879e9] bg-[#faf7ff]" : "border-[#eeeaf6] hover:border-[#d8c9f3]"}`}
+              >
+                <span className="min-w-0">
+                  <strong className="block truncate text-sm text-[#262638]">{article.title}</strong>
+                  <span className="mt-1 block truncate text-[11px] text-[#858598]">
+                    {article.category} ·{" "}
+                    {article.source === "legacy" ? "Imported legacy" : article.author}
+                  </span>
+                </span>
+                <span
+                  className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${article.status === "published" ? "bg-[#eaf8f0] text-[#21804c]" : article.status === "scheduled" ? "bg-[#fff5dc] text-[#9a6811]" : "bg-[#f1edff] text-[#6f23dd]"}`}
+                >
+                  {article.status}
+                </span>
+              </button>
+            ))
+          )}
+        </div>
+      </div>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void save(status);
+        }}
+        className="rounded-2xl border border-[#e8e1f1] bg-white p-5 shadow-[0_8px_24px_rgba(43,25,79,0.05)] sm:p-7"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7a2ce2]">
+              {selectedId ? "Edit article" : "New article"}
+            </p>
+            <h3 className="mt-2 text-xl font-black text-[#262638]">
+              {selectedId ? "Refine and control publication" : "Draft a new story"}
+            </h3>
+          </div>
+          <span className="rounded-full bg-[#f3effa] px-3 py-1.5 text-[11px] font-bold text-[#6f23dd]">
+            Current: {status}
+          </span>
+        </div>
+        <div className="mt-6 grid gap-5">
+          <Field label="Headline">
+            <input
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              placeholder="Article headline"
               className="studio-input"
             />
           </Field>
-        </div>
-        <Field label="Excerpt">
-          <textarea
-            value={excerpt}
-            onChange={(event) => setExcerpt(event.target.value)}
-            rows={3}
-            placeholder="Short summary for cards and metadata"
-            className="studio-input"
-          />
-        </Field>
-        <Field label="Article body">
-          <textarea
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            rows={12}
-            placeholder="Write the article body. Blank lines become paragraphs."
-            className="studio-input"
-          />
-        </Field>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Tags — select one or more">
-            <div className="rounded-xl border border-[#e5dff0] bg-[#fcfbff] p-3">
-              <div className="flex max-h-36 flex-wrap gap-2 overflow-y-auto">
-                {tagOptions.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => toggleTag(tag)}
-                    className={`rounded-full border px-2.5 py-1.5 text-[11px] font-semibold transition ${selectedTags.includes(tag) ? "border-[#7a2ce2] bg-[#7a2ce2] text-white" : "border-[#e4dcef] bg-white text-[#6f6f82] hover:border-[#c8a7ff]"}`}
-                  >
-                    {tag}
-                  </button>
+          <div className="grid gap-5 md:grid-cols-2">
+            <Field label="Category">
+              <select
+                value={categoryId}
+                onChange={(event) => setCategoryId(Number(event.target.value))}
+                className="studio-input"
+              >
+                {categoryGroups.map(({ root, options }) => (
+                  <optgroup key={root.id} label={root.name}>
+                    {options.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.id === root.id
+                          ? category.name
+                          : `${"— ".repeat(Math.max(1, category.path.length - 1))}${category.name}`}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
-              </div>
-              <div className="mt-3 flex gap-2">
-                <input
-                  value={customTag}
-                  onChange={(event) => setCustomTag(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      addCustomTag();
-                    }
-                  }}
-                  placeholder="Add a custom tag"
-                  className="studio-input"
-                />
-                <button
-                  type="button"
-                  onClick={addCustomTag}
-                  className="rounded-xl border border-[#d9c9f3] px-3 text-xs font-bold text-[#6f23dd]"
-                >
-                  Add
-                </button>
-              </div>
-              {selectedTags.length > 0 && (
-                <p className="mt-2 text-[11px] text-[#6f23dd]">
-                  Selected: {selectedTags.join(", ")}
-                </p>
-              )}
-            </div>
-          </Field>
-          <Field label="Featured image">
-            <div className="space-y-2 rounded-xl border border-[#e5dff0] bg-[#fcfbff] p-3">
+              </select>
+            </Field>
+            <Field label="Author">
               <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageFile}
-                className="block w-full text-xs text-[#6f6f82] file:mr-3 file:rounded-lg file:border-0 file:bg-[#f2ebff] file:px-3 file:py-2 file:text-xs file:font-bold file:text-[#6f23dd]"
-              />
-              <input
-                value={image.startsWith("data:") ? "" : image}
-                onChange={(event) => {
-                  setImage(event.target.value);
-                  setImageName("");
-                }}
-                placeholder="Or paste an image URL"
+                value={author}
+                onChange={(event) => setAuthor(event.target.value)}
                 className="studio-input"
               />
-              {imageName && (
-                <p className="text-[11px] font-semibold text-[#6f23dd]">Selected: {imageName}</p>
-              )}
-              {image && (
-                <img
-                  src={image}
-                  alt="Featured image preview"
-                  className="h-28 w-full rounded-lg object-cover"
-                />
-              )}
-            </div>
+            </Field>
+          </div>
+          <Field label="Excerpt">
+            <textarea
+              value={excerpt}
+              onChange={(event) => setExcerpt(event.target.value)}
+              rows={3}
+              placeholder="Short summary for cards and metadata"
+              className="studio-input"
+            />
           </Field>
+          <Field label="Article body">
+            <textarea
+              value={content}
+              onChange={(event) => setContent(event.target.value)}
+              rows={12}
+              placeholder="Write the article body. Blank lines become paragraphs."
+              className="studio-input"
+            />
+          </Field>
+          <div className="grid gap-5 md:grid-cols-2">
+            <Field label="Tags">
+              <div className="rounded-xl border border-[#e5dff0] bg-[#fcfbff] p-3">
+                <div className="flex max-h-36 flex-wrap gap-2 overflow-y-auto">
+                  {tagOptions.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => toggleTag(tag)}
+                      className={`rounded-full border px-2.5 py-1.5 text-[11px] font-semibold ${selectedTags.includes(tag) ? "border-[#7a2ce2] bg-[#7a2ce2] text-white" : "border-[#e4dcef] bg-white text-[#6f6f82]"}`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <input
+                    value={customTag}
+                    onChange={(event) => setCustomTag(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        addCustomTag();
+                      }
+                    }}
+                    placeholder="Add a custom tag"
+                    className="studio-input"
+                  />
+                  <button
+                    type="button"
+                    onClick={addCustomTag}
+                    className="rounded-xl border border-[#d9c9f3] px-3 text-xs font-bold text-[#6f23dd]"
+                  >
+                    Add
+                  </button>
+                </div>
+                {selectedTags.length > 0 && (
+                  <p className="mt-2 text-[11px] text-[#6f23dd]">
+                    Selected: {selectedTags.join(", ")}
+                  </p>
+                )}
+              </div>
+            </Field>
+            <Field label="Featured image">
+              <div className="space-y-2 rounded-xl border border-[#e5dff0] bg-[#fcfbff] p-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageFile}
+                  className="block w-full text-xs text-[#6f6f82] file:mr-3 file:rounded-lg file:border-0 file:bg-[#f2ebff] file:px-3 file:py-2 file:text-xs file:font-bold file:text-[#6f23dd]"
+                />
+                <input
+                  value={image.startsWith("data:") ? "" : image}
+                  onChange={(event) => {
+                    setImage(event.target.value);
+                    setImageName("");
+                  }}
+                  placeholder="Or paste an image URL"
+                  className="studio-input"
+                />
+                {imageName && (
+                  <p className="text-[11px] font-semibold text-[#6f23dd]">Selected: {imageName}</p>
+                )}
+                {image && (
+                  <img
+                    src={image}
+                    alt="Featured image preview"
+                    className="h-28 w-full rounded-lg object-cover"
+                  />
+                )}
+              </div>
+            </Field>
+          </div>
+          <div className="grid gap-5 md:grid-cols-[180px_1fr]">
+            <Field label="Workflow status">
+              <select
+                value={status}
+                onChange={(event) => setStatus(event.target.value as StudioArticle["status"])}
+                className="studio-input"
+              >
+                <option value="draft">Draft</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="published">Published</option>
+              </select>
+            </Field>
+            <Field label="Schedule publish time">
+              <input
+                type="datetime-local"
+                value={publishAt}
+                onChange={(event) => setPublishAt(event.target.value)}
+                className="studio-input"
+                disabled={status !== "scheduled"}
+              />
+              <span className="mt-1 block text-[11px] text-[#858598]">
+                Use your local time. Scheduled articles become public automatically when their time
+                is reached.
+              </span>
+            </Field>
+          </div>
         </div>
         {message && (
-          <p className="rounded-xl bg-[#f8f3ff] px-4 py-3 text-xs font-semibold text-[#6f23dd]">
+          <p className="mt-5 rounded-xl bg-[#f8f3ff] px-4 py-3 text-xs font-semibold text-[#6f23dd]">
             {message}
           </p>
         )}
-        {publishedSlug && (
-          <Link
-            to="/articles/$slug"
-            params={{ slug: publishedSlug }}
-            className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#16824d] hover:underline"
+        <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-[#f0ebf6] pt-5">
+          <button
+            type="button"
+            onClick={() => void save("draft")}
+            className="inline-flex items-center gap-2 rounded-xl border border-[#d9c9f3] px-4 py-3 text-xs font-bold text-[#6f23dd]"
           >
-            Published successfully — view article
-          </Link>
-        )}
-        <button
-          type="submit"
-          className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#7a2ce2] px-5 py-3 text-xs font-bold text-white transition hover:-translate-y-0.5"
-        >
-          <Save className="h-4 w-4" /> Publish article
-        </button>
+            <Save className="h-4 w-4" /> Save draft
+          </button>
+          <button
+            type="button"
+            onClick={() => void save("scheduled")}
+            className="inline-flex items-center gap-2 rounded-xl border border-[#e8c874] bg-[#fffaf0] px-4 py-3 text-xs font-bold text-[#9a6811]"
+          >
+            Schedule publish
+          </button>
+          <button
+            type="button"
+            onClick={() => void save("published")}
+            className="inline-flex items-center gap-2 rounded-xl bg-[#7a2ce2] px-4 py-3 text-xs font-bold text-white"
+          >
+            <CheckCircle2 className="h-4 w-4" /> Publish now
+          </button>
+        </div>
       </form>
     </section>
   );
 }
-
 function CategoryStudio({
   categories,
   onChanged,

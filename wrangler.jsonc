@@ -8,6 +8,11 @@
   "observability": {
     "enabled": true
   },
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
   "d1_databases": [
     {
       "binding": "NAIRALEAP_DB",
