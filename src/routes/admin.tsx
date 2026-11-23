@@ -1047,17 +1047,19 @@ function ActionCard({
 
 function CategoryPicker({
   categories,
-  value,
+  values,
   onChange,
 }: {
   categories: StudioCategory[];
-  value: number;
-  onChange: (categoryId: number) => void;
+  values: number[];
+  onChange: (categoryIds: number[]) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
   const roots = useMemo(() => categories.filter((category) => category.parent === 0), [categories]);
-  const selectedCategory = categories.find((category) => category.id === value) ?? roots[0];
+  const selectedCategories = values
+    .map((id) => categories.find((category) => category.id === id))
+    .filter((category): category is StudioCategory => Boolean(category));
 
   const childrenOf = (parentId: number) =>
     categories.filter((category) => category.parent === parentId);
@@ -1073,19 +1075,34 @@ function CategoryPicker({
 
   const expandSelectedPath = () => {
     const next = new Set<number>();
-    let current = categories.find((category) => category.id === value);
-    while (current && current.parent !== 0) {
-      next.add(current.parent);
-      current = categories.find((category) => category.id === current?.parent);
-    }
+    selectedCategories.forEach((selectedCategory) => {
+      let current: StudioCategory | undefined = selectedCategory;
+      while (current && current.parent !== 0) {
+        next.add(current.parent);
+        current = categories.find((category) => category.id === current?.parent);
+      }
+    });
     setExpandedIds(next);
   };
+
+  const toggleSelected = (categoryId: number) => {
+    const next = values.includes(categoryId)
+      ? values.filter((id) => id !== categoryId)
+      : [...values, categoryId];
+    onChange(next);
+  };
+
+  const selectedLabel = selectedCategories.length
+    ? selectedCategories.length === 1
+      ? selectedCategories[0].path.join(" / ")
+      : `${selectedCategories.length} categories selected`
+    : "Choose one or more categories";
 
   const renderCategory = (category: StudioCategory, depth: number): ReactNode => {
     const children = childrenOf(category.id);
     const hasChildren = children.length > 0;
     const expanded = expandedIds.has(category.id);
-    const selected = category.id === value;
+    const selected = values.includes(category.id);
 
     return (
       <div key={category.id}>
@@ -1110,15 +1127,19 @@ function CategoryPicker({
           )}
           <button
             type="button"
-            onClick={() => {
-              onChange(category.id);
-              setOpen(false);
-            }}
-            className={`min-w-0 flex-1 truncate text-left text-xs ${selected ? "font-extrabold text-[#6f23dd]" : "font-semibold text-[#4d4d60]"}`}
+            role="option"
+            aria-selected={selected}
+            onClick={() => toggleSelected(category.id)}
+            className={`flex min-w-0 flex-1 items-center gap-2 text-left text-xs ${selected ? "font-extrabold text-[#6f23dd]" : "font-semibold text-[#4d4d60]"}`}
           >
-            {category.name}
+            <span
+              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${selected ? "border-[#7a2ce2] bg-[#7a2ce2] text-white" : "border-[#cfc4dc] bg-white"}`}
+              aria-hidden="true"
+            >
+              {selected && <CheckCircle2 className="h-3.5 w-3.5" />}
+            </span>
+            <span className="min-w-0 truncate">{category.name}</span>
           </button>
-          {selected && <span className="text-[10px] font-bold text-[#7a2ce2]">Selected</span>}
         </div>
         {hasChildren && expanded && (
           <div>{children.map((child) => renderCategory(child, depth + 1))}</div>
@@ -1139,9 +1160,7 @@ function CategoryPicker({
         aria-expanded={open}
         className="studio-input flex w-full items-center justify-between gap-3 text-left"
       >
-        <span className="min-w-0 truncate">
-          {selectedCategory?.path.join(" / ") ?? "Choose a category"}
-        </span>
+        <span className="min-w-0 truncate">{selectedLabel}</span>
         <ChevronDown
           className={`h-4 w-4 shrink-0 text-[#7a2ce2] transition-transform ${open ? "rotate-180" : ""}`}
         />
@@ -1150,11 +1169,17 @@ function CategoryPicker({
         <div
           role="listbox"
           aria-label="Article categories"
+          aria-multiselectable="true"
           className="absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-[#e5dff0] bg-white p-2 shadow-[0_16px_35px_rgba(43,25,79,0.14)]"
         >
-          <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#9a91a8]">
-            Browse categories
-          </p>
+          <div className="flex items-center justify-between gap-3 px-2 pb-2">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#9a91a8]">
+              Browse categories
+            </p>
+            <span className="text-[10px] font-bold text-[#7a2ce2]">
+              {selectedCategories.length} selected
+            </span>
+          </div>
           {roots.map((root) => renderCategory(root, 0))}
         </div>
       )}
@@ -1178,7 +1203,7 @@ function ArticleStudio({
   const [query, setQuery] = useState("");
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
-  const [categoryId, setCategoryId] = useState(roots[0]?.id ?? 0);
+  const [categoryIds, setCategoryIds] = useState<number[]>(roots[0] ? [roots[0].id] : []);
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -1189,10 +1214,14 @@ function ArticleStudio({
   const [status, setStatus] = useState<StudioArticle["status"]>("draft");
   const [publishAt, setPublishAt] = useState("");
   const [message, setMessage] = useState("");
-  const selectedCategory = categories.find((category) => category.id === categoryId) ?? roots[0];
+  const selectedCategories = categoryIds
+    .map((id) => categories.find((category) => category.id === id))
+    .filter((category): category is StudioCategory => Boolean(category));
+  const selectedCategory = selectedCategories[0] ?? roots[0];
   const filteredArticles = useMemo(
     () =>
       articles.filter((article) => {
+        if (article.status !== "draft" && article.status !== "scheduled") return false;
         const matchesStatus = statusFilter === "all" || article.status === statusFilter;
         const needle = query.trim().toLowerCase();
         const matchesQuery =
@@ -1225,7 +1254,7 @@ function ArticleStudio({
     if (!article) return;
     setTitle(article.title);
     setSlug(article.slug);
-    setCategoryId(article.categoryId);
+    setCategoryIds(article.categoryIds?.length ? article.categoryIds : [article.categoryId]);
     setExcerpt(article.excerpt);
     setContent(
       article.content
@@ -1250,7 +1279,7 @@ function ArticleStudio({
     setSelectedId(null);
     setTitle("");
     setSlug("");
-    setCategoryId(roots[0]?.id ?? 0);
+    setCategoryIds(roots[0] ? [roots[0].id] : []);
     setExcerpt("");
     setContent("");
     setSelectedTags([]);
@@ -1287,8 +1316,8 @@ function ArticleStudio({
     reader.readAsDataURL(file);
   };
   const save = async (nextStatus: StudioArticle["status"]) => {
-    if (!title.trim() || !selectedCategory || !content.trim()) {
-      setMessage("Add a title, category and article body before saving.");
+    if (!title.trim() || !selectedCategory || selectedCategories.length === 0 || !content.trim()) {
+      setMessage("Add a title, at least one category and an article body before saving.");
       return;
     }
     const tags = Array.from(
@@ -1311,6 +1340,7 @@ function ArticleStudio({
       slug: slug || undefined,
       title,
       category: selectedCategory,
+      categories: selectedCategories,
       excerpt: excerpt || content.slice(0, 180),
       content,
       tags,
@@ -1328,6 +1358,7 @@ function ArticleStudio({
           publishAt: nextPublishAt,
           title,
           category: selectedCategory,
+          categories: selectedCategories,
           excerpt: excerpt || content.slice(0, 180),
           content,
           tags,
@@ -1399,7 +1430,6 @@ function ArticleStudio({
             <option value="all">All statuses</option>
             <option value="draft">Drafts</option>
             <option value="scheduled">Scheduled</option>
-            <option value="published">Published</option>
           </select>
         </div>
         <div className="mt-4 grid gap-2">
@@ -1463,7 +1493,11 @@ function ArticleStudio({
           </Field>
           <div className="grid gap-5 md:grid-cols-2">
             <Field label="Category">
-              <CategoryPicker categories={categories} value={categoryId} onChange={setCategoryId} />
+              <CategoryPicker
+                categories={categories}
+                values={categoryIds}
+                onChange={setCategoryIds}
+              />
             </Field>
             <Field label="Author">
               <input

@@ -182,6 +182,7 @@ export const createStudioCategory = (
 export const createStudioArticle = (input: {
   title: string;
   category: StudioCategory;
+  categories?: StudioCategory[];
   excerpt: string;
   content: string;
   tags: string[];
@@ -194,6 +195,8 @@ export const createStudioArticle = (input: {
 }): StudioArticle => {
   const now = new Date();
   const slugBase = input.slug?.trim() || slugify(input.title) || `article-${now.getTime()}`;
+  const categories = input.categories?.length ? input.categories : [input.category];
+  const primaryCategory = categories[0];
   return {
     id: input.id ?? -now.getTime(),
     slug: slugBase,
@@ -203,9 +206,11 @@ export const createStudioArticle = (input: {
       day: "numeric",
       year: "numeric",
     }).format(now),
-    category: input.category.name,
-    categoryId: input.category.id,
-    categoryPath: input.category.path,
+    category: primaryCategory.name,
+    categoryId: primaryCategory.id,
+    categoryPath: primaryCategory.path,
+    categoryIds: categories.map((category) => category.id),
+    categoryPaths: categories.map((category) => category.path),
     tags: input.tags.filter(Boolean),
     excerpt: input.excerpt.trim(),
     content: input.content.trim().replace(/\n/g, "<p>")

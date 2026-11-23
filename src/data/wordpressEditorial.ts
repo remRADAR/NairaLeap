@@ -10,6 +10,8 @@ export interface EditorialPost {
   category: string;
   categoryId: number;
   categoryPath: string[];
+  categoryIds?: number[];
+  categoryPaths?: string[][];
   tags: string[];
   excerpt: string;
   content: string;

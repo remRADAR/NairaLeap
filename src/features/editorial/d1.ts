@@ -36,6 +36,8 @@ type EditorialArticleRow = {
   category: string;
   category_id: number;
   category_path: string;
+  category_ids: string;
+  category_paths: string;
   tags: string;
   excerpt: string;
   content: string;
@@ -99,6 +101,10 @@ const rowToArticle = (row: EditorialArticleRow): StudioArticle => ({
   category: row.category,
   categoryId: row.category_id,
   categoryPath: parseJson<string[]>(row.category_path, [row.category]),
+  categoryIds: parseJson<number[]>(row.category_ids, [row.category_id]),
+  categoryPaths: parseJson<string[][]>(row.category_paths, [
+    parseJson<string[]>(row.category_path, [row.category]),
+  ]),
   tags: parseJson<string[]>(row.tags, []),
   excerpt: row.excerpt,
   content: row.content,
@@ -134,7 +140,7 @@ const rowToAd = (row: EditorialAdRow): StudioAd => ({
 export const listEditorialArticles = async (db: D1Database): Promise<StudioArticle[]> => {
   const result = await db
     .prepare(
-      `select id, slug, title, date_label, category, category_id, category_path, tags,
+      `select id, slug, title, date_label, category, category_id, category_path, category_ids, category_paths, tags,
               excerpt, content, source_url, image, author, status, publish_at, created_at, updated_at
          from editorial_articles
         where status = 'published'
@@ -148,7 +154,7 @@ export const listEditorialArticles = async (db: D1Database): Promise<StudioArtic
 export const listAllEditorialArticles = async (db: D1Database): Promise<StudioArticle[]> => {
   const result = await db
     .prepare(
-      `select id, slug, title, date_label, category, category_id, category_path, tags,
+      `select id, slug, title, date_label, category, category_id, category_path, category_ids, category_paths, tags,
               excerpt, content, source_url, image, author, status, publish_at, created_at, updated_at
          from editorial_articles
         order by updated_at desc
@@ -164,7 +170,7 @@ export const findEditorialArticle = async (
 ): Promise<StudioArticle | null> => {
   const row = await db
     .prepare(
-      `select id, slug, title, date_label, category, category_id, category_path, tags,
+      `select id, slug, title, date_label, category, category_id, category_path, category_ids, category_paths, tags,
               excerpt, content, source_url, image, author, status, publish_at, created_at, updated_at
          from editorial_articles
         where slug = ?1 and status = 'published'
@@ -181,7 +187,7 @@ export const findEditorialArticleOverride = async (
 ): Promise<StudioArticle | null> => {
   const row = await db
     .prepare(
-      `select id, slug, title, date_label, category, category_id, category_path, tags,
+      `select id, slug, title, date_label, category, category_id, category_path, category_ids, category_paths, tags,
               excerpt, content, source_url, image, author, status, publish_at, created_at, updated_at
          from editorial_articles
         where slug = ?1
@@ -208,12 +214,13 @@ export const upsertEditorialArticle = async (db: D1Database, article: StudioArti
   await db
     .prepare(
       `insert into editorial_articles
-        (id, slug, title, date_label, category, category_id, category_path, tags,
+        (id, slug, title, date_label, category, category_id, category_path, category_ids, category_paths, tags,
          excerpt, content, source_url, image, author, status, publish_at, created_at, updated_at)
-       values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17)
+       values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19)
        on conflict(slug) do update set
          title = excluded.title, date_label = excluded.date_label, category = excluded.category,
          category_id = excluded.category_id, category_path = excluded.category_path,
+         category_ids = excluded.category_ids, category_paths = excluded.category_paths,
          tags = excluded.tags, excerpt = excluded.excerpt, content = excluded.content,
          source_url = excluded.source_url, image = excluded.image, author = excluded.author,
          status = excluded.status, publish_at = excluded.publish_at,
@@ -227,6 +234,8 @@ export const upsertEditorialArticle = async (db: D1Database, article: StudioArti
       article.category,
       article.categoryId,
       JSON.stringify(article.categoryPath),
+      JSON.stringify(article.categoryIds ?? [article.categoryId]),
+      JSON.stringify(article.categoryPaths ?? [article.categoryPath]),
       JSON.stringify(article.tags),
       article.excerpt,
       article.content,

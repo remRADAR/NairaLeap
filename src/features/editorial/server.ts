@@ -191,32 +191,32 @@ export const getEditorialStudioState = createServerFn({ method: "GET" }).handler
   const [savedArticles, categories] = db
     ? await Promise.all([listAllEditorialArticles(db), listEditorialCategories(db)])
     : [[], []];
-  const savedSlugs = new Set(savedArticles.map((article) => article.slug));
-  const legacyArticles = (await getWordPressPosts())
-    .filter((article) => !savedSlugs.has(article.slug))
-    .map(toLegacyStudioArticle);
   return {
     ...homepage,
-    articles: [...savedArticles, ...legacyArticles],
+    articles: savedArticles.filter(
+      (article) => article.status === "draft" || article.status === "scheduled",
+    ),
     categories: mergeCategories(categories),
   };
 });
 
+const studioCategoryInput = z.object({
+  id: z.number(),
+  name: z.string(),
+  slug: z.string(),
+  parent: z.number(),
+  count: z.number(),
+  path: z.array(z.string()),
+  source: z.enum(["wordpress", "studio"]),
+});
 const articleInput = z.object({
   id: z.number().optional(),
   slug: z.string().trim().min(1).max(240).optional(),
   status: z.enum(["draft", "scheduled", "published"]).default("draft"),
   publishAt: z.string().datetime().optional(),
   title: z.string().trim().min(1).max(240),
-  category: z.object({
-    id: z.number(),
-    name: z.string(),
-    slug: z.string(),
-    parent: z.number(),
-    count: z.number(),
-    path: z.array(z.string()),
-    source: z.enum(["wordpress", "studio"]),
-  }),
+  category: studioCategoryInput,
+  categories: z.array(studioCategoryInput).min(1).max(50).optional(),
   excerpt: z.string().max(600),
   content: z.string().min(1).max(500_000),
   tags: z.array(z.string().max(100)).max(50),
@@ -228,6 +228,8 @@ export const saveEditorialArticle = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     const now = new Date();
+    const categories = data.categories?.length ? data.categories : [data.category];
+    const primaryCategory = categories[0];
     const slug =
       data.slug ||
       data.title
@@ -245,9 +247,11 @@ export const saveEditorialArticle = createServerFn({ method: "POST" })
         day: "numeric",
         year: "numeric",
       }).format(now),
-      category: data.category.name,
-      categoryId: data.category.id,
-      categoryPath: data.category.path,
+      category: primaryCategory.name,
+      categoryId: primaryCategory.id,
+      categoryPath: primaryCategory.path,
+      categoryIds: categories.map((category) => category.id),
+      categoryPaths: categories.map((category) => category.path),
       tags: Array.from(new Set(data.tags.filter(Boolean))),
       excerpt: data.excerpt.trim() || data.content.slice(0, 180),
       content: `<p>${data.content.trim().replace(/\n+/g, "</p><p>")}</p>`,
