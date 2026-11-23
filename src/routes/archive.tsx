@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, redirect } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Archive, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditorialLayout } from "@/components";
@@ -18,6 +18,12 @@ type ArchiveSearch = { topic?: string };
 export const Route = createFileRoute("/archive")({
   validateSearch: (search): ArchiveSearch =>
     typeof search.topic === "string" ? { topic: search.topic } : {},
+  beforeLoad: ({ search }) => {
+    throw redirect({
+      to: "/articles",
+      search: { topic: search.topic, page: 1 },
+    });
+  },
   loader: async () => ({ posts: await getEditorialPosts() }),
   component: ArticleArchivePage,
 });
