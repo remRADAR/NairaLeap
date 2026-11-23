@@ -1,4 +1,4 @@
-name: Deploy NairaLeap Production
+name: Deploy NairaLeap Production Site
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ env:
 
 jobs:
   deploy:
-    name: Build and deploy production Worker
+    name: Build and deploy live production Worker
     runs-on: ubuntu-latest
     environment: Preview
 
@@ -84,13 +84,13 @@ jobs:
           console.log("Verified production D1 binding, cron, and no route/domain changes.");
           NODE
 
-      - name: Deploy to nairaleap
+      - name: Deploy to nairaleap-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: a9fc1498025cb46ee73d1f585bda0c8f
         run: |
           test -n "$CLOUDFLARE_API_TOKEN"
-          npx wrangler deploy --config .output/server/wrangler.json
+          npx wrangler deploy --config .output/server/wrangler.json --name nairaleap-site
 
       - name: Verify deployed Worker
         run: |
